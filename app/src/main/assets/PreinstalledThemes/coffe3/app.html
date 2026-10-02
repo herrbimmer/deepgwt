@@ -1,0 +1,1540 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stuttgart Clássico</title>
+<style>
+  @font-face {
+    font-family: 'ExoV';
+    font-weight: 300 800;
+    font-style: normal;
+    font-display: swap;
+    src: url('ExoV.woff2') format('woff2');
+  }
+
+  :root {
+    --ink: #f2f4f6;
+    --ink-dim: rgba(242, 244, 246, 0.55);
+    --ink-faint: rgba(242, 244, 246, 0.28);
+    --ink-ghost: rgba(242, 244, 246, 0.2);
+    --accent-needle: #eef1f4;
+    --accent-warn: #ff4d4f;
+    --accent-ok: #35d07f;
+    --accent-low: #ff9500;
+    /* Ponteiro no modo dia: azul (ver referência), não a cor de texto/ink. */
+    --accent-needle: #3fa0ff;
+    --needle-dark: #0c4a86;
+    --needle-bright: #eaf6ff;
+    --needle-glow: rgba(63, 160, 255, 0.65);
+
+    /* ---------- Tamanho dos dois mostradores ----------
+       O painel de fábrica desenha POR CIMA do tema um arco de luzes de alerta em volta de cada
+       mostrador (TPMS, freio, ABS, airbag... à esquerda; freio de mão, bateria, 12 V... à
+       direita), e a placa de velocidade entre o "0" e a velocidade
+       (docs/operations/mapa-de-luzes-do-painel.md). Os dois mostradores inteiros -- aro, traços,
+       números, ponteiro, face fumê e a leitura de baixo -- encolhem juntos por este fator em volta
+       do próprio centro, e os centros chegam para dentro (374 e 1546, espelhados em x = 960): as
+       luzes ficam por fora do aro, e a placa cabe entre o "0" e a velocidade. O JS lê o mesmo
+       valor para a escala do SVG. */
+    --mostrador: 0.9;
+  }
+
+  /* ---------- Modo noturno (preferência do tema, não telemetria) ---------- */
+  body.night-mode {
+    --ink: #ff3b30;
+    --ink-dim: rgba(255, 59, 48, 0.6);
+    --ink-faint: rgba(255, 59, 48, 0.32);
+    --ink-ghost: rgba(255, 59, 48, 0.22);
+    /* Ponteiro no modo noite acompanha o vermelho do resto da interface. */
+    --accent-needle: #ff3b30;
+    --needle-dark: #7a1712;
+    --needle-bright: #ff9e90;
+    --needle-glow: rgba(255, 59, 48, 0.7);
+  }
+
+  /* ---------- Farol ligado: painel fica âmbar/laranja (telemetria real, não preferência) ----
+     --night-tint/--night-glow já chegam via InstrumentProjector2.applyNightModeColor() (cor
+     escolhida em Telas > Painel Virtual: âmbar por padrão). O JS calcula as variantes de
+     --ink-* a partir de --night-tint e aplica no body via style inline (ver applyHeadlightTint)
+     -- isso vence body.night-mode (preferência manual, cor fixa vermelha) só quando o farol
+     está de fato ligado; se o usuário já escolheu "Noite" manualmente, o farol não sobrescreve. */
+  :root {
+    --night-tint: #ff9500;
+    --night-glow: rgba(255, 149, 0, 0.45);
+  }
+
+  /* O tema pinta o próprio fundo em vez de ser 100% transparente.
+     Antes: html/body transparentes e o wallpaper vinha da camada nativa
+     (car-bg × assets/d3_mask.png, composta pelo InstrumentProjector2). Esse d3_mask só é
+     branco em x<601, numa faixa superior central (x 710-1211, y<68) e nas bordas de baixo --
+     ele foi desenhado para o layout do tema Default. Em todo o resto (miolo e metade
+     direita) o wallpaper era apagado e o que aparecia era a tela NATIVA do cluster, inclusive
+     a projeção de faixa / ícone de direção autônoma bem no centro.
+     Pintando o wallpaper aqui dentro, o painel inteiro fica coberto seja qual for a
+     geometria do mask nativo. O <background> do theme.xml continua valendo (display 1 e
+     camada nativa), isto é a garantia de cobertura do próprio tema. */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1920px;
+    height: 720px;
+    /* html fica SEMPRE transparente: a cor opaca vive só no body, senão ceder a tela
+       (body.yield-to-car) não revelaria nada -- o html continuaria tampando tudo. */
+    background: transparent;
+    overflow: hidden;
+    font-family: 'ExoV', 'Segoe UI', Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--ink);
+  }
+
+  /* O FUNDO MORA NUMA CAMADA PRÓPRIA, NÃO NO BODY (0.14.0)
+     É o que permite ABRIR O VÃO da projeção da central: um buraco de borda suave no meio do
+     fundo, por onde o vídeo aparece com os mostradores desenhando por cima. Máscara no body
+     mascararia também os mostradores, que são filhos dele; numa camada separada, só o fundo.
+     Mesmo arranjo do Stuttgart NTG 5.5 do motor de temas. */
+  #bg {
+    position: absolute;
+    left: 0; top: 0; width: 1920px; height: 720px;
+    z-index: 0;
+    background-color: #000;
+    background-image: url('car-bg.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* Véu de legibilidade sobre a projeção: escurece só a base do vão, onde bateria e combustível
+     ficam por cima da imagem. Fica ENTRE o fundo e o #app, então escurece o vídeo e nunca o texto. */
+  #projscrim {
+    position: absolute; display: none; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,.70) 100%);
+  }
+  body.projetando #projscrim { display: block; }
+
+  #app {
+    position: relative;
+    z-index: 1;
+    width: 1920px;
+    height: 720px;
+    transition: opacity 0.25s ease;
+  }
+  #app.hidden { opacity: 0; pointer-events: none; }
+  /* Ceder a tela para um aviso real do carro exige apagar também o wallpaper do tema --
+     esconder só o #app deixaria um fundo opaco cobrindo o aviso nativo. */
+  body.yield-to-car { background-color: transparent; background-image: none; }
+  body.yield-to-car #bg { opacity: 0; }
+
+  .dial-glow {
+    position: absolute;
+    top: 0;
+    width: 640px;
+    height: 720px;
+    pointer-events: none;
+  }
+  .dial-glow.left {
+    left: 84px;
+    background: radial-gradient(circle at 290px 400px, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0) 70%);
+  }
+  /* A mancha anda junto com o medidor (ver .dial-right). */
+  .dial-glow.right {
+    left: 1196px;
+    background: radial-gradient(circle at 350px 400px, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0) 70%);
+  }
+
+  /* O HALO PRETO DOS MOSTRADORES SAI DA FRENTE DA IMAGEM
+     O vão da projeção chega ao CENTRO de cada mostrador, onde este halo é mais escuro; deixado
+     como está, ele apagaria justamente a parte da imagem que contorna o mostrador. Enquanto
+     projeta ele recua para um resto de sombra, e quem dá leitura ao mostrador é a face fumê. */
+  .dial-glow { transition: opacity .3s ease; }
+  body.projetando .dial-glow { opacity: .3; }
+
+  /* FACE FUMÊ ENQUANTO PROJETA
+     Com o vídeo POR BAIXO da página, a imagem atravessaria o disco e as marcações disputariam
+     espaço com ruas e telhados. Um disco escuro de borda macia no raio do aro (250 + 23 px)
+     mantém o mostrador legível e deixa a imagem sumir por baixo dele. */
+  body.projetando .dial-left {
+    background: radial-gradient(circle calc(284px * var(--mostrador)) at 290px 400px,
+      rgba(6,9,14,.74) 0%, rgba(6,9,14,.70) calc(258px * var(--mostrador)), rgba(6,9,14,0) calc(284px * var(--mostrador)));
+  }
+  body.projetando .dial-right {
+    background: radial-gradient(circle calc(284px * var(--mostrador)) at 350px 400px,
+      rgba(6,9,14,.74) 0%, rgba(6,9,14,.70) calc(258px * var(--mostrador)), rgba(6,9,14,0) calc(284px * var(--mostrador)));
+  }
+
+  /* ---------- Center idle backdrop (real AA/CarPlay projection lives here) ---------- */
+  .center-backdrop {
+    position: absolute;
+    top: 95px; left: 660px; width: 640px; height: 560px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .center-backdrop .floor-glow {
+    position: absolute;
+    left: 50%; bottom: 90px; width: 380px; height: 34px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(242,244,246,0.08), transparent 72%);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: absolute;
+    /* 108 -> 120 px (2026-09-21): a faixa "tocando agora" cresceu de 21 para 25 px e a barra
+       cresce junto, para o texto continuar contido em vez de transbordar por baixo dela. */
+    top: 0; left: 660px; width: 600px; height: 120px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    gap: 8px;
+    padding: 14px 44px 6px;
+    box-sizing: border-box;
+    color: var(--ink);
+    z-index: 1;
+  }
+  /* "Notch" envolvendo temperatura/marcha/relógio, como um binóculo de painel. */
+  .topbar-row1 {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px;
+    padding: 8px 28px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  body.night-mode .topbar-row1 {
+    border-color: rgba(255,59,48,0.22);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 16px rgba(255,59,48,0.1);
+  }
+  .topbar-temp {
+    font-size: 42px; font-weight: 300; letter-spacing: 0.5px;
+    min-width: 110px;
+    font-variant-numeric: tabular-nums;
+  }
+  .topbar-clock {
+    font-size: 26px; font-weight: 300; letter-spacing: 0.5px;
+    min-width: 84px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gear-cluster {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .mode-badge {
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    min-width: 42px;
+    text-align: center;
+  }
+  .gear-letter {
+    font-size: 34px; font-weight: 700;
+    color: var(--ink);
+    min-width: 40px;
+    text-align: center;
+  }
+
+  /* ---------- Mídia/rádio tocando no topo ---------- */
+  .topbar-media {
+    width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    font-size: 25px; font-weight: 400; color: var(--ink-dim);
+    transition: opacity 0.2s ease;
+  }
+  .topbar-media.empty { opacity: 0.45; }
+  .topbar-media svg { width: 24px; height: 24px; flex: none; opacity: 0.85; }
+  .topbar-media span {
+    max-width: 520px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* ---------- Dial slots ---------- */
+  .dial { position: absolute; top: 0; width: 640px; height: 720px; z-index: 1; }
+  /* Centros em 374 e 1546, espelhados em x = 960 (eram 335 e 1565; o da direita já tinha vindo
+     20 px para dentro a pedido na 0.14.0). Os aros continuam dentro das máscaras nativas: o da
+     esquerda acaba em 374 + 276 x 0,9 = 622 (speedMask até 640), o da direita começa em 1298
+     (infoMask a partir de 1280). */
+  .dial-left { left: 84px; }
+  .dial-right { left: 1196px; }
+  .dial > svg { position: absolute; top: 0; left: 0; width: 640px; height: 720px; overflow: visible; }
+
+  .bezel { fill: none; stroke: url(#bezelGrad); stroke-width: 5; filter: drop-shadow(0 0 3px rgba(0,0,0,0.6)); }
+  .glass-sheen { fill: url(#glassGrad); opacity: 0.06; }
+
+  .major-tick, .minor-tick, .micro-tick { transition: opacity 0.3s ease; }
+  .major-tick { stroke: var(--ink); stroke-opacity: 0.68; stroke-width: 3; }
+  .minor-tick { stroke: var(--ink); stroke-opacity: 0.28; stroke-width: 1.6; }
+  .micro-tick { stroke: var(--ink); stroke-opacity: 0.15; stroke-width: 1.2; }
+  .tick-label {
+    fill: var(--ink); fill-opacity: 0.88;
+    font-size: 25px; font-weight: 500;
+    text-anchor: middle; dominant-baseline: middle;
+    font-variant-numeric: tabular-nums;
+    transform-box: fill-box;
+    transform-origin: center;
+    /* font-weight FORA da transição: animar peso de fonte re-molda o texto a cada frame
+       (layout de glifos), e isso rodava em até 14 <text> por atualização de velocidade.
+       O peso final continua o mesmo, só troca de uma vez em vez de interpolar. */
+    transition: transform 0.38s cubic-bezier(.22,.61,.36,1), fill-opacity 0.32s ease, fill 0.32s ease, opacity 0.3s ease;
+  }
+  .tick-label.zoomed {
+    fill-opacity: 1;
+    font-weight: 800;
+    transform: scale(1.6);
+  }
+  .tick-label.regen-zone { fill: var(--accent-ok); }
+  .major-tick.regen-zone, .minor-tick.regen-zone, .micro-tick.regen-zone { stroke: var(--accent-ok); }
+  /* Ticks/números fora da faixa "curta" (0-120): ocultos até a re-escala pra 0-260 os
+     revelar (ver repositionSpeedTicks) -- entram com um fade suave em vez de aparecer de
+     repente já na posição final. */
+  .tick-hidden { opacity: 0; }
+  /* Acima do limite da via (opção "Seguir placa"). O brilho sai de drop-shadow porque em
+     SVG o preenchimento de um <text> não gera text-shadow. */
+  .tick-label.over-limit { fill: var(--accent-warn); fill-opacity: 1; filter: drop-shadow(0 0 6px var(--accent-warn)); }
+  .major-tick.over-limit, .minor-tick.over-limit, .micro-tick.over-limit {
+    stroke: var(--accent-warn); stroke-opacity: .95; filter: drop-shadow(0 0 4px var(--accent-warn));
+  }
+
+  /* ---------- Ponteiro: "palito" fino e reto com glow, sem cubo/círculo na base ----------
+     Gradiente radial centrado no eixo do mostrador: acompanha a rotação sem recalcular. */
+  .needle-stop-dark { stop-color: var(--needle-dark); }
+  .needle-stop-mid { stop-color: var(--accent-needle); }
+  .needle-stop-bright { stop-color: var(--needle-bright); }
+
+  .needle-body {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 9px var(--needle-glow)) drop-shadow(0 0 3px rgba(255,255,255,0.4));
+  }
+  /* O ponteiro agora gira por transform (ver renderNeedle): promover o grupo a camada
+     própria deixa o raster do glow ser reaproveitado em vez de refeito a cada frame. */
+  #needleGroup, #powerNeedleGroup { will-change: transform; }
+
+
+  /* ---------- Speed readout ---------- */
+  /* As duas leituras ficam no eixo do mostrador (slot de 640 px, centro em 290/350: daí o ∓30) e
+     sobem e encolhem junto com ele. */
+  .speed-readout {
+    position: absolute;
+    left: 0; width: 640px;
+    top: calc(400px + 138px * var(--mostrador)); height: calc(110px * var(--mostrador));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none;
+    transform: translateX(-30px);
+  }
+  .speed-value {
+    font-size: calc(84px * var(--mostrador) * var(--gauge-num-scale, 1)); font-weight: 300; line-height: 0.86; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .speed-unit {
+    font-size: calc(15px * var(--mostrador)); font-weight: 600; color: var(--ink-dim);
+    margin-top: calc(6px * var(--mostrador)); letter-spacing: calc(3px * var(--mostrador)); text-transform: uppercase;
+  }
+
+  /* ----- Potência (gauge de aceleração: ponteiro e número em % de potência) ----- */
+  .power-readout {
+    position: absolute;
+    left: 0; width: 640px;
+    top: calc(400px + 128px * var(--mostrador)); height: calc(110px * var(--mostrador));
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none;
+    z-index: 1;
+    transform: translateX(30px);
+  }
+  .power-value {
+    font-size: calc(84px * var(--mostrador) * var(--gauge-num-scale, 1)); font-weight: 300; line-height: 0.86; letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.25s ease;
+  }
+  .power-value.regen { color: var(--accent-ok); }
+  .power-unit { font-size: calc(15px * var(--mostrador)); font-weight: 600; color: var(--ink-dim); margin-top: calc(6px * var(--mostrador)); letter-spacing: calc(3px * var(--mostrador)); text-transform: uppercase; }
+
+  /* ---------- Bateria + combustível: ampliados e centralizados na base ---------- */
+  .bottom-stats {
+    position: absolute;
+    left: 50%; bottom: 16px;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 56px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .bstat { display: flex; align-items: center; gap: 18px; }
+  .bstat-icon { width: 50px; height: 50px; opacity: 0.9; color: var(--ink); }
+  .bstat-main { display: flex; flex-direction: column; align-items: flex-start; }
+  .bstat-value {
+    font-size: 54px; font-weight: 300; line-height: 0.85;
+    color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .bstat-sub {
+    font-size: 17px; font-weight: 500; color: var(--ink-dim);
+    margin-top: 2px; letter-spacing: 0.5px; font-variant-numeric: tabular-nums;
+  }
+  .bstat-divider { width: 1px; height: 64px; background: rgba(255,255,255,0.14); }
+  .bstat.low .bstat-icon,
+  .bstat.low .bstat-value,
+  .bstat.low .bstat-sub { color: var(--accent-low); transition: color 0.25s ease; }
+
+  /* ---------- Odômetro (canto inferior direito) / consumo km/l (canto inferior esquerdo) ---------- */
+  .corner-stat {
+    position: absolute;
+    bottom: 24px;
+    display: flex; flex-direction: column;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .corner-stat.left { left: 56px; align-items: flex-start; }
+  .corner-stat.right { right: 56px; align-items: flex-end; }
+  .corner-stat-value {
+    font-size: 26px; font-weight: 400; line-height: 1;
+    color: var(--ink); font-variant-numeric: tabular-nums;
+  }
+  .corner-stat-label {
+    font-size: 11px; font-weight: 600; color: var(--ink-dim);
+    letter-spacing: 2px; text-transform: uppercase; margin-top: 4px;
+  }
+
+  /* ---------- Animação de inicialização (self-check dos ponteiros) ---------- */
+  .boot-overlay {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+  }
+  .boot-overlay.hide { opacity: 0; pointer-events: none; }
+  .boot-mark { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .boot-ring {
+    width: 84px; height: 84px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: var(--accent-needle);
+    animation: boot-spin 0.9s linear infinite;
+    filter: drop-shadow(0 0 10px var(--needle-glow));
+  }
+  @keyframes boot-spin { to { transform: rotate(360deg); } }
+  .boot-word {
+    font-size: 20px; font-weight: 700; letter-spacing: 4px;
+    color: var(--ink); opacity: 0.85; white-space: nowrap;
+  }
+</style>
+</head>
+
+<body>
+  <div id="bg"></div>
+  <div id="projscrim"></div>
+  <div id="app">
+    <div class="boot-overlay" id="bootOverlay">
+      <div class="boot-mark">
+        <div class="boot-ring"></div>
+        <div class="boot-word">STUTTGART CLÁSSICO</div>
+      </div>
+    </div>
+    <div class="dial-glow left"></div>
+    <div class="dial-glow right"></div>
+
+    <div class="center-backdrop"><div class="floor-glow"></div></div>
+
+    <div class="topbar">
+      <div class="topbar-row1">
+        <div class="topbar-temp" id="outTemp">--°</div>
+        <div class="gear-cluster">
+          <div class="mode-badge" id="driveModeBadge">NORMAL</div>
+          <div class="gear-letter" id="gearLetter">P</div>
+          <div class="mode-badge" id="powerModeBadge">EV</div>
+        </div>
+        <div class="topbar-clock" id="clock">--:--</div>
+      </div>
+      <div class="topbar-media empty" id="mediaLine">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13" />
+          <circle cx="6" cy="18" r="3" />
+          <circle cx="18" cy="16" r="3" />
+        </svg>
+        <span id="mediaLineText">Sem mídia</span>
+      </div>
+    </div>
+
+    <div class="dial dial-left">
+      <svg id="speedSvg" viewBox="0 0 640 720"></svg>
+      <div class="speed-readout">
+        <div class="speed-value" id="speedValue">0</div>
+        <div class="speed-unit">km/h</div>
+      </div>
+    </div>
+    <div class="dial dial-right">
+      <svg id="mediaSvg" viewBox="0 0 640 720"></svg>
+      <div class="power-readout">
+        <div class="power-value" id="powerGaugeValue">0</div>
+        <div class="power-unit">%</div>
+      </div>
+    </div>
+
+    <div class="bottom-stats">
+      <div class="bstat" id="batteryStat">
+        <svg class="bstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="3.5" y="7" width="15" height="10" rx="1.5"/>
+          <path d="M18.5 10v4a1.4 1.4 0 0 0 1.5-1.4v-1.2A1.4 1.4 0 0 0 18.5 10Z"/>
+          <path d="M11.6 9.3 9 13h2.4l-1 1.9 3-3.3h-2.2z" fill="currentColor" stroke="none"/>
+        </svg>
+        <div class="bstat-main">
+          <span class="bstat-value" id="evRangeValue">-- km</span>
+          <span class="bstat-sub" id="batteryPctValue">--%</span>
+        </div>
+      </div>
+      <div class="bstat-divider"></div>
+      <div class="bstat" id="fuelStat">
+        <svg class="bstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M6 3h7v18H6z" stroke-linejoin="round"/>
+          <path d="M13 7h2.2a1.8 1.8 0 0 1 1.8 1.8V16a1.8 1.8 0 0 0 3.6 0v-5.5L18 8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 6h3M8 21h5" stroke-linecap="round"/>
+        </svg>
+        <div class="bstat-main">
+          <span class="bstat-value" id="fuelRangeValue">-- km</span>
+          <span class="bstat-sub" id="fuelPctValue">--%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="corner-stat left">
+      <span class="corner-stat-value" id="fuelConsumptionValue">-- km/l</span>
+      <span class="corner-stat-label">Consumo</span>
+    </div>
+    <div class="corner-stat right">
+      <span class="corner-stat-value" id="odometerValue">-- km</span>
+      <span class="corner-stat-label">Odômetro</span>
+    </div>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ===================== Geometry helpers =====================
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function svgEl(tag, attrs) {
+    const el = document.createElementNS(SVG_NS, tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+
+  function polar(cx, cy, r, deg) {
+    const t = (deg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(t), y: cy + r * Math.sin(t) };
+  }
+
+  // `valueToDeg`: função valor -> ângulo, permite mostradores não-lineares (ex.: zona de
+  // regen comprimida no gauge de potência). `regenBelow`: se definido, ticks cujo valor
+  // interpolado fique abaixo dele ganham a classe 'regen-zone'.
+  function buildTicks(svg, cx, cy, rOuter, valueToDeg, majors, regenBelow) {
+    const n = majors.length;
+    for (let i = 0; i < n; i++) {
+      const deg = valueToDeg(majors[i]);
+      const isRegen = regenBelow != null && majors[i] < regenBelow;
+      const p1 = polar(cx, cy, rOuter, deg);
+      const p2 = polar(cx, cy, rOuter - 18, deg);
+      svg.appendChild(svgEl('line', { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'major-tick' + (isRegen ? ' regen-zone' : '') }));
+
+      const tp = polar(cx, cy, rOuter - 40, deg);
+      const label = svgEl('text', { x: tp.x, y: tp.y, class: 'tick-label' + (isRegen ? ' regen-zone' : '') });
+      label.textContent = majors[i];
+      svg.appendChild(label);
+
+      if (i < n - 1) {
+        for (let q = 1; q <= 3; q++) {
+          const midVal = majors[i] + (majors[i + 1] - majors[i]) * (q / 4);
+          const midDeg = valueToDeg(midVal);
+          const midIsRegen = regenBelow != null && midVal < regenBelow;
+          const isHalf = q === 2;
+          const m1 = polar(cx, cy, rOuter, midDeg);
+          const m2 = polar(cx, cy, rOuter - (isHalf ? 11 : 7), midDeg);
+          svg.appendChild(svgEl('line', {
+            x1: m1.x, y1: m1.y, x2: m2.x, y2: m2.y,
+            class: (isHalf ? 'minor-tick' : 'micro-tick') + (midIsRegen ? ' regen-zone' : '')
+          }));
+        }
+      }
+    }
+  }
+
+  // Dá "zoom" no número do mostrador mais próximo do valor atual do ponteiro.
+  // Os ticks são construídos uma vez, então a NodeList é resolvida uma vez e guardada em
+  // vez de um querySelectorAll por atualização; e o `zoomed` só é escrito quando o tick
+  // mais próximo de fato muda (a cada ~20 unidades), não a cada telemetria -- antes eram
+  // N classList.toggle por frame, cada um invalidando o estilo de um <text>.
+  const tickLabelCache = new WeakMap();
+  const lastZoomedTickIdx = new WeakMap();
+  function highlightNearestTick(svg, majors, value) {
+    let nearestIdx = 0;
+    let nearestDist = Infinity;
+    for (let i = 0; i < majors.length; i++) {
+      const dist = Math.abs(majors[i] - value);
+      if (dist < nearestDist) { nearestDist = dist; nearestIdx = i; }
+    }
+    const prevIdx = lastZoomedTickIdx.get(svg);
+    if (prevIdx === nearestIdx) return;
+    let labels = tickLabelCache.get(svg);
+    if (!labels) { labels = svg.querySelectorAll('.tick-label'); tickLabelCache.set(svg, labels); }
+    if (prevIdx != null && labels[prevIdx]) labels[prevIdx].classList.remove('zoomed');
+    if (labels[nearestIdx]) labels[nearestIdx].classList.add('zoomed');
+    lastZoomedTickIdx.set(svg, nearestIdx);
+  }
+
+  function buildBezel(svg, cx, cy, r) {
+    svg.appendChild(svgEl('circle', { cx, cy, r: r + 15, class: 'bezel' }));
+    svg.appendChild(svgEl('ellipse', {
+      cx, cy: cy - r * 0.52, rx: r * 0.78, ry: r * 0.3, class: 'glass-sheen'
+    }));
+  }
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function installDefs(svg, cx, cy, r, needleGradId) {
+    const defs = svgEl('defs', {});
+    const bezelGrad = svgEl('linearGradient', { id: 'bezelGrad', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+    bezelGrad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': 'rgba(255,255,255,0.75)' }));
+    bezelGrad.appendChild(svgEl('stop', { offset: '45%', 'stop-color': 'rgba(255,255,255,0.16)' }));
+    bezelGrad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': 'rgba(255,255,255,0.5)' }));
+    defs.appendChild(bezelGrad);
+
+    const glassGrad = svgEl('radialGradient', { id: 'glassGrad', cx: '50%', cy: '20%', r: '80%' });
+    glassGrad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#ffffff' }));
+    glassGrad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#ffffff', 'stop-opacity': '0' }));
+    defs.appendChild(glassGrad);
+
+    // Gradiente radial centrado no cubo do ponteiro: como é radial (não linear),
+    // acompanha o ponteiro girando sem precisar recalcular a cada frame.
+    const needleGrad = svgEl('radialGradient', { id: needleGradId, cx, cy, r, gradientUnits: 'userSpaceOnUse' });
+    needleGrad.appendChild(svgEl('stop', { offset: '0%', class: 'needle-stop-dark' }));
+    needleGrad.appendChild(svgEl('stop', { offset: '58%', class: 'needle-stop-mid' }));
+    needleGrad.appendChild(svgEl('stop', { offset: '100%', class: 'needle-stop-bright' }));
+    defs.appendChild(needleGrad);
+
+    svg.appendChild(defs);
+  }
+
+  // ===================== Gauge geometry constants =====================
+  const START_DEG = -125;
+  const END_DEG = 125;
+
+  // Estado da escala do velocímetro. Declarado AQUI, e não junto do bloco de preferências lá
+  // embaixo, porque repositionSpeedTicks() roda na montagem do mostrador e já lê estas três: com a
+  // declaração depois do primeiro uso, aquela chamada caía na zona morta temporal do `let` e
+  // derrubava todo o resto do script -- o tema desenhava os ticks e parava aí, sem bridge.
+  let speedScalePref = 'auto';
+  let roadLimit = null;
+  let roadLimitValid = true;
+  let lastKnownSpeed = 0;
+
+  const SPEED_CX = 290, SPEED_CY = 400, SPEED_R = 250;
+  // Escala "curta" (0-120 km/h) por padrão -- mais resolução no uso normal. Ao passar de
+  // 120 km/h o mostrador se re-escalona pra 0-260 (headroom pra velocidades altas); só volta
+  // pra escala curta abaixo de 100 (histerese, evita ficar oscilando bem em cima de 120).
+  const SPEED_MAX_LOW = 120;
+  const SPEED_MAX_HIGH = 260;
+  const SPEED_RESCALE_UP_AT = 120;
+  const SPEED_RESCALE_DOWN_AT = 100;
+  const SPEED_RESCALE_DURATION_MS = 650;
+  const SPEED_MAJORS_FULL = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260];
+  let speedScaleMax = SPEED_MAX_LOW;
+  let speedScaleTarget = SPEED_MAX_LOW;
+  function speedValueToDeg(v) { return START_DEG + (END_DEG - START_DEG) * (clamp(v, 0, speedScaleMax) / speedScaleMax); }
+
+  const MEDIA_CX = 350, MEDIA_CY = 400, MEDIA_R = 250;
+
+  // ===================== Build speed dial =====================
+  // Escala dos mostradores (--mostrador no CSS; ver o comentário lá). Os dois SVG continuam
+  // desenhados nas medidas de sempre e encolhem em volta do próprio centro pela viewBox: aro,
+  // traços, números e ponteiro juntos, e o que o JS gira ou reposiciona não muda de conta.
+  const ESCALA_MOSTRADOR = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mostrador')) || 1;
+  function viewBoxEscalada(cx, cy) {
+    const k = ESCALA_MOSTRADOR;
+    return [cx - cx / k, cy - cy / k, 640 / k, 720 / k].map((n) => +n.toFixed(3)).join(' ');
+  }
+  const speedSvg = document.getElementById('speedSvg');
+  speedSvg.setAttribute('viewBox', viewBoxEscalada(SPEED_CX, SPEED_CY));
+  installDefs(speedSvg, SPEED_CX, SPEED_CY, SPEED_R, 'needleGradSpeed');
+  buildBezel(speedSvg, SPEED_CX, SPEED_CY, SPEED_R + 8);
+
+  // Todos os ticks/números da escala completa (0-260) são construídos uma única vez;
+  // repositionSpeedTicks() recalcula ângulo e visibilidade de cada um a cada frame da
+  // transição de escala, então os números "entram" na posição certa em vez de aparecer de
+  // repente, e os ticks já visíveis (0-120) se comprimem suavemente junto (ver
+  // animateSpeedScale). A mesma clamp() em speedValueToDeg mantém um tick ainda-invisível
+  // "grudado" no fim do arco (deg = END_DEG) até a escala crescer o bastante pra revelá-lo.
+  const speedTickRegistry = [];
+  function buildSpeedTicksDynamic(svg, majors) {
+    const n = majors.length;
+    for (let i = 0; i < n; i++) {
+      const lineEl = svgEl('line', { class: 'major-tick' });
+      svg.appendChild(lineEl);
+      const labelEl = svgEl('text', { class: 'tick-label' });
+      labelEl.textContent = majors[i];
+      svg.appendChild(labelEl);
+      speedTickRegistry.push({ value: majors[i], kind: 'major', lineEl, labelEl });
+
+      if (i < n - 1) {
+        for (let q = 1; q <= 3; q++) {
+          const midVal = majors[i] + (majors[i + 1] - majors[i]) * (q / 4);
+          const isHalf = q === 2;
+          const lineEl2 = svgEl('line', { class: isHalf ? 'minor-tick' : 'micro-tick' });
+          svg.appendChild(lineEl2);
+          speedTickRegistry.push({ value: midVal, kind: isHalf ? 'minor' : 'micro', lineEl: lineEl2, labelEl: null });
+        }
+      }
+    }
+  }
+  function repositionSpeedTicks() {
+    const max = speedScaleMax;
+    const limiteDaVia = speedScalePref === 'placa' ? roadLimitNow() : null;
+    speedTickRegistry.forEach((t) => {
+      const deg = speedValueToDeg(t.value);
+      const visible = t.value <= max + 0.01;
+      const innerOffset = t.kind === 'major' ? 18 : t.kind === 'minor' ? 11 : 7;
+      const p1 = polar(SPEED_CX, SPEED_CY, SPEED_R, deg);
+      const p2 = polar(SPEED_CX, SPEED_CY, SPEED_R - innerOffset, deg);
+      t.lineEl.setAttribute('x1', p1.x);
+      t.lineEl.setAttribute('y1', p1.y);
+      t.lineEl.setAttribute('x2', p2.x);
+      t.lineEl.setAttribute('y2', p2.y);
+      t.lineEl.classList.toggle('tick-hidden', !visible);
+      // Acima do limite da via: vermelho com brilho. Só quando o motorista escolheu "Seguir
+      // placa" E há placa válida -- fora disso nada é "acima do limite".
+      const acima = limiteDaVia !== null && t.value > limiteDaVia + 0.01;
+      t.lineEl.classList.toggle('over-limit', acima);
+      if (t.labelEl) {
+        const tp = polar(SPEED_CX, SPEED_CY, SPEED_R - 40, deg);
+        t.labelEl.setAttribute('x', tp.x);
+        t.labelEl.setAttribute('y', tp.y);
+        t.labelEl.classList.toggle('tick-hidden', !visible);
+        t.labelEl.classList.toggle('over-limit', acima);
+      }
+    });
+  }
+  buildSpeedTicksDynamic(speedSvg, SPEED_MAJORS_FULL);
+  repositionSpeedTicks();
+
+  // Não reaproveita highlightNearestTick (genérica, casa por índice posicional entre
+  // `majors` e as .tick-label da svg) porque aqui os majors visíveis são um SUBCONJUNTO do
+  // total de labels já construídas (as ocultas continuam no DOM, só com tick-hidden) --
+  // casar por índice marcaria o "zoomed" na label errada. Casa por valor/referência.
+  // Uma passada só pelo registro (eram duas) e escrita apenas na troca: antes cada
+  // atualização de velocidade percorria os 53 ticks duas vezes e reescrevia a classe das
+  // 14 labels, mesmo quando o tick em destaque continuava exatamente o mesmo.
+  let lastZoomedSpeedTick = null;
+  function highlightNearestSpeedTick(value) {
+    let nearestTick = null;
+    let nearestDist = Infinity;
+    for (let i = 0; i < speedTickRegistry.length; i++) {
+      const t = speedTickRegistry[i];
+      if (t.kind !== 'major' || t.value > speedScaleMax + 0.01) continue;
+      const dist = Math.abs(t.value - value);
+      if (dist < nearestDist) { nearestDist = dist; nearestTick = t; }
+    }
+    if (nearestTick === lastZoomedSpeedTick) return;
+    if (lastZoomedSpeedTick && lastZoomedSpeedTick.labelEl) {
+      lastZoomedSpeedTick.labelEl.classList.remove('zoomed');
+    }
+    if (nearestTick && nearestTick.labelEl) nearestTick.labelEl.classList.add('zoomed');
+    lastZoomedSpeedTick = nearestTick;
+  }
+
+  function animateSpeedScale() {
+    const from = speedScaleMax;
+    const to = speedScaleTarget;
+    animateValue(from, to, SPEED_RESCALE_DURATION_MS, (v) => {
+      speedScaleMax = v;
+      repositionSpeedTicks();
+    });
+  }
+  function updateSpeedScaleTarget(speed) {
+    lastKnownSpeed = speed;
+
+    if (speedScalePref === 'fixa') {
+      if (speedScaleTarget !== SPEED_MAX_HIGH) { speedScaleTarget = SPEED_MAX_HIGH; animateSpeedScale(); }
+      return;
+    }
+
+    if (speedScalePref === 'placa') {
+      const limite = roadLimitNow();
+      if (limite !== null) {
+        // As duas bordas (2% acima e 2% abaixo) são o mesmo truque da escala automática: com um
+        // limiar só, o painel piscaria entre as duas escalas com o carro cravado na velocidade
+        // da placa.
+        const alvo = speed > limite * 1.02 ? SPEED_MAX_HIGH
+          : speed < limite * 0.98 ? limite
+          : speedScaleTarget;
+        if (alvo !== speedScaleTarget) { speedScaleTarget = alvo; animateSpeedScale(); }
+        return;
+      }
+      // Sem placa válida, cai na escala automática em vez de travar o painel.
+    }
+
+    if (speed > SPEED_RESCALE_UP_AT && speedScaleTarget !== SPEED_MAX_HIGH) {
+      speedScaleTarget = SPEED_MAX_HIGH;
+      animateSpeedScale();
+    } else if (speed < SPEED_RESCALE_DOWN_AT && speedScaleTarget !== SPEED_MAX_LOW) {
+      speedScaleTarget = SPEED_MAX_LOW;
+      animateSpeedScale();
+    }
+  }
+
+  // O ponteiro é desenhado UMA vez, no ângulo inicial, e a partir daí só gira.
+  // Antes cada atualização reescrevia x1/y1/x2/y2 da linha; mudar a geometria de um
+  // elemento com `filter: drop-shadow` invalida a região do filtro e obriga o WebView a
+  // rasterizar o glow inteiro de novo -- em hardware fraco esse era o custo dominante do
+  // tema. Um rotate() é transformação de camada: o raster do ponteiro (glow incluso) é
+  // reaproveitado. O gradiente é radial e está centrado no eixo do mostrador
+  // (gradientUnits userSpaceOnUse), então girar em torno desse mesmo eixo não muda um
+  // pixel dele -- o resultado visual é idêntico ao anterior.
+  function pinNeedle(lineEl, cx, cy, rInner, rOuter) {
+    const base = polar(cx, cy, rInner, START_DEG);
+    const tip = polar(cx, cy, rOuter, START_DEG);
+    lineEl.setAttribute('x1', base.x);
+    lineEl.setAttribute('y1', base.y);
+    lineEl.setAttribute('x2', tip.x);
+    lineEl.setAttribute('y2', tip.y);
+  }
+  function rotateNeedle(groupEl, deg, cx, cy) {
+    groupEl.setAttribute('transform', `rotate(${(deg - START_DEG).toFixed(2)} ${cx} ${cy})`);
+  }
+
+  const needleGroup = svgEl('g', { id: 'needleGroup' });
+  const needleBody = svgEl('line', { class: 'needle-body', stroke: 'url(#needleGradSpeed)' });
+  pinNeedle(needleBody, SPEED_CX, SPEED_CY, 26, SPEED_R - 54);
+  needleGroup.appendChild(needleBody);
+  speedSvg.appendChild(needleGroup);
+
+  let lastSpeedNeedleDeg = null;
+  function renderNeedle(speed) {
+    const deg = speedValueToDeg(speed);
+    if (deg !== lastSpeedNeedleDeg) {
+      lastSpeedNeedleDeg = deg;
+      rotateNeedle(needleGroup, deg, SPEED_CX, SPEED_CY);
+    }
+    highlightNearestSpeedTick(speed);
+  }
+
+  // ===================== Build right-pod bezel (visual consistency with the speed dial) =====================
+  const mediaSvg = document.getElementById('mediaSvg');
+  mediaSvg.setAttribute('viewBox', viewBoxEscalada(MEDIA_CX, MEDIA_CY));
+  installDefs(mediaSvg, MEDIA_CX, MEDIA_CY, MEDIA_R, 'needleGradPower');
+  buildBezel(mediaSvg, MEDIA_CX, MEDIA_CY, MEDIA_R + 8);
+
+  // ----- Gauge de potência: escala de -100% a 100% de potência (car.ev_info.energy_output_percentage,
+  // o único sinal com sinal documentado: negativo = frenagem regenerativa — zona verde).
+  // O ponto zero fica no mesmo ângulo que os 40km/h do velocímetro, então a zona de regen
+  // (-100..0) ocupa um arco bem menor/"espremido" que a zona de gasto de energia (0..100). -----
+  const PWR_MIN = -100;
+  const PWR_MAX = 100;
+  const PWR_MAJORS = [-100, -50, 0, 20, 40, 60, 80, 100];
+  // Ângulo de referência fixo (não usa speedValueToDeg: essa função agora depende da escala
+  // dinâmica do velocímetro -- 0-120/0-260 -- e o gauge de potência tem sua própria calibração
+  // independente, sempre alinhada à mesma proporção original de 40/240).
+  const PWR_ZERO_DEG = START_DEG + (END_DEG - START_DEG) * (40 / 240);
+  function powerValueToDeg(v) {
+    if (v <= 0) return START_DEG + (PWR_ZERO_DEG - START_DEG) * ((v - PWR_MIN) / (0 - PWR_MIN));
+    return PWR_ZERO_DEG + (END_DEG - PWR_ZERO_DEG) * (v / PWR_MAX);
+  }
+  const powerGaugeGroup = svgEl('g', { id: 'powerGaugeGroup' });
+  buildTicks(powerGaugeGroup, MEDIA_CX, MEDIA_CY, MEDIA_R, powerValueToDeg, PWR_MAJORS, 0);
+  // Grupo separado só para o ponteiro: powerGaugeGroup carrega os ticks, que não giram.
+  const powerNeedleGroup = svgEl('g', { id: 'powerNeedleGroup' });
+  const powerNeedleBody = svgEl('line', { class: 'needle-body', stroke: 'url(#needleGradPower)' });
+  pinNeedle(powerNeedleBody, MEDIA_CX, MEDIA_CY, 26, MEDIA_R - 54);
+  powerNeedleGroup.appendChild(powerNeedleBody);
+  powerGaugeGroup.appendChild(powerNeedleGroup);
+  mediaSvg.appendChild(powerGaugeGroup);
+
+  let lastPowerNeedleDeg = null;
+  function renderPowerNeedle(pct) {
+    const clamped = clamp(pct, PWR_MIN, PWR_MAX);
+    const deg = powerValueToDeg(clamped);
+    if (deg !== lastPowerNeedleDeg) {
+      lastPowerNeedleDeg = deg;
+      rotateNeedle(powerNeedleGroup, deg, MEDIA_CX, MEDIA_CY);
+    }
+    highlightNearestTick(mediaSvg, PWR_MAJORS, clamped);
+  }
+
+  // ===================== State / telemetry wiring =====================
+  const GEAR_LABELS = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+  const EV_MODE_LABELS = { '0': 'HEV', '1': 'EVP', '3': 'EV' };
+  const DRIVE_MODE_LABELS = {
+    '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama', '11': 'AWD'
+  };
+
+  const els = {
+    speedValue: document.getElementById('speedValue'),
+    gearLetter: document.getElementById('gearLetter'),
+    driveModeBadge: document.getElementById('driveModeBadge'),
+    powerModeBadge: document.getElementById('powerModeBadge'),
+    batteryPctValue: document.getElementById('batteryPctValue'),
+    evRangeValue: document.getElementById('evRangeValue'),
+    fuelRangeValue: document.getElementById('fuelRangeValue'),
+    fuelPctValue: document.getElementById('fuelPctValue'),
+    outTemp: document.getElementById('outTemp'),
+    clock: document.getElementById('clock'),
+    powerGaugeValue: document.getElementById('powerGaugeValue'),
+    batteryStat: document.getElementById('batteryStat'),
+    fuelStat: document.getElementById('fuelStat'),
+    mediaLine: document.getElementById('mediaLine'),
+    mediaLineText: document.getElementById('mediaLineText'),
+    fuelConsumptionValue: document.getElementById('fuelConsumptionValue'),
+    odometerValue: document.getElementById('odometerValue'),
+    app: document.getElementById('app')
+  };
+
+  // ----- Consumo instantâneo (km/l): mesmo formato de payload que o InstrumentProjector2
+  // (ProjectorManager) nativo já decodifica -- "{metric,consumption}" ou um número solto.
+  // metric 1 = "Running" (consumption em L/100km, converte pra km/l); metric 4 = "Idle"
+  // (consumption em L/h, sem distância percorrida -- não dá pra expressar em km/l). -----
+  function formatFuelConsumptionKml(rawValue) {
+    const str = rawValue == null ? '' : String(rawValue);
+    let metric = 1;
+    let consumption = 0;
+    if (str.startsWith('{') && str.endsWith('}') && str.includes(',')) {
+      const parts = str.slice(1, -1).split(',');
+      metric = parseFloat(parts[0]) || 0;
+      consumption = parseFloat(parts[1]) || 0;
+    } else {
+      consumption = parseFloat(str) || 0;
+      metric = 1;
+    }
+    if (metric === 4 || consumption <= 0) return null;
+    return Math.trunc((100 / consumption) * 10) / 10;
+  }
+
+  // ----- Frequência do rádio: sys.radio.cur_channel_info chega como um tuple literal
+  // (ex.: "94900,0,1,1") em vez de já formatado -- o primeiro campo é a frequência. FM vem
+  // em unidades de 1/1000 MHz (94900 -> 94.9 MHz); AM já vem em kHz. -----
+  function formatRadioChannel(rawValue) {
+    if (!rawValue) return '';
+    const first = String(rawValue).split(',')[0];
+    const freq = Number(first);
+    if (!Number.isFinite(freq) || freq <= 0) return '';
+    if (freq >= 3000) return `${(freq / 1000).toFixed(1)} FM`;
+    return `${Math.round(freq)} AM`;
+  }
+
+  function updatePowerDisplay(pct) {
+    const clamped = clamp(pct, PWR_MIN, PWR_MAX);
+    els.powerGaugeValue.textContent = Math.round(clamped);
+    els.powerGaugeValue.classList.toggle('regen', clamped < 0);
+    renderPowerNeedle(clamped);
+  }
+
+  // ----- Mídia no topo: BT/USB do celular (app.media.*) tem prioridade sobre o
+  // rádio nativo (sys.radio.cur_channel_info) quando algo está de fato tocando -----
+  const mediaState = { title: '', artist: '', playing: false, radio: '' };
+  function updateMediaLine() {
+    if (mediaState.playing && mediaState.title) {
+      const parts = [mediaState.artist, mediaState.title].filter((s) => s && s.trim());
+      els.mediaLineText.textContent = parts.join(' – ') || mediaState.title;
+      els.mediaLine.classList.remove('empty');
+    } else if (mediaState.radio && mediaState.radio.trim()) {
+      els.mediaLineText.textContent = mediaState.radio.trim();
+      els.mediaLine.classList.remove('empty');
+    } else {
+      els.mediaLineText.textContent = 'Sem mídia';
+      els.mediaLine.classList.add('empty');
+    }
+  }
+
+  // ----- Modo dia/noite: preferência do tema, não telemetria (ver theme.xml) -----
+  let currentDisplayMode = null;
+  function applyDisplayMode(mode) {
+    document.body.classList.toggle('night-mode', mode === 'Noite');
+    refreshHeadlightTint();
+  }
+
+  // ----- Farol ligado -> painel âmbar/laranja: essa sim é telemetria real
+  // (car.basic.head_light_status), não uma preferência. Lê --night-tint/--night-glow (cor
+  // escolhida em Telas > Painel Virtual, injetada em :root pelo InstrumentProjector2 nativo;
+  // âmbar por padrão) e deriva as variantes de --ink-* em cima dela, aplicando via style
+  // inline no body. Só faz isso quando o usuário NÃO escolheu "Noite" manualmente -- inline
+  // sempre venceria a regra de classe .night-mode, e a escolha manual (vermelho) deve
+  // prevalecer sobre o automático (âmbar) se o usuário já decidiu explicitamente.
+  function hexToRgbTriplet(hex) {
+    const clean = String(hex).replace('#', '').trim();
+    const bigint = parseInt(clean, 16);
+    if (!Number.isFinite(bigint)) return '242,244,246';
+    return `${(bigint >> 16) & 255},${(bigint >> 8) & 255},${bigint & 255}`;
+  }
+  let headlightsOnState = false;
+  function refreshHeadlightTint() {
+    const active = headlightsOnState && !document.body.classList.contains('night-mode');
+    document.body.classList.toggle('headlights-on', active);
+    const bodyStyle = document.body.style;
+    if (!active) {
+      ['--ink', '--ink-dim', '--ink-faint', '--ink-ghost', '--accent-needle', '--needle-glow']
+        .forEach((prop) => bodyStyle.removeProperty(prop));
+      return;
+    }
+    const rootStyle = getComputedStyle(document.documentElement);
+    const tint = (rootStyle.getPropertyValue('--night-tint') || '#ff9500').trim();
+    const glow = (rootStyle.getPropertyValue('--night-glow') || 'rgba(255,149,0,0.45)').trim();
+    const rgb = hexToRgbTriplet(tint);
+    bodyStyle.setProperty('--ink', tint);
+    bodyStyle.setProperty('--ink-dim', `rgba(${rgb},0.6)`);
+    bodyStyle.setProperty('--ink-faint', `rgba(${rgb},0.32)`);
+    bodyStyle.setProperty('--ink-ghost', `rgba(${rgb},0.22)`);
+    bodyStyle.setProperty('--accent-needle', tint);
+    bodyStyle.setProperty('--needle-glow', glow);
+  }
+  function applyHeadlightTint(on) {
+    headlightsOnState = on;
+    refreshHeadlightTint();
+  }
+
+  function pollDisplayMode() {
+    try {
+      if (window.Android && typeof window.Android.getPreference === 'function') {
+        const mode = window.Android.getPreference('displayMode', 'Dia');
+        if (mode !== currentDisplayMode) {
+          currentDisplayMode = mode;
+          applyDisplayMode(mode);
+        }
+        pollSpeedScale();
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  // ----- Escala do velocímetro, escolhida nos ajustes do tema DENTRO do carro -----
+  //
+  // Três opções, lidas do mesmo jeito que o modo Dia/Noite (a cada batida de 2s, sem recarregar):
+  //   Automática   -- a re-escala original: 0-120 até passar de 120, aí 0-260 até cair abaixo
+  //                   de 100 (dois limiares diferentes para a escala não ficar piscando).
+  //   Fixa         -- o painel mostra a VMAX o tempo todo e nunca troca de escala.
+  //   Seguir placa -- o fim do arco É o limite da via: numa rua de 40, um painel de 40. Ao
+  //                   passar do limite a escala abre até a VMAX e as marcações acima do limite
+  //                   ficam vermelhas, com brilho.
+  //
+  // O limite chega por car.map.tsr.nav_speed_limit. O valor bruto dessa chave ainda NÃO foi
+  // confirmado neste veículo: pode vir em km/h, como código de placa, ou zero sem placa. Por isso
+  // qualquer valor inválido cai de volta na escala automática em vez de travar o painel em zero.
+  function pollSpeedScale() {
+    const raw = String(window.Android.getPreference('speedScale', 'Automática') || '').toLowerCase();
+    const pref = raw.indexOf('fixa') === 0 ? 'fixa'
+      : (raw.indexOf('placa') >= 0 || raw.indexOf('seguir') === 0) ? 'placa'
+      : 'auto';
+    if (pref === speedScalePref) return;
+    speedScalePref = pref;
+    updateSpeedScaleTarget(lastKnownSpeed);
+    repositionSpeedTicks();
+  }
+
+  /** Limite útil da via, ou null quando não há placa válida. */
+  function roadLimitNow() {
+    if (!roadLimitValid) return null;
+    return (roadLimit !== null && isFinite(roadLimit) && roadLimit > 0) ? roadLimit : null;
+  }
+
+  function updateClock() {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    els.clock.textContent = `${hh}:${mm}`;
+  }
+  updateClock();
+  setInterval(updateClock, 15000);
+
+  // ----- Ceder a tela -----
+  // Card 0 NÃO esconde mais o tema (ver window.onCardChanged). O tema sai da frente só
+  // quando alguma coisa realmente precisa do painel: um aviso do carro, ou uma projeção
+  // (CarPlay / Android Auto / espelhamento) ocupando o cluster. Nesses casos some o #app
+  // E o wallpaper do próprio tema -- senão o fundo opaco cobriria justamente o que deveria
+  // aparecer.
+  let warningActiveState = false;
+  const projectionState = {
+    carPlayInDash: false,
+    projectionMirrorInDash: false,
+    projectionPreparingD3: false
+  };
+  /*
+   * O AVISO DO CARRO NÃO TIRA MAIS O TEMA DA TELA
+   *
+   * `warningActiveState` saiu desta conta de propósito. Enquanto ele estava aqui, QUALQUER aviso
+   * do veículo -- cinto, porta entreaberta, pressão de pneu, revisão vencida -- deixava o corpo
+   * transparente, e o que aparecia no lugar era a camada nativa: num tema com máscaras, só o
+   * fundo; num tema sem elas, o painel de fábrica inteiro. Um aviso que fica ativo a viagem toda
+   * (revisão, TPMS) simplesmente apagava o painel customizado para sempre.
+   *
+   * O painel customizado sobrepõe o de fábrica, sempre. O aviso continua chegando por
+   * `warningActive` e o tema o desenha COM OS SEUS PRÓPRIOS elementos, por cima -- que é o que
+   * mantém o alerta visível sem entregar a tela.
+   *
+   * O que continua cedendo a tela é só projeção de verdade (CarPlay/Android Auto/espelhamento):
+   * ali a tela é do outro app, não há como desenhar por cima, e insistir mostraria o painel
+   * antigo congelado sobre o vídeo.
+   */
+  function shouldYieldToCar() {
+    return projectionState.carPlayInDash ||
+      projectionState.projectionMirrorInDash ||
+      projectionState.projectionPreparingD3;
+  }
+  function applyYieldToCar() {
+    const yielding = shouldYieldToCar();
+    els.app.classList.toggle('hidden', yielding);
+    document.body.classList.toggle('yield-to-car', yielding);
+  }
+
+  // ----- Vão da projeção da central (0.14.0) -----
+  //
+  // O espaço entre o velocímetro (centro em x=335) e o medidor de potência (centro em x=1565),
+  // do topo ao pé dos aros (400 ± 273). Sem esta declaração o app não sabia onde projetar,
+  // varria o DOM, não achava vão largo o bastante e caía na caixinha central de último recurso
+  // (576x244) -- a "projeção muito pequena" da foto do carro. Declarar faz o app pôr o vídeo POR
+  // BAIXO desta página, e os mostradores continuam desenhando por cima; em troca, quem declara
+  // abre o buraco no próprio fundo (aplicarVaoDaProjecao). Mesma caixa do Stuttgart NTG 5.5 do
+  // motor de temas, com a borda direita acompanhando o medidor de potência 20 px mais à esquerda.
+  // Na Alpha 8.9 os mostradores encolheram (centros em 374 e 1546, aros até 400 ± 248); a caixa
+  // ficou como estava para não mexer na geometria da projeção: as bordas continuam caindo embaixo
+  // das faces fumê, perto do centro de cada mostrador.
+  const PROJ_BOX = { x: 335, y: 127, w: 1230, h: 546 };
+
+  // Esmaecimento das bordas do vão, em px. A borda lateral cai em cima do mostrador e a imagem se
+  // dissolve por baixo dele: 96 px é pouco mais de um terço do raio do aro (273).
+  const PROJ_PENA_X = 96;
+  const PROJ_PENA_Y = 56;
+
+  // Este WebView sabe recortar o fundo com máscara? Se não souber, declarar deixaria o vídeo POR
+  // BAIXO de um fundo opaco -- invisível. Sem declarar, o app cai no modo antigo (vídeo por cima).
+  function sabeRecortarOFundo() {
+    try {
+      if (!window.CSS || typeof window.CSS.supports !== 'function') return false;
+      const g = 'linear-gradient(to right, #000 0px, transparent 10px)';
+      return window.CSS.supports('-webkit-mask-image', g) || window.CSS.supports('mask-image', g);
+    } catch (e) { return false; }
+  }
+
+  // Perguntado uma vez: a declaração se repete a cada 2 s, e o aviso no console vira escrita em
+  // disco no log persistente do app (InstrumentProjector2.onConsoleMessage).
+  let recortaOFundo = null;
+  function declararVaoDaProjecao() {
+    if (recortaOFundo === null) {
+      recortaOFundo = sabeRecortarOFundo();
+      if (!recortaOFundo) console.warn('[COFFE3] sem suporte a mascara: a projecao vai por cima do tema');
+    }
+    if (!recortaOFundo) return;
+    try {
+      if (window.Android && typeof window.Android.setProjectionBox === 'function') {
+        window.Android.setProjectionBox(PROJ_BOX.x, PROJ_BOX.y, PROJ_BOX.w, PROJ_BOX.h);
+      }
+    } catch (e) { /* ponte antiga: sem declaração, o app volta a varrer o DOM */ }
+  }
+
+  // Abre (ou fecha, com valor vazio) o buraco do vídeo no fundo. Duas máscaras lineares, uma por
+  // eixo: a união das duas só fica transparente onde AMBAS estão -- exatamente o retângulo, com
+  // borda suave e sem 'mask-composite', que este WebView não tem. Borda encostada na tela não
+  // esmaece: ali não há tema para a imagem se dissolver.
+  function aplicarVaoDaProjecao(valor) {
+    const bg = document.getElementById('bg');
+    if (!bg) return;
+    const n = String(valor == null ? '' : valor).split(',');
+    const x = parseInt(n[0], 10), y = parseInt(n[1], 10);
+    const l = parseInt(n[2], 10), a = parseInt(n[3], 10);
+    if (n.length < 4 || !(l > 0) || !(a > 0)) {
+      bg.style.webkitMaskImage = '';
+      bg.style.maskImage = '';
+      document.body.classList.remove('projetando');
+      return;
+    }
+    const L = x, R = x + l, T = y, B = y + a;
+    const px = Math.min(PROJ_PENA_X, Math.floor(l / 3));
+    const py = Math.min(PROJ_PENA_Y, Math.floor(a / 3));
+    const pe = L <= 0 ? 0 : px, pd = R >= 1920 ? 0 : px;
+    const pt = T <= 0 ? 0 : py, pb = B >= 720 ? 0 : py;
+    const gx = `linear-gradient(to right, #000 ${L}px, transparent ${L + pe}px, transparent ${R - pd}px, #000 ${R}px)`;
+    const gy = `linear-gradient(to bottom, #000 ${T}px, transparent ${T + pt}px, transparent ${B - pb}px, #000 ${B}px)`;
+    const veu = document.getElementById('projscrim');
+    if (veu) {
+      veu.style.left = L + 'px';
+      veu.style.top = T + 'px';
+      veu.style.width = l + 'px';
+      veu.style.height = a + 'px';
+      // O véu é um retângulo: sem máscara, a aresta dele apareceria como um degrau de brilho
+      // exatamente onde a imagem está se dissolvendo. Some junto com ela.
+      const mv = `linear-gradient(to right, transparent 0px, #000 ${pe}px, #000 ${l - pd}px, transparent ${l}px)`;
+      veu.style.webkitMaskImage = mv;
+      veu.style.maskImage = mv;
+    }
+    bg.style.webkitMaskImage = gx + ', ' + gy;
+    bg.style.maskImage = gx + ', ' + gy;
+    document.body.classList.add('projetando');
+  }
+
+  // ----- Coalescência de render -----
+  // Velocidade e potência chegam como chamadas evaluateJavascript separadas, cada uma
+  // disparando um render síncrono. Acumular e desenhar uma vez por frame garante no
+  // máximo um render por quadro exibido, em vez de um por valor recebido.
+  let pendingSpeed = null;
+  let pendingPower = null;
+  let renderScheduled = false;
+  let renderFallbackTimer = 0;
+  function flushRender() {
+    if (!renderScheduled) return;
+    renderScheduled = false;
+    clearTimeout(renderFallbackTimer);
+    if (pendingSpeed !== null) {
+      const speed = pendingSpeed;
+      pendingSpeed = null;
+      els.speedValue.textContent = Math.round(speed);
+      updateSpeedScaleTarget(speed);
+      renderNeedle(speed);
+    }
+    if (pendingPower !== null) {
+      const pct = pendingPower;
+      pendingPower = null;
+      updatePowerDisplay(pct);
+    }
+  }
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(flushRender);
+    // Rede de segurança: se o WebView estrangular o rAF (janela de Presentation sem foco,
+    // por exemplo), os ponteiros não podem congelar -- este timer destrava o desenho.
+    renderFallbackTimer = setTimeout(flushRender, 120);
+  }
+
+  function handleTelemetry(key, rawValue) {
+    switch (key) {
+      case 'car.basic.vehicle_speed': {
+        pendingSpeed = parseFloat(rawValue) || 0;
+        scheduleRender();
+        break;
+      }
+      case 'warningActive': {
+        warningActiveState = String(rawValue) === 'true';
+        applyYieldToCar();
+        break;
+      }
+      case 'car.map.tsr.nav_speed_limit': {
+        const lim = parseFloat(rawValue);
+        roadLimit = isFinite(lim) ? lim : null;
+        if (speedScalePref === 'placa') {
+          updateSpeedScaleTarget(lastKnownSpeed);
+          repositionSpeedTicks();
+        }
+        break;
+      }
+      case 'car.map.tsr.nav_speed_limit_sign_status': {
+        const s = String(rawValue).trim().toLowerCase();
+        roadLimitValid = s === '1' || s === 'true' || s === 'on' || s === 'yes';
+        if (speedScalePref === 'placa') {
+          updateSpeedScaleTarget(lastKnownSpeed);
+          repositionSpeedTicks();
+        }
+        break;
+      }
+      case 'car.basic.gear_status': {
+        const gearKey = String(parseInt(rawValue, 10));
+        const gearLabel = GEAR_LABELS[gearKey] || 'N';
+        // Sem console.log aqui: o host encaminha toda mensagem de console do WebView para
+        // o ClusterPersistentEventLogger (ver InstrumentProjector2.onConsoleMessage), então
+        // um log por troca de marcha custa uma travessia JNI + escrita em disco.
+        els.gearLetter.textContent = gearLabel;
+        break;
+      }
+      case 'car.ev_info.cur_battery_power_percentage': {
+        const pct = Number(rawValue) || 0;
+        els.batteryPctValue.textContent = `${Math.round(pct)}%`;
+        els.batteryStat.classList.toggle('low', pct < 20);
+        break;
+      }
+      case 'car.ev_info.electric_mode_remain_odometer': {
+        const km = Number(rawValue) || 0;
+        els.evRangeValue.textContent = `${Math.round(km)} km`;
+        break;
+      }
+      case 'car.basic.remain_fuel_percentage': {
+        const pct = Number(rawValue) || 0;
+        els.fuelPctValue.textContent = `${Math.round(pct)}%`;
+        els.fuelStat.classList.toggle('low', pct < 20);
+        break;
+      }
+      case 'car.ev_info.fuel_mode_remain_odometer': {
+        const km = Number(rawValue) || 0;
+        els.fuelRangeValue.textContent = `${Math.round(km)} km`;
+        break;
+      }
+      case 'car.basic.outside_temp': {
+        const t = Number(rawValue);
+        if (Number.isFinite(t)) els.outTemp.textContent = `${Math.round(t)}°`;
+        break;
+      }
+      case 'car.ev_setting.power_model_config': {
+        els.powerModeBadge.textContent = EV_MODE_LABELS[String(rawValue)] || 'HEV';
+        break;
+      }
+      case 'car.drive_setting.drive_mode': {
+        els.driveModeBadge.textContent = (DRIVE_MODE_LABELS[String(rawValue)] || 'Normal').toUpperCase();
+        break;
+      }
+      case 'car.ev_info.energy_output_percentage': {
+        pendingPower = Number(rawValue) || 0;
+        scheduleRender();
+        break;
+      }
+      case 'app.media.title': {
+        mediaState.title = rawValue ? String(rawValue) : '';
+        updateMediaLine();
+        break;
+      }
+      case 'app.media.artist': {
+        mediaState.artist = rawValue ? String(rawValue) : '';
+        updateMediaLine();
+        break;
+      }
+      case 'app.media.state': {
+        mediaState.playing = String(rawValue) === 'playing';
+        updateMediaLine();
+        break;
+      }
+      case 'sys.radio.cur_channel_info': {
+        mediaState.radio = formatRadioChannel(rawValue);
+        updateMediaLine();
+        break;
+      }
+      case 'car.basic.instant_fuel_consumption': {
+        const kml = formatFuelConsumptionKml(rawValue);
+        els.fuelConsumptionValue.textContent = kml != null ? `${kml.toFixed(1)} km/l` : '-- km/l';
+        break;
+      }
+      case 'car.basic.total_odometer': {
+        const km = Number(rawValue) || 0;
+        els.odometerValue.textContent = `${Math.round(km)} km`;
+        break;
+      }
+      case 'car.basic.head_light_status': {
+        applyHeadlightTint(String(rawValue) === '1');
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  const SUBSCRIBE_KEYS = [
+    'car.basic.vehicle_speed',
+    'car.basic.gear_status',
+    'car.ev_info.cur_battery_power_percentage',
+    'car.ev_info.electric_mode_remain_odometer',
+    'car.ev_info.fuel_mode_remain_odometer',
+    'car.basic.remain_fuel_percentage',
+    'car.basic.outside_temp',
+    'car.ev_setting.power_model_config',
+    'car.drive_setting.drive_mode',
+    'car.ev_info.energy_output_percentage',
+    'app.media.title',
+    'app.media.artist',
+    'app.media.state',
+    'sys.radio.cur_channel_info',
+    'car.basic.instant_fuel_consumption',
+    'car.basic.total_odometer',
+    'car.basic.head_light_status',
+    // Limite da via lido pela câmera (TSR). Alimenta a opção "Seguir placa" do combo
+    // "Escala do Velocímetro" nos ajustes do tema. O status vem junto para distinguir
+    // "a via é 40" de "a câmera perdeu a placa e o número ficou velho".
+    'car.map.tsr.nav_speed_limit',
+    'car.map.tsr.nav_speed_limit_sign_status',
+    // Único motivo que ainda faz o tema ceder a tela (ver applyYieldToCar).
+    'warningActive'
+  ];
+
+  // ===================== Bridge (real car, or local mock for preview) =====================
+  function installMockBridge() {
+    console.warn('[COFFE3] window.Android ausente — usando simulação local para preview.');
+    let mock = { speed: 0, dir: 1, tick: 0 };
+
+    window.Android = {
+      getAvailableKeys: () => JSON.stringify(SUBSCRIBE_KEYS),
+      subscribe: () => {},
+      unsubscribe: () => {},
+      getCarData: () => '0',
+      updateCarData: () => {},
+      // Local-preview convenience: ?mode=Noite na URL simula o modo noturno sem UI real.
+      getPreference: (k, d) => {
+        if (k === 'displayMode') return new URLSearchParams(location.search).get('mode') || d;
+        return d;
+      },
+      savePreference: () => {},
+      heartbeat: () => {},
+      triggerSystemAction: () => {}
+    };
+
+    const seed = {
+      'car.basic.gear_status': '3',
+      'car.ev_info.cur_battery_power_percentage': '61',
+      'car.ev_info.electric_mode_remain_odometer': '830',
+      'car.ev_info.fuel_mode_remain_odometer': '13',
+      'car.basic.outside_temp': '21',
+      'car.ev_setting.power_model_config': '3',
+      'car.drive_setting.drive_mode': '0',
+      'car.ev_info.energy_output_percentage': '0',
+      'app.media.state': 'playing',
+      'app.media.artist': 'Tame Impala',
+      'app.media.title': 'The Less I Know The Better'
+    };
+    Object.keys(seed).forEach((k) => handleTelemetry(k, seed[k]));
+
+    setInterval(() => {
+      mock.tick += 1;
+      mock.speed += mock.dir * 1.6;
+      // Sobe até 220 (passa dos 120 -- exercita a re-escala do velocímetro) e desce até 0
+      // de novo (passa dos 100 -- exercita a volta pra escala curta).
+      if (mock.speed >= 220) mock.dir = -1;
+      if (mock.speed <= 0) { mock.speed = 0; mock.dir = 1; }
+      handleTelemetry('car.basic.vehicle_speed', mock.speed.toFixed(1));
+      // Acelerando (dir=1): sinal positivo, % sobe com a velocidade.
+      // Freando/desacelerando (dir=-1): sinal negativo (regen), simula recuperação de energia.
+      const pct = clamp(mock.speed / 1.6, 0, 100);
+      handleTelemetry('car.ev_info.energy_output_percentage', String(mock.dir > 0 ? pct : -pct));
+      if (mock.tick === 1) {
+        handleTelemetry('car.basic.gear_status', mock.speed > 0 ? '2' : '3');
+      }
+      // Farol alterna a cada ~10s só pra exercitar o tingimento âmbar no preview local.
+      if (mock.tick % 25 === 0) {
+        mock.headlightsOn = !mock.headlightsOn;
+        handleTelemetry('car.basic.head_light_status', mock.headlightsOn ? '1' : '0');
+      }
+    }, 400);
+  }
+
+  function initBridge() {
+    if (!window.Android || typeof window.Android.subscribe !== 'function') {
+      installMockBridge();
+    }
+
+    const prevOnDataChanged = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevOnDataChanged === 'function') {
+        try { prevOnDataChanged(key, value); } catch (e) { console.error(e); }
+      }
+      handleTelemetry(key, value);
+    };
+
+    // O tema NÃO se esconde no card 0.
+    // O painel do carro arranca sempre no card 0 (a carta do próprio veículo), então
+    // esconder tudo aqui significava que o tema só aparecia depois do motorista navegar no
+    // volante (home -> direita) até uma carta de menu -- o tema Default nunca fez isso:
+    // ele fica visível no card 0 e só recolhe o menu lateral direito.
+    // A regra de contrato que importa continua valendo: nenhuma entrada de volante é
+    // tratada enquanto o card for 0 (este tema é um mostrador passivo, não trata nenhuma).
+    window.onCardChanged = function (cardId) {
+      void cardId;
+    };
+
+    // O host fala por dois canais: onDataChanged (telemetria assinada) e control(chave, valor)
+    // (estado do cluster -- projeção, app no painel, fundo). Este tema não definia
+    // window.control, então TODA chamada dessas caía em "ReferenceError: control is not
+    // defined" -- e o host encaminha as mensagens de console do WebView para o log
+    // persistente (InstrumentProjector2.onConsoleMessage), ou seja, era travessia JNI +
+    // escrita em disco a cada evento, além do sinal se perder.
+    const prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') {
+        try { prevControl(key, value); } catch (e) { /* ignore */ }
+      }
+      if (Object.prototype.hasOwnProperty.call(projectionState, key)) {
+        projectionState[key] = (value === true || value === 'true');
+        applyYieldToCar();
+        return;
+      }
+      if (key === 'projectionWindow') aplicarVaoDaProjecao(value);
+    };
+
+    try {
+      if (window.Android && typeof window.Android.subscribe === 'function') {
+        window.Android.subscribe(JSON.stringify(SUBSCRIBE_KEYS));
+      }
+      if (window.Android && typeof window.Android.setAppDefaultDimensions === 'function') {
+        window.Android.setAppDefaultDimensions(640, 95, 640, 560);
+      }
+      declararVaoDaProjecao();
+      pollDisplayMode();
+    } catch (e) {
+      console.error('[COFFE3] bridge init failed:', e);
+    }
+
+    setInterval(() => {
+      try {
+        if (window.Android && typeof window.Android.heartbeat === 'function') {
+          window.Android.heartbeat();
+        }
+      } catch (e) { /* ignore */ }
+      pollDisplayMode();
+      // Redeclara o vão a cada batida: idempotente do lado do app (ThemeBridgeImpl ignora a caixa
+      // repetida), e é a rede caso a declaração da carga se perca numa recarga da página.
+      try { declararVaoDaProjecao(); } catch (e) { /* ignore */ }
+    }, 2000);
+  }
+
+  // ===================== Animação de inicialização =====================
+  // Varredura clássica de "self-check" dos ponteiros (0 -> máximo -> repouso)
+  // enquanto o overlay preto com o logo desaparece.
+  // O temporizador NÃO é redundância: requestAnimationFrame não dispara enquanto o WebView está
+  // oculto (document.visibilityState === 'hidden'), e o do cluster fica oculto sempre que uma
+  // projeção ou um aviso do carro assume a tela. Sem esta rede, uma troca de escala iniciada nesse
+  // instante congelava no valor inicial -- ao voltar, o painel continuava com o fim de escala
+  // antigo e as marcações na posição errada, até a próxima troca.
+  function animateValue(from, to, duration, onUpdate, onDone) {
+    const start = performance.now();
+    let finished = false;
+    const safetyNet = setTimeout(() => {
+      if (finished) return;
+      finished = true;
+      onUpdate(to);
+      if (onDone) onDone();
+    }, duration + 250);
+    function step(now) {
+      if (finished) return;
+      const t = clamp((now - start) / duration, 0, 1);
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      onUpdate(from + (to - from) * eased);
+      if (t < 1) { requestAnimationFrame(step); return; }
+      finished = true;
+      clearTimeout(safetyNet);
+      if (onDone) onDone();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function runBootAnimation() {
+    const overlay = document.getElementById('bootOverlay');
+    animateValue(0, SPEED_MAX_LOW, 700, renderNeedle, () => {
+      animateValue(SPEED_MAX_LOW, 0, 500, renderNeedle);
+    });
+    animateValue(PWR_MIN, PWR_MAX, 700, renderPowerNeedle, () => {
+      animateValue(PWR_MAX, 0, 500, renderPowerNeedle);
+    });
+    setTimeout(() => { if (overlay) overlay.classList.add('hide'); }, 1300);
+  }
+
+  // Rede de segurança do overlay de abertura.
+  //
+  // O painel do cluster passa boa parte do tempo OCULTO: toda projeção (CarPlay/Android Auto),
+  // todo aviso do carro e toda carta nativa colocam a WebView em INVISIBLE, e aí o Chromium
+  // estrangula setTimeout e requestAnimationFrame da página — é o comportamento correto dele, não
+  // um defeito. O problema é que a abertura do tema depende dos dois: se a página for carregada (ou
+  // recarregada) enquanto está oculta, o `setTimeout` acima não corre no tempo esperado e o tema
+  // reaparece com a cortina preta ainda por cima. Quem olha o painel vê só o fundo.
+  //
+  // Esta linha resolve pelo lado certo: no momento em que a página VOLTA a ser exibida, a cortina
+  // sai. Não interfere na abertura normal (aí o setTimeout chega primeiro e `classList.add` é
+  // idempotente) e não depende de nenhum timer para acontecer.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible') return;
+    const overlay = document.getElementById('bootOverlay');
+    if (overlay) overlay.classList.add('hide');
+  });
+
+  runBootAnimation();
+  initBridge();
+})();
+</script>
+</body>
+
+</html>

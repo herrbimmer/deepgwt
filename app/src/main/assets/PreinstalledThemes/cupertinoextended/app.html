@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1920, height=720, initial-scale=1" />
+<title>Cupertino Extended</title>
+<!--
+  Cupertino Extended (OPEN GW, Alpha 9.6). Gerado por scripts/gerar-cupertino-extended.mjs — edite
+  lá e rode de novo. Contrato v1.0: só chaves de ThemeBridgeImpl.getAvailableKeys(); nenhuma luz
+  desenhada (as do carro ficam por cima); declara o vão da projeção e o abre no #bg.
+-->
+<style>
+  :root { --ink: #f5f5f7; --dim: rgba(235,235,245,0.6); --fraco: rgba(235,235,245,0.3); --laranja: #ff9f0a; --verde: #30d158; --vermelho: #ff453a; }
+  html, body {
+    margin: 0; padding: 0; width: 1920px; height: 720px; overflow: hidden; background: transparent;
+    font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Roboto, Arial, sans-serif; color: var(--ink);
+    -webkit-font-smoothing: antialiased; user-select: none;
+  }
+  /* Preto, como o painel de um carro com CarPlay. */
+  #bg { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 0; background: #000; }
+  body.yield-to-car #bg { opacity: 0; }
+  #projscrim {
+    position: absolute; display: none; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.66) 100%);
+  }
+  body.projetando #projscrim { display: block; }
+  /* Enquanto projeta: um anel fumê segura traços e números por cima do vídeo (a face já é opaca). */
+  #projfumo {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 720px; display: none; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(circle 336px at 426px 440px, rgba(0,0,0,0.9) 0, rgba(0,0,0,0.9) 232px, rgba(0,0,0,0.7) 250px, rgba(0,0,0,0.7) 304px, rgba(0,0,0,0) 336px),
+      radial-gradient(circle 336px at 1494px 440px, rgba(0,0,0,0.9) 0, rgba(0,0,0,0.9) 232px, rgba(0,0,0,0.7) 250px, rgba(0,0,0,0.7) 304px, rgba(0,0,0,0) 336px);
+  }
+  body.projetando #projfumo { display: block; }
+  body.projetando #centro { display: none; }
+  body.projetando .rot { paint-order: stroke; stroke: rgba(0,0,0,0.85); stroke-width: 6px; stroke-linejoin: round; }
+  #noite { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; background: #000; opacity: 0; z-index: 3; pointer-events: none; }
+  body.mode-headlight #noite { opacity: 0.16; }
+  body.night-mode #noite { opacity: 0.36; }
+
+  #app { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 1; transition: opacity 0.25s ease; }
+  #app.hidden { opacity: 0; pointer-events: none; }
+  #arte { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+  .rot { fill: rgba(245,245,247,0.82); font-size: 22px; font-weight: 500; text-anchor: middle; letter-spacing: -0.2px; }
+  svg { overflow: visible; }
+
+  /* ── Leituras no eixo de cada mostrador ── */
+  .cubo { position: absolute; width: 300px; text-align: center; top: 378px; }
+  .cubo .n { font-size: 112px; font-weight: 600; line-height: 112px; letter-spacing: -3px; font-variant-numeric: tabular-nums; }
+  .cubo .u { font-size: 22px; font-weight: 500; color: var(--dim); margin-top: 4px; }
+  #vel { left: 276px; }
+  #vel.acima .n { color: var(--laranja); }
+  #pot { left: 1344px; }
+  #pot .n small { font-size: 46px; font-weight: 500; letter-spacing: -1px; margin-left: 3px; color: var(--dim); }
+  #pot.desligado .n { color: var(--fraco); }
+  #pot.recarga .u { color: var(--verde); }
+
+  /* Marcha dentro do velocímetro: a letra acesa ganha uma cápsula de vidro líquido. */
+  #marchas { position: absolute; left: 338px; top: 560px; width: 176px; height: 40px; }
+  #marchas .capsula { position: absolute; top: 0; left: 0; width: 44px; height: 40px; border-radius: 20px; box-sizing: border-box;
+    background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.1));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 0 0 1px rgba(255,255,255,0.14), inset 0 -1px 0 rgba(255,255,255,0.1); }
+  #marchas span { position: relative; float: left; width: 44px; height: 40px; line-height: 40px; text-align: center;
+    font-size: 24px; font-weight: 600; color: var(--fraco); }
+  #marchas span.on { color: var(--ink); }
+
+  /* Autonomias dentro do mostrador da direita. */
+  #autonomia { position: absolute; left: 1344px; top: 566px; width: 300px; text-align: center; font-size: 21px; font-weight: 600;
+    white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #autonomia .item { display: inline-block; margin: 0 10px; }
+  #autonomia svg { width: 18px; height: 18px; vertical-align: -2px; margin-right: 6px; }
+  #autonomia .ev svg { color: var(--verde); }
+  #autonomia .comb svg { color: var(--dim); }
+  #autonomia small { font-size: 17px; font-weight: 500; color: var(--dim); margin-left: 3px; }
+
+  /* ── Barra de cima ── */
+  #hora { position: absolute; left: 860px; top: 26px; width: 200px; text-align: center; font-size: 32px; font-weight: 600; letter-spacing: -0.4px; font-variant-numeric: tabular-nums; }
+  #temp { position: absolute; left: 700px; top: 31px; width: 140px; text-align: right; font-size: 24px; font-weight: 500; color: var(--dim); font-variant-numeric: tabular-nums; }
+  #modo { position: absolute; left: 1080px; top: 31px; width: 160px; text-align: left; font-size: 24px; font-weight: 500; color: var(--dim); white-space: nowrap; overflow: hidden; }
+
+  /* ── Centro: tocando agora e energia ── */
+  #centro { position: absolute; left: 744px; top: 96px; width: 432px; height: 544px; }
+  #tocando { position: absolute; left: 0; top: 24px; width: 432px; height: 330px; text-align: center; }
+  #tocando .capa { position: absolute; left: 116px; top: 0; width: 200px; height: 200px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(180deg, #2c2c2e, #1c1c1e) center/cover no-repeat; color: rgba(235,235,245,0.32);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 14px 34px rgba(0,0,0,0.55); }
+  #tocando .capa svg { position: absolute; left: 68px; top: 68px; width: 64px; height: 64px; }
+  #tocando.com-capa .capa svg { display: none; }
+  #tocando .ti { position: absolute; left: 16px; right: 16px; top: 222px; font-size: 27px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #tocando .ar { position: absolute; left: 16px; right: 16px; top: 258px; font-size: 21px; font-weight: 500; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #tocando .barra { position: absolute; left: 46px; right: 46px; top: 302px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.16); overflow: hidden; }
+  #tocando .barra i { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; transform-origin: 0 0; transform: scaleX(0); background: rgba(255,255,255,0.85); border-radius: 3px; }
+  #tocando .tempos { position: absolute; left: 46px; right: 46px; top: 314px; font-size: 14px; font-weight: 600; color: var(--dim); font-variant-numeric: tabular-nums; text-align: left; }
+  #tocando .tempos b { float: right; font-weight: 600; }
+  #tocando .vazio { display: none; position: absolute; left: 16px; right: 16px; top: 226px; font-size: 24px; font-weight: 500; color: var(--dim); }
+  body:not(.com-midia) #tocando .ti, body:not(.com-midia) #tocando .ar, body:not(.com-midia) #tocando .barra,
+  body:not(.com-midia) #tocando .tempos { display: none; }
+  body:not(.com-midia) #tocando .vazio { display: block; }
+  #tocando.sem-tempo .barra, #tocando.sem-tempo .tempos { display: none; }
+
+  /* Cápsulas de bateria e combustível, como o widget de bateria do iOS. */
+  #energia { position: absolute; left: 16px; top: 440px; width: 400px; height: 64px; }
+  #energia .cap { position: absolute; top: 0; width: 180px; }
+  #energia .cap.bat { left: 0; }
+  #energia .cap.comb { right: 0; }
+  #energia .rt { font-size: 17px; font-weight: 500; color: var(--dim); height: 26px; white-space: nowrap; }
+  #energia .rt b { float: right; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+  #energia .trilho { position: relative; height: 10px; border-radius: 5px; background: rgba(255,255,255,0.14); overflow: hidden; margin-top: 6px; }
+  #energia .trilho i { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; transform-origin: 0 0; transform: scaleX(0); border-radius: 5px; }
+  #energia .bat .trilho i { background: var(--verde); }
+  #energia .comb .trilho i { background: rgba(245,245,247,0.85); }
+
+  #odo { position: absolute; left: 810px; top: 662px; width: 300px; text-align: center; font-size: 18px; font-weight: 500; color: var(--dim); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="projscrim"></div>
+<div id="projfumo"></div>
+<div id="app">
+  <!-- GERADO:arte:inicio -->
+  <svg id="arte" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
+<defs>
+  <radialGradient id="gFace" cx="0.5" cy="0.4" r="0.62">
+    <stop offset="0" stop-color="#18181b"/><stop offset="1" stop-color="#0c0c0e"/>
+  </radialGradient>
+  <linearGradient id="gFriso" x1="0.15" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/><stop offset="0.38" stop-color="#ffffff" stop-opacity="0.08"/>
+    <stop offset="0.72" stop-color="#ffffff" stop-opacity="0.05"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.22"/>
+  </linearGradient>
+</defs>
+<g id="mE"><circle cx="426" cy="440" r="230" fill="url(#gFace)"/>
+    <path d="M263.4 602.6 A230 230 0 1 1 588.6 602.6" fill="none" stroke="url(#gFriso)" stroke-width="1.5" stroke-linecap="round"/><line x1="256.3" y1="609.7" x2="243.6" y2="622.4" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="233.5" y1="598" x2="226.6" y2="603.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="219" y1="578.3" x2="211.5" y2="583.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="206.4" y1="557.4" x2="198.5" y2="561.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="204.3" y1="531.8" x2="187.6" y2="538.7" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="187.7" y1="512.3" x2="179.1" y2="514.9" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="181.8" y1="488.6" x2="173" y2="490.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="178.2" y1="464.4" x2="169.2" y2="465.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="186" y1="440" x2="168" y2="440" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="178.2" y1="415.6" x2="169.2" y2="414.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="181.8" y1="391.4" x2="173" y2="389.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="187.7" y1="367.7" x2="179.1" y2="365.1" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="204.3" y1="348.2" x2="187.6" y2="341.3" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="206.4" y1="322.6" x2="198.5" y2="318.4" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="219" y1="301.7" x2="211.5" y2="296.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="233.5" y1="282" x2="226.6" y2="276.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="256.3" y1="270.3" x2="243.6" y2="257.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="268" y1="247.5" x2="262.3" y2="240.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="287.7" y1="233" x2="282.7" y2="225.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="308.6" y1="220.4" x2="304.4" y2="212.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="334.2" y1="218.3" x2="327.3" y2="201.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="353.7" y1="201.7" x2="351.1" y2="193.1" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="377.4" y1="195.8" x2="375.7" y2="187" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="401.6" y1="192.2" x2="400.7" y2="183.2" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="426" y1="200" x2="426" y2="182" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="450.4" y1="192.2" x2="451.3" y2="183.2" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="474.6" y1="195.8" x2="476.3" y2="187" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="498.3" y1="201.7" x2="500.9" y2="193.1" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="517.8" y1="218.3" x2="524.7" y2="201.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="543.4" y1="220.4" x2="547.6" y2="212.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="564.3" y1="233" x2="569.3" y2="225.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="584" y1="247.5" x2="589.7" y2="240.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="595.7" y1="270.3" x2="608.4" y2="257.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="618.5" y1="282" x2="625.4" y2="276.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="633" y1="301.7" x2="640.5" y2="296.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="645.6" y1="322.6" x2="653.5" y2="318.4" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="647.7" y1="348.2" x2="664.4" y2="341.3" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="664.3" y1="367.7" x2="672.9" y2="365.1" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="670.2" y1="391.4" x2="679" y2="389.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="673.8" y1="415.6" x2="682.8" y2="414.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="666" y1="440" x2="684" y2="440" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="673.8" y1="464.4" x2="682.8" y2="465.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="670.2" y1="488.6" x2="679" y2="490.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="664.3" y1="512.3" x2="672.9" y2="514.9" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="647.7" y1="531.8" x2="664.4" y2="538.7" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="645.6" y1="557.4" x2="653.5" y2="561.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="633" y1="578.3" x2="640.5" y2="583.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="618.5" y1="598" x2="625.4" y2="603.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="595.7" y1="609.7" x2="608.4" y2="622.4" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><text class="rot" x="225.2" y="648.8">0</text><text class="rot" x="163.6" y="556.7">20</text><text class="rot" x="142" y="448">40</text><text class="rot" x="163.6" y="339.3">60</text><text class="rot" x="225.2" y="247.2">80</text><text class="rot" x="317.3" y="185.6">100</text><text class="rot" x="426" y="164">120</text><text class="rot" x="534.7" y="185.6">140</text><text class="rot" x="626.8" y="247.2">160</text><text class="rot" x="688.4" y="339.3">180</text><text class="rot" x="710" y="448">200</text><text class="rot" x="688.4" y="556.7">220</text><text class="rot" x="626.8" y="648.8">240</text></g>
+<g id="mD"><circle cx="1494" cy="440" r="230" fill="url(#gFace)"/>
+    <path d="M1331.4 602.6 A230 230 0 1 1 1656.6 602.6" fill="none" stroke="url(#gFriso)" stroke-width="1.5" stroke-linecap="round"/><line x1="1324.3" y1="609.7" x2="1311.6" y2="622.4" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1287" y1="578.3" x2="1279.5" y2="583.3" stroke="rgba(48,209,88,0.55)" stroke-width="2"/><line x1="1264" y1="535.3" x2="1255.6" y2="538.7" stroke="rgba(48,209,88,0.55)" stroke-width="2"/><line x1="1249.8" y1="488.6" x2="1241" y2="490.3" stroke="rgba(48,209,88,0.55)" stroke-width="2"/><line x1="1254" y1="440" x2="1236" y2="440" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1249.8" y1="391.4" x2="1241" y2="389.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1264" y1="344.7" x2="1255.6" y2="341.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1287" y1="301.7" x2="1279.5" y2="296.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1324.3" y1="270.3" x2="1311.6" y2="257.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1355.7" y1="233" x2="1350.7" y2="225.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1398.7" y1="210" x2="1395.3" y2="201.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1445.4" y1="195.8" x2="1443.7" y2="187" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1494" y1="200" x2="1494" y2="182" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1542.6" y1="195.8" x2="1544.3" y2="187" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1589.3" y1="210" x2="1592.7" y2="201.6" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1632.3" y1="233" x2="1637.3" y2="225.5" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1663.7" y1="270.3" x2="1676.4" y2="257.6" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1701" y1="301.7" x2="1708.5" y2="296.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1724" y1="344.7" x2="1732.4" y2="341.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1738.2" y1="391.4" x2="1747" y2="389.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1734" y1="440" x2="1752" y2="440" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><line x1="1738.2" y1="488.6" x2="1747" y2="490.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1724" y1="535.3" x2="1732.4" y2="538.7" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1701" y1="578.3" x2="1708.5" y2="583.3" stroke="rgba(255,255,255,0.30)" stroke-width="2"/><line x1="1663.7" y1="609.7" x2="1676.4" y2="622.4" stroke="rgba(255,255,255,0.88)" stroke-width="3"/><text class="rot" x="1293.2" y="648.8">−100</text><text class="rot" x="1210" y="448">0</text><text class="rot" x="1293.2" y="247.2">20</text><text class="rot" x="1494" y="164">40</text><text class="rot" x="1694.8" y="247.2">60</text><text class="rot" x="1778" y="448">80</text><text class="rot" x="1694.8" y="648.8">100</text></g>
+<g id="arcoVel" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="4"><path d="M261.2 604.8 A233 233 0 0 1 254.1 597.3" visibility="hidden"/><path d="M254.9 598.2 A233 233 0 0 1 248 590.4" visibility="hidden"/><path d="M248.8 591.3 A233 233 0 0 1 242.3 583.3" visibility="hidden"/><path d="M243 584.2 A233 233 0 0 1 236.8 576" visibility="hidden"/><path d="M237.5 577 A233 233 0 0 1 231.6 568.4" visibility="hidden"/><path d="M232.3 569.4 A233 233 0 0 1 226.7 560.7" visibility="hidden"/><path d="M227.3 561.7 A233 233 0 0 1 222.1 552.8" visibility="hidden"/><path d="M222.7 553.8 A233 233 0 0 1 217.8 544.7" visibility="hidden"/><path d="M218.4 545.8 A233 233 0 0 1 213.9 536.4" visibility="hidden"/><path d="M214.4 537.5 A233 233 0 0 1 210.3 528" visibility="hidden"/><path d="M210.7 529.2 A233 233 0 0 1 207 519.5" visibility="hidden"/><path d="M207.4 520.6 A233 233 0 0 1 204 510.8" visibility="hidden"/><path d="M204.4 512 A233 233 0 0 1 201.4 502.1" visibility="hidden"/><path d="M201.7 503.2 A233 233 0 0 1 199.2 493.2" visibility="hidden"/><path d="M199.4 494.4 A233 233 0 0 1 197.2 484.3" visibility="hidden"/><path d="M197.5 485.5 A233 233 0 0 1 195.7 475.2" visibility="hidden"/><path d="M195.9 476.4 A233 233 0 0 1 194.5 466.2" visibility="hidden"/><path d="M194.6 467.4 A233 233 0 0 1 193.6 457.1" visibility="hidden"/><path d="M193.7 458.3 A233 233 0 0 1 193.1 447.9" visibility="hidden"/><path d="M193.2 449.1 A233 233 0 0 1 193 438.8" visibility="hidden"/><path d="M193 440 A233 233 0 0 1 193.2 429.6" visibility="hidden"/><path d="M193.2 430.9 A233 233 0 0 1 193.8 420.5" visibility="hidden"/><path d="M193.7 421.7 A233 233 0 0 1 194.8 411.4" visibility="hidden"/><path d="M194.6 412.6 A233 233 0 0 1 196.1 402.3" visibility="hidden"/><path d="M195.9 403.6 A233 233 0 0 1 197.7 393.3" visibility="hidden"/><path d="M197.5 394.5 A233 233 0 0 1 199.7 384.4" visibility="hidden"/><path d="M199.4 385.6 A233 233 0 0 1 202.1 375.6" visibility="hidden"/><path d="M201.7 376.8 A233 233 0 0 1 204.8 366.8" visibility="hidden"/><path d="M204.4 368 A233 233 0 0 1 207.8 358.2" visibility="hidden"/><path d="M207.4 359.4 A233 233 0 0 1 211.2 349.7" visibility="hidden"/><path d="M210.7 350.8 A233 233 0 0 1 214.9 341.3" visibility="hidden"/><path d="M214.4 342.5 A233 233 0 0 1 219 333.1" visibility="hidden"/><path d="M218.4 334.2 A233 233 0 0 1 223.3 325.1" visibility="hidden"/><path d="M222.7 326.2 A233 233 0 0 1 228 317.2" visibility="hidden"/><path d="M227.3 318.3 A233 233 0 0 1 232.9 309.5" visibility="hidden"/><path d="M232.3 310.6 A233 233 0 0 1 238.2 302.1" visibility="hidden"/><path d="M237.5 303 A233 233 0 0 1 243.8 294.8" visibility="hidden"/><path d="M243 295.8 A233 233 0 0 1 249.6 287.8" visibility="hidden"/><path d="M248.8 288.7 A233 233 0 0 1 255.7 280.9" visibility="hidden"/><path d="M254.9 281.8 A233 233 0 0 1 262.1 274.4" visibility="hidden"/><path d="M261.2 275.2 A233 233 0 0 1 268.7 268.1" visibility="hidden"/><path d="M267.8 268.9 A233 233 0 0 1 275.6 262" visibility="hidden"/><path d="M274.7 262.8 A233 233 0 0 1 282.7 256.3" visibility="hidden"/><path d="M281.8 257 A233 233 0 0 1 290 250.8" visibility="hidden"/><path d="M289 251.5 A233 233 0 0 1 297.6 245.6" visibility="hidden"/><path d="M296.6 246.3 A233 233 0 0 1 305.3 240.7" visibility="hidden"/><path d="M304.3 241.3 A233 233 0 0 1 313.2 236.1" visibility="hidden"/><path d="M312.2 236.7 A233 233 0 0 1 321.3 231.8" visibility="hidden"/><path d="M320.2 232.4 A233 233 0 0 1 329.6 227.9" visibility="hidden"/><path d="M328.5 228.4 A233 233 0 0 1 338 224.3" visibility="hidden"/><path d="M336.8 224.7 A233 233 0 0 1 346.5 221" visibility="hidden"/><path d="M345.4 221.4 A233 233 0 0 1 355.2 218" visibility="hidden"/><path d="M354 218.4 A233 233 0 0 1 363.9 215.4" visibility="hidden"/><path d="M362.8 215.7 A233 233 0 0 1 372.8 213.2" visibility="hidden"/><path d="M371.6 213.4 A233 233 0 0 1 381.7 211.2" visibility="hidden"/><path d="M380.5 211.5 A233 233 0 0 1 390.8 209.7" visibility="hidden"/><path d="M389.6 209.9 A233 233 0 0 1 399.8 208.5" visibility="hidden"/><path d="M398.6 208.6 A233 233 0 0 1 408.9 207.6" visibility="hidden"/><path d="M407.7 207.7 A233 233 0 0 1 418.1 207.1" visibility="hidden"/><path d="M416.9 207.2 A233 233 0 0 1 427.2 207" visibility="hidden"/><path d="M426 207 A233 233 0 0 1 436.4 207.2" visibility="hidden"/><path d="M435.1 207.2 A233 233 0 0 1 445.5 207.8" visibility="hidden"/><path d="M444.3 207.7 A233 233 0 0 1 454.6 208.8" visibility="hidden"/><path d="M453.4 208.6 A233 233 0 0 1 463.7 210.1" visibility="hidden"/><path d="M462.4 209.9 A233 233 0 0 1 472.7 211.7" visibility="hidden"/><path d="M471.5 211.5 A233 233 0 0 1 481.6 213.7" visibility="hidden"/><path d="M480.4 213.4 A233 233 0 0 1 490.4 216.1" visibility="hidden"/><path d="M489.2 215.7 A233 233 0 0 1 499.2 218.8" visibility="hidden"/><path d="M498 218.4 A233 233 0 0 1 507.8 221.8" visibility="hidden"/><path d="M506.6 221.4 A233 233 0 0 1 516.3 225.2" visibility="hidden"/><path d="M515.2 224.7 A233 233 0 0 1 524.7 228.9" visibility="hidden"/><path d="M523.5 228.4 A233 233 0 0 1 532.9 233" visibility="hidden"/><path d="M531.8 232.4 A233 233 0 0 1 540.9 237.3" visibility="hidden"/><path d="M539.8 236.7 A233 233 0 0 1 548.8 242" visibility="hidden"/><path d="M547.7 241.3 A233 233 0 0 1 556.5 246.9" visibility="hidden"/><path d="M555.4 246.3 A233 233 0 0 1 563.9 252.2" visibility="hidden"/><path d="M563 251.5 A233 233 0 0 1 571.2 257.8" visibility="hidden"/><path d="M570.2 257 A233 233 0 0 1 578.2 263.6" visibility="hidden"/><path d="M577.3 262.8 A233 233 0 0 1 585.1 269.7" visibility="hidden"/><path d="M584.2 268.9 A233 233 0 0 1 591.6 276.1" visibility="hidden"/><path d="M590.8 275.2 A233 233 0 0 1 597.9 282.7" visibility="hidden"/><path d="M597.1 281.8 A233 233 0 0 1 604 289.6" visibility="hidden"/><path d="M603.2 288.7 A233 233 0 0 1 609.7 296.7" visibility="hidden"/><path d="M609 295.8 A233 233 0 0 1 615.2 304" visibility="hidden"/><path d="M614.5 303 A233 233 0 0 1 620.4 311.6" visibility="hidden"/><path d="M619.7 310.6 A233 233 0 0 1 625.3 319.3" visibility="hidden"/><path d="M624.7 318.3 A233 233 0 0 1 629.9 327.2" visibility="hidden"/><path d="M629.3 326.2 A233 233 0 0 1 634.2 335.3" visibility="hidden"/><path d="M633.6 334.2 A233 233 0 0 1 638.1 343.6" visibility="hidden"/><path d="M637.6 342.5 A233 233 0 0 1 641.7 352" visibility="hidden"/><path d="M641.3 350.8 A233 233 0 0 1 645 360.5" visibility="hidden"/><path d="M644.6 359.4 A233 233 0 0 1 648 369.2" visibility="hidden"/><path d="M647.6 368 A233 233 0 0 1 650.6 377.9" visibility="hidden"/><path d="M650.3 376.8 A233 233 0 0 1 652.8 386.8" visibility="hidden"/><path d="M652.6 385.6 A233 233 0 0 1 654.8 395.7" visibility="hidden"/><path d="M654.5 394.5 A233 233 0 0 1 656.3 404.8" visibility="hidden"/><path d="M656.1 403.6 A233 233 0 0 1 657.5 413.8" visibility="hidden"/><path d="M657.4 412.6 A233 233 0 0 1 658.4 422.9" visibility="hidden"/><path d="M658.3 421.7 A233 233 0 0 1 658.9 432.1" visibility="hidden"/><path d="M658.8 430.9 A233 233 0 0 1 659 441.2" visibility="hidden"/><path d="M659 440 A233 233 0 0 1 658.8 450.4" visibility="hidden"/><path d="M658.8 449.1 A233 233 0 0 1 658.2 459.5" visibility="hidden"/><path d="M658.3 458.3 A233 233 0 0 1 657.2 468.6" visibility="hidden"/><path d="M657.4 467.4 A233 233 0 0 1 655.9 477.7" visibility="hidden"/><path d="M656.1 476.4 A233 233 0 0 1 654.3 486.7" visibility="hidden"/><path d="M654.5 485.5 A233 233 0 0 1 652.3 495.6" visibility="hidden"/><path d="M652.6 494.4 A233 233 0 0 1 649.9 504.4" visibility="hidden"/><path d="M650.3 503.2 A233 233 0 0 1 647.2 513.2" visibility="hidden"/><path d="M647.6 512 A233 233 0 0 1 644.2 521.8" visibility="hidden"/><path d="M644.6 520.6 A233 233 0 0 1 640.8 530.3" visibility="hidden"/><path d="M641.3 529.2 A233 233 0 0 1 637.1 538.7" visibility="hidden"/><path d="M637.6 537.5 A233 233 0 0 1 633 546.9" visibility="hidden"/><path d="M633.6 545.8 A233 233 0 0 1 628.7 554.9" visibility="hidden"/><path d="M629.3 553.8 A233 233 0 0 1 624 562.8" visibility="hidden"/><path d="M624.7 561.7 A233 233 0 0 1 619.1 570.5" visibility="hidden"/><path d="M619.7 569.4 A233 233 0 0 1 613.8 577.9" visibility="hidden"/><path d="M614.5 577 A233 233 0 0 1 608.2 585.2" visibility="hidden"/><path d="M609 584.2 A233 233 0 0 1 602.4 592.2" visibility="hidden"/><path d="M603.2 591.3 A233 233 0 0 1 596.3 599.1" visibility="hidden"/><path d="M597.1 598.2 A233 233 0 0 1 590.8 604.8" visibility="hidden"/></g>
+<g id="arcoPot" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="4"><path d="M1261 440 A233 233 0 0 1 1261.2 429.6" visibility="hidden"/><path d="M1261.2 430.9 A233 233 0 0 1 1261.8 420.5" visibility="hidden"/><path d="M1261.7 421.7 A233 233 0 0 1 1262.8 411.4" visibility="hidden"/><path d="M1262.6 412.6 A233 233 0 0 1 1264.1 402.3" visibility="hidden"/><path d="M1263.9 403.6 A233 233 0 0 1 1265.7 393.3" visibility="hidden"/><path d="M1265.5 394.5 A233 233 0 0 1 1267.7 384.4" visibility="hidden"/><path d="M1267.4 385.6 A233 233 0 0 1 1270.1 375.6" visibility="hidden"/><path d="M1269.7 376.8 A233 233 0 0 1 1272.8 366.8" visibility="hidden"/><path d="M1272.4 368 A233 233 0 0 1 1275.8 358.2" visibility="hidden"/><path d="M1275.4 359.4 A233 233 0 0 1 1279.2 349.7" visibility="hidden"/><path d="M1278.7 350.8 A233 233 0 0 1 1282.9 341.3" visibility="hidden"/><path d="M1282.4 342.5 A233 233 0 0 1 1287 333.1" visibility="hidden"/><path d="M1286.4 334.2 A233 233 0 0 1 1291.3 325.1" visibility="hidden"/><path d="M1290.7 326.2 A233 233 0 0 1 1296 317.2" visibility="hidden"/><path d="M1295.3 318.3 A233 233 0 0 1 1300.9 309.5" visibility="hidden"/><path d="M1300.3 310.6 A233 233 0 0 1 1306.2 302.1" visibility="hidden"/><path d="M1305.5 303 A233 233 0 0 1 1311.8 294.8" visibility="hidden"/><path d="M1311 295.8 A233 233 0 0 1 1317.6 287.8" visibility="hidden"/><path d="M1316.8 288.7 A233 233 0 0 1 1323.7 280.9" visibility="hidden"/><path d="M1322.9 281.8 A233 233 0 0 1 1330.1 274.4" visibility="hidden"/><path d="M1329.2 275.2 A233 233 0 0 1 1336.7 268.1" visibility="hidden"/><path d="M1335.8 268.9 A233 233 0 0 1 1343.6 262" visibility="hidden"/><path d="M1342.7 262.8 A233 233 0 0 1 1350.7 256.3" visibility="hidden"/><path d="M1349.8 257 A233 233 0 0 1 1358 250.8" visibility="hidden"/><path d="M1357 251.5 A233 233 0 0 1 1365.6 245.6" visibility="hidden"/><path d="M1364.6 246.3 A233 233 0 0 1 1373.3 240.7" visibility="hidden"/><path d="M1372.3 241.3 A233 233 0 0 1 1381.2 236.1" visibility="hidden"/><path d="M1380.2 236.7 A233 233 0 0 1 1389.3 231.8" visibility="hidden"/><path d="M1388.2 232.4 A233 233 0 0 1 1397.6 227.9" visibility="hidden"/><path d="M1396.5 228.4 A233 233 0 0 1 1406 224.3" visibility="hidden"/><path d="M1404.8 224.7 A233 233 0 0 1 1414.5 221" visibility="hidden"/><path d="M1413.4 221.4 A233 233 0 0 1 1423.2 218" visibility="hidden"/><path d="M1422 218.4 A233 233 0 0 1 1431.9 215.4" visibility="hidden"/><path d="M1430.8 215.7 A233 233 0 0 1 1440.8 213.2" visibility="hidden"/><path d="M1439.6 213.4 A233 233 0 0 1 1449.7 211.2" visibility="hidden"/><path d="M1448.5 211.5 A233 233 0 0 1 1458.8 209.7" visibility="hidden"/><path d="M1457.6 209.9 A233 233 0 0 1 1467.8 208.5" visibility="hidden"/><path d="M1466.6 208.6 A233 233 0 0 1 1476.9 207.6" visibility="hidden"/><path d="M1475.7 207.7 A233 233 0 0 1 1486.1 207.1" visibility="hidden"/><path d="M1484.9 207.2 A233 233 0 0 1 1495.2 207" visibility="hidden"/><path d="M1494 207 A233 233 0 0 1 1504.4 207.2" visibility="hidden"/><path d="M1503.1 207.2 A233 233 0 0 1 1513.5 207.8" visibility="hidden"/><path d="M1512.3 207.7 A233 233 0 0 1 1522.6 208.8" visibility="hidden"/><path d="M1521.4 208.6 A233 233 0 0 1 1531.7 210.1" visibility="hidden"/><path d="M1530.4 209.9 A233 233 0 0 1 1540.7 211.7" visibility="hidden"/><path d="M1539.5 211.5 A233 233 0 0 1 1549.6 213.7" visibility="hidden"/><path d="M1548.4 213.4 A233 233 0 0 1 1558.4 216.1" visibility="hidden"/><path d="M1557.2 215.7 A233 233 0 0 1 1567.2 218.8" visibility="hidden"/><path d="M1566 218.4 A233 233 0 0 1 1575.8 221.8" visibility="hidden"/><path d="M1574.6 221.4 A233 233 0 0 1 1584.3 225.2" visibility="hidden"/><path d="M1583.2 224.7 A233 233 0 0 1 1592.7 228.9" visibility="hidden"/><path d="M1591.5 228.4 A233 233 0 0 1 1600.9 233" visibility="hidden"/><path d="M1599.8 232.4 A233 233 0 0 1 1608.9 237.3" visibility="hidden"/><path d="M1607.8 236.7 A233 233 0 0 1 1616.8 242" visibility="hidden"/><path d="M1615.7 241.3 A233 233 0 0 1 1624.5 246.9" visibility="hidden"/><path d="M1623.4 246.3 A233 233 0 0 1 1631.9 252.2" visibility="hidden"/><path d="M1631 251.5 A233 233 0 0 1 1639.2 257.8" visibility="hidden"/><path d="M1638.2 257 A233 233 0 0 1 1646.2 263.6" visibility="hidden"/><path d="M1645.3 262.8 A233 233 0 0 1 1653.1 269.7" visibility="hidden"/><path d="M1652.2 268.9 A233 233 0 0 1 1659.6 276.1" visibility="hidden"/><path d="M1658.8 275.2 A233 233 0 0 1 1665.9 282.7" visibility="hidden"/><path d="M1665.1 281.8 A233 233 0 0 1 1672 289.6" visibility="hidden"/><path d="M1671.2 288.7 A233 233 0 0 1 1677.7 296.7" visibility="hidden"/><path d="M1677 295.8 A233 233 0 0 1 1683.2 304" visibility="hidden"/><path d="M1682.5 303 A233 233 0 0 1 1688.4 311.6" visibility="hidden"/><path d="M1687.7 310.6 A233 233 0 0 1 1693.3 319.3" visibility="hidden"/><path d="M1692.7 318.3 A233 233 0 0 1 1697.9 327.2" visibility="hidden"/><path d="M1697.3 326.2 A233 233 0 0 1 1702.2 335.3" visibility="hidden"/><path d="M1701.6 334.2 A233 233 0 0 1 1706.1 343.6" visibility="hidden"/><path d="M1705.6 342.5 A233 233 0 0 1 1709.7 352" visibility="hidden"/><path d="M1709.3 350.8 A233 233 0 0 1 1713 360.5" visibility="hidden"/><path d="M1712.6 359.4 A233 233 0 0 1 1716 369.2" visibility="hidden"/><path d="M1715.6 368 A233 233 0 0 1 1718.6 377.9" visibility="hidden"/><path d="M1718.3 376.8 A233 233 0 0 1 1720.8 386.8" visibility="hidden"/><path d="M1720.6 385.6 A233 233 0 0 1 1722.8 395.7" visibility="hidden"/><path d="M1722.5 394.5 A233 233 0 0 1 1724.3 404.8" visibility="hidden"/><path d="M1724.1 403.6 A233 233 0 0 1 1725.5 413.8" visibility="hidden"/><path d="M1725.4 412.6 A233 233 0 0 1 1726.4 422.9" visibility="hidden"/><path d="M1726.3 421.7 A233 233 0 0 1 1726.9 432.1" visibility="hidden"/><path d="M1726.8 430.9 A233 233 0 0 1 1727 441.2" visibility="hidden"/><path d="M1727 440 A233 233 0 0 1 1726.8 450.4" visibility="hidden"/><path d="M1726.8 449.1 A233 233 0 0 1 1726.2 459.5" visibility="hidden"/><path d="M1726.3 458.3 A233 233 0 0 1 1725.2 468.6" visibility="hidden"/><path d="M1725.4 467.4 A233 233 0 0 1 1723.9 477.7" visibility="hidden"/><path d="M1724.1 476.4 A233 233 0 0 1 1722.3 486.7" visibility="hidden"/><path d="M1722.5 485.5 A233 233 0 0 1 1720.3 495.6" visibility="hidden"/><path d="M1720.6 494.4 A233 233 0 0 1 1717.9 504.4" visibility="hidden"/><path d="M1718.3 503.2 A233 233 0 0 1 1715.2 513.2" visibility="hidden"/><path d="M1715.6 512 A233 233 0 0 1 1712.2 521.8" visibility="hidden"/><path d="M1712.6 520.6 A233 233 0 0 1 1708.8 530.3" visibility="hidden"/><path d="M1709.3 529.2 A233 233 0 0 1 1705.1 538.7" visibility="hidden"/><path d="M1705.6 537.5 A233 233 0 0 1 1701 546.9" visibility="hidden"/><path d="M1701.6 545.8 A233 233 0 0 1 1696.7 554.9" visibility="hidden"/><path d="M1697.3 553.8 A233 233 0 0 1 1692 562.8" visibility="hidden"/><path d="M1692.7 561.7 A233 233 0 0 1 1687.1 570.5" visibility="hidden"/><path d="M1687.7 569.4 A233 233 0 0 1 1681.8 577.9" visibility="hidden"/><path d="M1682.5 577 A233 233 0 0 1 1676.2 585.2" visibility="hidden"/><path d="M1677 584.2 A233 233 0 0 1 1670.4 592.2" visibility="hidden"/><path d="M1671.2 591.3 A233 233 0 0 1 1664.3 599.1" visibility="hidden"/><path d="M1665.1 598.2 A233 233 0 0 1 1658.8 604.8" visibility="hidden"/></g>
+<g id="arcoRegen" fill="none" stroke="#30d158" stroke-width="4"><path d="M1261 440 A233 233 0 0 0 1261.2 450.4" visibility="hidden"/><path d="M1261.2 449.1 A233 233 0 0 0 1261.8 459.5" visibility="hidden"/><path d="M1261.7 458.3 A233 233 0 0 0 1262.8 468.6" visibility="hidden"/><path d="M1262.6 467.4 A233 233 0 0 0 1264.1 477.7" visibility="hidden"/><path d="M1263.9 476.4 A233 233 0 0 0 1265.7 486.7" visibility="hidden"/><path d="M1265.5 485.5 A233 233 0 0 0 1267.7 495.6" visibility="hidden"/><path d="M1267.4 494.4 A233 233 0 0 0 1270.1 504.4" visibility="hidden"/><path d="M1269.7 503.2 A233 233 0 0 0 1272.8 513.2" visibility="hidden"/><path d="M1272.4 512 A233 233 0 0 0 1275.8 521.8" visibility="hidden"/><path d="M1275.4 520.6 A233 233 0 0 0 1279.2 530.3" visibility="hidden"/><path d="M1278.7 529.2 A233 233 0 0 0 1282.9 538.7" visibility="hidden"/><path d="M1282.4 537.5 A233 233 0 0 0 1287 546.9" visibility="hidden"/><path d="M1286.4 545.8 A233 233 0 0 0 1291.3 554.9" visibility="hidden"/><path d="M1290.7 553.8 A233 233 0 0 0 1296 562.8" visibility="hidden"/><path d="M1295.3 561.7 A233 233 0 0 0 1300.9 570.5" visibility="hidden"/><path d="M1300.3 569.4 A233 233 0 0 0 1306.2 577.9" visibility="hidden"/><path d="M1305.5 577 A233 233 0 0 0 1311.8 585.2" visibility="hidden"/><path d="M1311 584.2 A233 233 0 0 0 1317.6 592.2" visibility="hidden"/><path d="M1316.8 591.3 A233 233 0 0 0 1323.7 599.1" visibility="hidden"/><path d="M1322.9 598.2 A233 233 0 0 0 1329.2 604.8" visibility="hidden"/></g>
+<g id="limite" visibility="hidden"><line x1="662" y1="440" x2="688" y2="440" stroke="#ff453a" stroke-width="5" stroke-linecap="round"/></g>
+<g id="pontE" transform="rotate(-225 426 440)">
+    <path d="M594 435.5 L689 438.2 Q691 440 689 441.8 L594 444.5 Q590.5 440 594 435.5 Z" fill="#ff9f0a" stroke="rgba(0,0,0,0.6)" stroke-width="1.5"/>
+  </g>
+<g id="pontD" transform="rotate(-180 1494 440)">
+    <path d="M1662 435.5 L1757 438.2 Q1759 440 1757 441.8 L1662 444.5 Q1658.5 440 1662 435.5 Z" fill="#ff9f0a" stroke="rgba(0,0,0,0.6)" stroke-width="1.5"/>
+  </g>
+</svg>
+  <!-- GERADO:arte:fim -->
+  <div id="vel" class="cubo"><div class="n" id="velValor">0</div><div class="u">km/h</div></div>
+  <div id="pot" class="cubo"><div class="n"><span id="potValor">0</span><small>%</small></div><div class="u" id="potRotulo">Potência</div></div>
+  <div id="marchas"><div class="capsula" id="capsula"></div><span id="gP">P</span><span id="gR">R</span><span id="gN">N</span><span id="gD">D</span></div>
+  <div id="autonomia"><span class="item ev"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13.2h6L10 22l8.5-11.2h-6L13 2Z" fill="currentColor"/></svg><span id="evKm">--</span><small>km</small></span><span class="item comb"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 21h12"/><path d="M4 10h10"/><path d="M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-3-3"/></svg><span id="combKm">---</span><small>km</small></span></div>
+  <div id="temp">--°</div>
+  <div id="hora">--:--</div>
+  <div id="modo">Normal</div>
+  <div id="centro">
+    <div id="tocando" class="sem-tempo">
+      <div class="capa" id="capa"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M19 3.2v11.6a3.2 3.2 0 1 1-2-2.96V7.4L9 9.1v7.7a3.2 3.2 0 1 1-2-2.96V5.6c0-.47.33-.88.79-.98l10-2.2A1 1 0 0 1 19 3.2Z"/></svg></div>
+      <div class="ti" id="titulo"></div>
+      <div class="ar" id="artista"></div>
+      <div class="vazio">Nada tocando</div>
+      <div class="barra"><i id="progresso"></i></div>
+      <div class="tempos"><span id="tPos">0:00</span><b id="tResta">-0:00</b></div>
+    </div>
+    <div id="energia">
+      <div class="cap bat"><div class="rt">Bateria <b id="batPct">--%</b></div><div class="trilho"><i id="batBarra"></i></div></div>
+      <div class="cap comb"><div class="rt">Combustível <b id="combPct">--%</b></div><div class="trilho"><i id="combBarra"></i></div></div>
+    </div>
+  </div>
+  <div id="odo"><span id="odoValor">---</span> km</div>
+</div>
+<div id="noite"></div>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  /* GERADO:tabelas:inicio */
+  const ESC_VEL = [[0,225],[240,-45]];
+  const ESC_POT = [[-100,225],[0,180],[100,-45]];
+  const GEO = { ce: 426, cd: 1494, cy: 440, ini: 225, fim: -45, fatia: 2.25 };
+  /* GERADO:tabelas:fim */
+
+  const els = {
+    app: $('app'), bg: $('bg'), vel: $('vel'), velValor: $('velValor'), pot: $('pot'), potValor: $('potValor'), potRotulo: $('potRotulo'),
+    pontE: $('pontE'), pontD: $('pontD'),
+    limite: $('limite'), hora: $('hora'), temp: $('temp'), capsula: $('capsula'),
+    g: { P: $('gP'), R: $('gR'), N: $('gN'), D: $('gD') },
+    tocando: $('tocando'), capa: $('capa'), titulo: $('titulo'), artista: $('artista'), progresso: $('progresso'),
+    tPos: $('tPos'), tResta: $('tResta'), evKm: $('evKm'), combKm: $('combKm'),
+    batPct: $('batPct'), batBarra: $('batBarra'), combPct: $('combPct'), combBarra: $('combBarra'),
+    modo: $('modo'), odoValor: $('odoValor'),
+  };
+
+  function numero(v) { const n = parseFloat(v); return Number.isFinite(n) ? n : null; }
+  function ligado(v) {
+    return v === true || ['1', 'true', 'on', 'yes', 'ligado'].indexOf(String(v == null ? '' : v).trim().toLowerCase()) >= 0;
+  }
+  function milhar(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  const escrito = {};
+  function mudou(chave, valor) { if (escrito[chave] === valor) return false; escrito[chave] = valor; return true; }
+
+  // ----- Suavização (a mesma do SENSUS/MBUX/ID8/TEA): filtro criticamente amortecido no ângulo. -----
+  function canal(ms, eps) { return { alvo: null, atual: null, taxa: 0, omega: 4.744 / Math.max(0.001, ms / 1000), eps: eps }; }
+  function mirar(c, v) { if (c.atual === null) { c.atual = v; c.alvo = v; c.taxa = 0; return; } c.alvo = v; }
+  function passo(c, dt) {
+    if (c.atual === null || (c.atual === c.alvo && c.taxa === 0)) return false;
+    if (dt > 0.4) { c.atual = c.alvo; c.taxa = 0; return false; }
+    const e0 = c.atual - c.alvo, b = c.taxa + c.omega * e0, k = Math.exp(-c.omega * dt);
+    c.atual = c.alvo + (e0 + b * dt) * k;
+    c.taxa = (c.taxa - c.omega * b * dt) * k;
+    if (Math.abs(c.alvo - c.atual) <= c.eps && Math.abs(c.taxa) <= c.omega * c.eps) { c.atual = c.alvo; c.taxa = 0; return false; }
+    return true;
+  }
+  const C = { vel: canal(300, 0.02), pot: canal(320, 0.02) };
+  function anguloDe(tab, v) {
+    if (v <= tab[0][0]) return tab[0][1];
+    for (let i = 1; i < tab.length; i++) {
+      if (v <= tab[i][0]) { const a = tab[i - 1], b = tab[i]; return a[1] + (b[1] - a[1]) * (v - a[0]) / (b[0] - a[0]); }
+    }
+    return tab[tab.length - 1][1];
+  }
+
+  const est = { velocidade: 0, potencia: 0, pronto: null, prontoPeloReady: false, limite: null, limiteOk: false,
+    tempExt: null, fahrenheit: false, modo: '0', modoEnergia: '0',
+    midia: { titulo: '', artista: '', capa: '', posicao: null, duracao: null } };
+
+  // Acende as primeiras k fatias da varredura: só as que mudaram de lado são tocadas.
+  function montarArco(id) { return { itens: Array.prototype.slice.call($(id).children), acesas: 0 }; }
+  const ARCOS = { vel: montarArco('arcoVel'), pot: montarArco('arcoPot'), regen: montarArco('arcoRegen') };
+  function acender(arco, fracao) {
+    const k = clamp(Math.round(fracao * arco.itens.length), 0, arco.itens.length);
+    if (k === arco.acesas) return;
+    const a = Math.min(k, arco.acesas), b = Math.max(k, arco.acesas);
+    for (let i = a; i < b; i++) arco.itens[i].setAttribute('visibility', i < k ? 'visible' : 'hidden');
+    arco.acesas = k;
+  }
+  function desenharVel(a) {
+    const tf = 'rotate(' + (-a).toFixed(2) + ' ' + GEO.ce + ' ' + GEO.cy + ')';
+    if (mudou('pE', tf)) els.pontE.setAttribute('transform', tf);
+    acender(ARCOS.vel, clamp((GEO.ini - a) / (GEO.ini - GEO.fim), 0, 1));
+  }
+  function desenharPot(a) {
+    const tf = 'rotate(' + (-a).toFixed(2) + ' ' + GEO.cd + ' ' + GEO.cy + ')';
+    if (mudou('pD', tf)) els.pontD.setAttribute('transform', tf);
+    // O zero fica a 180°: potência no sentido horário, recarga no anti-horário.
+    acender(ARCOS.pot, a <= 180 ? clamp((180 - a) / (180 - GEO.fim), 0, 1) : 0);
+    acender(ARCOS.regen, a > 180 ? clamp((a - 180) / (GEO.ini - 180), 0, 1) : 0);
+  }
+  let renderScheduled = false, renderFallbackTimer = 0, ultimoQuadro = 0;
+  function flushRender(ts) {
+    if (!renderScheduled) return;
+    renderScheduled = false;
+    clearTimeout(renderFallbackTimer);
+    const agora = typeof ts === 'number' && ts > 0 ? ts : performance.now();
+    const dt = ultimoQuadro ? (agora - ultimoQuadro) / 1000 : 0;
+    ultimoQuadro = agora;
+    const a = passo(C.vel, dt), b = passo(C.pot, dt);
+    if (C.vel.atual !== null) desenharVel(C.vel.atual);
+    if (C.pot.atual !== null) desenharPot(C.pot.atual);
+    if (a || b) scheduleRender(); else ultimoQuadro = 0;
+  }
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(flushRender);
+    renderFallbackTimer = setTimeout(flushRender, 120);
+  }
+
+  function mirarPotencia() {
+    const desligado = est.pronto === false;
+    if (mudou('desl', desligado)) els.pot.classList.toggle('desligado', desligado);
+    const p = desligado ? 0 : est.potencia;
+    const r = Math.round(p);
+    // Sem sinal na leitura: o rótulo diz se é potência ou recarga.
+    const txt = String(Math.abs(r));
+    if (mudou('potTxt', txt)) els.potValor.textContent = txt;
+    const recarga = r < 0;
+    if (mudou('recarga', recarga)) {
+      els.pot.classList.toggle('recarga', recarga);
+      els.potRotulo.textContent = recarga ? 'Recarga' : 'Potência';
+    }
+    mirar(C.pot, anguloDe(ESC_POT, p));
+    scheduleRender();
+  }
+  function atualizarLimite() {
+    const ok = est.limiteOk && est.limite !== null && est.limite > 0;
+    els.limite.setAttribute('visibility', ok ? 'visible' : 'hidden');
+    if (ok) els.limite.setAttribute('transform', 'rotate(' + (-anguloDe(ESC_VEL, clamp(est.limite, 0, 240))).toFixed(2) + ' ' + GEO.ce + ' ' + GEO.cy + ')');
+    const acima = ok && est.velocidade > est.limite + 3;
+    if (mudou('acima', acima)) els.vel.classList.toggle('acima', acima);
+  }
+  function desenharTemp() {
+    if (est.tempExt === null) return;
+    const v = Math.round(est.fahrenheit ? est.tempExt * 9 / 5 + 32 : est.tempExt);
+    els.temp.textContent = (v < 0 ? '−' : '') + Math.abs(v) + '°';
+  }
+  function capsula(pctEl, barraEl, pct) {
+    const p = clamp(pct, 0, 100);
+    pctEl.textContent = Math.round(p) + '%';
+    barraEl.style.transform = 'scaleX(' + (p / 100).toFixed(3) + ')';
+  }
+
+  const ORDEM = ['P', 'R', 'N', 'D'];
+  const GEAR_LABELS = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+  function desenharMarcha(letra) {
+    if (!mudou('marcha', letra)) return;
+    ORDEM.forEach((k) => els.g[k].classList.toggle('on', k === letra));
+    els.capsula.style.left = (ORDEM.indexOf(letra) * 44) + 'px';
+  }
+  const DRIVE_MODE_LABELS = { '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama', '11': 'AWD' };
+  const EV_MODE_LABELS = { '0': 'HEV', '1': 'EV+', '3': 'EV' };
+  function atualizarModos() {
+    const energia = EV_MODE_LABELS[est.modoEnergia] || 'HEV';
+    els.modo.textContent = (DRIVE_MODE_LABELS[est.modo] || 'Normal') + ' · ' + energia;
+  }
+  function mmss(seg) { const s = Math.max(0, Math.round(seg)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function atualizarMidia() {
+    const m = est.midia;
+    const tem = m.titulo.trim().length > 0;
+    document.body.classList.toggle('com-midia', tem);
+    els.capa.style.backgroundImage = tem && m.capa ? 'url("' + m.capa.replace(/"/g, '%22') + '")' : '';
+    els.tocando.classList.toggle('com-capa', tem && !!m.capa);
+    if (!tem) return;
+    els.titulo.textContent = m.titulo;
+    els.artista.textContent = m.artista;
+    atualizarTempo();
+  }
+  // Posição e duração: a barra só aparece quando as duas vierem. Acima de 10 h é milissegundo.
+  function atualizarTempo() {
+    const m = est.midia;
+    let dur = m.duracao, pos = m.posicao;
+    const tem = dur !== null && dur > 0 && pos !== null && pos >= 0;
+    els.tocando.classList.toggle('sem-tempo', !tem);
+    if (!tem) return;
+    if (dur > 36000) { dur /= 1000; pos /= 1000; }
+    pos = Math.min(pos, dur);
+    els.tPos.textContent = mmss(pos);
+    els.tResta.textContent = '-' + mmss(dur - pos);
+    els.progresso.style.transform = 'scaleX(' + (pos / dur).toFixed(4) + ')';
+  }
+
+  function handleTelemetry(key, raw) {
+    switch (key) {
+      case 'car.basic.vehicle_speed': {
+        const v = numero(raw);
+        est.velocidade = v === null ? 0 : Math.max(0, v);
+        const txt = String(Math.round(est.velocidade));
+        if (mudou('vel', txt)) els.velValor.textContent = txt;
+        mirar(C.vel, anguloDe(ESC_VEL, clamp(est.velocidade, 0, 240)));
+        atualizarLimite();
+        scheduleRender();
+        break;
+      }
+      case 'car.ev_info.energy_output_percentage':
+        est.potencia = clamp(numero(raw) || 0, -100, 100);
+        mirarPotencia();
+        break;
+      case 'car.basic.driving_ready_state': {
+        const s = String(raw).trim();
+        est.prontoPeloReady = s !== '';
+        est.pronto = s === '1' ? true : (s === '0' || s === '-1') ? false : null;
+        mirarPotencia();
+        break;
+      }
+      case 'car.basic.engine_state': {
+        if (est.prontoPeloReady) break;
+        const n = parseInt(raw, 10);
+        est.pronto = Number.isFinite(n) ? (n === 11 || n === 13) : null;
+        mirarPotencia();
+        break;
+      }
+      case 'car.ev_info.cur_battery_power_percentage': { const p = numero(raw); if (p !== null) capsula(els.batPct, els.batBarra, p); break; }
+      case 'car.basic.remain_fuel_percentage': { const p = numero(raw); if (p !== null) capsula(els.combPct, els.combBarra, p); break; }
+      case 'car.ev_info.electric_mode_remain_odometer': {
+        const km = numero(raw);
+        els.evKm.textContent = km === null || km < 0 ? '--' : Math.round(km);
+        break;
+      }
+      case 'car.ev_info.fuel_mode_remain_odometer': {
+        const km = numero(raw);
+        els.combKm.textContent = km === null || km < 0 ? '---' : Math.round(km);
+        break;
+      }
+      case 'car.basic.total_odometer': {
+        const km = numero(raw);
+        if (km !== null && km >= 0) els.odoValor.textContent = milhar(Math.round(km));
+        break;
+      }
+      case 'car.basic.gear_status': {
+        const s = String(raw == null ? '' : raw).trim().toUpperCase();
+        desenharMarcha(/^[PRND]$/.test(s) ? s : (GEAR_LABELS[String(parseInt(s, 10))] || 'N'));
+        break;
+      }
+      case 'car.drive_setting.drive_mode': {
+        const m = String(parseInt(raw, 10));
+        est.modo = DRIVE_MODE_LABELS[m] ? m : '0';
+        atualizarModos();
+        break;
+      }
+      case 'car.ev_setting.power_model_config': est.modoEnergia = String(raw).trim(); atualizarModos(); break;
+      case 'car.basic.outside_temp': { const t = numero(raw); if (t !== null) { est.tempExt = t; desenharTemp(); } break; }
+      case 'car.configure.default_temp_unit': est.fahrenheit = String(raw).trim() === '1'; desenharTemp(); break;
+      case 'car.basic.head_light_status': document.body.classList.toggle('mode-headlight', ligado(raw)); break;
+      case 'car.map.tsr.nav_speed_limit': est.limite = numero(raw); atualizarLimite(); break;
+      case 'car.map.tsr.nav_speed_limit_sign_status': est.limiteOk = ligado(raw); atualizarLimite(); break;
+      case 'app.media.title': est.midia.titulo = raw ? String(raw) : ''; atualizarMidia(); break;
+      case 'app.media.artist': est.midia.artista = raw ? String(raw) : ''; atualizarMidia(); break;
+      case 'app.media.album_art': est.midia.capa = raw ? String(raw).trim() : ''; atualizarMidia(); break;
+      case 'app.media.position': est.midia.posicao = numero(raw); atualizarTempo(); break;
+      case 'app.media.duration': est.midia.duracao = numero(raw); atualizarTempo(); break;
+      default: break;
+    }
+  }
+
+  const projectionState = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  function applyYieldToCar() {
+    const yielding = projectionState.carPlayInDash || projectionState.projectionMirrorInDash || projectionState.projectionPreparingD3;
+    els.app.classList.toggle('hidden', yielding);
+    document.body.classList.toggle('yield-to-car', yielding);
+  }
+
+  // ----- Vão da projeção da central: de um centro de mostrador ao outro (como no NTG 5.5). -----
+  const PROJ_BOX = { x: 426, y: 96, w: 1068, h: 544 };
+  const PROJ_PENA_X = 96;
+  const PROJ_PENA_Y = 56;
+  function sabeRecortarOFundo() {
+    try {
+      if (!window.CSS || typeof window.CSS.supports !== 'function') return false;
+      const g = 'linear-gradient(to right, #000 0px, transparent 10px)';
+      return window.CSS.supports('-webkit-mask-image', g) || window.CSS.supports('mask-image', g);
+    } catch (e) { return false; }
+  }
+  let recortaOFundo = null;
+  function declararVaoDaProjecao() {
+    if (recortaOFundo === null) {
+      recortaOFundo = sabeRecortarOFundo();
+      if (!recortaOFundo) console.warn('[CUPERTINO EXTENDED] sem suporte a mascara: a projecao vai por cima do tema');
+    }
+    if (!recortaOFundo) return;
+    try {
+      if (window.Android && typeof window.Android.setProjectionBox === 'function') {
+        window.Android.setProjectionBox(PROJ_BOX.x, PROJ_BOX.y, PROJ_BOX.w, PROJ_BOX.h);
+      }
+    } catch (e) { /* ponte antiga: sem declaração, o app volta a varrer o DOM */ }
+  }
+  function aplicarVaoDaProjecao(valor) {
+    const bg = els.bg;
+    const n = String(valor == null ? '' : valor).split(',');
+    const x = parseInt(n[0], 10), y = parseInt(n[1], 10), l = parseInt(n[2], 10), a = parseInt(n[3], 10);
+    if (n.length < 4 || !(l > 0) || !(a > 0)) {
+      bg.style.webkitMaskImage = '';
+      bg.style.maskImage = '';
+      document.body.classList.remove('projetando');
+      return;
+    }
+    const L = x, R = x + l, T = y, B = y + a;
+    const px = Math.min(PROJ_PENA_X, Math.floor(l / 3)), py = Math.min(PROJ_PENA_Y, Math.floor(a / 3));
+    const pe = L <= 0 ? 0 : px, pd = R >= 1920 ? 0 : px, pt = T <= 0 ? 0 : py, pb = B >= 720 ? 0 : py;
+    const gx = 'linear-gradient(to right, #000 ' + L + 'px, transparent ' + (L + pe) + 'px, transparent ' + (R - pd) + 'px, #000 ' + R + 'px)';
+    const gy = 'linear-gradient(to bottom, #000 ' + T + 'px, transparent ' + (T + pt) + 'px, transparent ' + (B - pb) + 'px, #000 ' + B + 'px)';
+    const veu = $('projscrim');
+    if (veu) {
+      veu.style.left = L + 'px'; veu.style.top = T + 'px'; veu.style.width = l + 'px'; veu.style.height = a + 'px';
+      const mv = 'linear-gradient(to right, transparent 0px, #000 ' + pe + 'px, #000 ' + (l - pd) + 'px, transparent ' + l + 'px)';
+      veu.style.webkitMaskImage = mv;
+      veu.style.maskImage = mv;
+    }
+    bg.style.webkitMaskImage = gx + ', ' + gy;
+    bg.style.maskImage = gx + ', ' + gy;
+    document.body.classList.add('projetando');
+  }
+
+  const SUBSCRIBE_KEYS = [
+    'car.basic.vehicle_speed',
+    'car.ev_info.energy_output_percentage',
+    'car.basic.driving_ready_state',
+    'car.basic.engine_state',
+    'car.ev_info.cur_battery_power_percentage',
+    'car.basic.remain_fuel_percentage',
+    'car.ev_info.electric_mode_remain_odometer',
+    'car.ev_info.fuel_mode_remain_odometer',
+    'car.basic.total_odometer',
+    'car.basic.gear_status',
+    'car.drive_setting.drive_mode',
+    'car.ev_setting.power_model_config',
+    'car.basic.outside_temp',
+    'car.configure.default_temp_unit',
+    'car.basic.head_light_status',
+    'car.map.tsr.nav_speed_limit',
+    'car.map.tsr.nav_speed_limit_sign_status',
+    'app.media.title',
+    'app.media.artist',
+    'app.media.album_art',
+    'app.media.position',
+    'app.media.duration',
+    'warningActive'
+  ];
+
+  function lerPreferencias() {
+    try {
+      if (!window.Android || typeof window.Android.getPreference !== 'function') return;
+      const modo = String(window.Android.getPreference('displayMode', 'Dia') || '');
+      document.body.classList.toggle('night-mode', modo === 'Noite');
+    } catch (e) { /* ignore */ }
+  }
+  function tickClock() {
+    const d = new Date();
+    els.hora.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+
+  // ----- Simulação local (sem window.Android): ?vel=, ?pot=, ?off=1, ?proj=1, ?midia=1, ?limite=, ?mode=Noite. -----
+  function installMockBridge() {
+    console.warn('[CUPERTINO EXTENDED] window.Android ausente — usando simulação local para preview.');
+    const q = new URLSearchParams(location.search);
+    window.Android = {
+      getAvailableKeys: () => JSON.stringify(SUBSCRIBE_KEYS),
+      subscribe: () => {}, unsubscribe: () => {}, getCarData: () => '0', updateCarData: () => {},
+      getPreference: (k, d) => (k === 'displayMode' ? (q.get('mode') || d) : d),
+      savePreference: () => {}, heartbeat: () => {}, triggerSystemAction: () => {},
+      setAppDefaultDimensions: () => {}, setProjectionBox: () => {},
+    };
+    const seed = {
+      'car.basic.vehicle_speed': q.get('vel') || '0',
+      'car.ev_info.energy_output_percentage': q.get('pot') || '0',
+      'car.basic.driving_ready_state': q.get('off') === '1' ? '0' : '1',
+      'car.ev_info.cur_battery_power_percentage': '62',
+      'car.basic.remain_fuel_percentage': '48',
+      'car.ev_info.electric_mode_remain_odometer': '39',
+      'car.ev_info.fuel_mode_remain_odometer': '219',
+      'car.basic.total_odometer': '11500',
+      'car.basic.gear_status': '2',
+      'car.drive_setting.drive_mode': '0',
+      'car.ev_setting.power_model_config': '0',
+      'car.basic.outside_temp': '24',
+      'car.basic.head_light_status': '0',
+    };
+    Object.keys(seed).forEach((k) => handleTelemetry(k, seed[k]));
+    if (q.get('limite')) {
+      handleTelemetry('car.map.tsr.nav_speed_limit', q.get('limite'));
+      handleTelemetry('car.map.tsr.nav_speed_limit_sign_status', '1');
+    }
+    if (q.get('midia') === '1') {
+      handleTelemetry('app.media.title', 'Faixa de demonstração');
+      handleTelemetry('app.media.artist', 'Artista');
+      handleTelemetry('app.media.duration', '232000');
+      handleTelemetry('app.media.position', '71000');
+    }
+    if (q.get('proj') === '1') window.control('projectionWindow', PROJ_BOX.x + ',' + PROJ_BOX.y + ',' + PROJ_BOX.w + ',' + PROJ_BOX.h);
+    if (q.get('anda') !== '1') return;
+    let t = 0, vel = 0;
+    setInterval(() => {
+      t += 0.1;
+      vel += clamp(110 + 100 * Math.sin(t / 6) - vel, -2.4, 1.8);
+      handleTelemetry('car.basic.vehicle_speed', vel.toFixed(1));
+      handleTelemetry('car.ev_info.energy_output_percentage', String(Math.round(70 * Math.sin(t / 2.2))));
+    }, 100);
+  }
+
+  function installHandlers() {
+    const prevOnDataChanged = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevOnDataChanged === 'function') { try { prevOnDataChanged(key, value); } catch (e) { console.error(e); } }
+      handleTelemetry(key, value);
+    };
+    window.onCardChanged = function () {};
+    const prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') { try { prevControl(key, value); } catch (e) { /* ignore */ } }
+      if (Object.prototype.hasOwnProperty.call(projectionState, key)) {
+        projectionState[key] = (value === true || value === 'true');
+        applyYieldToCar();
+        return;
+      }
+      if (key === 'projectionWindow') { aplicarVaoDaProjecao(value); return; }
+    };
+  }
+
+  function initBridge() {
+    installHandlers();
+    if (!window.Android || typeof window.Android.subscribe !== 'function') installMockBridge();
+    try {
+      if (window.Android && typeof window.Android.subscribe === 'function') window.Android.subscribe(JSON.stringify(SUBSCRIBE_KEYS));
+      if (window.Android && typeof window.Android.setAppDefaultDimensions === 'function') window.Android.setAppDefaultDimensions(744, 110, 432, 540);
+      declararVaoDaProjecao();
+      lerPreferencias();
+    } catch (e) { console.error('[CUPERTINO EXTENDED] bridge init failed:', e); }
+    setInterval(() => {
+      try { if (window.Android && typeof window.Android.heartbeat === 'function') window.Android.heartbeat(); } catch (e) { /* ignore */ }
+      lerPreferencias();
+      try { declararVaoDaProjecao(); } catch (e) { /* ignore */ }
+    }, 2000);
+  }
+
+  tickClock();
+  setInterval(tickClock, 5000);
+  mirar(C.vel, GEO.ini);
+  mirar(C.pot, 180);
+  desenharVel(GEO.ini);
+  desenharPot(180);
+  desenharMarcha('P');
+  atualizarModos();
+  initBridge();
+})();
+</script>
+</body>
+</html>

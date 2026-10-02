@@ -1,0 +1,8 @@
+{
+  // Tipos do vite.config.ts, que roda no Node e não entra no pacote.
+  "include": ["vite.config.ts"],
+  "compilerOptions": {
+    "composite": true, "module": "ESNext", "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true, "skipLibCheck": true
+  }
+}

@@ -1,0 +1,37 @@
+<theme>
+    <name>TEA 3.0</name>
+    <description>Painel inspirado no de fábrica: velocímetro redondo à esquerda (0 a 260 km/h) e medidor de potência à direita (carga em verde, potência em azul, de −100 a 100 %), com a estrada e o carro visto de trás no centro. Em cima, temperatura, marcha e hora; embaixo, as autonomias elétrica e a combustão com a carga e o combustível em barra, e o modo de condução, o modo de energia e o hodômetro. Os mostradores ficam no lugar dos de fábrica, com as luzes do carro em volta e o READY e a placa da via na face do velocímetro. A projeção da central ocupa o centro, de um mostrador ao outro. Modo dia e noite.</description>
+    <version>1.0.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Área de app no centro (o vão da projeção é maior e o tema o declara por
+         Android.setProjectionBox: 426, 118, 1068, 522). -->
+    <AppDefaultPosition>
+        <x>640</x>
+        <y>110</y>
+        <width>640</width>
+        <height>520</height>
+    </AppDefaultPosition>
+
+    <!-- Mesmas máscaras do Sweede Redondo, do Bávaro Chevron e do Stuttgart Sport: nada nativo aparece por trás quando o tema
+         cede a tela a uma projeção. -->
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" />
+    </nativeMasks>
+
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

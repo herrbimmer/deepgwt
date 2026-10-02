@@ -1,0 +1,31 @@
+<theme>
+    <name>Nipo Três Poços</name>
+    <description>O cupê Z japonês punha dois mostradores fundos na frente do motorista e três poços pequenos inclinados no alto do painel, virados para ele -- a assinatura do carro e o motivo de a cabine parecer um cockpit. Aqui os três trazem o que o carro publica: saída de energia, tensão do pacote e consumo, cada um com sua própria agulha.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

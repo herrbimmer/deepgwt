@@ -1,0 +1,53 @@
+# Catálogo de dependências do OPEN GW.
+# Versão que vale para mais de um artefato fica em [versions]; as demais vão na forma curta
+# "grupo:artefato:versão". Os plugins do Gradle ficam no fim.
+
+[versions]
+kotlin-lang = "2.2.10"
+lifecycle-androidx = "2.9.3"
+shizuku-rikka = "13.1.5"
+refine-rikka = "4.4.0"
+bom-compose = "2025.08.01"
+
+[libraries]
+# AndroidX e Material Components
+androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"
+androidx-core = "androidx.core:core-ktx:1.15.0"
+androidx-activity-compose = "androidx.activity:activity-compose:1.10.1"
+androidx-documentfile = "androidx.documentfile:documentfile:1.0.1"
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-androidx" }
+androidx-lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycle-androidx" }
+material-componentes = "com.google.android.material:material:1.12.0"
+
+# Jetpack Compose: as versões vêm do BOM
+compose-plataforma = { module = "androidx.compose:compose-bom", version.ref = "bom-compose" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-ui-ferramentas = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-manifesto-de-teste = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-icones-estendidos = "androidx.compose.material:material-icons-extended:1.7.8"
+
+# Acesso privilegiado ao sistema (Shizuku) e utilitários de reflexão
+shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku-rikka" }
+shizuku-provedor = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku-rikka" }
+refine-anotacao = { module = "dev.rikka.tools.refine:annotation", version.ref = "refine-rikka" }
+refine-processador = { module = "dev.rikka.tools.refine:annotation-processor", version.ref = "refine-rikka" }
+api-oculta-bypass = "org.lsposed.hiddenapibypass:hiddenapibypass:6.1"
+
+# Serialização, rede, imagens e QR
+json-kotlinx = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
+json-gson = "com.google.code.gson:gson:2.13.1"
+rede-commons = "commons-net:commons-net:3.12.0"
+imagem-coil = "io.coil-kt:coil-compose:2.7.0"
+qr-zxing = "com.google.zxing:core:3.5.3"
+
+# Testes
+teste-junit = "junit:junit:4.13.2"
+
+[plugins]
+agp-aplicativo = { id = "com.android.application", version = "9.2.1" }
+kotlin-no-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-lang" }
+kotlin-compilador-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-lang" }
+kotlin-serializacao = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-lang" }

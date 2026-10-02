@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calibração do painel</title>
+<style>
+  /* Grade de calibração do painel (Alpha 8.8). Não é um tema de uso: o Diagnóstico liga e desliga.
+     Serve para fotografar o painel e achar, em coordenadas do tema (1920×720), onde o carro
+     desenha luzes e avisos POR CIMA do tema.
+
+     - Linha fina a cada 20 px, linha forte a cada 100 px, número "x,y" em cada cruzamento de 100.
+     - Régua nas quatro bordas (traço a cada 10 px): mostra se a moldura do painel corta a tela.
+     - Quatro marcas de canto diferentes (vermelho, verde, azul, amarelo): orientam a correção de
+       perspectiva da foto. O ponto preto no meio de cada uma é a coordenada escrita ao lado.
+     - As três zonas já medidas (no desenho do tema Default, não no carro) em tracejado azul.
+     - Relógio da central, com décimos, em dois lugares: casa a foto com a linha do tempo gravada.
+
+     Tudo é SVG pintado com a página, sem camada composta (ver a nota da 8.6 nos temas). */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1920px;
+    height: 720px;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  #bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 720px;
+    background: #000;
+  }
+
+  body.transparente #bg { background: transparent; }
+
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .g20 { stroke: #1d2735; stroke-width: 1; fill: none; }
+  .g100 { stroke: #3e5270; stroke-width: 1; fill: none; }
+  .regua { stroke: #a9bcd8; stroke-width: 1; fill: none; }
+  body.transparente .g20 { stroke: rgba(255, 70, 255, 0.35); }
+  body.transparente .g100 { stroke: rgba(255, 70, 255, 0.8); }
+
+  text { font-family: 'Roboto Mono', 'DejaVu Sans Mono', monospace; }
+  body.transparente text {
+    paint-order: stroke;
+    stroke: #000;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+  }
+
+  .num { font-size: 11px; font-weight: 600; fill: #7089ad; }
+  .num-borda { font-size: 13px; font-weight: 700; fill: #c3d1e6; }
+  .relogio { font-size: 46px; font-weight: 700; fill: #dce6f4; text-anchor: middle; }
+  .titulo { font-size: 16px; font-weight: 600; fill: #93a8c7; text-anchor: middle; }
+  .avisos { font-size: 17px; font-weight: 600; fill: #ffd060; text-anchor: middle; }
+  .marca-rot { font-size: 12px; font-weight: 700; fill: #ffffff; }
+  .zona { fill: none; stroke: #00d4ff; stroke-width: 2; stroke-dasharray: 6 4; }
+  .zona-rot { font-size: 11px; font-weight: 600; fill: #00d4ff; }
+
+  #andando { display: none; }
+  body.andando #andando { display: inline; }
+  .andando-texto { font-size: 40px; font-weight: 700; fill: #ff5a5a; text-anchor: middle; }
+  .andando-vel { font-size: 120px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+</style>
+</head>
+
+<body>
+<div id="bg"></div>
+<svg id="grade" width="1920" height="720" viewBox="0 0 1920 720"></svg>
+
+<script>
+(function () {
+  'use strict';
+
+  var W = 1920;
+  var H = 720;
+
+  // Medidas do nosso mapa de luzes (docs/operations/mapa-de-luzes-do-painel.md).
+  // O "ESP" é desenhado lá como um carro entre duas faixas: pode ser o assistente de faixa.
+  var ZONAS = [
+    { rot: 'READY (Default)', x: 258, y: 335, w: 64, h: 20 },
+    { rot: 'placa (Default)', x: 247, y: 497, w: 46, h: 46 },
+    { rot: 'ESP? (Default)', x: 350, y: 466, w: 59, h: 48 },
+  ];
+
+  function linhas(passo, pular) {
+    var d = '';
+    for (var x = passo; x < W; x += passo) {
+      if (pular && x % pular === 0) continue;
+      d += 'M' + (x + 0.5) + ' 0V' + H;
+    }
+    for (var y = passo; y < H; y += passo) {
+      if (pular && y % pular === 0) continue;
+      d += 'M0 ' + (y + 0.5) + 'H' + W;
+    }
+    return d;
+  }
+
+  function regua() {
+    var d = '';
+    for (var x = 10; x < W; x += 10) {
+      var t = x % 100 === 0 ? 22 : (x % 50 === 0 ? 13 : 6);
+      d += 'M' + (x + 0.5) + ' 0v' + t + 'M' + (x + 0.5) + ' ' + H + 'v-' + t;
+    }
+    for (var y = 10; y < H; y += 10) {
+      var u = y % 100 === 0 ? 22 : (y % 50 === 0 ? 13 : 6);
+      d += 'M0 ' + (y + 0.5) + 'h' + u + 'M' + W + ' ' + (y + 0.5) + 'h-' + u;
+    }
+    return d;
+  }
+
+  function texto(cls, x, y, conteudo, ancora) {
+    return '<text class="' + cls + '" x="' + x + '" y="' + y + '"' +
+      (ancora ? ' text-anchor="' + ancora + '"' : '') + '>' + conteudo + '</text>';
+  }
+
+  function montar() {
+    var s = '';
+    s += '<g shape-rendering="crispEdges">';
+    s += '<path class="g20" d="' + linhas(20, 100) + '"/>';
+    s += '<path class="g100" d="' + linhas(100, 0) + '"/>';
+    s += '<path class="regua" d="' + regua() + '"/>';
+    // Borda de 2 px: se ela não aparecer inteira na foto, a moldura corta a tela.
+    s += '<rect x="0.5" y="0.5" width="' + (W - 1) + '" height="' + (H - 1) + '" fill="none" stroke="#ffffff" stroke-width="1"/>';
+    s += '</g>';
+
+    // Números até 1800 × 600: os de 1900 e 700 ficariam em cima da régua e das marcas de canto.
+    for (var x = 100; x <= 1800; x += 100) {
+      for (var y = 100; y <= 600; y += 100) s += texto('num', x + 4, y + 13, x + ',' + y);
+      s += texto('num-borda', x, 38, String(x), 'middle');
+      s += texto('num-borda', x, H - 28, String(x), 'middle');
+    }
+    for (var y2 = 100; y2 <= 600; y2 += 100) {
+      s += texto('num-borda', 28, y2 + 5, String(y2));
+      s += texto('num-borda', W - 28, y2 + 5, String(y2), 'end');
+    }
+
+    // Cantos: esquadros brancos rentes às bordas.
+    s += '<path fill="#ffffff" d="M0 0H90V8H8V90H0Z"/>';
+    s += '<path fill="#ffffff" d="M' + W + ' 0H' + (W - 90) + 'V8H' + (W - 8) + 'V90H' + W + 'Z"/>';
+    s += '<path fill="#ffffff" d="M0 ' + H + 'H90V' + (H - 8) + 'H8V' + (H - 90) + 'H0Z"/>';
+    s += '<path fill="#ffffff" d="M' + W + ' ' + H + 'H' + (W - 90) + 'V' + (H - 8) + 'H' + (W - 8) + 'V' + (H - 90) + 'H' + W + 'Z"/>';
+
+    // Marcas de canto: cor E forma diferentes, para a foto se orientar mesmo sem cor fiel.
+    s += '<circle cx="50" cy="50" r="15" fill="#ff3040"/>';
+    s += '<rect x="' + (W - 65) + '" y="35" width="30" height="30" fill="#20d060"/>';
+    s += '<path fill="#3070ff" d="M50 ' + (H - 67) + 'L67 ' + (H - 37) + 'H33Z"/>';
+    s += '<path fill="#ffd020" d="M' + (W - 50) + ' ' + (H - 68) + 'l18 18-18 18-18-18z"/>';
+    [[50, 50], [W - 50, 50], [50, H - 50], [W - 50, H - 50]].forEach(function (p) {
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="2.5" fill="#000000"/>';
+    });
+    s += texto('marca-rot', 72, 55, '50,50');
+    s += texto('marca-rot', W - 72, 55, (W - 50) + ',50', 'end');
+    s += texto('marca-rot', 72, H - 45, '50,' + (H - 50));
+    s += texto('marca-rot', W - 72, H - 45, (W - 50) + ',' + (H - 50), 'end');
+
+    // Centro.
+    s += '<path stroke="#ffffff" stroke-width="2" d="M' + (W / 2 - 40) + ' ' + H / 2 + 'H' + (W / 2 + 40) +
+      'M' + W / 2 + ' ' + (H / 2 - 40) + 'V' + (H / 2 + 40) + '"/>';
+    s += '<circle cx="' + W / 2 + '" cy="' + H / 2 + '" r="12" fill="none" stroke="#ffffff" stroke-width="2"/>';
+
+    ZONAS.forEach(function (z) {
+      s += '<rect class="zona" x="' + z.x + '" y="' + z.y + '" width="' + z.w + '" height="' + z.h + '"/>';
+      s += texto('zona-rot', z.x, z.y + z.h + 14, z.rot);
+    });
+
+    s += texto('titulo', W / 2, 196, 'OPEN GW · calibração do painel · linha a cada 20 px, número a cada 100 px');
+    s += '<text id="relogio1" class="relogio" x="' + W / 2 + '" y="252">--:--:--.-</text>';
+    s += '<text id="avisos" class="avisos" x="' + W / 2 + '" y="300">Avisos recebidos pelo OPEN GW: nenhum</text>';
+    s += '<text id="relogio2" class="relogio" x="' + W / 2 + '" y="600">--:--:--.-</text>';
+    s += '<text id="fundo" class="titulo" x="' + W / 2 + '" y="636">fundo preto</text>';
+
+    s += '<g id="andando">';
+    s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#000000" fill-opacity="0.9"/>';
+    s += '<text class="andando-texto" x="' + W / 2 + '" y="230">CARRO ANDANDO: a calibração só funciona parado</text>';
+    s += '<text id="vel" class="andando-vel" x="' + W / 2 + '" y="420">0</text>';
+    s += '<text class="andando-texto" x="' + W / 2 + '" y="490">km/h · o OPEN GW volta ao tema de antes</text>';
+    s += '</g>';
+
+    document.getElementById('grade').innerHTML = s;
+  }
+
+  montar();
+
+  var relogios = [document.getElementById('relogio1'), document.getElementById('relogio2')];
+  var elAvisos = document.getElementById('avisos');
+  var elFundo = document.getElementById('fundo');
+  var elVel = document.getElementById('vel');
+
+  function dois(n) { return (n < 10 ? '0' : '') + n; }
+
+  // Décimos: o vídeo do celular roda a 30 quadros/s, e a linha do tempo tem meio segundo.
+  var ultimoTexto = '';
+  function tique() {
+    var d = new Date();
+    var t = dois(d.getHours()) + ':' + dois(d.getMinutes()) + ':' + dois(d.getSeconds()) + '.' +
+      Math.floor(d.getMilliseconds() / 100);
+    if (t === ultimoTexto) return;
+    ultimoTexto = t;
+    for (var i = 0; i < relogios.length; i++) relogios[i].textContent = t;
+  }
+  tique();
+  setInterval(tique, 100);
+
+  // ----- Ponte com o app -----
+  var avisos = {};
+
+  function aceso(v) {
+    var s = String(v == null ? '' : v).trim().toLowerCase();
+    return s !== '' && s !== '0' && s !== 'false' && s !== 'null';
+  }
+
+  function desenharAvisos() {
+    var lista = Object.keys(avisos).filter(function (k) { return aceso(avisos[k]); }).sort();
+    elAvisos.textContent = lista.length === 0
+      ? 'Avisos recebidos pelo OPEN GW: nenhum'
+      : 'Avisos recebidos pelo OPEN GW: ' + lista.map(function (k) {
+        return k.replace(/^car\./, '') + '=' + avisos[k];
+      }).join('  ');
+  }
+
+  function velocidade(v) {
+    var n = parseFloat(String(v).replace(',', '.'));
+    var andando = isFinite(n) && n > 1;
+    document.body.classList.toggle('andando', andando);
+    if (andando) elVel.textContent = String(Math.round(n));
+  }
+
+  window.onDataChanged = function (k, v) {
+    if (k === 'car.basic.vehicle_speed') velocidade(v);
+  };
+  window.updateWarning = function (k, v) {
+    avisos[k] = v;
+    desenharAvisos();
+  };
+  // Passivo: não cede a tela, não troca de card e não trata o volante.
+  window.control = function () {};
+  window.onCardChanged = function () {};
+
+  function temPonte() {
+    return !!(window.Android && typeof window.Android.subscribe === 'function');
+  }
+
+  function lerPreferencias() {
+    var f = 'Preto';
+    try {
+      if (window.Android && typeof window.Android.getPreference === 'function') {
+        f = String(window.Android.getPreference('fundo', 'Preto') || 'Preto');
+      } else {
+        f = new URLSearchParams(location.search).get('fundo') || 'Preto';
+      }
+    } catch (e) { /* fica no preto */ }
+    var transparente = /transp/i.test(f);
+    document.body.classList.toggle('transparente', transparente);
+    elFundo.textContent = transparente ? 'fundo transparente (painel de fábrica por baixo)' : 'fundo preto';
+  }
+
+  lerPreferencias();
+  if (temPonte()) {
+    try { window.Android.subscribe(JSON.stringify(['car.basic.vehicle_speed'])); } catch (e) { /* ignore */ }
+  } else {
+    // Prévia no navegador: ?fundo=transparente, ?aviso=1, ?vel=40
+    var q = new URLSearchParams(location.search);
+    if (q.get('aviso') === '1') window.updateWarning('car.ipk_light.door_warning', '1');
+    if (q.get('vel')) velocidade(q.get('vel'));
+  }
+
+  setInterval(function () {
+    try {
+      if (window.Android && typeof window.Android.heartbeat === 'function') window.Android.heartbeat();
+    } catch (e) { /* ignore */ }
+    lerPreferencias();
+  }, 2000);
+})();
+</script>
+</body>
+
+</html>

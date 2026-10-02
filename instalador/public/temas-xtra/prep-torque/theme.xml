@@ -1,0 +1,31 @@
+<theme>
+    <name>Preparador Torque</name>
+    <description>A versão a diesel daquela oficina, que virou lenda por andar mais que os esportivos a gasolina: faixa de giro curta, de 800 a 4500, porque o assunto era torque e não rotação, com a faixa cheia marcada em verde entre 1600 e 3200 rpm. O arco externo de força usa a saída de energia publicada -- binário em newton-metro não existe neste barramento, e está escrito.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

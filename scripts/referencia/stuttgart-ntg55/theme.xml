@@ -1,0 +1,41 @@
+<theme>
+    <name>Stuttgart NTG 5.5</name>
+    <description>Velocímetro analógico clássico à esquerda, medidor de potência e regeneração à direita, bateria e combustível ampliados na base, mídia e marcha no topo, sobre papel de parede de rodovia. Mostradores transparentes e ponteiro azul com gradiente no eixo.</description>
+    <version>1.4.1</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <background>car-bg.jpg</background>
+    <AppDefaultPosition>
+        <x>640</x>
+        <y>95</y>
+        <width>640</width>
+        <height>560</height>
+    </AppDefaultPosition>
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" opacity="1" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" opacity="1" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" opacity="1" />
+    </nativeMasks>
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+        <configuration>
+            <id>speed_scale</id>
+            <label>Escala do Velocímetro</label>
+            <type>combo</type>
+            <options>Automática, Fixa, Seguir placa</options>
+            <default>Automática</default>
+            <stateVariable>speedScale</stateVariable>
+            <group>Painel</group>
+        </configuration>
+    </configurations>
+</theme>

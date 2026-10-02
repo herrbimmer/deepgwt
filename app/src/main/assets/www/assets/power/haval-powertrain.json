@@ -1,0 +1,675 @@
+{
+  "generatedBy": "scripts/build-powertrain-model.mjs",
+  "tier": "full",
+  "units": "meters",
+  "convention": {
+    "up": "+Y",
+    "forward": "-Z",
+    "right": "+X",
+    "origin": "ground plane, centred between axles"
+  },
+  "dims": {
+    "wheelbase": 2.738,
+    "trackFront": 1.606,
+    "trackRear": 1.612,
+    "tireRadius": 0.3665,
+    "tireWidth": 0.212,
+    "rimRadius": 0.268,
+    "axleF": -1.369,
+    "axleR": 1.369
+  },
+  "stats": {
+    "triangles": 114072,
+    "vertices": 223399,
+    "parts": 44
+  },
+  "pivots": {
+    "Subframe_Front": [
+      0,
+      0.3302,
+      -1.4225
+    ],
+    "Subframe_Rear": [
+      0,
+      0.3302,
+      1.4225
+    ],
+    "Steering_Rack": [
+      0,
+      0.4,
+      -1.2365
+    ],
+    "Susp_FL": [
+      -0.5952,
+      0.3774,
+      -1.3389
+    ],
+    "Wheel_FL": [
+      -0.803,
+      0.3665,
+      -1.369
+    ],
+    "Susp_FR": [
+      0.5952,
+      0.3774,
+      -1.3389
+    ],
+    "Wheel_FR": [
+      0.803,
+      0.3665,
+      -1.369
+    ],
+    "Susp_RL": [
+      -0.5805,
+      0.3774,
+      1.2533
+    ],
+    "Wheel_RL": [
+      -0.806,
+      0.3665,
+      1.369
+    ],
+    "Susp_RR": [
+      0.5805,
+      0.3774,
+      1.2533
+    ],
+    "Wheel_RR": [
+      0.806,
+      0.3665,
+      1.369
+    ],
+    "ICE": [
+      0.1395,
+      0.5851,
+      -1.493
+    ],
+    "Motor_P2": [
+      -0.28,
+      0.57,
+      -1.4025
+    ],
+    "Halfshaft_Front": [
+      0,
+      0.4063,
+      -1.369
+    ],
+    "Motor_P4": [
+      0.0415,
+      0.42,
+      1.42
+    ],
+    "Halfshaft_Rear": [
+      0,
+      0.3963,
+      1.369
+    ],
+    "PHEV34_Case": [
+      0,
+      0.2475,
+      -0.0297
+    ],
+    "PHEV34_Lid": [
+      0,
+      0.338,
+      -0.02
+    ],
+    "PHEV34_Module_1": [
+      0,
+      0.2889,
+      -0.595
+    ],
+    "PHEV34_Module_2": [
+      0,
+      0.2889,
+      -0.365
+    ],
+    "PHEV34_Module_3": [
+      0,
+      0.2889,
+      -0.135
+    ],
+    "PHEV34_Module_4": [
+      0,
+      0.2889,
+      0.095
+    ],
+    "PHEV34_Module_5": [
+      0,
+      0.2889,
+      0.325
+    ],
+    "PHEV34_Module_6": [
+      0,
+      0.2889,
+      0.555
+    ],
+    "PHEV34_HV_Junction": [
+      -0.0255,
+      0.373,
+      -0.76
+    ],
+    "PHEV34_HV_Cable_Front": [
+      -0.2016,
+      0.5328,
+      -1.0365
+    ],
+    "PHEV34_HV_Cable_Rear": [
+      0.0309,
+      0.4088,
+      1.0235
+    ],
+    "PHEV19_Case": [
+      0,
+      0.25,
+      -0.0296
+    ],
+    "PHEV19_Lid": [
+      0,
+      0.333,
+      0.06
+    ],
+    "PHEV19_Module_1": [
+      0,
+      0.29,
+      -0.324
+    ],
+    "PHEV19_Module_2": [
+      0,
+      0.29,
+      -0.132
+    ],
+    "PHEV19_Module_3": [
+      0,
+      0.29,
+      0.06
+    ],
+    "PHEV19_Module_4": [
+      0,
+      0.29,
+      0.252
+    ],
+    "PHEV19_Module_5": [
+      0,
+      0.29,
+      0.444
+    ],
+    "PHEV19_HV_Junction": [
+      -0.0255,
+      0.368,
+      -0.47
+    ],
+    "PHEV19_HV_Cable_Front": [
+      -0.2012,
+      0.53,
+      -0.8936
+    ],
+    "HEV_Case": [
+      0,
+      0.2775,
+      -0.0256
+    ],
+    "HEV_Lid": [
+      0,
+      0.363,
+      0.86
+    ],
+    "HEV_Module_1": [
+      0,
+      0.318,
+      0.7507
+    ],
+    "HEV_Module_2": [
+      0,
+      0.318,
+      0.86
+    ],
+    "HEV_Module_3": [
+      0,
+      0.318,
+      0.9693
+    ],
+    "HEV_HV_Junction": [
+      -0.0255,
+      0.398,
+      0.64
+    ],
+    "HEV_HV_Cable_Front": [
+      -0.2012,
+      0.5256,
+      -0.3396
+    ],
+    "Exhaust": [
+      0.3955,
+      0.332,
+      0.0078
+    ]
+  },
+  "nodes": {
+    "ice": "ICE",
+    "motorFront": "Motor_P2",
+    "motorRear": "Motor_P4",
+    "wheels": [
+      "Wheel_FL",
+      "Wheel_FR",
+      "Wheel_RL",
+      "Wheel_RR"
+    ],
+    "groups": [
+      "Chassis",
+      "Suspension",
+      "Wheels",
+      "Powerplant_Front",
+      "Powerplant_Rear",
+      "Battery_PHEV34",
+      "Battery_PHEV19",
+      "Battery_HEV"
+    ]
+  },
+  "batteries": {
+    "phev34": {
+      "label": "PHEV 34 kWh",
+      "kwh": 34,
+      "group": "Battery_PHEV34",
+      "awd": true,
+      "drive": "AWD (P2 + P4)",
+      "dims": {
+        "w": 1.26,
+        "h": 0.115,
+        "d": 1.52
+      },
+      "position": [
+        0,
+        0.32,
+        -0.02
+      ],
+      "nodes": {
+        "case": "PHEV34_Case",
+        "lid": "PHEV34_Lid",
+        "junction": "PHEV34_HV_Junction",
+        "hvFront": "PHEV34_HV_Cable_Front",
+        "hvRear": "PHEV34_HV_Cable_Rear"
+      },
+      "hidesGroups": [],
+      "modules": [
+        "PHEV34_Module_1",
+        "PHEV34_Module_2",
+        "PHEV34_Module_3",
+        "PHEV34_Module_4",
+        "PHEV34_Module_5",
+        "PHEV34_Module_6"
+      ],
+      "paths": {
+        "hvFront": [
+          [
+            -0.1,
+            0.387,
+            -0.76
+          ],
+          [
+            -0.2,
+            0.34,
+            -0.92
+          ],
+          [
+            -0.28,
+            0.43,
+            -1.14
+          ],
+          [
+            -0.3,
+            0.62,
+            -1.24
+          ],
+          [
+            -0.3,
+            0.73,
+            -1.31
+          ]
+        ],
+        "hvRear": [
+          [
+            0.08,
+            0.357,
+            0.7
+          ],
+          [
+            0.12,
+            0.32,
+            1
+          ],
+          [
+            0.02,
+            0.38,
+            1.22
+          ],
+          [
+            -0.06,
+            0.5,
+            1.34
+          ]
+        ]
+      }
+    },
+    "phev19": {
+      "label": "PHEV 19 kWh",
+      "kwh": 19,
+      "group": "Battery_PHEV19",
+      "awd": false,
+      "drive": "FWD (P2)",
+      "dims": {
+        "w": 1.16,
+        "h": 0.1,
+        "d": 1.1
+      },
+      "position": [
+        0,
+        0.315,
+        0.06
+      ],
+      "nodes": {
+        "case": "PHEV19_Case",
+        "lid": "PHEV19_Lid",
+        "junction": "PHEV19_HV_Junction",
+        "hvFront": "PHEV19_HV_Cable_Front",
+        "hvRear": null
+      },
+      "hidesGroups": [
+        "Powerplant_Rear"
+      ],
+      "modules": [
+        "PHEV19_Module_1",
+        "PHEV19_Module_2",
+        "PHEV19_Module_3",
+        "PHEV19_Module_4",
+        "PHEV19_Module_5"
+      ],
+      "paths": {
+        "hvFront": [
+          [
+            -0.1,
+            0.382,
+            -0.47000000000000003
+          ],
+          [
+            -0.2,
+            0.34,
+            -0.92
+          ],
+          [
+            -0.28,
+            0.43,
+            -1.14
+          ],
+          [
+            -0.3,
+            0.62,
+            -1.24
+          ],
+          [
+            -0.3,
+            0.73,
+            -1.31
+          ]
+        ],
+        "hvRear": null
+      }
+    },
+    "hev": {
+      "label": "HEV 2 kWh",
+      "kwh": 2,
+      "group": "Battery_HEV",
+      "awd": false,
+      "drive": "FWD (P2)",
+      "dims": {
+        "w": 0.78,
+        "h": 0.105,
+        "d": 0.4
+      },
+      "position": [
+        0,
+        0.345,
+        0.86
+      ],
+      "nodes": {
+        "case": "HEV_Case",
+        "lid": "HEV_Lid",
+        "junction": "HEV_HV_Junction",
+        "hvFront": "HEV_HV_Cable_Front",
+        "hvRear": null
+      },
+      "hidesGroups": [
+        "Powerplant_Rear"
+      ],
+      "modules": [
+        "HEV_Module_1",
+        "HEV_Module_2",
+        "HEV_Module_3"
+      ],
+      "paths": {
+        "hvFront": [
+          [
+            -0.1,
+            0.412,
+            0.6399999999999999
+          ],
+          [
+            -0.2,
+            0.34,
+            -0.92
+          ],
+          [
+            -0.28,
+            0.43,
+            -1.14
+          ],
+          [
+            -0.3,
+            0.62,
+            -1.24
+          ],
+          [
+            -0.3,
+            0.73,
+            -1.31
+          ]
+        ],
+        "hvRear": null
+      }
+    }
+  },
+  "defaultBattery": "phev34",
+  "materials": {
+    "frame": "#aeb5be",
+    "frameDark": "#727a85",
+    "ice": "#b8bfc8",
+    "iceTrim": "#8d949e",
+    "motor": "#bcc3cc",
+    "batteryCase": "#c3c9d1",
+    "batteryCell": "#7b838e",
+    "hv": "#ff7a2e",
+    "tyre": "#26292e",
+    "rim": "#c2c8d1",
+    "chrome": "#d8dee6",
+    "disc": "#a9b0b9"
+  },
+  "anchors": {
+    "ice": [
+      0.13,
+      0.56,
+      -1.44
+    ],
+    "motorFront": [
+      -0.3,
+      0.53,
+      -1.42
+    ],
+    "motorRear": [
+      -0.06,
+      0.42,
+      1.42
+    ],
+    "hubFL": [
+      -0.803,
+      0.3665,
+      -1.369
+    ],
+    "hubFR": [
+      0.803,
+      0.3665,
+      -1.369
+    ],
+    "hubRL": [
+      -0.806,
+      0.3665,
+      1.369
+    ],
+    "hubRR": [
+      0.806,
+      0.3665,
+      1.369
+    ]
+  },
+  "paths": {
+    "shaftFrontLeft": [
+      [
+        -0.2,
+        0.44,
+        -1.369
+      ],
+      [
+        -0.7030000000000001,
+        0.3665,
+        -1.369
+      ]
+    ],
+    "shaftFrontRight": [
+      [
+        0.1,
+        0.44,
+        -1.369
+      ],
+      [
+        0.7030000000000001,
+        0.3665,
+        -1.369
+      ]
+    ],
+    "shaftRearLeft": [
+      [
+        -0.24,
+        0.42,
+        1.369
+      ],
+      [
+        -0.7060000000000001,
+        0.3665,
+        1.369
+      ]
+    ],
+    "shaftRearRight": [
+      [
+        0.16,
+        0.42,
+        1.369
+      ],
+      [
+        0.7060000000000001,
+        0.3665,
+        1.369
+      ]
+    ],
+    "iceToMotor": [
+      [
+        0.13,
+        0.56,
+        -1.44
+      ],
+      [
+        -0.3,
+        0.53,
+        -1.42
+      ]
+    ]
+  },
+  "cameras": {
+    "hero": {
+      "position": [
+        -4.55,
+        1.72,
+        -4.95
+      ],
+      "target": [
+        0,
+        0.42,
+        -0.02
+      ],
+      "fov": 26
+    },
+    "reference": {
+      "position": [
+        5.85,
+        1.62,
+        -1.05
+      ],
+      "target": [
+        -0.1,
+        0.44,
+        -0.05
+      ],
+      "fov": 24
+    },
+    "widget": {
+      "position": [
+        -3.45,
+        2.55,
+        -4.55
+      ],
+      "target": [
+        -0.05,
+        0.4,
+        0.02
+      ],
+      "fov": 25
+    },
+    "topDown": {
+      "position": [
+        0.02,
+        8.4,
+        0.1
+      ],
+      "target": [
+        0,
+        0.3,
+        0
+      ],
+      "fov": 32
+    },
+    "powerplant": {
+      "position": [
+        -2.3,
+        1.15,
+        -2.75
+      ],
+      "target": [
+        -0.6,
+        0.36,
+        -1.36
+      ],
+      "fov": 34
+    },
+    "battery": {
+      "position": [
+        -1.35,
+        1.3,
+        -1.55
+      ],
+      "target": [
+        0,
+        0.26,
+        -0.02
+      ],
+      "fov": 40
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Paleta do app: sempre escuro, grafite com um único destaque ciano (sem roxo). -->
+<resources>
+    <!-- Fundos -->
+    <color name="preto">#FF000000</color>
+    <color name="grafite">#FF14171B</color>
+    <color name="grafite_alto">#FF1C1F24</color>
+    <!-- Destaque -->
+    <color name="destaque">#FF4FD6E8</color>
+    <color name="destaque_escuro">#FF2A8FA0</color>
+    <!-- Texto -->
+    <color name="branco">#FFFFFFFF</color>
+    <!-- Fundo do ícone do app (a frente é o mipmap `ic_launcher_foreground`). -->
+    <color name="icone_fundo">#FF2E7BC4</color>
+</resources>

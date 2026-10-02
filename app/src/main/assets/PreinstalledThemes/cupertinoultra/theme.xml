@@ -1,0 +1,51 @@
+<theme>
+    <name>Cupertino Ultra</name>
+    <description>Painel digital minimalista: velocímetro à esquerda e medidor de potência e regeneração à direita, mostrador verde com arco de progresso e ponteiro flutuante sobre moldura preta, potência em % com marcha + modo de condução no centro do medidor, autonomia a combustível dentro do velocímetro, card "agora tocando" (capa + título + artista) no centro, farolete + odômetro na base. Suporta modo dia e noturno.</description>
+    <version>1.9.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <AppDefaultPosition>
+        <x>640</x>
+        <y>95</y>
+        <width>640</width>
+        <height>560</height>
+    </AppDefaultPosition>
+
+    <!--
+      Mesmo layout do Stuttgart Clássico: cobre as duas metades laterais (velocímetro e
+      conta-giros nativos) para que só os mostradores desenhados pelo tema apareçam ali, e
+      a faixa central superior (relógio/temperatura nativos) já que o tema desenha sua
+      própria leitura de temperatura no topo.
+    -->
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" />
+    </nativeMasks>
+
+    <!-- Preferência do próprio tema (não é telemetria de carro): lida uma vez no
+         carregamento via Android.getPreference('displayMode','Dia') e reaplicada a
+         cada poll do heartbeat (2s) sem precisar recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+        <configuration>
+            <id>speed_scale</id>
+            <label>Escala do Velocímetro</label>
+            <type>combo</type>
+            <options>Automática, Fixa, Seguir placa</options>
+            <default>Automática</default>
+            <stateVariable>speedScale</stateVariable>
+            <group>Painel</group>
+        </configuration>
+    </configurations>
+</theme>

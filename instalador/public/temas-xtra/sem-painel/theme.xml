@@ -1,0 +1,31 @@
+<theme>
+    <name>Sem Painel</name>
+    <description>Não há painel. O sedã elétrico de pilar B em vidro tirou o mostrador da frente do motorista e deixou só uma coluna estreita na borda de uma tela única -- aqui a mesma tese é levada ao painel inteiro: uma coluna à esquerda com marcha, velocidade e autonomia, uma linha de prumo, e mil e quatrocentos pixels de nada. Ler pouco não é falta de informação, é o recurso.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

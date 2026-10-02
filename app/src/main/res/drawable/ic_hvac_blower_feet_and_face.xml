@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Direção do ar: rosto e pés ao mesmo tempo. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp" android:height="32dp" android:viewportWidth="32" android:viewportHeight="32">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M10.5,6.5a3.2,3.2 0 1,0 6.4,0a3.2,3.2 0 1,0 -6.4,0z"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="2.4" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,11 L10,21 L19,21 L19,29"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M29,6.5 L22,6.5 M24,4.5 L22,6.5 L24,8.5 M30,27 L24,27 M26,25 L24,27 L26,29"/>
+</vector>

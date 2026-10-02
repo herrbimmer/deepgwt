@@ -1,0 +1,31 @@
+<theme>
+    <name>HUD Minimal</name>
+    <description>Projeção limpa: velocidade em peso fino no centro, marcha acima, linha de horizonte e uma faixa discreta de combustível, autonomia e temperatura na base. A placa da via aparece quando a câmera confirma a leitura, o aviso de excesso só acende 3 km/h acima do limite (para não piscar sozinho) e as setas de ponto cego surgem apenas quando o carro avisa, pelo canal control().</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

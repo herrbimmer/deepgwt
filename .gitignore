@@ -1,0 +1,21 @@
+**/build/
+**/target/
+**/node_modules/
+**/dist/
+*.apk
+*.dmg
+*.app/
+.DS_Store
+.gradle/
+.kotlin/
+local.properties
+*.jks
+*.keystore
+keystore.properties
+*.env
+.env.*
+
+# Base de conhecimento do veículo (descobertas de engenharia reversa): segredo comercial, fora do
+# controle de versão. Os arquivos gerados a partir dela também ficam de fora.
+knowledge/
+instalador/src/data/generated/

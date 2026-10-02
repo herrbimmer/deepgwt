@@ -1,0 +1,51 @@
+<theme>
+    <name>Bávaro Chevron</name>
+    <description>Painel de dois chevrons de face texturizada e aro prateado, velocidade de 0 a 220 km/h à esquerda e potência à direita, com a zona de recarga em azul abaixo do zero. O enchimento sobe com o valor, claro no alto e no tom do painel embaixo. No centro, a música que está tocando (capa, faixa, artista e álbum) ou o modo de condução com consumo e hodômetro; a projeção da central aparece ali. Marca do limite da via na escala, placa no rodapé, bateria, hora, temperatura externa e autonomia. Tom do painel escolhível (ou seguindo o modo de condução) e modo dia/noite.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- O vão da projeção: o centro, entre as paredes dos dois chevrons (o tema declara a mesma
+         caixa por Android.setProjectionBox). -->
+    <AppDefaultPosition>
+        <x>690</x>
+        <y>84</y>
+        <width>540</width>
+        <height>516</height>
+    </AppDefaultPosition>
+
+    <!--
+      Mesmas máscaras do Stuttgart Sport: cobrem o velocímetro, o card de mídia e a faixa central de
+      cima do painel de fábrica, para nada nativo aparecer por trás quando o tema cede a tela a uma
+      projeção.
+    -->
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" />
+    </nativeMasks>
+
+    <!-- Preferências do próprio tema (não são telemetria): lidas no carregamento via
+         Android.getPreference e reaplicadas a cada batida (2 s), sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+        <configuration>
+            <id>panel_tone</id>
+            <label>Tom do Painel</label>
+            <type>combo</type>
+            <options>Cobre, Azul, Vermelho, Seguir modo</options>
+            <default>Cobre</default>
+            <stateVariable>panelTone</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

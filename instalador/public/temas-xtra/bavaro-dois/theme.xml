@@ -1,0 +1,31 @@
+<theme>
+    <name>Bávaro Dois</name>
+    <description>O cupê pequeno de Munique dos anos 60 só tinha dois mostradores, e os dois do mesmo tamanho: velocidade e relógio, 248 px cada, com um fio âmbar de retroiluminação na borda. A hierarquia vem da ausência -- não há terceiro mostrador competindo, e tudo o mais desceu para o rodapé.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

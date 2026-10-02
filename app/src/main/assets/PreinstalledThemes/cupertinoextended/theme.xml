@@ -1,0 +1,35 @@
+<theme>
+    <name>Cupertino Extended</name>
+    <description>Painel sóbrio, de mostradores finos e muito legíveis: fundo preto, faces em grafite com o friso de vidro líquido, escala fina com números por fora e o ponteiro curto em laranja, com uma varredura branca. Velocímetro com a marcha P R N D numa cápsula de vidro; potência como a de fábrica (recarga em verde à esquerda), com as autonomias elétrica e a combustível. Em cima, temperatura, hora e modo de condução; no centro, tocando agora, com capa, faixa, artista e barra de progresso, e as cápsulas de bateria e combustível; hodômetro no pé. Os mostradores ficam no lugar dos de fábrica, com as luzes do carro em volta. A projeção da central ocupa o centro. Modo dia e noite.</description>
+    <version>1.1.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Área de app: a coluna dos widgets (o vão da projeção é maior e o tema o declara por
+         Android.setProjectionBox: 426, 96, 1068, 544). -->
+    <AppDefaultPosition>
+        <x>744</x>
+        <y>110</y>
+        <width>432</width>
+        <height>540</height>
+    </AppDefaultPosition>
+
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" />
+    </nativeMasks>
+
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

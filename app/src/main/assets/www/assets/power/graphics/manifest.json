@@ -1,0 +1,460 @@
+{
+  "version": 1,
+  "viewBox": [
+    0,
+    0,
+    600,
+    1000
+  ],
+  "rasterSize": [
+    1200,
+    2000
+  ],
+  "front": "top",
+  "provenance": "Orthographic export of repository procedural model; schematic packaging, not OEM engineering drawings.",
+  "source": "assets/power/haval-powertrain.glb",
+  "sourceSha256": "c07c5dc17435f85edae346c7725a8f1741c8d98bf83db8fad851518216d94560",
+  "variants": {
+    "phev19": {
+      "key": "phev19",
+      "sourcePack": "phev19",
+      "awd": false,
+      "battery": {
+        "x": 160.8,
+        "y": 382.4,
+        "width": 278.4,
+        "height": 264,
+        "moduleCount": 5
+      },
+      "anchors": {
+        "frontMotor": [
+          232.8,
+          163.4
+        ],
+        "engine": [
+          333.48,
+          141.68
+        ],
+        "wheelFL": [
+          107.28,
+          171.44
+        ],
+        "wheelFR": [
+          492.72,
+          171.44
+        ],
+        "wheelRL": [
+          106.56,
+          828.56
+        ],
+        "wheelRR": [
+          493.44,
+          828.56
+        ],
+        "batteryFront": [
+          300,
+          382.4
+        ],
+        "batteryRear": [
+          300,
+          646.4
+        ]
+      },
+      "highlights": {
+        "engine": {
+          "x": 239.04,
+          "y": 51.68,
+          "width": 188.9,
+          "height": 180
+        },
+        "frontMotor": {
+          "x": 177.6,
+          "y": 107.6,
+          "width": 110.4,
+          "height": 111.6
+        }
+      },
+      "chassis": "phev19-chassis.png",
+      "routes": {
+        "front": {
+          "from": "batteryFront",
+          "to": "frontMotor",
+          "points": [
+            [
+              300,
+              382.4
+            ],
+            [
+              300,
+              272.9
+            ],
+            [
+              232.8,
+              272.9
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        },
+        "frontLeft": {
+          "from": "frontMotor",
+          "to": "wheelFL",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              107.28,
+              171.44
+            ]
+          ]
+        },
+        "frontRight": {
+          "from": "frontMotor",
+          "to": "wheelFR",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              492.72,
+              171.44
+            ]
+          ]
+        },
+        "engine": {
+          "from": "engine",
+          "to": "frontMotor",
+          "points": [
+            [
+              333.48,
+              141.68
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        }
+      }
+    },
+    "phev34": {
+      "key": "phev34",
+      "sourcePack": "phev34",
+      "awd": true,
+      "battery": {
+        "x": 148.8,
+        "y": 312.8,
+        "width": 302.4,
+        "height": 364.8,
+        "moduleCount": 6
+      },
+      "anchors": {
+        "frontMotor": [
+          232.8,
+          163.4
+        ],
+        "engine": [
+          333.48,
+          141.68
+        ],
+        "wheelFL": [
+          107.28,
+          171.44
+        ],
+        "wheelFR": [
+          492.72,
+          171.44
+        ],
+        "wheelRL": [
+          106.56,
+          828.56
+        ],
+        "wheelRR": [
+          493.44,
+          828.56
+        ],
+        "batteryFront": [
+          300,
+          312.8
+        ],
+        "batteryRear": [
+          300,
+          677.6
+        ],
+        "rearMotor": [
+          309.96,
+          840.8
+        ]
+      },
+      "highlights": {
+        "engine": {
+          "x": 239.04,
+          "y": 51.68,
+          "width": 188.9,
+          "height": 180
+        },
+        "frontMotor": {
+          "x": 177.6,
+          "y": 107.6,
+          "width": 110.4,
+          "height": 111.6
+        },
+        "rearMotor": {
+          "x": 234,
+          "y": 797.6,
+          "width": 151.92,
+          "height": 86.4
+        }
+      },
+      "chassis": "phev34-chassis.png",
+      "routes": {
+        "front": {
+          "from": "batteryFront",
+          "to": "frontMotor",
+          "points": [
+            [
+              300,
+              312.8
+            ],
+            [
+              300,
+              238.10000000000002
+            ],
+            [
+              232.8,
+              238.10000000000002
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        },
+        "frontLeft": {
+          "from": "frontMotor",
+          "to": "wheelFL",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              107.28,
+              171.44
+            ]
+          ]
+        },
+        "frontRight": {
+          "from": "frontMotor",
+          "to": "wheelFR",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              492.72,
+              171.44
+            ]
+          ]
+        },
+        "engine": {
+          "from": "engine",
+          "to": "frontMotor",
+          "points": [
+            [
+              333.48,
+              141.68
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        },
+        "rear": {
+          "from": "batteryRear",
+          "to": "rearMotor",
+          "points": [
+            [
+              300,
+              677.6
+            ],
+            [
+              300,
+              759.2
+            ],
+            [
+              309.96,
+              759.2
+            ],
+            [
+              309.96,
+              840.8
+            ]
+          ]
+        },
+        "rearLeft": {
+          "from": "rearMotor",
+          "to": "wheelRL",
+          "points": [
+            [
+              309.96,
+              840.8
+            ],
+            [
+              106.56,
+              828.56
+            ]
+          ]
+        },
+        "rearRight": {
+          "from": "rearMotor",
+          "to": "wheelRR",
+          "points": [
+            [
+              309.96,
+              840.8
+            ],
+            [
+              493.44,
+              828.56
+            ]
+          ]
+        }
+      }
+    },
+    "hev2": {
+      "key": "hev2",
+      "sourcePack": "hev",
+      "awd": false,
+      "battery": {
+        "x": 206.4,
+        "y": 658.4,
+        "width": 187.2,
+        "height": 96,
+        "moduleCount": 3
+      },
+      "anchors": {
+        "frontMotor": [
+          232.8,
+          163.4
+        ],
+        "engine": [
+          333.48,
+          141.68
+        ],
+        "wheelFL": [
+          107.28,
+          171.44
+        ],
+        "wheelFR": [
+          492.72,
+          171.44
+        ],
+        "wheelRL": [
+          106.56,
+          828.56
+        ],
+        "wheelRR": [
+          493.44,
+          828.56
+        ],
+        "batteryFront": [
+          300,
+          658.4
+        ],
+        "batteryRear": [
+          300,
+          754.4
+        ]
+      },
+      "highlights": {
+        "engine": {
+          "x": 239.04,
+          "y": 51.68,
+          "width": 188.9,
+          "height": 180
+        },
+        "frontMotor": {
+          "x": 177.6,
+          "y": 107.6,
+          "width": 110.4,
+          "height": 111.6
+        }
+      },
+      "chassis": "hev2-chassis.png",
+      "routes": {
+        "front": {
+          "from": "batteryFront",
+          "to": "frontMotor",
+          "points": [
+            [
+              300,
+              658.4
+            ],
+            [
+              300,
+              410.9
+            ],
+            [
+              232.8,
+              410.9
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        },
+        "frontLeft": {
+          "from": "frontMotor",
+          "to": "wheelFL",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              107.28,
+              171.44
+            ]
+          ]
+        },
+        "frontRight": {
+          "from": "frontMotor",
+          "to": "wheelFR",
+          "points": [
+            [
+              232.8,
+              163.4
+            ],
+            [
+              492.72,
+              171.44
+            ]
+          ]
+        },
+        "engine": {
+          "from": "engine",
+          "to": "frontMotor",
+          "points": [
+            [
+              333.48,
+              141.68
+            ],
+            [
+              232.8,
+              163.4
+            ]
+          ]
+        }
+      }
+    }
+  }
+}

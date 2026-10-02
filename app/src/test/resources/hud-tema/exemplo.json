@@ -1,0 +1,22 @@
+{
+  "formato": "opengw-hud-tema",
+  "versao": 1,
+  "nome": "  Aviação de teste  ",
+  "estilo": { "corRotulo": "#8fc29a", "fonte": "condensada", "peso": 450, "cabecalho": false, "pontos": true },
+  "velocidade": { "tamanho": 95, "cor": "#7ED957", "unidade": false },
+  "placa": { "mostrar": true, "tamanho": "26", "lado": "esquerda" },
+  "alertas": true,
+  "campoDeUmaVersaoFutura": 42,
+  "paginas": [
+    { "pagina": "VELOCIDADE", "ativa": true, "cor": "#123456", "escala": 120 },
+    {
+      "pagina": "POWERTRAIN", "ativa": true, "cor": "#7ED957", "escala": 110, "titulo": "Motor",
+      "linhaA": ["POTENCIA", "ROTACAO", "TORQUE"],
+      "linhaB": ["TORQUE", "INEXISTENTE", "MARCHA", "TRACAO", "HORA"]
+    },
+    { "pagina": "CONSUMO", "ativa": true, "titulo": "Consumo", "linhaA": ["CONSUMO"], "linhaB": ["AUTONOMIA", "TANQUE", "BATERIA"] },
+    { "pagina": "PAGINA_DO_FUTURO", "ativa": true },
+    { "pagina": "MIDIA", "ativa": false, "escala": 100 },
+    { "pagina": "POWERTRAIN", "ativa": false }
+  ]
+}

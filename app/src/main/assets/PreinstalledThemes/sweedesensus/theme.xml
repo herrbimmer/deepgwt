@@ -1,0 +1,51 @@
+<theme>
+    <name>Sweede Redondo</name>
+    <description>Painel de dois mostradores redondos de aro metálico. À esquerda a velocidade, de 0 a 260 km/h; à direita a potência híbrida, com OFF, READY, zona de carga e os marcadores de combustível e bateria embaixo. O ponteiro leva uma luz junto: o enchimento atrás dele e a face iluminada à frente. O mostrador esquerdo fica no lugar do de fábrica: o READY e a placa da via do carro aparecem na face dele, entre os números. No centro, a música que está tocando (capa, faixa, artista e álbum) ou o modo de condução; a projeção da central aparece ali. Marcha no cubo da direita com o modo de energia, marca do limite da via na escala, hodômetro e trecho, autonomias elétrica e a combustão, consumo, temperatura externa e hora. Tom do painel escolhível (ou seguindo o modo de condução) e modo dia/noite.</description>
+    <version>1.4.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- O vão da projeção: o centro, entre os aros dos dois mostradores (o tema declara a mesma
+         caixa por Android.setProjectionBox). -->
+    <AppDefaultPosition>
+        <x>772</x>
+        <y>92</y>
+        <width>376</width>
+        <height>600</height>
+    </AppDefaultPosition>
+
+    <!--
+      Mesmas máscaras do Bávaro Chevron e do Stuttgart Sport: cobrem o velocímetro, o card de mídia e a
+      faixa central de cima do painel de fábrica, para nada nativo aparecer por trás quando o tema
+      cede a tela a uma projeção.
+    -->
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="90" />
+    </nativeMasks>
+
+    <!-- Preferências do próprio tema (não são telemetria): lidas no carregamento via
+         Android.getPreference e reaplicadas a cada batida (2 s), sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+        <configuration>
+            <id>panel_tone</id>
+            <label>Tom do Painel</label>
+            <type>combo</type>
+            <options>Ardósia, Azul, Cobre, Vermelho, Seguir modo</options>
+            <default>Ardósia</default>
+            <stateVariable>panelTone</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

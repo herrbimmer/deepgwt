@@ -1,0 +1,45 @@
+{
+  "name": "opengw-instalador",
+  "version": "9.7.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "tauri": "tauri",
+    "test": "npm run test:vin && npm run test:state && npm run test:pro && npm run test:expert && npm run test:theme && npm run test:editor && npm run test:hud && npm run test:nav && npm run test:ajustes && npm run test:xtra && npm run test:licenca && npm run test:rede",
+    "test:vin": "node scripts/test-vin.mjs",
+    "test:state": "node --import ./scripts/ts-resolve-register.mjs scripts/test-etapa3.mjs",
+    "test:pro": "node --import ./scripts/ts-resolve-register.mjs scripts/test-etapa4.mjs",
+    "test:expert": "node --import ./scripts/ts-resolve-register.mjs scripts/test-etapa5.mjs",
+    "test:theme": "node --import ./scripts/ts-resolve-register.mjs scripts/test-theme-engine.mjs",
+    "test:editor": "node --import ./scripts/ts-resolve-register.mjs scripts/test-theme-editor.mjs",
+    "test:hud": "node --import ./scripts/ts-resolve-register.mjs scripts/test-hud-theme.mjs",
+    "test:nav": "node --import ./scripts/ts-resolve-register.mjs scripts/test-navegacao.mjs",
+    "test:ajustes": "node --import ./scripts/ts-resolve-register.mjs scripts/test-ajustes.mjs",
+    "test:xtra": "node --import ./scripts/ts-resolve-register.mjs scripts/test-temas-xtra.mjs",
+    "test:rede": "node --import ./scripts/ts-resolve-register.mjs scripts/test-rede-e-resultado.mjs",
+    "test:licenca": "node --import ./scripts/ts-resolve-register.mjs scripts/test-licenca.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.8.0",
+    "@tauri-apps/plugin-dialog": "2.4.2",
+    "@tauri-apps/plugin-log": "~2.6.0",
+    "@tauri-apps/plugin-opener": "^2.4.0",
+    "lucide-react": "^0.540.0",
+    "motion": "^13.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "~7.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.12",
+    "@tauri-apps/cli": "^2.8.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  }
+}

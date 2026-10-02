@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPEN GW · Licença</title>
+<!--
+  A página que o celular abre pelo QR de Informações → Licença → Pelo celular (Alpha 8.1; código
+  curto e mensagem inteira na 8.2 — o carro acha o código no meio do texto).
+  Servida pelo próprio carro (GwLink, porta 8766) na rede Wi-Fi dele; fala só com a mesma origem:
+  GET /licenca, POST /licenca/ativar e (8.4) POST /licenca/avaliacao, o teste grátis do Max.
+  Sem nada de fora — o celular pode estar sem internet.
+-->
+<style>
+  :root {
+    --fundo: #0c0c0e; --cartao: #17171b; --linha: #2a2a31; --texto: #f2f2f5; --texto2: #a8a8b3;
+    --acento: #e0b04a; --sobreAcento: #141414; --erro: #ff7a6b; --certo: #6fd49a;
+  }
+  @media (prefers-color-scheme: light) {
+    :root { --fundo: #f4f4f6; --cartao: #ffffff; --linha: #dcdce2; --texto: #141418; --texto2: #5b5b66; --acento: #b07d12; --sobreAcento: #ffffff; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 16px/1.45 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 22px; letter-spacing: .5px; margin: 4px 0 16px; }
+  h1 span { color: var(--texto2); font-weight: 400; }
+  .cartao { background: var(--cartao); border: 1px solid var(--linha); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+  .nivel { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .selo { background: var(--acento); color: var(--sobreAcento); font-weight: 700; letter-spacing: 1.5px; border-radius: 999px; padding: 4px 14px; font-size: 14px; }
+  .suave { color: var(--texto2); font-size: 14px; }
+  .aviso { border-color: var(--acento); }
+  .saldo { margin-top: 10px; }
+  .barra { height: 6px; border-radius: 3px; background: var(--linha); overflow: hidden; margin-top: 4px; }
+  .barra i { display: block; height: 100%; background: var(--acento); }
+  label { display: block; font-weight: 600; margin-bottom: 8px; }
+  textarea { width: 100%; min-height: 110px; resize: vertical; border-radius: 12px; border: 1px solid var(--linha); background: var(--fundo); color: var(--texto);
+    font: 17px/1.5 ui-monospace, "SF Mono", Menlo, monospace; padding: 12px; }
+  button { margin-top: 12px; width: 100%; border: 0; border-radius: 12px; padding: 14px; font-size: 17px; font-weight: 700; background: var(--acento); color: var(--sobreAcento); }
+  button:disabled { opacity: .5; }
+  .msg { margin-top: 12px; font-weight: 600; }
+  .msg.erro { color: var(--erro); }
+  .msg.certo { color: var(--certo); }
+  button.secundario { background: transparent; color: var(--acento); border: 1px solid var(--acento); }
+</style>
+</head>
+<body>
+<main>
+  <h1>OPEN GW <span>· Licença</span></h1>
+
+  <div class="cartao">
+    <div class="nivel">
+      <div>
+        <div style="font-weight:600">Nível do OPEN GW</div>
+        <div class="suave" id="origem">Lendo o carro…</div>
+      </div>
+      <div class="selo" id="selo">…</div>
+    </div>
+    <div class="suave" id="vin" style="margin-top:8px"></div>
+    <div id="saldos"></div>
+  </div>
+
+  <div class="cartao aviso" id="caixaAviso" hidden><span id="aviso"></span></div>
+
+  <div class="cartao" id="caixaTeste" hidden>
+    <div style="font-weight:600">Teste grátis</div>
+    <div class="suave" id="teste"></div>
+    <button class="secundario" id="testar" type="button" hidden>Testar grátis</button>
+    <div class="msg" id="msgTeste" role="status"></div>
+  </div>
+
+  <div class="cartao">
+    <label for="codigo">Licença</label>
+    <textarea id="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false"
+      placeholder="Cole aqui a mensagem que você recebeu (ou só o código de 3 linhas)"></textarea>
+    <button id="ativar" type="button">Ativar licença</button>
+    <div class="msg" id="msg" role="status"></div>
+  </div>
+
+  <div class="cartao suave" id="comoObter"></div>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  function horas(seg) {
+    const min = Math.ceil(seg / 60), h = Math.floor(min / 60), m = min % 60;
+    return h === 0 ? m + ' min' : (m === 0 || h >= 10 ? h + ' h' : h + ' h ' + m + ' min');
+  }
+  function mostrar(d) {
+    $('selo').textContent = (d.nivelTitulo || '').toUpperCase();
+    $('origem').textContent = d.origemDescricao || '';
+    const l = d.licenca || {};
+    $('vin').textContent = l.vin ? 'VIN ' + l.vin : 'VIN ainda não lido — ligue o carro.';
+    const caixa = $('saldos');
+    caixa.textContent = '';
+    (l.saldos || []).filter((s) => s.temLicenca).forEach((s) => {
+      const div = document.createElement('div');
+      div.className = 'saldo';
+      const texto = s.vitalicia ? 'vitalícia' : horas(s.restanteSeg) + ' de ' + horas(s.totalSeg);
+      div.innerHTML = '<div><b></b> <span class="suave"></span></div><div class="barra"><i></i></div>';
+      div.querySelector('b').textContent = s.titulo;
+      div.querySelector('span').textContent = texto;
+      div.querySelector('i').style.width = Math.round((s.vitalicia ? 1 : s.fracaoRestante) * 100) + '%';
+      caixa.appendChild(div);
+    });
+    $('caixaAviso').hidden = !l.aviso;
+    $('aviso').textContent = l.aviso ? l.aviso.texto : '';
+    $('comoObter').textContent = l.comoObter || '';
+    const a = d.avaliacao;
+    const maxTitulo = ((d.niveis || []).find((n) => a && n.id === a.nivel) || {}).titulo || 'Max';
+    const mostra = a && (a.situacao === 'disponivel' || a.situacao === 'ativa');
+    $('caixaTeste').hidden = !mostra;
+    if (mostra) {
+      $('teste').textContent = a.situacao === 'ativa'
+        ? 'O ' + maxTitulo + ' está liberado: faltam ' + horas(a.restanteSeg) + ' de uso. Depois o OPEN GW volta ao nível de antes.'
+        : 'Experimente o ' + maxTitulo + ', a versão completa, por ' + horas(a.totalSeg) + ' de uso (com o carro ligado). Uma vez por carro.';
+      $('testar').hidden = a.situacao !== 'disponivel';
+      $('testar').textContent = 'Testar o ' + maxTitulo + ' grátis';
+    }
+  }
+  async function ler() {
+    try {
+      const r = await fetch('/licenca', { cache: 'no-store' });
+      mostrar(await r.json());
+    } catch (e) {
+      $('origem').textContent = 'Não deu para falar com o carro. Confira se o celular está no Wi-Fi dele.';
+    }
+  }
+  $('ativar').addEventListener('click', async () => {
+    const msg = $('msg');
+    msg.className = 'msg';
+    msg.textContent = 'Conferindo…';
+    $('ativar').disabled = true;
+    try {
+      const r = await fetch('/licenca/ativar', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo: $('codigo').value }),
+      });
+      const d = await r.json();
+      if (d.ok) {
+        msg.className = 'msg certo';
+        msg.textContent = d.mensagem || 'Licença ativada.';
+        $('codigo').value = '';
+        mostrar(d);
+      } else {
+        msg.className = 'msg erro';
+        msg.textContent = d.error || 'Não deu para ativar.';
+      }
+    } catch (e) {
+      msg.className = 'msg erro';
+      msg.textContent = 'Não deu para falar com o carro. Confira se o celular está no Wi-Fi dele.';
+    } finally {
+      $('ativar').disabled = false;
+    }
+  });
+  $('testar').addEventListener('click', async () => {
+    const msg = $('msgTeste');
+    msg.className = 'msg';
+    msg.textContent = 'Começando…';
+    $('testar').disabled = true;
+    try {
+      const r = await fetch('/licenca/avaliacao', { method: 'POST' });
+      const d = await r.json();
+      msg.className = d.ok ? 'msg certo' : 'msg erro';
+      msg.textContent = d.ok ? (d.mensagem || 'Teste grátis começou.') : (d.error || 'Não deu para começar o teste.');
+      if (d.ok) mostrar(d);
+    } catch (e) {
+      msg.className = 'msg erro';
+      msg.textContent = 'Não deu para falar com o carro. Confira se o celular está no Wi-Fi dele.';
+    } finally {
+      $('testar').disabled = false;
+    }
+  });
+  ler();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<theme>
+    <name>Calibração do painel</name>
+    <description>Grade de coordenadas 1920×720 para mapear onde o carro desenha luzes e avisos por cima do tema. Não é um tema de uso: entra e sai pelo Diagnóstico (Calibração do painel), só com o carro parado, e volta sozinho ao tema de antes se o carro andar.</description>
+    <version>1.0.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <mainFile>app.html</mainFile>
+    <!-- Sem imagem de fundo e sem máscaras nativas: nada do app cobre o painel de fábrica por baixo.
+         Com "Fundo: Preto" o tema é opaco como qualquer outro (só o que o carro desenha POR CIMA
+         aparece); com "Transparente" a grade fica sobre o painel de fábrica. -->
+    <configurations>
+        <configuration>
+            <id>fundo</id>
+            <label>Fundo</label>
+            <type>combo</type>
+            <options>Preto, Transparente</options>
+            <default>Preto</default>
+            <stateVariable>fundo</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

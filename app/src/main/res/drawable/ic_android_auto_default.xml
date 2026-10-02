@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícone de reserva do atalho do Android Auto (quando o app instalado não entrega o próprio): um
+     carro de frente sobre ladrilho ciano. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp" android:viewportWidth="96" android:viewportHeight="96">
+    <path android:fillColor="#FF2A8FA0" android:pathData="M20,0h56a20,20 0 0 1 20,20v56a20,20 0 0 1 -20,20h-56a20,20 0 0 1 -20,-20v-56a20,20 0 0 1 20,-20z"/>
+    <path android:fillColor="#FFFFFFFF" android:pathData="M26,56 L33,38 Q35,34 40,34 L56,34 Q61,34 63,38 L70,56 Q72,57 72,60 L72,68 Q72,70 70,70 L66,70 Q64,70 64,68 L64,66 L32,66 L32,68 Q32,70 30,70 L26,70 Q24,70 24,68 L24,60 Q24,57 26,56 Z"/>
+    <path android:fillColor="#FF2A8FA0" android:pathData="M39,40 L57,40 L61,51 L35,51 Z"/>
+    <path android:fillColor="#FF2A8FA0" android:pathData="M30,56 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0 M59,56 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0"/>
+</vector>

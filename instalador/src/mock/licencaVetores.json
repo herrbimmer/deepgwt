@@ -1,0 +1,153 @@
+{
+  "_leia": "Gerado por licenciador/scripts/gerar-vetores.ts. Chave 0 (teste). Não editar à mão.",
+  "formato": 2,
+  "chaveDeTeste": "AuDI3dqJexjcjV3flo/pfTWlBOXS",
+  "vin": "LGWEF6A5XSH000001",
+  "outroVin": "LGWEF6A5XSH000002",
+  "validos": [
+    {
+      "chave": 0,
+      "nivel": "sport",
+      "vitalicia": false,
+      "serie": 1001,
+      "horas": 50,
+      "vin": "LGWEF6A5XSH000001",
+      "codigo": "8200Z-9068A-D1PN8-BWWD2\nE76V3-N4YYE-G023A-749DT\nAECP5-6TSPV-0FQ8N-G9MG4"
+    },
+    {
+      "chave": 0,
+      "nivel": "premium",
+      "vitalicia": false,
+      "serie": 1002,
+      "horas": 100,
+      "vin": "LGWEF6A5XSH000001",
+      "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W"
+    },
+    {
+      "chave": 0,
+      "nivel": "signature",
+      "vitalicia": true,
+      "serie": 1003,
+      "horas": 0,
+      "vin": "LGWEF6A5XSH000001",
+      "codigo": "8700Z-B000D-HXFS5-JTN12\n2SN2K-1BYE9-RF8D4-V09RP\n3T8WK-SAKJ5-H8CGQ-PKZZ9"
+    },
+    {
+      "chave": 0,
+      "nivel": "premium",
+      "vitalicia": false,
+      "serie": 1004,
+      "horas": 20,
+      "vin": "LGWEF6A5XSH000001",
+      "codigo": "8400Z-C02GG-A67EE-WCVCC\n1J5FT-P8Q5A-X0RR6-A8CHX\n8T43B-W6AEH-MMHPH-PYZ4H"
+    },
+    {
+      "chave": 0,
+      "nivel": "signature",
+      "vitalicia": false,
+      "serie": 1048575,
+      "horas": 8191,
+      "vin": "LGWEF6A5XSH000001",
+      "codigo": "86ZZZ-ZZZWF-6AHE0-GK27H\nDNGQ8-0P5XP-8WKD6-D1CP5\nZKNVA-P7HDA-24MDN-16TXJ"
+    }
+  ],
+  "baguncado": {
+    "codigo": "84ooz aocgt newsd gqhe5  bx9xf ms4hp kz7f9 ddfw9  bt4k9 96goj hph2z vay7w",
+    "serie": 1002
+  },
+  "whatsapp": {
+    "texto": "Olá, José!\n\nSua licença do OPEN GW Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o OPEN GW conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: OPEN GW → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o OPEN GW ativo.",
+    "serie": 1002,
+    "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W"
+  },
+  "invalidos": [
+    {
+      "caso": "VIN de outro carro",
+      "codigo": "8200Z-9068A-D1PN8-BWWD2\nE76V3-N4YYE-G023A-749DT\nAECP5-6TSPV-0FQ8N-G9MG4",
+      "vin": "LGWEF6A5XSH000002",
+      "motivo": "assinatura"
+    },
+    {
+      "caso": "horas adulteradas com conferências refeitas",
+      "codigo": "8200Z-9KH0A-D1PN8-BWWDP\nE76V3-N4YYE-G023A-749DT\nAECP5-6TSPV-0FQ8N-G9MG4",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "assinatura"
+    },
+    {
+      "caso": "resposta fora do grupo",
+      "codigo": "8200Z-9068A-D1PN8-BWWD2\nE76V3-NX5F4-MQVKE-1CXR6\nR6ZB6-8X8M1-982F6-1Z092",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "assinatura"
+    },
+    {
+      "caso": "um caractere trocado na linha 3",
+      "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96N0J-HPH2Z-VAY7W",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "conferencia",
+      "linha": 3
+    },
+    {
+      "caso": "conferência errada na linha 1",
+      "codigo": "8400Z-A0CGT-NEWSD-GQHEA\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "conferencia",
+      "linha": 1
+    },
+    {
+      "caso": "falta um caractere na linha 2",
+      "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9F-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "tamanho",
+      "linha": 2
+    },
+    {
+      "caso": "sobra um caractere",
+      "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7WA",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "tamanho"
+    },
+    {
+      "caso": "caractere fora do alfabeto",
+      "codigo": "U400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "caractere"
+    },
+    {
+      "caso": "mensagem com o código errado na linha 2",
+      "codigo": "Olá, José!\n\nSua licença do OPEN GW Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-SS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o OPEN GW conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: OPEN GW → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o OPEN GW ativo.",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "conferencia",
+      "linha": 2
+    },
+    {
+      "caso": "mensagem sem código",
+      "codigo": "Olá! Ainda não tenho a licença, amanhã eu mando.",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "caractere"
+    },
+    {
+      "caso": "chave desconhecida (5)",
+      "codigo": "9C00Z-D018P-ZZSVC-5FGD8\nCJBW6-DF61E-D7B4C-2Y9R4\nDB99J-E73D8-5H3C4-QX4J7",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "chave"
+    },
+    {
+      "caso": "formato v3",
+      "codigo": "C400Z-D018M-XC2B4-QBR1X\nZACS5-1DKJH-JBXPD-GKKHH\n56TC9-PVACS-2CQKV-KF3CF",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "formato"
+    },
+    {
+      "caso": "bit reservado ligado",
+      "codigo": "8400Z-D019G-NKYKX-WF1VW\nD7PVJ-7TCXJ-1BEW1-JG3KT\nB21CC-6RQP1-N87CK-B0VCM",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "formato"
+    },
+    {
+      "caso": "vazio",
+      "codigo": "   ",
+      "vin": "LGWEF6A5XSH000001",
+      "motivo": "vazio"
+    }
+  ]
+}

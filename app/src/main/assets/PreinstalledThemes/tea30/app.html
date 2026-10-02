@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1920, height=720, initial-scale=1" />
+<title>TEA 3.0</title>
+<!--
+  TEA 3.0 (OPEN GW, Alpha 9.5). Gerado por scripts/gerar-tea-30.mjs — edite lá e rode de novo.
+  Contrato v1.0: só assina chaves de ThemeBridgeImpl.getAvailableKeys(); não desenha luz nenhuma
+  (as do carro ficam por cima); declara o vão da projeção (setProjectionBox) e o abre no #bg.
+-->
+<style>
+  :root { --ink: #f2f5f8; --dim: #8a96a3; --azul: #4f9bff; --verde: #34d17a; }
+  html, body {
+    margin: 0; padding: 0; width: 1920px; height: 720px; overflow: hidden; background: transparent;
+    font-family: Roboto, 'Helvetica Neue', Arial, sans-serif; color: var(--ink);
+    -webkit-font-smoothing: antialiased; user-select: none;
+  }
+  /* O fundo mora no #bg: é nele que a projeção abre o vão (aplicarVaoDaProjecao). */
+  #bg {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 0;
+    background: radial-gradient(ellipse 1100px 520px at 960px 300px, #0b1220 0%, #05070b 60%, #020305 100%);
+  }
+  body.yield-to-car #bg { opacity: 0; }
+  #projscrim {
+    position: absolute; display: none; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.7) 100%);
+  }
+  body.projetando #projscrim { display: block; }
+  body.projetando #cena, body.projetando #midia { display: none; }
+  /* Enquanto projeta: um anel fumê em volta de cada mostrador (onde ficam os números, por fora do
+     aro) e contorno escuro nos números — a imagem passa por baixo e a escala continua legível. */
+  #projfumo {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 720px; display: none; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(circle 350px at 426px 440px, rgba(3,5,8,0.62) 0, rgba(3,5,8,0.62) 312px, rgba(3,5,8,0) 350px),
+      radial-gradient(circle 350px at 1494px 440px, rgba(3,5,8,0.62) 0, rgba(3,5,8,0.62) 312px, rgba(3,5,8,0) 350px);
+  }
+  body.projetando #projfumo { display: block; }
+  body.projetando .rot { paint-order: stroke; stroke: rgba(0,0,0,0.85); stroke-width: 6px; stroke-linejoin: round; }
+  #noite { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; background: #000; opacity: 0; z-index: 3; pointer-events: none; }
+  body.mode-headlight #noite { opacity: 0.18; }
+  body.night-mode #noite { opacity: 0.38; }
+
+  #app { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 1; transition: opacity 0.25s ease; }
+  #app.hidden { opacity: 0; pointer-events: none; }
+  #arte { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+
+  .tm { stroke: #e9eef3; stroke-width: 2.5; stroke-linecap: round; }
+  .tn { stroke: rgba(233,238,243,0.45); stroke-width: 1.5; stroke-linecap: round; }
+  .rot { fill: #dfe5ea; font-size: 25px; font-weight: 500; text-anchor: middle; }
+  .carga { fill: var(--verde); font-size: 15px; font-weight: 700; letter-spacing: 2px; text-anchor: middle; opacity: 0.85; }
+
+  .cubo { position: absolute; width: 216px; text-align: center; top: 378px; }
+  .cubo .n { font-size: 78px; font-weight: 300; line-height: 78px; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+  .cubo .u { font-size: 20px; color: var(--dim); margin-top: 6px; }
+  #vel { left: 318px; }
+  #vel.acima .n { color: #ffb020; }
+  #pot { left: 1386px; }
+  #pot .n small { font-size: 34px; font-weight: 400; margin-left: 2px; }
+  #pot.desligado .n { color: var(--dim); }
+
+  #topo { position: absolute; left: 700px; top: 22px; width: 520px; height: 80px; }
+  #topo .t { position: absolute; top: 18px; font-size: 30px; font-weight: 400; color: #e6ebf0; font-variant-numeric: tabular-nums; }
+  #temp { left: 40px; }
+  #hora { right: 40px; }
+  #marcha { position: absolute; left: 0; right: 0; top: 4px; text-align: center; font-size: 54px; font-weight: 600; line-height: 60px; }
+  /* Modo de condução e de energia embaixo da marcha (o lugar do READY na foto: o READY é do carro). */
+  #modos { position: absolute; left: 0; right: 0; top: 72px; text-align: center; font-size: 16px; font-weight: 500; letter-spacing: 3px; color: #cfd6de; white-space: nowrap; }
+  #modos i { font-style: normal; color: #5d6874; margin: 0 8px; }
+  #energia { color: var(--verde); }
+  body.modo-sport #modo { color: #ff6b61; }
+  body.modo-eco #modo { color: var(--verde); }
+
+  .aut { position: absolute; top: 646px; height: 60px; }
+  .aut svg.ic { position: absolute; left: 0; top: 10px; width: 30px; height: 30px; }
+  .aut .v { position: absolute; left: 42px; top: 4px; font-size: 32px; font-weight: 400; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .aut .v small { font-size: 18px; color: var(--dim); margin-left: 4px; }
+  .aut .barra { position: absolute; left: 0; top: 50px; width: 150px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.12); overflow: hidden; }
+  .aut .barra i { position: absolute; left: 0; top: 0; bottom: 0; width: 150px; transform-origin: 0 0; transform: scaleX(0); border-radius: 2px; }
+  #autEv { left: 40px; }
+  #autEv .barra i { background: var(--verde); }
+  #autComb { left: 398px; }
+  #autComb .v { font-size: 28px; top: 7px; }
+  #autComb .barra i { background: var(--azul); }
+
+  #odo { position: absolute; top: 656px; right: 40px; font-size: 28px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  #odo small { font-size: 18px; color: var(--dim); margin-left: 4px; }
+  #odo .r { font-size: 14px; letter-spacing: 2px; color: var(--dim); margin-right: 10px; }
+
+  #midia {
+    position: absolute; left: 770px; width: 380px; top: 640px; height: 60px; display: none; box-sizing: border-box;
+    border-radius: 14px; background: rgba(12,18,28,0.82); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+  }
+  body.com-midia #midia { display: block; }
+  #midia .capa { position: absolute; left: 8px; top: 8px; width: 44px; height: 44px; border-radius: 8px; background: #1a2230 center/cover no-repeat; box-shadow: 0 0 0 1px rgba(255,255,255,0.12); }
+  #midia .ti { position: absolute; left: 64px; right: 14px; top: 9px; font-size: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #midia .ar { position: absolute; left: 64px; right: 14px; top: 34px; font-size: 16px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="projscrim"></div>
+<div id="projfumo"></div>
+<div id="app">
+  <!-- GERADO:arte:inicio -->
+  <svg id="arte" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
+<defs>
+  <radialGradient id="gFace" cx="0.5" cy="0.45" r="0.55">
+    <stop offset="0" stop-color="#121821"/><stop offset="0.8" stop-color="#090c11"/><stop offset="1" stop-color="#05070a"/>
+  </radialGradient>
+  <linearGradient id="gAro" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d8dee5"/><stop offset="0.5" stop-color="#6d7783"/><stop offset="1" stop-color="#2a3038"/>
+  </linearGradient>
+  <linearGradient id="gAzul" gradientUnits="userSpaceOnUse" x1="166" y1="0" x2="686" y2="0">
+    <stop offset="0" stop-color="#1c64ff"/><stop offset="1" stop-color="#8fd0ff"/>
+  </linearGradient>
+  <linearGradient id="gPot" gradientUnits="userSpaceOnUse" x1="1234" y1="0" x2="1754" y2="0">
+    <stop offset="0" stop-color="#2a6dff"/><stop offset="1" stop-color="#7cc7ff"/>
+  </linearGradient>
+  <linearGradient id="gAsfalto" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#2a3a52" stop-opacity="0"/><stop offset="0.55" stop-color="#23324a" stop-opacity="0.35"/><stop offset="1" stop-color="#1b2638" stop-opacity="0.65"/>
+  </linearGradient>
+  <linearGradient id="gFaixa" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#dfe9f5" stop-opacity="0.05"/><stop offset="1" stop-color="#eef4fb" stop-opacity="0.8"/>
+  </linearGradient>
+  <radialGradient id="gHorizonte" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#4f8fe0" stop-opacity="0.32"/><stop offset="1" stop-color="#4f8fe0" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="gCarro" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#e3e8ee"/><stop offset="1" stop-color="#a9b2bc"/>
+  </linearGradient>
+  <linearGradient id="gVidro" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3a4452"/><stop offset="1" stop-color="#11161d"/>
+  </linearGradient>
+  <radialGradient id="gSombra" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#6aa7ff" stop-opacity="0.22"/><stop offset="1" stop-color="#6aa7ff" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="gMascaraX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#000"/><stop offset="0.13" stop-color="#fff"/><stop offset="0.87" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
+  </linearGradient>
+  <mask id="mCena" maskUnits="userSpaceOnUse" x="600" y="100" width="720" height="560">
+    <rect x="600" y="100" width="720" height="560" fill="url(#gMascaraX)"/>
+  </mask>
+</defs>
+<g id="cena" mask="url(#mCena)">
+  <ellipse cx="960" cy="176" rx="430" ry="70" fill="url(#gHorizonte)"/>
+  <polygon points="954,172 966,172 1330,640 590,640" fill="url(#gAsfalto)"/><line x1="954.3" y1="179.2" x2="965.7" y2="179.2" stroke="rgba(160,190,230,0)" stroke-width="1"/><line x1="938.8" y1="198.9" x2="981.2" y2="198.9" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="914.1" y1="230" x2="1005.9" y2="230" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="880.7" y1="272.3" x2="1039.3" y2="272.3" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="838.9" y1="325.2" x2="1081.1" y2="325.2" stroke="rgba(160,190,230,0.02)" stroke-width="1"/><line x1="788.8" y1="388.6" x2="1131.2" y2="388.6" stroke="rgba(160,190,230,0.03)" stroke-width="1"/><line x1="730.5" y1="462.3" x2="1189.5" y2="462.3" stroke="rgba(160,190,230,0.03)" stroke-width="1"/><line x1="664.2" y1="546.2" x2="1255.8" y2="546.2" stroke="rgba(160,190,230,0.04)" stroke-width="1"/><line x1="590" y1="640" x2="1330" y2="640" stroke="rgba(160,190,230,0.05)" stroke-width="1"/><polygon points="946.3,190.7 947.3,190.7 635,640 625,640" fill="url(#gFaixa)"/><polygon points="972.7,190.7 973.7,190.7 1295,640 1285,640" fill="url(#gFaixa)"/><polygon points="952.8,200.1 954,200.1 950.1,217.2 948.7,217.2" fill="rgba(235,242,250,0.2)"/><polygon points="944.5,234.3 946.1,234.3 941.8,253.5 939.8,253.5" fill="rgba(235,242,250,0.2)"/><polygon points="935.2,272.7 937.4,272.7 932.5,294.2 930.1,294.2" fill="rgba(235,242,250,0.3)"/><polygon points="924.8,315.7 927.6,315.7 922.1,339.7 919.1,339.7" fill="rgba(235,242,250,0.3)"/><polygon points="913.2,363.8 916.6,363.8 910.5,390.8 906.7,390.8" fill="rgba(235,242,250,0.4)"/><polygon points="900.1,417.7 904.3,417.7 897.5,447.9 892.9,447.9" fill="rgba(235,242,250,0.4)"/><polygon points="885.6,478.1 890.6,478.1 882.8,511.9 877.4,511.9" fill="rgba(235,242,250,0.5)"/><polygon points="869.2,545.7 875.2,545.7 866.5,583.6 860.1,583.6" fill="rgba(235,242,250,0.6)"/><polygon points="850.9,621.4 857.9,621.4 853.6,640 846.4,640" fill="rgba(235,242,250,0.7)"/><polygon points="966,200.1 967.2,200.1 971.3,217.2 969.9,217.2" fill="rgba(235,242,250,0.2)"/><polygon points="973.9,234.3 975.5,234.3 980.2,253.5 978.2,253.5" fill="rgba(235,242,250,0.2)"/><polygon points="982.6,272.7 984.8,272.7 989.9,294.2 987.5,294.2" fill="rgba(235,242,250,0.3)"/><polygon points="992.4,315.7 995.2,315.7 1000.9,339.7 997.9,339.7" fill="rgba(235,242,250,0.3)"/><polygon points="1003.4,363.8 1006.8,363.8 1013.3,390.8 1009.5,390.8" fill="rgba(235,242,250,0.4)"/><polygon points="1015.7,417.7 1019.9,417.7 1027.1,447.9 1022.5,447.9" fill="rgba(235,242,250,0.4)"/><polygon points="1029.4,478.1 1034.4,478.1 1042.6,511.9 1037.2,511.9" fill="rgba(235,242,250,0.5)"/><polygon points="1044.8,545.7 1050.8,545.7 1059.9,583.6 1053.5,583.6" fill="rgba(235,242,250,0.6)"/><polygon points="1062.1,621.4 1069.1,621.4 1073.6,640 1066.4,640" fill="rgba(235,242,250,0.7)"/>
+  <g id="carro">
+  <ellipse cx="960" cy="590" rx="104" ry="15" fill="rgba(0,0,0,0.75)"/>
+  <ellipse cx="960" cy="592" rx="140" ry="24" fill="url(#gSombra)"/>
+  <path d="M884 578 L882 548 Q880 520 896 506 L912 470 Q918 458 934 456 L986 456 Q1002 458 1008 470 L1024 506 Q1040 520 1038 548 L1036 578 Q1036 586 1026 586 L894 586 Q884 586 884 578 Z" fill="url(#gCarro)"/>
+  <path d="M918 474 Q922 466 934 465 L986 465 Q998 466 1002 474 L1012 500 L908 500 Z" fill="url(#gVidro)"/>
+  <path d="M894 520 L1026 520 L1030 532 L890 532 Z" fill="rgba(20,24,30,0.28)"/>
+  <rect x="889" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
+  <rect x="995" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
+  <rect x="925" y="527" width="70" height="3" rx="1.5" fill="rgba(255,70,70,0.75)"/>
+  <rect x="944" y="548" width="32" height="12" rx="2" fill="#e6e9ec" stroke="rgba(0,0,0,0.25)"/>
+  <rect x="888" y="572" width="22" height="16" rx="3" fill="#15181c"/>
+  <rect x="1010" y="572" width="22" height="16" rx="3" fill="#15181c"/>
+  <path d="M900 510 L1020 510" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
+</g>
+</g>
+<g id="mE">
+    <path d="M321.7 685.8 A267 267 0 1 1 530.3 685.8" fill="none" stroke="rgba(120,165,220,0.10)" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="426" cy="440" r="258" fill="url(#gFace)"/>
+    <path d="M323.6 681.2 A262 262 0 1 1 528.4 681.2" fill="none" stroke="url(#gAro)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M249.2 616.8 A250 250 0 1 1 602.8 616.8" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6" stroke-linecap="round"/>
+    <g><line class="tm" x1="266.2" y1="599.8" x2="253.5" y2="612.5"/><line class="tn" x1="229.8" y1="571.1" x2="223.1" y2="575.6"/><line class="tm" x1="217.2" y1="526.5" x2="200.6" y2="533.4"/><line class="tn" x1="194.5" y1="486" x2="186.7" y2="487.6"/><line class="tm" x1="200" y1="440" x2="182" y2="440"/><line class="tn" x1="194.5" y1="394" x2="186.7" y2="392.4"/><line class="tm" x1="217.2" y1="353.5" x2="200.6" y2="346.6"/><line class="tn" x1="229.8" y1="308.9" x2="223.1" y2="304.4"/><line class="tm" x1="266.2" y1="280.2" x2="253.5" y2="267.5"/><line class="tn" x1="294.9" y1="243.8" x2="290.4" y2="237.1"/><line class="tm" x1="339.5" y1="231.2" x2="332.6" y2="214.6"/><line class="tn" x1="380" y1="208.5" x2="378.4" y2="200.7"/><line class="tm" x1="426" y1="214" x2="426" y2="196"/><line class="tn" x1="472" y1="208.5" x2="473.6" y2="200.7"/><line class="tm" x1="512.5" y1="231.2" x2="519.4" y2="214.6"/><line class="tn" x1="557.1" y1="243.8" x2="561.6" y2="237.1"/><line class="tm" x1="585.8" y1="280.2" x2="598.5" y2="267.5"/><line class="tn" x1="622.2" y1="308.9" x2="628.9" y2="304.4"/><line class="tm" x1="634.8" y1="353.5" x2="651.4" y2="346.6"/><line class="tn" x1="657.5" y1="394" x2="665.3" y2="392.4"/><line class="tm" x1="652" y1="440" x2="670" y2="440"/><line class="tn" x1="657.5" y1="486" x2="665.3" y2="487.6"/><line class="tm" x1="634.8" y1="526.5" x2="651.4" y2="533.4"/><line class="tn" x1="622.2" y1="571.1" x2="628.9" y2="575.6"/><line class="tm" x1="585.8" y1="599.8" x2="598.5" y2="612.5"/></g>
+    <g><text class="rot" x="218.8" y="656.2">0</text><text class="rot" x="155.3" y="561.1">20</text><text class="rot" x="133" y="449">40</text><text class="rot" x="155.3" y="336.9">60</text><text class="rot" x="218.8" y="241.8">80</text><text class="rot" x="313.9" y="178.3">100</text><text class="rot" x="426" y="156">120</text><text class="rot" x="538.1" y="178.3">140</text><text class="rot" x="633.2" y="241.8">160</text><text class="rot" x="696.7" y="336.9">180</text><text class="rot" x="719" y="449">200</text><text class="rot" x="696.7" y="561.1">230</text><text class="rot" x="633.2" y="656.2">260</text></g>
+  </g>
+<g id="mD">
+    <path d="M1389.7 685.8 A267 267 0 1 1 1598.3 685.8" fill="none" stroke="rgba(120,165,220,0.10)" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="1494" cy="440" r="258" fill="url(#gFace)"/>
+    <path d="M1391.6 681.2 A262 262 0 1 1 1596.4 681.2" fill="none" stroke="url(#gAro)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M1317.2 616.8 A250 250 0 1 1 1670.8 616.8" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="6" stroke-linecap="round"/>
+    <g><line class="tm" x1="1334.2" y1="599.8" x2="1321.5" y2="612.5"/><line class="tn" x1="1276" y1="530.3" x2="1268.6" y2="533.4"/><line class="tm" x1="1268" y1="440" x2="1250" y2="440"/><line class="tn" x1="1262.5" y1="394" x2="1254.7" y2="392.4"/><line class="tm" x1="1285.2" y1="353.5" x2="1268.6" y2="346.6"/><line class="tn" x1="1297.8" y1="308.9" x2="1291.1" y2="304.4"/><line class="tm" x1="1334.2" y1="280.2" x2="1321.5" y2="267.5"/><line class="tn" x1="1362.9" y1="243.8" x2="1358.4" y2="237.1"/><line class="tm" x1="1407.5" y1="231.2" x2="1400.6" y2="214.6"/><line class="tn" x1="1448" y1="208.5" x2="1446.4" y2="200.7"/><line class="tm" x1="1494" y1="214" x2="1494" y2="196"/><line class="tn" x1="1540" y1="208.5" x2="1541.6" y2="200.7"/><line class="tm" x1="1580.5" y1="231.2" x2="1587.4" y2="214.6"/><line class="tn" x1="1625.1" y1="243.8" x2="1629.6" y2="237.1"/><line class="tm" x1="1653.8" y1="280.2" x2="1666.5" y2="267.5"/><line class="tn" x1="1690.2" y1="308.9" x2="1696.9" y2="304.4"/><line class="tm" x1="1702.8" y1="353.5" x2="1719.4" y2="346.6"/><line class="tn" x1="1725.5" y1="394" x2="1733.3" y2="392.4"/><line class="tm" x1="1720" y1="440" x2="1738" y2="440"/><line class="tn" x1="1725.5" y1="486" x2="1733.3" y2="487.6"/><line class="tm" x1="1702.8" y1="526.5" x2="1719.4" y2="533.4"/><line class="tn" x1="1690.2" y1="571.1" x2="1696.9" y2="575.6"/><line class="tm" x1="1653.8" y1="599.8" x2="1666.5" y2="612.5"/></g>
+    <g><text class="rot" x="1286.8" y="656.2">−100</text><text class="rot" x="1201" y="449">0</text><text class="rot" x="1223.3" y="336.9">10</text><text class="rot" x="1286.8" y="241.8">20</text><text class="rot" x="1381.9" y="178.3">30</text><text class="rot" x="1494" y="156">40</text><text class="rot" x="1606.1" y="178.3">50</text><text class="rot" x="1701.2" y="241.8">60</text><text class="rot" x="1764.7" y="336.9">70</text><text class="rot" x="1787" y="449">80</text><text class="rot" x="1764.7" y="561.1">90</text><text class="rot" x="1701.2" y="656.2">100</text></g>
+  </g>
+<text class="carga" x="1388" y="609.6">CARGA</text>
+
+  <g id="arcoVel" fill="none" stroke="url(#gAzul)" stroke-width="6"><path d="M249.2 616.8 A250 250 0 0 1 241.5 608.7" visibility="hidden"/><path d="M242.4 609.7 A250 250 0 0 1 235.1 601.4" visibility="hidden"/><path d="M235.9 602.4 A250 250 0 0 1 228.9 593.7" visibility="hidden"/><path d="M229.7 594.8 A250 250 0 0 1 223 585.9" visibility="hidden"/><path d="M223.7 586.9 A250 250 0 0 1 217.4 577.8" visibility="hidden"/><path d="M218.1 578.9 A250 250 0 0 1 212.2 569.5" visibility="hidden"/><path d="M212.8 570.6 A250 250 0 0 1 207.2 561" visibility="hidden"/><path d="M207.9 562.2 A250 250 0 0 1 202.7 552.3" visibility="hidden"/><path d="M203.2 553.5 A250 250 0 0 1 198.4 543.5" visibility="hidden"/><path d="M199 544.7 A250 250 0 0 1 194.5 534.5" visibility="hidden"/><path d="M195 535.7 A250 250 0 0 1 191 525.3" visibility="hidden"/><path d="M191.5 526.5 A250 250 0 0 1 187.8 516" visibility="hidden"/><path d="M188.2 517.3 A250 250 0 0 1 185 506.6" visibility="hidden"/><path d="M185.4 507.9 A250 250 0 0 1 182.6 497.1" visibility="hidden"/><path d="M182.9 498.4 A250 250 0 0 1 180.6 487.5" visibility="hidden"/><path d="M180.8 488.8 A250 250 0 0 1 178.9 477.8" visibility="hidden"/><path d="M179.1 479.1 A250 250 0 0 1 177.6 468.1" visibility="hidden"/><path d="M177.7 469.4 A250 250 0 0 1 176.7 458.3" visibility="hidden"/><path d="M176.8 459.6 A250 250 0 0 1 176.1 448.5" visibility="hidden"/><path d="M176.2 449.8 A250 250 0 0 1 176 438.7" visibility="hidden"/><path d="M176 440 A250 250 0 0 1 176.2 428.9" visibility="hidden"/><path d="M176.2 430.2 A250 250 0 0 1 176.9 419.1" visibility="hidden"/><path d="M176.8 420.4 A250 250 0 0 1 177.9 409.3" visibility="hidden"/><path d="M177.7 410.6 A250 250 0 0 1 179.3 399.6" visibility="hidden"/><path d="M179.1 400.9 A250 250 0 0 1 181.1 389.9" visibility="hidden"/><path d="M180.8 391.2 A250 250 0 0 1 183.2 380.4" visibility="hidden"/><path d="M182.9 381.6 A250 250 0 0 1 185.7 370.9" visibility="hidden"/><path d="M185.4 372.1 A250 250 0 0 1 188.6 361.5" visibility="hidden"/><path d="M188.2 362.7 A250 250 0 0 1 191.9 352.2" visibility="hidden"/><path d="M191.5 353.5 A250 250 0 0 1 195.5 343.1" visibility="hidden"/><path d="M195 344.3 A250 250 0 0 1 199.5 334.1" visibility="hidden"/><path d="M199 335.3 A250 250 0 0 1 203.8 325.3" visibility="hidden"/><path d="M203.2 326.5 A250 250 0 0 1 208.5 316.7" visibility="hidden"/><path d="M207.9 317.8 A250 250 0 0 1 213.5 308.3" visibility="hidden"/><path d="M212.8 309.4 A250 250 0 0 1 218.9 300" visibility="hidden"/><path d="M218.1 301.1 A250 250 0 0 1 224.5 292" visibility="hidden"/><path d="M223.7 293.1 A250 250 0 0 1 230.5 284.2" visibility="hidden"/><path d="M229.7 285.2 A250 250 0 0 1 236.8 276.6" visibility="hidden"/><path d="M235.9 277.6 A250 250 0 0 1 243.3 269.3" visibility="hidden"/><path d="M242.4 270.3 A250 250 0 0 1 250.2 262.3" visibility="hidden"/><path d="M249.2 263.2 A250 250 0 0 1 257.3 255.5" visibility="hidden"/><path d="M256.3 256.4 A250 250 0 0 1 264.6 249.1" visibility="hidden"/><path d="M263.6 249.9 A250 250 0 0 1 272.3 242.9" visibility="hidden"/><path d="M271.2 243.7 A250 250 0 0 1 280.1 237" visibility="hidden"/><path d="M279.1 237.7 A250 250 0 0 1 288.2 231.4" visibility="hidden"/><path d="M287.1 232.1 A250 250 0 0 1 296.5 226.2" visibility="hidden"/><path d="M295.4 226.8 A250 250 0 0 1 305 221.2" visibility="hidden"/><path d="M303.8 221.9 A250 250 0 0 1 313.7 216.7" visibility="hidden"/><path d="M312.5 217.2 A250 250 0 0 1 322.5 212.4" visibility="hidden"/><path d="M321.3 213 A250 250 0 0 1 331.5 208.5" visibility="hidden"/><path d="M330.3 209 A250 250 0 0 1 340.7 205" visibility="hidden"/><path d="M339.5 205.5 A250 250 0 0 1 350 201.8" visibility="hidden"/><path d="M348.7 202.2 A250 250 0 0 1 359.4 199" visibility="hidden"/><path d="M358.1 199.4 A250 250 0 0 1 368.9 196.6" visibility="hidden"/><path d="M367.6 196.9 A250 250 0 0 1 378.5 194.6" visibility="hidden"/><path d="M377.2 194.8 A250 250 0 0 1 388.2 192.9" visibility="hidden"/><path d="M386.9 193.1 A250 250 0 0 1 397.9 191.6" visibility="hidden"/><path d="M396.6 191.7 A250 250 0 0 1 407.7 190.7" visibility="hidden"/><path d="M406.4 190.8 A250 250 0 0 1 417.5 190.1" visibility="hidden"/><path d="M416.2 190.2 A250 250 0 0 1 427.3 190" visibility="hidden"/><path d="M426 190 A250 250 0 0 1 437.1 190.2" visibility="hidden"/><path d="M435.8 190.2 A250 250 0 0 1 446.9 190.9" visibility="hidden"/><path d="M445.6 190.8 A250 250 0 0 1 456.7 191.9" visibility="hidden"/><path d="M455.4 191.7 A250 250 0 0 1 466.4 193.3" visibility="hidden"/><path d="M465.1 193.1 A250 250 0 0 1 476.1 195.1" visibility="hidden"/><path d="M474.8 194.8 A250 250 0 0 1 485.6 197.2" visibility="hidden"/><path d="M484.4 196.9 A250 250 0 0 1 495.1 199.7" visibility="hidden"/><path d="M493.9 199.4 A250 250 0 0 1 504.5 202.6" visibility="hidden"/><path d="M503.3 202.2 A250 250 0 0 1 513.8 205.9" visibility="hidden"/><path d="M512.5 205.5 A250 250 0 0 1 522.9 209.5" visibility="hidden"/><path d="M521.7 209 A250 250 0 0 1 531.9 213.5" visibility="hidden"/><path d="M530.7 213 A250 250 0 0 1 540.7 217.8" visibility="hidden"/><path d="M539.5 217.2 A250 250 0 0 1 549.3 222.5" visibility="hidden"/><path d="M548.2 221.9 A250 250 0 0 1 557.7 227.5" visibility="hidden"/><path d="M556.6 226.8 A250 250 0 0 1 566 232.9" visibility="hidden"/><path d="M564.9 232.1 A250 250 0 0 1 574 238.5" visibility="hidden"/><path d="M572.9 237.7 A250 250 0 0 1 581.8 244.5" visibility="hidden"/><path d="M580.8 243.7 A250 250 0 0 1 589.4 250.8" visibility="hidden"/><path d="M588.4 249.9 A250 250 0 0 1 596.7 257.3" visibility="hidden"/><path d="M595.7 256.4 A250 250 0 0 1 603.7 264.2" visibility="hidden"/><path d="M602.8 263.2 A250 250 0 0 1 610.5 271.3" visibility="hidden"/><path d="M609.6 270.3 A250 250 0 0 1 616.9 278.6" visibility="hidden"/><path d="M616.1 277.6 A250 250 0 0 1 623.1 286.3" visibility="hidden"/><path d="M622.3 285.2 A250 250 0 0 1 629 294.1" visibility="hidden"/><path d="M628.3 293.1 A250 250 0 0 1 634.6 302.2" visibility="hidden"/><path d="M633.9 301.1 A250 250 0 0 1 639.8 310.5" visibility="hidden"/><path d="M639.2 309.4 A250 250 0 0 1 644.8 319" visibility="hidden"/><path d="M644.1 317.8 A250 250 0 0 1 649.3 327.7" visibility="hidden"/><path d="M648.8 326.5 A250 250 0 0 1 653.6 336.5" visibility="hidden"/><path d="M653 335.3 A250 250 0 0 1 657.5 345.5" visibility="hidden"/><path d="M657 344.3 A250 250 0 0 1 661 354.7" visibility="hidden"/><path d="M660.5 353.5 A250 250 0 0 1 664.2 364" visibility="hidden"/><path d="M663.8 362.7 A250 250 0 0 1 667 373.4" visibility="hidden"/><path d="M666.6 372.1 A250 250 0 0 1 669.4 382.9" visibility="hidden"/><path d="M669.1 381.6 A250 250 0 0 1 671.4 392.5" visibility="hidden"/><path d="M671.2 391.2 A250 250 0 0 1 673.1 402.2" visibility="hidden"/><path d="M672.9 400.9 A250 250 0 0 1 674.4 411.9" visibility="hidden"/><path d="M674.3 410.6 A250 250 0 0 1 675.3 421.7" visibility="hidden"/><path d="M675.2 420.4 A250 250 0 0 1 675.9 431.5" visibility="hidden"/><path d="M675.8 430.2 A250 250 0 0 1 676 441.3" visibility="hidden"/><path d="M676 440 A250 250 0 0 1 675.8 451.1" visibility="hidden"/><path d="M675.8 449.8 A250 250 0 0 1 675.1 460.9" visibility="hidden"/><path d="M675.2 459.6 A250 250 0 0 1 674.1 470.7" visibility="hidden"/><path d="M674.3 469.4 A250 250 0 0 1 672.7 480.4" visibility="hidden"/><path d="M672.9 479.1 A250 250 0 0 1 670.9 490.1" visibility="hidden"/><path d="M671.2 488.8 A250 250 0 0 1 668.8 499.6" visibility="hidden"/><path d="M669.1 498.4 A250 250 0 0 1 666.3 509.1" visibility="hidden"/><path d="M666.6 507.9 A250 250 0 0 1 663.4 518.5" visibility="hidden"/><path d="M663.8 517.3 A250 250 0 0 1 660.1 527.8" visibility="hidden"/><path d="M660.5 526.5 A250 250 0 0 1 656.5 536.9" visibility="hidden"/><path d="M657 535.7 A250 250 0 0 1 652.5 545.9" visibility="hidden"/><path d="M653 544.7 A250 250 0 0 1 648.2 554.7" visibility="hidden"/><path d="M648.8 553.5 A250 250 0 0 1 643.5 563.3" visibility="hidden"/><path d="M644.1 562.2 A250 250 0 0 1 638.5 571.7" visibility="hidden"/><path d="M639.2 570.6 A250 250 0 0 1 633.1 580" visibility="hidden"/><path d="M633.9 578.9 A250 250 0 0 1 627.5 588" visibility="hidden"/><path d="M628.3 586.9 A250 250 0 0 1 621.5 595.8" visibility="hidden"/><path d="M622.3 594.8 A250 250 0 0 1 615.2 603.4" visibility="hidden"/><path d="M616.1 602.4 A250 250 0 0 1 608.7 610.7" visibility="hidden"/><path d="M609.6 609.7 A250 250 0 0 1 602.8 616.8" visibility="hidden"/></g>
+  <path d="M1317.2 616.8 A250 250 0 0 1 1244 440" fill="none" stroke="rgba(52,209,122,0.18)" stroke-width="6" stroke-linecap="round"/>
+  <g id="arcoCarga" fill="none" stroke="#34d17a" stroke-width="6"><path d="M1244 440 A250 250 0 0 0 1244.2 451.1" visibility="hidden"/><path d="M1244.2 449.8 A250 250 0 0 0 1244.9 460.9" visibility="hidden"/><path d="M1244.8 459.6 A250 250 0 0 0 1245.9 470.7" visibility="hidden"/><path d="M1245.7 469.4 A250 250 0 0 0 1247.3 480.4" visibility="hidden"/><path d="M1247.1 479.1 A250 250 0 0 0 1249.1 490.1" visibility="hidden"/><path d="M1248.8 488.8 A250 250 0 0 0 1251.2 499.6" visibility="hidden"/><path d="M1250.9 498.4 A250 250 0 0 0 1253.7 509.1" visibility="hidden"/><path d="M1253.4 507.9 A250 250 0 0 0 1256.6 518.5" visibility="hidden"/><path d="M1256.2 517.3 A250 250 0 0 0 1259.9 527.8" visibility="hidden"/><path d="M1259.5 526.5 A250 250 0 0 0 1263.5 536.9" visibility="hidden"/><path d="M1263 535.7 A250 250 0 0 0 1267.5 545.9" visibility="hidden"/><path d="M1267 544.7 A250 250 0 0 0 1271.8 554.7" visibility="hidden"/><path d="M1271.2 553.5 A250 250 0 0 0 1276.5 563.3" visibility="hidden"/><path d="M1275.9 562.2 A250 250 0 0 0 1281.5 571.7" visibility="hidden"/><path d="M1280.8 570.6 A250 250 0 0 0 1286.9 580" visibility="hidden"/><path d="M1286.1 578.9 A250 250 0 0 0 1292.5 588" visibility="hidden"/><path d="M1291.7 586.9 A250 250 0 0 0 1298.5 595.8" visibility="hidden"/><path d="M1297.7 594.8 A250 250 0 0 0 1304.8 603.4" visibility="hidden"/><path d="M1303.9 602.4 A250 250 0 0 0 1311.3 610.7" visibility="hidden"/><path d="M1310.4 609.7 A250 250 0 0 0 1317.2 616.8" visibility="hidden"/></g>
+  <g id="arcoPot" fill="none" stroke="url(#gPot)" stroke-width="6"><path d="M1244 440 A250 250 0 0 1 1244.2 428.9" visibility="hidden"/><path d="M1244.2 430.2 A250 250 0 0 1 1244.9 419.1" visibility="hidden"/><path d="M1244.8 420.4 A250 250 0 0 1 1245.9 409.3" visibility="hidden"/><path d="M1245.7 410.6 A250 250 0 0 1 1247.3 399.6" visibility="hidden"/><path d="M1247.1 400.9 A250 250 0 0 1 1249.1 389.9" visibility="hidden"/><path d="M1248.8 391.2 A250 250 0 0 1 1251.2 380.4" visibility="hidden"/><path d="M1250.9 381.6 A250 250 0 0 1 1253.7 370.9" visibility="hidden"/><path d="M1253.4 372.1 A250 250 0 0 1 1256.6 361.5" visibility="hidden"/><path d="M1256.2 362.7 A250 250 0 0 1 1259.9 352.2" visibility="hidden"/><path d="M1259.5 353.5 A250 250 0 0 1 1263.5 343.1" visibility="hidden"/><path d="M1263 344.3 A250 250 0 0 1 1267.5 334.1" visibility="hidden"/><path d="M1267 335.3 A250 250 0 0 1 1271.8 325.3" visibility="hidden"/><path d="M1271.2 326.5 A250 250 0 0 1 1276.5 316.7" visibility="hidden"/><path d="M1275.9 317.8 A250 250 0 0 1 1281.5 308.3" visibility="hidden"/><path d="M1280.8 309.4 A250 250 0 0 1 1286.9 300" visibility="hidden"/><path d="M1286.1 301.1 A250 250 0 0 1 1292.5 292" visibility="hidden"/><path d="M1291.7 293.1 A250 250 0 0 1 1298.5 284.2" visibility="hidden"/><path d="M1297.7 285.2 A250 250 0 0 1 1304.8 276.6" visibility="hidden"/><path d="M1303.9 277.6 A250 250 0 0 1 1311.3 269.3" visibility="hidden"/><path d="M1310.4 270.3 A250 250 0 0 1 1318.2 262.3" visibility="hidden"/><path d="M1317.2 263.2 A250 250 0 0 1 1325.3 255.5" visibility="hidden"/><path d="M1324.3 256.4 A250 250 0 0 1 1332.6 249.1" visibility="hidden"/><path d="M1331.6 249.9 A250 250 0 0 1 1340.3 242.9" visibility="hidden"/><path d="M1339.2 243.7 A250 250 0 0 1 1348.1 237" visibility="hidden"/><path d="M1347.1 237.7 A250 250 0 0 1 1356.2 231.4" visibility="hidden"/><path d="M1355.1 232.1 A250 250 0 0 1 1364.5 226.2" visibility="hidden"/><path d="M1363.4 226.8 A250 250 0 0 1 1373 221.2" visibility="hidden"/><path d="M1371.8 221.9 A250 250 0 0 1 1381.7 216.7" visibility="hidden"/><path d="M1380.5 217.2 A250 250 0 0 1 1390.5 212.4" visibility="hidden"/><path d="M1389.3 213 A250 250 0 0 1 1399.5 208.5" visibility="hidden"/><path d="M1398.3 209 A250 250 0 0 1 1408.7 205" visibility="hidden"/><path d="M1407.5 205.5 A250 250 0 0 1 1418 201.8" visibility="hidden"/><path d="M1416.7 202.2 A250 250 0 0 1 1427.4 199" visibility="hidden"/><path d="M1426.1 199.4 A250 250 0 0 1 1436.9 196.6" visibility="hidden"/><path d="M1435.6 196.9 A250 250 0 0 1 1446.5 194.6" visibility="hidden"/><path d="M1445.2 194.8 A250 250 0 0 1 1456.2 192.9" visibility="hidden"/><path d="M1454.9 193.1 A250 250 0 0 1 1465.9 191.6" visibility="hidden"/><path d="M1464.6 191.7 A250 250 0 0 1 1475.7 190.7" visibility="hidden"/><path d="M1474.4 190.8 A250 250 0 0 1 1485.5 190.1" visibility="hidden"/><path d="M1484.2 190.2 A250 250 0 0 1 1495.3 190" visibility="hidden"/><path d="M1494 190 A250 250 0 0 1 1505.1 190.2" visibility="hidden"/><path d="M1503.8 190.2 A250 250 0 0 1 1514.9 190.9" visibility="hidden"/><path d="M1513.6 190.8 A250 250 0 0 1 1524.7 191.9" visibility="hidden"/><path d="M1523.4 191.7 A250 250 0 0 1 1534.4 193.3" visibility="hidden"/><path d="M1533.1 193.1 A250 250 0 0 1 1544.1 195.1" visibility="hidden"/><path d="M1542.8 194.8 A250 250 0 0 1 1553.6 197.2" visibility="hidden"/><path d="M1552.4 196.9 A250 250 0 0 1 1563.1 199.7" visibility="hidden"/><path d="M1561.9 199.4 A250 250 0 0 1 1572.5 202.6" visibility="hidden"/><path d="M1571.3 202.2 A250 250 0 0 1 1581.8 205.9" visibility="hidden"/><path d="M1580.5 205.5 A250 250 0 0 1 1590.9 209.5" visibility="hidden"/><path d="M1589.7 209 A250 250 0 0 1 1599.9 213.5" visibility="hidden"/><path d="M1598.7 213 A250 250 0 0 1 1608.7 217.8" visibility="hidden"/><path d="M1607.5 217.2 A250 250 0 0 1 1617.3 222.5" visibility="hidden"/><path d="M1616.2 221.9 A250 250 0 0 1 1625.7 227.5" visibility="hidden"/><path d="M1624.6 226.8 A250 250 0 0 1 1634 232.9" visibility="hidden"/><path d="M1632.9 232.1 A250 250 0 0 1 1642 238.5" visibility="hidden"/><path d="M1640.9 237.7 A250 250 0 0 1 1649.8 244.5" visibility="hidden"/><path d="M1648.8 243.7 A250 250 0 0 1 1657.4 250.8" visibility="hidden"/><path d="M1656.4 249.9 A250 250 0 0 1 1664.7 257.3" visibility="hidden"/><path d="M1663.7 256.4 A250 250 0 0 1 1671.7 264.2" visibility="hidden"/><path d="M1670.8 263.2 A250 250 0 0 1 1678.5 271.3" visibility="hidden"/><path d="M1677.6 270.3 A250 250 0 0 1 1684.9 278.6" visibility="hidden"/><path d="M1684.1 277.6 A250 250 0 0 1 1691.1 286.3" visibility="hidden"/><path d="M1690.3 285.2 A250 250 0 0 1 1697 294.1" visibility="hidden"/><path d="M1696.3 293.1 A250 250 0 0 1 1702.6 302.2" visibility="hidden"/><path d="M1701.9 301.1 A250 250 0 0 1 1707.8 310.5" visibility="hidden"/><path d="M1707.2 309.4 A250 250 0 0 1 1712.8 319" visibility="hidden"/><path d="M1712.1 317.8 A250 250 0 0 1 1717.3 327.7" visibility="hidden"/><path d="M1716.8 326.5 A250 250 0 0 1 1721.6 336.5" visibility="hidden"/><path d="M1721 335.3 A250 250 0 0 1 1725.5 345.5" visibility="hidden"/><path d="M1725 344.3 A250 250 0 0 1 1729 354.7" visibility="hidden"/><path d="M1728.5 353.5 A250 250 0 0 1 1732.2 364" visibility="hidden"/><path d="M1731.8 362.7 A250 250 0 0 1 1735 373.4" visibility="hidden"/><path d="M1734.6 372.1 A250 250 0 0 1 1737.4 382.9" visibility="hidden"/><path d="M1737.1 381.6 A250 250 0 0 1 1739.4 392.5" visibility="hidden"/><path d="M1739.2 391.2 A250 250 0 0 1 1741.1 402.2" visibility="hidden"/><path d="M1740.9 400.9 A250 250 0 0 1 1742.4 411.9" visibility="hidden"/><path d="M1742.3 410.6 A250 250 0 0 1 1743.3 421.7" visibility="hidden"/><path d="M1743.2 420.4 A250 250 0 0 1 1743.9 431.5" visibility="hidden"/><path d="M1743.8 430.2 A250 250 0 0 1 1744 441.3" visibility="hidden"/><path d="M1744 440 A250 250 0 0 1 1743.8 451.1" visibility="hidden"/><path d="M1743.8 449.8 A250 250 0 0 1 1743.1 460.9" visibility="hidden"/><path d="M1743.2 459.6 A250 250 0 0 1 1742.1 470.7" visibility="hidden"/><path d="M1742.3 469.4 A250 250 0 0 1 1740.7 480.4" visibility="hidden"/><path d="M1740.9 479.1 A250 250 0 0 1 1738.9 490.1" visibility="hidden"/><path d="M1739.2 488.8 A250 250 0 0 1 1736.8 499.6" visibility="hidden"/><path d="M1737.1 498.4 A250 250 0 0 1 1734.3 509.1" visibility="hidden"/><path d="M1734.6 507.9 A250 250 0 0 1 1731.4 518.5" visibility="hidden"/><path d="M1731.8 517.3 A250 250 0 0 1 1728.1 527.8" visibility="hidden"/><path d="M1728.5 526.5 A250 250 0 0 1 1724.5 536.9" visibility="hidden"/><path d="M1725 535.7 A250 250 0 0 1 1720.5 545.9" visibility="hidden"/><path d="M1721 544.7 A250 250 0 0 1 1716.2 554.7" visibility="hidden"/><path d="M1716.8 553.5 A250 250 0 0 1 1711.5 563.3" visibility="hidden"/><path d="M1712.1 562.2 A250 250 0 0 1 1706.5 571.7" visibility="hidden"/><path d="M1707.2 570.6 A250 250 0 0 1 1701.1 580" visibility="hidden"/><path d="M1701.9 578.9 A250 250 0 0 1 1695.5 588" visibility="hidden"/><path d="M1696.3 586.9 A250 250 0 0 1 1689.5 595.8" visibility="hidden"/><path d="M1690.3 594.8 A250 250 0 0 1 1683.2 603.4" visibility="hidden"/><path d="M1684.1 602.4 A250 250 0 0 1 1676.7 610.7" visibility="hidden"/><path d="M1677.6 609.7 A250 250 0 0 1 1670.8 616.8" visibility="hidden"/></g>
+  <g id="limite" visibility="hidden"><polygon points="666,440 688,433 688,447" fill="#ff3b30"/></g>
+  <g id="pontE" transform="rotate(-225 426 440)">
+    <line x1="576" y1="440" x2="670" y2="440" stroke="rgba(90,160,255,0.35)" stroke-width="12" stroke-linecap="round"/>
+    <polygon points="572,436.5 672,439 672,441 572,443.5" fill="#f5f8fb"/>
+  </g>
+  <g id="pontD" transform="rotate(-180 1494 440)">
+    <line x1="1644" y1="440" x2="1738" y2="440" stroke="rgba(90,160,255,0.35)" stroke-width="12" stroke-linecap="round"/>
+    <polygon points="1640,436.5 1740,439 1740,441 1640,443.5" fill="#f5f8fb"/>
+  </g>
+  <circle cx="426" cy="440" r="108" fill="#06080b" stroke="rgba(255,255,255,0.10)" stroke-width="2"/>
+  <circle cx="1494" cy="440" r="108" fill="#06080b" stroke="rgba(255,255,255,0.10)" stroke-width="2"/>
+</svg>
+  <!-- GERADO:arte:fim -->
+  <div id="vel" class="cubo"><div class="n" id="velValor">0</div><div class="u">km/h</div></div>
+  <div id="pot" class="cubo"><div class="n"><span id="potValor">0</span><small>%</small></div><div class="u">Potência</div></div>
+  <div id="topo">
+    <div class="t" id="temp">--°C</div>
+    <div id="marcha">P</div>
+    <div id="modos"><span id="modo">NORMAL</span><i>·</i><span id="energia">HEV</span></div>
+    <div class="t" id="hora">--:--</div>
+  </div>
+  <div id="autEv" class="aut">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#e6ebf0" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="7" width="17" height="11" rx="2"/><path d="M19.5 10.5h2v4h-2"/><path d="M11.5 9 8.5 13h4l-3 4" stroke="#34d17a"/></svg>
+    <div class="v"><span id="evKm">--</span><small>km</small></div>
+    <div class="barra"><i id="evBarra"></i></div>
+  </div>
+  <div id="autComb" class="aut">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#e6ebf0" stroke-width="1.8" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M3 21h13"/><path d="M6.5 8h6"/><path d="M15 10h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V9l-3-3"/></svg>
+    <div class="v"><span id="combKm">---</span><small>km</small></div>
+    <div class="barra"><i id="combBarra"></i></div>
+  </div>
+  <div id="midia"><div class="capa" id="capa"></div><div class="ti" id="titulo"></div><div class="ar" id="artista"></div></div>
+  <div id="odo"><span class="r">ODO</span><span id="odoValor">---</span><small>km</small></div>
+</div>
+<div id="noite"></div>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  /* GERADO:tabelas:inicio */
+  const ESC_VEL = [[0,225],[20,202.5],[40,180],[60,157.5],[80,135],[100,112.5],[120,90],[140,67.5],[160,45],[180,22.5],[200,0],[230,-22.5],[260,-45]];
+  const ESC_POT = [[-100,225],[0,180],[10,157.5],[20,135],[30,112.5],[40,90],[50,67.5],[60,45],[70,22.5],[80,0],[90,-22.5],[100,-45]];
+  const GEO = { ce: 426, cd: 1494, cy: 440, ini: 225, fim: -45, fatia: 2.25 };
+  /* GERADO:tabelas:fim */
+
+  const els = {
+    app: $('app'), bg: $('bg'), vel: $('vel'), velValor: $('velValor'), pot: $('pot'), potValor: $('potValor'),
+    pontE: $('pontE'), pontD: $('pontD'),
+    limite: $('limite'), temp: $('temp'), hora: $('hora'), marcha: $('marcha'),
+    evKm: $('evKm'), evBarra: $('evBarra'), combKm: $('combKm'), combBarra: $('combBarra'),
+    modo: $('modo'), energia: $('energia'), odoValor: $('odoValor'),
+    capa: $('capa'), titulo: $('titulo'), artista: $('artista'),
+  };
+
+  function numero(v) { const n = parseFloat(v); return Number.isFinite(n) ? n : null; }
+  function ligado(v) {
+    return v === true || ['1', 'true', 'on', 'yes', 'ligado'].indexOf(String(v == null ? '' : v).trim().toLowerCase()) >= 0;
+  }
+  function milhar(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  const escrito = {};
+  function mudou(chave, valor) { if (escrito[chave] === valor) return false; escrito[chave] = valor; return true; }
+
+  // ----- Suavização (a mesma do SENSUS/MBUX/ID8): filtro criticamente amortecido no ângulo. -----
+  function canal(ms, eps) { return { alvo: null, atual: null, taxa: 0, omega: 4.744 / Math.max(0.001, ms / 1000), eps: eps }; }
+  function mirar(c, v) { if (c.atual === null) { c.atual = v; c.alvo = v; c.taxa = 0; return; } c.alvo = v; }
+  function passo(c, dt) {
+    if (c.atual === null || (c.atual === c.alvo && c.taxa === 0)) return false;
+    if (dt > 0.4) { c.atual = c.alvo; c.taxa = 0; return false; }
+    const e0 = c.atual - c.alvo, b = c.taxa + c.omega * e0, k = Math.exp(-c.omega * dt);
+    c.atual = c.alvo + (e0 + b * dt) * k;
+    c.taxa = (c.taxa - c.omega * b * dt) * k;
+    if (Math.abs(c.alvo - c.atual) <= c.eps && Math.abs(c.taxa) <= c.omega * c.eps) { c.atual = c.alvo; c.taxa = 0; return false; }
+    return true;
+  }
+  const C = { vel: canal(300, 0.02), pot: canal(320, 0.02) };
+  function anguloDe(tab, v) {
+    if (v <= tab[0][0]) return tab[0][1];
+    for (let i = 1; i < tab.length; i++) {
+      if (v <= tab[i][0]) { const a = tab[i - 1], b = tab[i]; return a[1] + (b[1] - a[1]) * (v - a[0]) / (b[0] - a[0]); }
+    }
+    return tab[tab.length - 1][1];
+  }
+
+  const est = { velocidade: 0, potencia: 0, pronto: null, prontoPeloReady: false, limite: null, limiteOk: false,
+    tempExt: null, fahrenheit: false, modo: '0', modoEnergia: '0', bat: null, comb: null,
+    midia: { titulo: '', artista: '', capa: '' } };
+
+  // ----- Desenho: um quadro por vez, só enquanto os ponteiros andam. -----
+  // Acende as primeiras k fatias do arco: só as que mudaram de lado são tocadas.
+  function montarArco(id) { return { itens: Array.prototype.slice.call($(id).children), acesas: 0 }; }
+  const ARCOS = { vel: montarArco('arcoVel'), pot: montarArco('arcoPot'), carga: montarArco('arcoCarga') };
+  function acender(arco, fracao) {
+    const k = clamp(Math.round(fracao * arco.itens.length), 0, arco.itens.length);
+    if (k === arco.acesas) return;
+    const a = Math.min(k, arco.acesas), b = Math.max(k, arco.acesas);
+    for (let i = a; i < b; i++) arco.itens[i].setAttribute('visibility', i < k ? 'visible' : 'hidden');
+    arco.acesas = k;
+  }
+  function desenharVel(a) {
+    const tf = 'rotate(' + (-a).toFixed(2) + ' ' + GEO.ce + ' ' + GEO.cy + ')';
+    if (mudou('pE', tf)) els.pontE.setAttribute('transform', tf);
+    acender(ARCOS.vel, clamp((GEO.ini - a) / (GEO.ini - GEO.fim), 0, 1));
+  }
+  function desenharPot(a) {
+    const tf = 'rotate(' + (-a).toFixed(2) + ' ' + GEO.cd + ' ' + GEO.cy + ')';
+    if (mudou('pD', tf)) els.pontD.setAttribute('transform', tf);
+    // Potência: de 180° para a direita; carga: de 180° para baixo (até 225°).
+    acender(ARCOS.pot, a <= 180 ? clamp((180 - a) / (180 - GEO.fim), 0, 1) : 0);
+    acender(ARCOS.carga, a > 180 ? clamp((a - 180) / (GEO.ini - 180), 0, 1) : 0);
+  }
+  let renderScheduled = false, renderFallbackTimer = 0, ultimoQuadro = 0;
+  function flushRender(ts) {
+    if (!renderScheduled) return;
+    renderScheduled = false;
+    clearTimeout(renderFallbackTimer);
+    const agora = typeof ts === 'number' && ts > 0 ? ts : performance.now();
+    const dt = ultimoQuadro ? (agora - ultimoQuadro) / 1000 : 0;
+    ultimoQuadro = agora;
+    const a = passo(C.vel, dt), b = passo(C.pot, dt);
+    if (C.vel.atual !== null) desenharVel(C.vel.atual);
+    if (C.pot.atual !== null) desenharPot(C.pot.atual);
+    if (a || b) scheduleRender(); else ultimoQuadro = 0;
+  }
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(flushRender);
+    // Com o WebView oculto o rAF não dispara; os valores não podem congelar.
+    renderFallbackTimer = setTimeout(flushRender, 120);
+  }
+
+  function mirarPotencia() {
+    // Desligado: o ponteiro descansa no zero, apagado. Pronto (READY): mostra a potência.
+    const desligado = est.pronto === false;
+    if (mudou('desl', desligado)) els.pot.classList.toggle('desligado', desligado);
+    const p = desligado ? 0 : est.potencia;
+    const r = Math.round(p);
+    const txt = (r < 0 ? '−' : '') + Math.abs(r);
+    if (mudou('potTxt', txt)) els.potValor.textContent = txt;
+    mirar(C.pot, anguloDe(ESC_POT, p));
+    scheduleRender();
+  }
+  function atualizarLimite() {
+    const ok = est.limiteOk && est.limite !== null && est.limite > 0;
+    els.limite.setAttribute('visibility', ok ? 'visible' : 'hidden');
+    if (ok) els.limite.setAttribute('transform', 'rotate(' + (-anguloDe(ESC_VEL, clamp(est.limite, 0, 260))).toFixed(2) + ' ' + GEO.ce + ' ' + GEO.cy + ')');
+    const acima = ok && est.velocidade > est.limite + 3;
+    if (mudou('acima', acima)) els.vel.classList.toggle('acima', acima);
+  }
+  function desenharTemp() {
+    if (est.tempExt === null) return;
+    const v = Math.round(est.fahrenheit ? est.tempExt * 9 / 5 + 32 : est.tempExt);
+    els.temp.textContent = (v < 0 ? '−' : '') + Math.abs(v) + (est.fahrenheit ? '°F' : '°C');
+  }
+  function barra(el, pct) { el.style.transform = 'scaleX(' + (clamp(pct, 0, 100) / 100).toFixed(3) + ')'; }
+
+  const GEAR_LABELS = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+  const DRIVE_MODE_LABELS = { '0': 'NORMAL', '1': 'SPORT', '2': 'ECO', '3': 'NEVE', '4': 'AREIA', '5': 'LAMA', '11': 'AWD' };
+  const EV_MODE_LABELS = { '0': 'HEV', '1': 'EV PRIOR.', '3': 'EV' };
+  function atualizarModos() {
+    els.modo.textContent = DRIVE_MODE_LABELS[est.modo] || 'NORMAL';
+    els.energia.textContent = EV_MODE_LABELS[est.modoEnergia] || 'HEV';
+    document.body.classList.toggle('modo-sport', est.modo === '1');
+    document.body.classList.toggle('modo-eco', est.modo === '2');
+  }
+  function atualizarMidia() {
+    const m = est.midia;
+    const tem = m.titulo.trim().length > 0;
+    document.body.classList.toggle('com-midia', tem);
+    if (!tem) return;
+    els.titulo.textContent = m.titulo;
+    els.artista.textContent = m.artista;
+    els.capa.style.backgroundImage = m.capa ? 'url("' + m.capa.replace(/"/g, '%22') + '")' : '';
+  }
+
+  function handleTelemetry(key, raw) {
+    switch (key) {
+      case 'car.basic.vehicle_speed': {
+        const v = numero(raw);
+        est.velocidade = v === null ? 0 : Math.max(0, v);
+        const txt = String(Math.round(est.velocidade));
+        if (mudou('vel', txt)) els.velValor.textContent = txt;
+        mirar(C.vel, anguloDe(ESC_VEL, clamp(est.velocidade, 0, 260)));
+        atualizarLimite();
+        scheduleRender();
+        break;
+      }
+      case 'car.ev_info.energy_output_percentage':
+        est.potencia = clamp(numero(raw) || 0, -100, 100);
+        mirarPotencia();
+        break;
+      // READY vem de driving_ready_state ("1" pronto); engine_state é ignição (11 em READY).
+      case 'car.basic.driving_ready_state': {
+        const s = String(raw).trim();
+        est.prontoPeloReady = s !== '';
+        est.pronto = s === '1' ? true : (s === '0' || s === '-1') ? false : null;
+        mirarPotencia();
+        break;
+      }
+      case 'car.basic.engine_state': {
+        if (est.prontoPeloReady) break;
+        const n = parseInt(raw, 10);
+        est.pronto = Number.isFinite(n) ? (n === 11 || n === 13) : null;
+        mirarPotencia();
+        break;
+      }
+      case 'car.ev_info.cur_battery_power_percentage': {
+        const p = numero(raw);
+        if (p !== null) barra(els.evBarra, p);
+        break;
+      }
+      case 'car.basic.remain_fuel_percentage': {
+        const p = numero(raw);
+        if (p !== null) barra(els.combBarra, p);
+        break;
+      }
+      case 'car.ev_info.electric_mode_remain_odometer': {
+        const km = numero(raw);
+        els.evKm.textContent = km === null || km < 0 ? '--' : Math.round(km);
+        break;
+      }
+      case 'car.ev_info.fuel_mode_remain_odometer': {
+        const km = numero(raw);
+        els.combKm.textContent = km === null || km < 0 ? '---' : Math.round(km);
+        break;
+      }
+      case 'car.basic.total_odometer': {
+        const km = numero(raw);
+        if (km !== null && km >= 0) els.odoValor.textContent = milhar(Math.round(km));
+        break;
+      }
+      case 'car.basic.gear_status': {
+        const s = String(raw == null ? '' : raw).trim().toUpperCase();
+        const letra = /^[PRND]$/.test(s) ? s : (GEAR_LABELS[String(parseInt(s, 10))] || 'N');
+        if (mudou('marcha', letra)) els.marcha.textContent = letra;
+        break;
+      }
+      case 'car.drive_setting.drive_mode': {
+        const m = String(parseInt(raw, 10));
+        est.modo = DRIVE_MODE_LABELS[m] ? m : '0';
+        atualizarModos();
+        break;
+      }
+      case 'car.ev_setting.power_model_config':
+        est.modoEnergia = String(raw).trim();
+        atualizarModos();
+        break;
+      case 'car.basic.outside_temp': {
+        const t = numero(raw);
+        if (t !== null) { est.tempExt = t; desenharTemp(); }
+        break;
+      }
+      case 'car.configure.default_temp_unit':
+        est.fahrenheit = String(raw).trim() === '1';
+        desenharTemp();
+        break;
+      case 'car.basic.head_light_status':
+        document.body.classList.toggle('mode-headlight', ligado(raw));
+        break;
+      case 'car.map.tsr.nav_speed_limit':
+        est.limite = numero(raw);
+        atualizarLimite();
+        break;
+      case 'car.map.tsr.nav_speed_limit_sign_status':
+        est.limiteOk = ligado(raw);
+        atualizarLimite();
+        break;
+      case 'app.media.title': est.midia.titulo = raw ? String(raw) : ''; atualizarMidia(); break;
+      case 'app.media.artist': est.midia.artista = raw ? String(raw) : ''; atualizarMidia(); break;
+      case 'app.media.album_art': est.midia.capa = raw ? String(raw).trim() : ''; atualizarMidia(); break;
+      default: break;
+    }
+  }
+
+  // ----- Ceder a tela: só projeção de verdade (CarPlay/Android Auto/espelhamento). -----
+  const projectionState = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  function applyYieldToCar() {
+    const yielding = projectionState.carPlayInDash || projectionState.projectionMirrorInDash || projectionState.projectionPreparingD3;
+    els.app.classList.toggle('hidden', yielding);
+    document.body.classList.toggle('yield-to-car', yielding);
+  }
+
+  // ----- Vão da projeção da central -----
+  // De um centro de mostrador ao outro, como no NTG 5.5 (coffe3): as bordas caem embaixo das faces
+  // (opacas), e a imagem ocupa o lugar da estrada, que sai da frente enquanto projeta.
+  const PROJ_BOX = { x: 426, y: 118, w: 1068, h: 522 };
+  const PROJ_PENA_X = 96;
+  const PROJ_PENA_Y = 56;
+  function sabeRecortarOFundo() {
+    try {
+      if (!window.CSS || typeof window.CSS.supports !== 'function') return false;
+      const g = 'linear-gradient(to right, #000 0px, transparent 10px)';
+      return window.CSS.supports('-webkit-mask-image', g) || window.CSS.supports('mask-image', g);
+    } catch (e) { return false; }
+  }
+  let recortaOFundo = null;
+  function declararVaoDaProjecao() {
+    if (recortaOFundo === null) {
+      recortaOFundo = sabeRecortarOFundo();
+      if (!recortaOFundo) console.warn('[TEA 3.0] sem suporte a mascara: a projecao vai por cima do tema');
+    }
+    if (!recortaOFundo) return;
+    try {
+      if (window.Android && typeof window.Android.setProjectionBox === 'function') {
+        window.Android.setProjectionBox(PROJ_BOX.x, PROJ_BOX.y, PROJ_BOX.w, PROJ_BOX.h);
+      }
+    } catch (e) { /* ponte antiga: sem declaração, o app volta a varrer o DOM */ }
+  }
+  function aplicarVaoDaProjecao(valor) {
+    const bg = els.bg;
+    const n = String(valor == null ? '' : valor).split(',');
+    const x = parseInt(n[0], 10), y = parseInt(n[1], 10), l = parseInt(n[2], 10), a = parseInt(n[3], 10);
+    if (n.length < 4 || !(l > 0) || !(a > 0)) {
+      bg.style.webkitMaskImage = '';
+      bg.style.maskImage = '';
+      document.body.classList.remove('projetando');
+      return;
+    }
+    const L = x, R = x + l, T = y, B = y + a;
+    const px = Math.min(PROJ_PENA_X, Math.floor(l / 3)), py = Math.min(PROJ_PENA_Y, Math.floor(a / 3));
+    const pe = L <= 0 ? 0 : px, pd = R >= 1920 ? 0 : px, pt = T <= 0 ? 0 : py, pb = B >= 720 ? 0 : py;
+    const gx = 'linear-gradient(to right, #000 ' + L + 'px, transparent ' + (L + pe) + 'px, transparent ' + (R - pd) + 'px, #000 ' + R + 'px)';
+    const gy = 'linear-gradient(to bottom, #000 ' + T + 'px, transparent ' + (T + pt) + 'px, transparent ' + (B - pb) + 'px, #000 ' + B + 'px)';
+    const veu = $('projscrim');
+    if (veu) {
+      veu.style.left = L + 'px'; veu.style.top = T + 'px'; veu.style.width = l + 'px'; veu.style.height = a + 'px';
+      const mv = 'linear-gradient(to right, transparent 0px, #000 ' + pe + 'px, #000 ' + (l - pd) + 'px, transparent ' + l + 'px)';
+      veu.style.webkitMaskImage = mv;
+      veu.style.maskImage = mv;
+    }
+    bg.style.webkitMaskImage = gx + ', ' + gy;
+    bg.style.maskImage = gx + ', ' + gy;
+    document.body.classList.add('projetando');
+  }
+
+  const SUBSCRIBE_KEYS = [
+    'car.basic.vehicle_speed',
+    'car.ev_info.energy_output_percentage',
+    'car.basic.driving_ready_state',
+    'car.basic.engine_state',
+    'car.ev_info.cur_battery_power_percentage',
+    'car.basic.remain_fuel_percentage',
+    'car.ev_info.electric_mode_remain_odometer',
+    'car.ev_info.fuel_mode_remain_odometer',
+    'car.basic.total_odometer',
+    'car.basic.gear_status',
+    'car.drive_setting.drive_mode',
+    'car.ev_setting.power_model_config',
+    'car.basic.outside_temp',
+    'car.configure.default_temp_unit',
+    'car.basic.head_light_status',
+    'car.map.tsr.nav_speed_limit',
+    'car.map.tsr.nav_speed_limit_sign_status',
+    'app.media.title',
+    'app.media.artist',
+    'app.media.album_art',
+    'warningActive'
+  ];
+
+  function lerPreferencias() {
+    try {
+      if (!window.Android || typeof window.Android.getPreference !== 'function') return;
+      const modo = String(window.Android.getPreference('displayMode', 'Dia') || '');
+      document.body.classList.toggle('night-mode', modo === 'Noite');
+    } catch (e) { /* ignore */ }
+  }
+  function tickClock() {
+    const d = new Date();
+    els.hora.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+
+  // ----- Simulação local (sem window.Android): ?vel=, ?pot=, ?off=1, ?proj=1, ?mode=Noite. -----
+  function installMockBridge() {
+    console.warn('[TEA 3.0] window.Android ausente — usando simulação local para preview.');
+    const q = new URLSearchParams(location.search);
+    window.Android = {
+      getAvailableKeys: () => JSON.stringify(SUBSCRIBE_KEYS),
+      subscribe: () => {}, unsubscribe: () => {}, getCarData: () => '0', updateCarData: () => {},
+      getPreference: (k, d) => (k === 'displayMode' ? (q.get('mode') || d) : d),
+      savePreference: () => {}, heartbeat: () => {}, triggerSystemAction: () => {},
+      setAppDefaultDimensions: () => {}, setProjectionBox: () => {},
+    };
+    const seed = {
+      'car.basic.vehicle_speed': q.get('vel') || '0',
+      'car.ev_info.energy_output_percentage': q.get('pot') || '0',
+      'car.basic.driving_ready_state': q.get('off') === '1' ? '0' : '1',
+      'car.ev_info.cur_battery_power_percentage': '38',
+      'car.basic.remain_fuel_percentage': '55',
+      'car.ev_info.electric_mode_remain_odometer': '39',
+      'car.ev_info.fuel_mode_remain_odometer': '219',
+      'car.basic.total_odometer': '451',
+      'car.basic.gear_status': '2',
+      'car.drive_setting.drive_mode': '0',
+      'car.ev_setting.power_model_config': '0',
+      'car.basic.outside_temp': '24',
+      'car.basic.head_light_status': '0',
+    };
+    Object.keys(seed).forEach((k) => handleTelemetry(k, seed[k]));
+    if (q.get('midia') === '1') { handleTelemetry('app.media.title', 'Faixa de demonstração'); handleTelemetry('app.media.artist', 'Artista'); }
+    if (q.get('proj') === '1') window.control('projectionWindow', PROJ_BOX.x + ',' + PROJ_BOX.y + ',' + PROJ_BOX.w + ',' + PROJ_BOX.h);
+    if (q.get('anda') !== '1') return;
+    let t = 0, vel = 0;
+    setInterval(() => {
+      t += 0.1;
+      vel += clamp(110 + 100 * Math.sin(t / 6) - vel, -2.4, 1.8);
+      handleTelemetry('car.basic.vehicle_speed', vel.toFixed(1));
+      handleTelemetry('car.ev_info.energy_output_percentage', String(Math.round(70 * Math.sin(t / 2.2))));
+    }, 100);
+  }
+
+  function installHandlers() {
+    const prevOnDataChanged = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevOnDataChanged === 'function') { try { prevOnDataChanged(key, value); } catch (e) { console.error(e); } }
+      handleTelemetry(key, value);
+    };
+    window.onCardChanged = function () {};
+    const prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') { try { prevControl(key, value); } catch (e) { /* ignore */ } }
+      if (Object.prototype.hasOwnProperty.call(projectionState, key)) {
+        projectionState[key] = (value === true || value === 'true');
+        applyYieldToCar();
+        return;
+      }
+      if (key === 'projectionWindow') { aplicarVaoDaProjecao(value); return; }
+    };
+  }
+
+  function initBridge() {
+    installHandlers();
+    if (!window.Android || typeof window.Android.subscribe !== 'function') installMockBridge();
+    try {
+      if (window.Android && typeof window.Android.subscribe === 'function') window.Android.subscribe(JSON.stringify(SUBSCRIBE_KEYS));
+      if (window.Android && typeof window.Android.setAppDefaultDimensions === 'function') window.Android.setAppDefaultDimensions(640, 110, 640, 520);
+      declararVaoDaProjecao();
+      lerPreferencias();
+    } catch (e) { console.error('[TEA 3.0] bridge init failed:', e); }
+    setInterval(() => {
+      try { if (window.Android && typeof window.Android.heartbeat === 'function') window.Android.heartbeat(); } catch (e) { /* ignore */ }
+      lerPreferencias();
+      try { declararVaoDaProjecao(); } catch (e) { /* ignore */ }
+    }, 2000);
+  }
+
+  tickClock();
+  setInterval(tickClock, 5000);
+  mirar(C.vel, GEO.ini);
+  mirar(C.pot, 180);
+  desenharVel(GEO.ini);
+  desenharPot(180);
+  atualizarModos();
+  initBridge();
+})();
+</script>
+</body>
+</html>

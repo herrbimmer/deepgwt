@@ -1,0 +1,2862 @@
+{
+  "ok": true,
+  "formato": 1,
+  "app": "Alpha 6.5 240920261907",
+  "revisao": 1,
+  "valores": {
+    "enable_persistent_bottom_bar": true,
+    "bottomBarHeightDp": 60,
+    "bottomBarTempControl": "dual",
+    "bottomBarShowVolume": true,
+    "bottomBarShowSportPlus": true,
+    "volumeOverlayOnCarChange": true,
+    "volumeOverlayLogoType": "jbl",
+    "volumeOverlayLogoCustomText": "",
+    "hideBarOnAndroidAuto": true,
+    "bottomBarAutoHide": false,
+    "bottomBarSwipeUpAction": "drawer",
+    "disableAvas": false,
+    "disableMonitoring": false,
+    "adasMemoriaAtiva": false,
+    "closeWindowOnLockVehicle": false,
+    "enableSteeringWheelMediaControl": true,
+    "disableHotspotOnPowerOff": true,
+    "sportPlusEnabled": false,
+    "disableAvmCarStopped": false,
+    "hideLeftNavPane": false,
+    "quickGesturesEnabled": false,
+    "projectionGestureEnabled": true,
+    "disableVoiceWakeUp": false,
+    "macrosEnabled": true,
+    "asdMasterEnabled": true,
+    "asdSoundProfile": "COMBUSTAO",
+    "asdActivation": "READY",
+    "asdRpmSource": "SIMULADA",
+    "asdCadence": "AUTOMATICA",
+    "asdPitch": 0,
+    "asdMuteInPark": false,
+    "asdVolumeMode": "FIXED",
+    "asdVolume": 50,
+    "asdVolumeRpmLow": 30,
+    "asdVolumeRpmHigh": 80,
+    "asdPositionX": 0,
+    "asdPositionY": 0,
+    "sys.settings.audio.eq_bass_value": 2,
+    "sys.settings.audio.eq_alto_value": 0,
+    "sys.settings.audio.eq_treble_value": 1,
+    "sys.settings.audio.sound_field_value": 6,
+    "sys.settings.audio.sound_surround_enable": true,
+    "sys.settings.audio.sound_effect_dts_state": false,
+    "sys.settings.audio.sound_quality_restore_enable": true,
+    "sys.settings.audio.anc_enable": null,
+    "sys.settings.audio.system_acoustics_enable": true,
+    "sys.settings.audio.volume_adaptation_enable": false,
+    "sys.settings.audio.volume_adjust_by_speed_state": true,
+    "sys.settings.audio.volume_adjust_by_wind_state": false,
+    "sys.settings.audio.external_amp_enable": true,
+    "audioReverbEnabled": false,
+    "audioReverbRoomSize": 40,
+    "audioReverbWetness": 30,
+    "painel.tema_customizado": false,
+    "painel.informacoes": true,
+    "originalPanelTempScale": 1,
+    "painel.circulo": true,
+    "enableOdometerAndRevision": true,
+    "clusterFuelDisplayUnit": "liters",
+    "clusterHideSpeedometerOnMaps": false,
+    "clusterV2TripInfo": false,
+    "gaugeNumberScale": 1,
+    "nightModeColor": "amber",
+    "nightModeTrigger": "auto",
+    "hudOverlayEnabled": true,
+    "hudSpeedSizePct": 30,
+    "hudSpeedColor": "#FFFFFF",
+    "hudShowSpeedUnit": true,
+    "hudShowSli": true,
+    "hudSliSizePct": 28,
+    "hudSliSide": "direita",
+    "hudShowAlerts": true,
+    "hudWheelControl": false,
+    "hudShowHeader": true,
+    "hudShowDots": true,
+    "hudFontWeight": 700,
+    "hudFontFamily": "padrao",
+    "hudLabelColor": "#AAB4BE",
+    "ambientLightBleEnabled": false,
+    "ambientLightOutput": "DMX",
+    "ambientLightBrightnessPercent": 100,
+    "ambientLightManualHue": 0,
+    "ambientLightSyncDriveMode": false,
+    "ambientLightAnimationsEnabled": false,
+    "ambientLightMusicAnimationEnabled": false,
+    "ambientLightMusicMode": "BASS",
+    "ambientLightAutoReconnect": true,
+    "enableAutoBrightness": false,
+    "autoBrightnessUseSun": false,
+    "autoBrightnessLevelDay": 10,
+    "autoBrightnessLevelNight": 1,
+    "nightStartHour": "20:00",
+    "nightEndHour": "06:00",
+    "autoBrightnessStepMin": 5,
+    "closeWindowOnPowerOff": false,
+    "closeWindowOnFoldMirror": false,
+    "closeSunroofOnPowerOff": false,
+    "closeSunroofOnFoldMirror": false,
+    "closeSunroofSunShadeOnCloseSunRoof": false,
+    "closeWindowsOnSpeed": false,
+    "speedThreshold": 15,
+    "closeSunroofOnSpeed": false,
+    "sunroofSpeedThreshold": 15,
+    "setStartupVolume": false,
+    "startupVolume": 1,
+    "enableMaxAcOnUnlock": false,
+    "maxAcOnUnlockThreshold": 35,
+    "maxAcTargetTemp": 28,
+    "maxAcTimeout": "0",
+    "enableSeatVentilationOnAcOn": false,
+    "enableOpenSunroofCurtainOnStart": false,
+    "openSunroofCurtainStartHour": "18:00",
+    "openSunroofCurtainEndHour": "09:00",
+    "openSunroofCurtainMaxTemp": -1,
+    "enablePersistHevSocTarget": false,
+    "hevSocTargetValue": 50,
+    "disableBluetoothOnFoldMirror": false,
+    "disableHotspotOnFoldMirror": false,
+    "disableNativeNavigation": true,
+    "disableNativeVoice": true,
+    "disableNativeWeather": true,
+    "enableResourceOverlay": false,
+    "resourceOverlayCorner": "3",
+    "resourceOverlayFontSp": 14,
+    "resourceOverlayX": 12,
+    "resourceOverlayY": 90,
+    "homeLauncher3dFixo": false,
+    "viewerCommandsEnabled": true,
+    "painel.tema": "coffe3",
+    "interfaceStyle": "grade",
+    "interfaceEscala": 100,
+    "interfaceEscalaTexto": 100,
+    "ambientLightReactHazard": true,
+    "ambientLightReactBlindSpot": true,
+    "ambientLightReactTurnSignal": false,
+    "ambientLightReactHeadlight": true,
+    "ambientLightReactDriveMode": true,
+    "ambientLightReactClimate": true,
+    "hudNightMode": "desligado",
+    "hudNightBrightness": 55,
+    "hudNightAmber": false
+  },
+  "indisponiveis": [
+    "sys.settings.audio.anc_enable"
+  ],
+  "faixas": {
+    "sys.settings.audio.eq_bass_value": [
+      -7,
+      7
+    ],
+    "sys.settings.audio.eq_alto_value": [
+      -7,
+      7
+    ],
+    "sys.settings.audio.eq_treble_value": [
+      -7,
+      7
+    ],
+    "sys.settings.audio.sound_field_value": [
+      0,
+      14
+    ]
+  },
+  "nivel": "signature",
+  "secoes": [
+    {
+      "id": "barra",
+      "titulo": "Barra inferior",
+      "descricao": "A barra do OPEN GW por cima das telas: altura, botões e o cartão de volume.",
+      "recurso": "barra",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "carro",
+      "titulo": "Carro e segurança",
+      "descricao": "Alertas, monitoramento do motorista, vidros e conectividade ao desligar.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "gestos",
+      "titulo": "Gestos, voz e macros",
+      "descricao": "Barra lateral do carro, gestos com vários dedos, escuta do \"Olá Haval\" e macros.",
+      "recurso": "gestos",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "asd",
+      "titulo": "Som do motor (ASD)",
+      "descricao": "O som de motor simulado pelos alto-falantes.",
+      "recurso": "asd",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "audio",
+      "titulo": "Áudio",
+      "descricao": "Equalizador e processamento do amplificador do carro, e o reverb de software.",
+      "recurso": "audio",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "painel",
+      "titulo": "Painel de instrumentos",
+      "descricao": "O que o OPEN GW mostra atrás do volante: tema, informações extras e aparência.",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "hud",
+      "titulo": "Head-up display",
+      "descricao": "Velocidade, placa de limite e alertas no para-brisa.",
+      "recurso": "hud",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "luz",
+      "titulo": "Luz ambiente",
+      "descricao": "Fitas de LED externas (LEDCAR/LEDDMX) por Bluetooth ou DMX.",
+      "recurso": "luz",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "brilho",
+      "titulo": "Brilho automático",
+      "descricao": "Brilho da central que acompanha o dia e a noite, por horário ou pelo sol.",
+      "recurso": "brilho",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "automacoes",
+      "titulo": "Automações do veículo",
+      "descricao": "O que o OPEN GW faz sozinho ao ligar, desligar, trancar ou andar.",
+      "recurso": "automacoes",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    },
+    {
+      "id": "sistema",
+      "titulo": "Sistema e desempenho",
+      "descricao": "Apps de fábrica desativados e o indicador de CPU e RAM.",
+      "recurso": "sistema",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "launcher",
+      "titulo": "Launcher 3D",
+      "descricao": "O que a tela inicial 3D pode fazer no carro.",
+      "recurso": "launcher3d",
+      "nivelExigido": "sport",
+      "bloqueado": false
+    },
+    {
+      "id": "interface",
+      "titulo": "Interface do OPEN GW",
+      "descricao": "O visual das telas do app do OPEN GW na central: estilo, tamanho da interface e das letras.",
+      "recurso": "interface",
+      "nivelExigido": "drive",
+      "bloqueado": false
+    }
+  ],
+  "ajustes": [
+    {
+      "id": "enable_persistent_bottom_bar",
+      "secao": "barra",
+      "rotulo": "Barra inferior",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "serviço da barra inferior",
+      "origem": "preferencia",
+      "ajuda": "Overlay persistente com controles rápidos do veículo.",
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarHeightDp",
+      "secao": "barra",
+      "rotulo": "Altura",
+      "tipo": "numero",
+      "padrao": 60,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "min": 40,
+      "max": 140,
+      "passo": 4,
+      "unidade": "dp",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarTempControl",
+      "secao": "barra",
+      "rotulo": "Controle de temperatura",
+      "tipo": "opcoes",
+      "padrao": "single",
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "off",
+          "rotulo": "Desligado"
+        },
+        {
+          "id": "single",
+          "rotulo": "Uma zona"
+        },
+        {
+          "id": "dual",
+          "rotulo": "Duas zonas"
+        }
+      ],
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarShowVolume",
+      "secao": "barra",
+      "rotulo": "Controle rápido de volume",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarShowSportPlus",
+      "secao": "barra",
+      "rotulo": "Modo de condução e SPORT+",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "ajuda": "Botão que mostra o modo atual. Toque abre o menu Condução (o SPORT+ pede confirmação); segurar e arrastar para cima troca o modo.",
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "volumeOverlayOnCarChange",
+      "secao": "barra",
+      "rotulo": "Cartão de volume ao mudar o volume",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "ajuda": "Mostra o cartão também quando o volume muda pelo volante ou pelo botão físico, e não só pela barra.",
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "volumeOverlayLogoType",
+      "secao": "barra",
+      "rotulo": "Logo no cartão de volume",
+      "tipo": "opcoes",
+      "padrao": "gwm",
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "gwm",
+          "rotulo": "GWM"
+        },
+        {
+          "id": "jbl",
+          "rotulo": "JBL"
+        },
+        {
+          "id": "hertz",
+          "rotulo": "Hertz"
+        },
+        {
+          "id": "custom",
+          "rotulo": "Texto"
+        }
+      ],
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "volumeOverlayLogoCustomText",
+      "secao": "barra",
+      "rotulo": "Texto do logo",
+      "tipo": "texto",
+      "padrao": "",
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "maxCaracteres": 12,
+      "visivelSe": {
+        "id": "volumeOverlayLogoType",
+        "valores": [
+          "custom"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "hideBarOnAndroidAuto",
+      "secao": "barra",
+      "rotulo": "Ocultar barra no Android Auto e CarPlay",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "A barra sai sozinha ao entrar na projeção e volta ao sair. Um deslize de baixo para cima traz a barra de volta sem sair da projeção.",
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarAutoHide",
+      "secao": "barra",
+      "rotulo": "Esconder a barra sozinha",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "ajuda": "A barra some depois de 30 segundos sem uso.",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "bottomBarSwipeUpAction",
+      "secao": "barra",
+      "rotulo": "Ao deslizar a barra para cima",
+      "tipo": "opcoes",
+      "padrao": "drawer",
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "opcoes": [
+        {
+          "id": "drawer",
+          "rotulo": "Abrir a gaveta de atalhos"
+        },
+        {
+          "id": "dashboard",
+          "rotulo": "Abrir o painel do OPEN GW"
+        },
+        {
+          "id": "haval_home",
+          "rotulo": "Ir para a Home Haval"
+        },
+        {
+          "id": "app_launcher",
+          "rotulo": "Ir para a lista de apps Haval"
+        },
+        {
+          "id": "none",
+          "rotulo": "Nada (gesto desativado)"
+        }
+      ],
+      "visivelSe": {
+        "id": "enable_persistent_bottom_bar",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "barra",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableAvas",
+      "secao": "carro",
+      "rotulo": "Desativar AVAS",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "AVAS",
+      "origem": "preferencia",
+      "ajuda": "Sistema de alerta de veículo silencioso.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableMonitoring",
+      "secao": "carro",
+      "rotulo": "Desativar monitoramento de distração e fadiga",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "monitoramento de distração e fadiga",
+      "origem": "preferencia",
+      "ajuda": "Impede a câmera interna (DMS) de monitorar distração e fadiga do motorista.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "adasMemoriaAtiva",
+      "secao": "carro",
+      "rotulo": "Manter assistentes de faixa e aviso de velocidade como deixei",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "O carro religa os avisos de faixa e de velocidade a cada partida; o OPEN GW devolve o que você deixou. Frenagem automática fica de fora.",
+      "recurso": "adas.memoria",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeWindowOnLockVehicle",
+      "secao": "carro",
+      "rotulo": "Fechar vidros ao trancar",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "vidros ao trancar",
+      "origem": "preferencia",
+      "ajuda": "Recurso nativo do carro — valide o comportamento no seu veículo.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enableSteeringWheelMediaControl",
+      "secao": "carro",
+      "rotulo": "Controle de mídia pelo volante",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Próxima, anterior e play/pause do volante controlam a mídia (Android Auto).",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableHotspotOnPowerOff",
+      "secao": "carro",
+      "rotulo": "Desativar conectividade ao desligar",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Desliga o hotspot Wi-Fi e o Bluetooth ao desligar o veículo, e religa os dois quando o carro liga de novo.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "sportPlusEnabled",
+      "secao": "carro",
+      "rotulo": "SPORT+",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Ao entrar no modo Sport, oferece ativar o motor a combustão forçado e desativar o ESP (tração/estabilidade).",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableAvmCarStopped",
+      "secao": "carro",
+      "rotulo": "Desligar a câmera 360° com o carro parado",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Fecha a câmera AVM quando o carro para fora da ré.",
+      "soNoComputador": true,
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "hideLeftNavPane",
+      "secao": "gestos",
+      "rotulo": "Ocultar barra lateral do carro",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "barra lateral do carro",
+      "origem": "preferencia",
+      "ajuda": "Esconde a barra nativa (ventilação, home, apps) em todas as telas. Ela volta com um deslize da borda e se esconde de novo sozinha.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "quickGesturesEnabled",
+      "secao": "gestos",
+      "rotulo": "Gestos rápidos com 3 dedos",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "gestos rápidos",
+      "origem": "preferencia",
+      "ajuda": "Para cima/baixo muda a temperatura; para os lados muda a ventilação.",
+      "recurso": "gestos",
+      "nivelExigido": "premium"
+    },
+    {
+      "id": "projectionGestureEnabled",
+      "secao": "gestos",
+      "rotulo": "Toque duplo com 4 dedos projeta no painel",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "gestos rápidos",
+      "origem": "preferencia",
+      "ajuda": "Abre a escolha da área da central que aparece entre os mostradores. Repetir o gesto encerra.",
+      "recurso": "painel.circulo",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableVoiceWakeUp",
+      "secao": "gestos",
+      "rotulo": "Desativar escuta e \"Olá Haval\"",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "escuta do \"Olá Haval\"",
+      "origem": "preferencia",
+      "ajuda": "Nega o microfone aos pacotes de voz da Haval. Nada é desinstalado: desligue e o \"Olá Haval\" volta.",
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "macrosEnabled",
+      "secao": "gestos",
+      "rotulo": "Macros armadas",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "macros",
+      "origem": "preferencia",
+      "ajuda": "Com isto desligado, nenhuma macro gravada dispara. As macros continuam guardadas.",
+      "recurso": "macros",
+      "nivelExigido": "premium"
+    },
+    {
+      "id": "asdMasterEnabled",
+      "secao": "asd",
+      "rotulo": "Som do motor (ASD)",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "ajuda": "Som de motor pelos alto-falantes, por cima do que o carro toca.",
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdSoundProfile",
+      "secao": "asd",
+      "rotulo": "Tipo de som",
+      "tipo": "opcoes",
+      "padrao": "COMBUSTAO",
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "COMBUSTAO",
+          "rotulo": "Motor a combustão"
+        },
+        {
+          "id": "ELETRICO",
+          "rotulo": "Zumbido elétrico"
+        }
+      ],
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdActivation",
+      "secao": "asd",
+      "rotulo": "Quando tocar",
+      "tipo": "opcoes",
+      "padrao": "READY",
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "READY",
+          "rotulo": "Com o carro ligado (READY)"
+        },
+        {
+          "id": "MOTOR_A_COMBUSTAO",
+          "rotulo": "Só com o motor a combustão ligado"
+        }
+      ],
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdRpmSource",
+      "secao": "asd",
+      "rotulo": "Rotação do som",
+      "tipo": "opcoes",
+      "padrao": "SIMULADA",
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "SIMULADA",
+          "rotulo": "Simulada (câmbio de 8 marchas)"
+        },
+        {
+          "id": "REAL",
+          "rotulo": "Giro real do motor a combustão"
+        }
+      ],
+      "visivelSe": {
+        "id": "asdSoundProfile",
+        "valores": [
+          "COMBUSTAO"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdCadence",
+      "secao": "asd",
+      "rotulo": "Câmbio simulado",
+      "tipo": "opcoes",
+      "padrao": "AUTOMATICA",
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "AUTOMATICA",
+          "rotulo": "Segue o modo do carro"
+        },
+        {
+          "id": "ECO",
+          "rotulo": "Eco"
+        },
+        {
+          "id": "NORMAL",
+          "rotulo": "Normal"
+        },
+        {
+          "id": "SPORT",
+          "rotulo": "Sport"
+        }
+      ],
+      "visivelSe": {
+        "id": "asdRpmSource",
+        "valores": [
+          "SIMULADA"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdPitch",
+      "secao": "asd",
+      "rotulo": "Tom do motor",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "ajuda": "Negativo = mais grave; positivo = mais agudo.",
+      "min": -20,
+      "max": 20,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdMuteInPark",
+      "secao": "asd",
+      "rotulo": "Silenciar em P",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "ajuda": "Sem som com a alavanca em P e o carro parado.",
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdVolumeMode",
+      "secao": "asd",
+      "rotulo": "Volume",
+      "tipo": "opcoes",
+      "padrao": "FIXED",
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "FIXED",
+          "rotulo": "Volume fixo"
+        },
+        {
+          "id": "RPM",
+          "rotulo": "Volume por RPM"
+        }
+      ],
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdVolume",
+      "secao": "asd",
+      "rotulo": "Volume do ASD",
+      "tipo": "numero",
+      "padrao": 50,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "ajuda": "Independente do volume da mídia.",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "asdVolumeMode",
+        "valores": [
+          "FIXED"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdVolumeRpmLow",
+      "secao": "asd",
+      "rotulo": "Volume em RPM baixas",
+      "tipo": "numero",
+      "padrao": 30,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "asdVolumeMode",
+        "valores": [
+          "RPM"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdVolumeRpmHigh",
+      "secao": "asd",
+      "rotulo": "Volume em RPM altas",
+      "tipo": "numero",
+      "padrao": 80,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "asdVolumeMode",
+        "valores": [
+          "RPM"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdPositionX",
+      "secao": "asd",
+      "rotulo": "Posição: esquerda ↔ direita",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "min": -100,
+      "max": 100,
+      "passo": 1,
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "asdPositionY",
+      "secao": "asd",
+      "rotulo": "Posição: trás ↔ frente",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "som do motor (ASD)",
+      "origem": "preferencia",
+      "min": -100,
+      "max": 100,
+      "passo": 1,
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "asdMasterEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "asd",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.eq_bass_value",
+      "secao": "audio",
+      "rotulo": "Grave",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Equalizador do amplificador: vale para mídia, Android Auto, Bluetooth e telefone.",
+      "min": -7,
+      "max": 7,
+      "passo": 1,
+      "inteiro": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.eq_alto_value",
+      "secao": "audio",
+      "rotulo": "Médio",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Equalizador do amplificador: vale para mídia, Android Auto, Bluetooth e telefone.",
+      "min": -7,
+      "max": 7,
+      "passo": 1,
+      "inteiro": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.eq_treble_value",
+      "secao": "audio",
+      "rotulo": "Agudo",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Equalizador do amplificador: vale para mídia, Android Auto, Bluetooth e telefone.",
+      "min": -7,
+      "max": 7,
+      "passo": 1,
+      "inteiro": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.sound_field_value",
+      "secao": "audio",
+      "rotulo": "Campo sonoro",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "inteiro": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.sound_surround_enable",
+      "secao": "audio",
+      "rotulo": "Surround",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Processamento espacial do amplificador. É o mais próximo de \"reverb\" que o hardware do carro oferece.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.sound_effect_dts_state",
+      "secao": "audio",
+      "rotulo": "DTS",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Decodificação/pós-processamento DTS do amplificador, quando presente.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.sound_quality_restore_enable",
+      "secao": "audio",
+      "rotulo": "Restauração de qualidade",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Reconstrói agudos perdidos em áudio comprimido (MP3, streaming, Bluetooth).",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.anc_enable",
+      "secao": "audio",
+      "rotulo": "Cancelamento de ruído (ANC)",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Cancelamento ativo de ruído pelos alto-falantes, se o carro tiver.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.system_acoustics_enable",
+      "secao": "audio",
+      "rotulo": "Acústica do sistema",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Correção acústica de cabine aplicada pelo amplificador.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.volume_adaptation_enable",
+      "secao": "audio",
+      "rotulo": "Volume adaptativo",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Ajusta o volume automaticamente conforme o ruído do ambiente.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.volume_adjust_by_speed_state",
+      "secao": "audio",
+      "rotulo": "Volume por velocidade",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Sobe o volume conforme a velocidade do carro.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.volume_adjust_by_wind_state",
+      "secao": "audio",
+      "rotulo": "Volume por ventilação",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Compensa o ruído do ar-condicionado no volume.",
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "sys.settings.audio.external_amp_enable",
+      "secao": "audio",
+      "rotulo": "Amplificador externo",
+      "tipo": "interruptor",
+      "padrao": null,
+      "efeito": "acústica do amplificador",
+      "origem": "veiculo",
+      "ajuda": "Roteamento pro amplificador externo. Desligar pode mudar drasticamente o som.",
+      "avancado": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "audioReverbEnabled",
+      "secao": "audio",
+      "rotulo": "Concerto (reverb de software)",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "reverb de software",
+      "origem": "preferencia",
+      "ajuda": "Reverb aplicado por app que toca som. Não passa pelo amplificador.",
+      "avancado": true,
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "audioReverbRoomSize",
+      "secao": "audio",
+      "rotulo": "Tamanho da sala",
+      "tipo": "numero",
+      "padrao": 40,
+      "efeito": "reverb de software",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "audioReverbEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "audioReverbWetness",
+      "secao": "audio",
+      "rotulo": "Intensidade do reverb",
+      "tipo": "numero",
+      "padrao": 30,
+      "efeito": "reverb de software",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "audioReverbEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "audio",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "painel.tema_customizado",
+      "secao": "painel",
+      "rotulo": "Tema customizado",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "modo do painel",
+      "origem": "painel",
+      "ajuda": "O OPEN GW desenha o painel inteiro com o tema escolhido no carro.",
+      "aviso": "Este painel virtual é renderizado pela multimídia, ficando sujeito a gargalos de processamento que podem causar discrepâncias ou atrasos entre as informações reais e as mostradas. A velocidade informada pode ter uma pequena variação. Confirme para aceitar os riscos e condições.",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "painel.tema",
+      "secao": "painel",
+      "rotulo": "Tema do painel",
+      "tipo": "opcoes",
+      "padrao": "coffe3",
+      "efeito": "lido na hora",
+      "origem": "tema",
+      "ajuda": "Os temas instalados no carro. Um tema enviado pelo criador de temas aparece aqui.",
+      "opcoes": [
+        {
+          "id": "bavarianid7",
+          "rotulo": "Bavarian ID7"
+        },
+        {
+          "id": "bavaroid8",
+          "rotulo": "Bávaro ID8"
+        },
+        {
+          "id": "cupertinoultra",
+          "rotulo": "Cupertino Ultra"
+        },
+        {
+          "id": "minimalista",
+          "rotulo": "Minimalist"
+        },
+        {
+          "id": "stuttgart-mbux",
+          "rotulo": "Stuttgart MBUX Sport"
+        },
+        {
+          "id": "sweedesensus",
+          "rotulo": "Sweede SENSUS"
+        },
+        {
+          "id": "coffe3",
+          "rotulo": "Stuttgart NTG 5.5 (clássico)"
+        }
+      ],
+      "visivelSe": {
+        "id": "painel.tema_customizado",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "painel.informacoes",
+      "secao": "painel",
+      "rotulo": "Informações extras",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "modo do painel",
+      "origem": "painel",
+      "ajuda": "Temperatura externa e placa de limite da via sobre o painel de fábrica. Com o tema customizado ligado fica guardado e volta quando ele for desligado.",
+      "recurso": "painel.original",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "originalPanelTempScale",
+      "secao": "painel",
+      "rotulo": "Tamanho da temperatura",
+      "tipo": "numero",
+      "padrao": 1,
+      "efeito": "tamanho da temperatura do painel de fábrica",
+      "origem": "preferencia",
+      "ajuda": "A temperatura externa das informações extras. 1× são 44 px, o padrão.",
+      "visivelSe": {
+        "id": "painel.informacoes",
+        "valores": [
+          "true"
+        ]
+      },
+      "min": 0.65,
+      "max": 2,
+      "passo": 0.05,
+      "unidade": "×",
+      "recurso": "painel.original",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "painel.circulo",
+      "secao": "painel",
+      "rotulo": "Círculo do painel",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "modo do painel",
+      "origem": "painel",
+      "ajuda": "O círculo da direita do painel de fábrica ganha páginas no volante: carro, projeção da central e HUD.",
+      "recurso": "painel.circulo",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enableOdometerAndRevision",
+      "secao": "painel",
+      "rotulo": "Odômetro e aviso de revisão",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "clusterFuelDisplayUnit",
+      "secao": "painel",
+      "rotulo": "Combustível mostrado em",
+      "tipo": "opcoes",
+      "padrao": "liters",
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "liters",
+          "rotulo": "Litros"
+        },
+        {
+          "id": "percent",
+          "rotulo": "Porcentagem"
+        }
+      ],
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "clusterHideSpeedometerOnMaps",
+      "secao": "painel",
+      "rotulo": "Ocultar velocímetro nos mapas",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Vale para os modos de mapa dos temas Sport.",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "clusterV2TripInfo",
+      "secao": "painel",
+      "rotulo": "Viagem e pneus no Analógico V2",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Consumo, tempo, distância e pressão dos pneus no tema Sport.",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "gaugeNumberScale",
+      "secao": "painel",
+      "rotulo": "Tamanho do texto do painel",
+      "tipo": "numero",
+      "padrao": 1,
+      "efeito": "tamanho do texto do painel",
+      "origem": "preferencia",
+      "ajuda": "Escala sobre os tamanhos que o próprio tema define. Em 1× nada muda.",
+      "min": 0.7,
+      "max": 1.4,
+      "passo": 0.05,
+      "unidade": "×",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "nightModeColor",
+      "secao": "painel",
+      "rotulo": "Cor do modo noturno",
+      "tipo": "opcoes",
+      "padrao": "amber",
+      "efeito": "cor do modo noturno",
+      "origem": "preferencia",
+      "ajuda": "A cor que o painel assume com o farol aceso.",
+      "opcoes": [
+        {
+          "id": "amber",
+          "rotulo": "Âmbar"
+        },
+        {
+          "id": "red",
+          "rotulo": "Vermelho"
+        },
+        {
+          "id": "mixed",
+          "rotulo": "Meio-termo"
+        }
+      ],
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "nightModeTrigger",
+      "secao": "painel",
+      "rotulo": "Quando acender o modo noturno",
+      "tipo": "opcoes",
+      "padrao": "auto",
+      "efeito": "fonte do modo noturno",
+      "origem": "preferencia",
+      "ajuda": "Neste carro a chave do farol chega vazia; o automático usa a luz baixa/alta no lugar dela.",
+      "avancado": true,
+      "opcoes": [
+        {
+          "id": "auto",
+          "rotulo": "Automático"
+        },
+        {
+          "id": "lowbeam",
+          "rotulo": "Luz baixa/alta"
+        },
+        {
+          "id": "outline",
+          "rotulo": "Luz de posição"
+        },
+        {
+          "id": "master",
+          "rotulo": "Só farol (mestre)"
+        },
+        {
+          "id": "clock",
+          "rotulo": "Por horário (18h–6h)"
+        },
+        {
+          "id": "never",
+          "rotulo": "Nunca"
+        }
+      ],
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudOverlayEnabled",
+      "secao": "hud",
+      "rotulo": "Head-up display",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "ajuda": "Desenha a camada do OPEN GW no HUD do para-brisa.",
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudSpeedSizePct",
+      "secao": "hud",
+      "rotulo": "Tamanho da velocidade",
+      "tipo": "numero",
+      "padrao": 30,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "min": 20,
+      "max": 80,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudSpeedColor",
+      "secao": "hud",
+      "rotulo": "Cor da velocidade",
+      "tipo": "cor",
+      "padrao": "#FFFFFF",
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudShowSpeedUnit",
+      "secao": "hud",
+      "rotulo": "Mostrar \"km/h\"",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudShowSli",
+      "secao": "hud",
+      "rotulo": "Limite da via (SLI)",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudSliSizePct",
+      "secao": "hud",
+      "rotulo": "Tamanho da placa de limite",
+      "tipo": "numero",
+      "padrao": 28,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "min": 10,
+      "max": 45,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "hudShowSli",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudSliSide",
+      "secao": "hud",
+      "rotulo": "Lado da placa",
+      "tipo": "opcoes",
+      "padrao": "direita",
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "direita",
+          "rotulo": "Direita"
+        },
+        {
+          "id": "esquerda",
+          "rotulo": "Esquerda"
+        }
+      ],
+      "visivelSe": {
+        "id": "hudShowSli",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudShowAlerts",
+      "secao": "hud",
+      "rotulo": "Alertas do veículo",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "ajuda": "Portas, cinto, pressão dos pneus e outros avisos.",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudWheelControl",
+      "secao": "hud",
+      "rotulo": "Controles pelo volante",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "ajuda": "Segure OK no volante: o painel é coberto e ↑/↓ trocam as páginas do HUD. Segure OK de novo para devolver as setas ao painel.",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudNightMode",
+      "secao": "hud",
+      "rotulo": "Modo noturno",
+      "tipo": "opcoes",
+      "padrao": "desligado",
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "ajuda": "Escurece o HUD à noite. \"Com o farol\" segue a regra do modo noturno dos temas do painel.",
+      "opcoes": [
+        {
+          "id": "desligado",
+          "rotulo": "Desligado"
+        },
+        {
+          "id": "automatico",
+          "rotulo": "Com o farol"
+        },
+        {
+          "id": "sempre",
+          "rotulo": "Sempre"
+        }
+      ],
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudNightBrightness",
+      "secao": "hud",
+      "rotulo": "Brilho à noite",
+      "tipo": "numero",
+      "padrao": 55,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "min": 20,
+      "max": 90,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "hudNightMode",
+        "valores": [
+          "automatico",
+          "sempre"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudNightAmber",
+      "secao": "hud",
+      "rotulo": "Tons âmbar à noite",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudNightMode",
+        "valores": [
+          "automatico",
+          "sempre"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudShowHeader",
+      "secao": "hud",
+      "rotulo": "Nome da página no alto",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudShowDots",
+      "secao": "hud",
+      "rotulo": "Pontinhos de página",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudFontWeight",
+      "secao": "hud",
+      "rotulo": "Espessura da fonte",
+      "tipo": "numero",
+      "padrao": 700,
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "min": 200,
+      "max": 900,
+      "passo": 100,
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudFontFamily",
+      "secao": "hud",
+      "rotulo": "Fonte",
+      "tipo": "opcoes",
+      "padrao": "padrao",
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "avancado": true,
+      "opcoes": [
+        {
+          "id": "padrao",
+          "rotulo": "Padrão"
+        },
+        {
+          "id": "condensada",
+          "rotulo": "Condensada"
+        }
+      ],
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "hudLabelColor",
+      "secao": "hud",
+      "rotulo": "Cor dos rótulos",
+      "tipo": "cor",
+      "padrao": "#AAB4BE",
+      "efeito": "camada do HUD",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "hudOverlayEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "hud",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightBleEnabled",
+      "secao": "luz",
+      "rotulo": "Luz ambiente",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "A fita precisa ter sido pareada uma vez pela tela do carro (Recursos → Ambient Light BLE).",
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightOutput",
+      "secao": "luz",
+      "rotulo": "Saída",
+      "tipo": "opcoes",
+      "padrao": "DMX",
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "avancado": true,
+      "opcoes": [
+        {
+          "id": "BLE",
+          "rotulo": "BLE"
+        },
+        {
+          "id": "DMX",
+          "rotulo": "DMX"
+        },
+        {
+          "id": "BOTH",
+          "rotulo": "BLE + DMX"
+        }
+      ],
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightBrightnessPercent",
+      "secao": "luz",
+      "rotulo": "Brilho",
+      "tipo": "numero",
+      "padrao": 100,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 100,
+      "passo": 1,
+      "unidade": "%",
+      "inteiro": true,
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightManualHue",
+      "secao": "luz",
+      "rotulo": "Cor manual (matiz)",
+      "tipo": "numero",
+      "padrao": 0,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Usada quando a iluminação dinâmica está desligada. 0° vermelho, 120° verde, 240° azul.",
+      "min": 0,
+      "max": 360,
+      "passo": 1,
+      "unidade": "°",
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightSyncDriveMode",
+      "secao": "luz",
+      "rotulo": "Iluminação dinâmica",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport",
+      "ajuda": "A luz reage ao carro. As opções abaixo dizem a quê."
+    },
+    {
+      "id": "ambientLightReactHazard",
+      "secao": "luz",
+      "rotulo": "Reage a: pisca-alerta",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Pulsa vermelho enquanto o pisca-alerta estiver ligado.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightReactBlindSpot",
+      "secao": "luz",
+      "rotulo": "Reage a: alerta de ponto cego",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Pulsa laranja enquanto o carro avisar de um veículo no ponto cego.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightReactTurnSignal",
+      "secao": "luz",
+      "rotulo": "Reage a: seta",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Pulsa âmbar enquanto a seta estiver ligada. Vem desligada.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightReactHeadlight",
+      "secao": "luz",
+      "rotulo": "Reage a: farol aceso",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Âmbar fixo com o farol aceso, quando nenhum alerta estiver ativo.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightReactDriveMode",
+      "secao": "luz",
+      "rotulo": "Reage a: modo de condução",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Cor de cada modo (Sport vermelho, Eco verde...). Desligado, a base é a cor manual.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightReactClimate",
+      "secao": "luz",
+      "rotulo": "Reage a: temperatura do ar",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "ajuda": "Uma piscada vermelha ao subir a temperatura pela barra.",
+      "visivelSe": {
+        "id": "ambientLightSyncDriveMode",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightAnimationsEnabled",
+      "secao": "luz",
+      "rotulo": "Animações",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightMusicAnimationEnabled",
+      "secao": "luz",
+      "rotulo": "Animação com a música",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightMusicMode",
+      "secao": "luz",
+      "rotulo": "Modo da animação com música",
+      "tipo": "opcoes",
+      "padrao": "BASS",
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "opcoes": [
+        {
+          "id": "BASS",
+          "rotulo": "Graves"
+        },
+        {
+          "id": "ALBUM_WAVE",
+          "rotulo": "Onda do album"
+        }
+      ],
+      "visivelSe": {
+        "id": "ambientLightMusicAnimationEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "ambientLightAutoReconnect",
+      "secao": "luz",
+      "rotulo": "Reconectar sozinha",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "luz ambiente",
+      "origem": "preferencia",
+      "avancado": true,
+      "visivelSe": {
+        "id": "ambientLightBleEnabled",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "luz",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "enableAutoBrightness",
+      "secao": "brilho",
+      "rotulo": "Brilho automático",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "autoBrightnessUseSun",
+      "secao": "brilho",
+      "rotulo": "Seguir o nascer e o pôr do sol",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "ajuda": "Transição suave pelo GPS. Sem localização, volta para o horário fixo.",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableAutoBrightness",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "autoBrightnessLevelDay",
+      "secao": "brilho",
+      "rotulo": "Brilho de dia",
+      "tipo": "numero",
+      "padrao": 10,
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "min": 1,
+      "max": 10,
+      "passo": 1,
+      "inteiro": true,
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableAutoBrightness",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "autoBrightnessLevelNight",
+      "secao": "brilho",
+      "rotulo": "Brilho à noite",
+      "tipo": "numero",
+      "padrao": 1,
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "min": 1,
+      "max": 10,
+      "passo": 1,
+      "inteiro": true,
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableAutoBrightness",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "nightStartHour",
+      "secao": "brilho",
+      "rotulo": "A noite começa às",
+      "tipo": "hora",
+      "padrao": "20:00",
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "autoBrightnessUseSun",
+        "valores": [
+          "false"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "nightEndHour",
+      "secao": "brilho",
+      "rotulo": "A noite termina às",
+      "tipo": "hora",
+      "padrao": "06:00",
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "autoBrightnessUseSun",
+        "valores": [
+          "false"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "autoBrightnessStepMin",
+      "secao": "brilho",
+      "rotulo": "Transição: minutos por nível",
+      "tipo": "numero",
+      "padrao": 5,
+      "efeito": "brilho automático",
+      "origem": "preferencia",
+      "min": 1,
+      "max": 30,
+      "passo": 1,
+      "unidade": "min",
+      "inteiro": true,
+      "avancado": true,
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "autoBrightnessUseSun",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "brilho",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeWindowOnPowerOff",
+      "secao": "automacoes",
+      "rotulo": "Fechar vidros ao desligar o carro",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeWindowOnFoldMirror",
+      "secao": "automacoes",
+      "rotulo": "Fechar vidros ao recolher os retrovisores",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeSunroofOnPowerOff",
+      "secao": "automacoes",
+      "rotulo": "Fechar teto solar ao desligar o carro",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeSunroofOnFoldMirror",
+      "secao": "automacoes",
+      "rotulo": "Fechar teto solar ao recolher os retrovisores",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeSunroofSunShadeOnCloseSunRoof",
+      "secao": "automacoes",
+      "rotulo": "Fechar a cortina junto com o teto solar",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeWindowsOnSpeed",
+      "secao": "automacoes",
+      "rotulo": "Fechar vidros ao passar de uma velocidade",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "speedThreshold",
+      "secao": "automacoes",
+      "rotulo": "Velocidade para fechar os vidros",
+      "tipo": "numero",
+      "padrao": 15,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "min": 10,
+      "max": 120,
+      "passo": 1,
+      "unidade": "km/h",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "closeWindowsOnSpeed",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "closeSunroofOnSpeed",
+      "secao": "automacoes",
+      "rotulo": "Fechar teto solar ao passar de uma velocidade",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "sunroofSpeedThreshold",
+      "secao": "automacoes",
+      "rotulo": "Velocidade para fechar o teto",
+      "tipo": "numero",
+      "padrao": 15,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "min": 10,
+      "max": 120,
+      "passo": 1,
+      "unidade": "km/h",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "closeSunroofOnSpeed",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "setStartupVolume",
+      "secao": "automacoes",
+      "rotulo": "Volume fixo ao ligar o carro",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Vale a partir da próxima partida.",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "startupVolume",
+      "secao": "automacoes",
+      "rotulo": "Volume ao ligar",
+      "tipo": "numero",
+      "padrao": 1,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 40,
+      "passo": 1,
+      "inteiro": true,
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "setStartupVolume",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enableMaxAcOnUnlock",
+      "secao": "automacoes",
+      "rotulo": "A/C no máximo ao ligar com a cabine quente",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "maxAcOnUnlockThreshold",
+      "secao": "automacoes",
+      "rotulo": "Temperatura de disparo",
+      "tipo": "numero",
+      "padrao": 35,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "min": 20,
+      "max": 38,
+      "passo": 1,
+      "unidade": "°C",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableMaxAcOnUnlock",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "maxAcTargetTemp",
+      "secao": "automacoes",
+      "rotulo": "Temperatura alvo",
+      "tipo": "numero",
+      "padrao": 28,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "min": 18,
+      "max": 34,
+      "passo": 1,
+      "unidade": "°C",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableMaxAcOnUnlock",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "maxAcTimeout",
+      "secao": "automacoes",
+      "rotulo": "Desligar o máximo depois de",
+      "tipo": "opcoes",
+      "padrao": "0",
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "inteiro": true,
+      "soNoComputador": true,
+      "opcoes": [
+        {
+          "id": "0",
+          "rotulo": "Sem limite"
+        },
+        {
+          "id": "1",
+          "rotulo": "1 minuto"
+        },
+        {
+          "id": "3",
+          "rotulo": "3 minutos"
+        },
+        {
+          "id": "5",
+          "rotulo": "5 minutos"
+        }
+      ],
+      "visivelSe": {
+        "id": "enableMaxAcOnUnlock",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enableSeatVentilationOnAcOn",
+      "secao": "automacoes",
+      "rotulo": "Ventilar o banco do motorista ao ligar o A/C",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enableOpenSunroofCurtainOnStart",
+      "secao": "automacoes",
+      "rotulo": "Abrir a cortina do teto ao ligar o carro",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "openSunroofCurtainStartHour",
+      "secao": "automacoes",
+      "rotulo": "Cortina: abrir a partir de",
+      "tipo": "hora",
+      "padrao": "18:00",
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableOpenSunroofCurtainOnStart",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "openSunroofCurtainEndHour",
+      "secao": "automacoes",
+      "rotulo": "Cortina: abrir até",
+      "tipo": "hora",
+      "padrao": "09:00",
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "A janela pode passar da meia-noite (18:00 até 09:00).",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableOpenSunroofCurtainOnStart",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "openSunroofCurtainMaxTemp",
+      "secao": "automacoes",
+      "rotulo": "Cortina: temperatura externa máxima",
+      "tipo": "numero",
+      "padrao": -1,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "-1 desliga a checagem de temperatura: só o horário manda.",
+      "min": -1,
+      "max": 45,
+      "passo": 1,
+      "unidade": "°C",
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enableOpenSunroofCurtainOnStart",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "enablePersistHevSocTarget",
+      "secao": "automacoes",
+      "rotulo": "Manter a bateria no HEV Prioritário",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "bateria do HEV",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "hevSocTargetValue",
+      "secao": "automacoes",
+      "rotulo": "Bateria a manter",
+      "tipo": "numero",
+      "padrao": 50,
+      "efeito": "bateria do HEV",
+      "origem": "preferencia",
+      "min": 20,
+      "max": 80,
+      "passo": 5,
+      "unidade": "%",
+      "inteiro": true,
+      "soNoComputador": true,
+      "visivelSe": {
+        "id": "enablePersistHevSocTarget",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableBluetoothOnFoldMirror",
+      "secao": "automacoes",
+      "rotulo": "Desligar o Bluetooth ao recolher os retrovisores",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableHotspotOnFoldMirror",
+      "secao": "automacoes",
+      "rotulo": "Desligar o hotspot ao recolher os retrovisores",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "soNoComputador": true,
+      "recurso": "automacoes",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "disableNativeNavigation",
+      "secao": "sistema",
+      "rotulo": "Desativar o navegador GPS nativo (Neusoft)",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "apps do sistema desativados",
+      "origem": "preferencia",
+      "avancado": true,
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "disableNativeVoice",
+      "secao": "sistema",
+      "rotulo": "Desativar o assistente de voz nativo (iFlyTek)",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "apps do sistema desativados",
+      "origem": "preferencia",
+      "avancado": true,
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "disableNativeWeather",
+      "secao": "sistema",
+      "rotulo": "Desativar a previsão do tempo (OEM)",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "apps do sistema desativados",
+      "origem": "preferencia",
+      "avancado": true,
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "enableResourceOverlay",
+      "secao": "sistema",
+      "rotulo": "Indicador de CPU e RAM",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "ajuda": "Quadradinho por cima de qualquer app. Enquanto ligado, o app faz uma leitura a cada 2,5 s.",
+      "avancado": true,
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "resourceOverlayCorner",
+      "secao": "sistema",
+      "rotulo": "Canto do indicador",
+      "tipo": "opcoes",
+      "padrao": "3",
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "inteiro": true,
+      "avancado": true,
+      "opcoes": [
+        {
+          "id": "0",
+          "rotulo": "Superior esquerdo"
+        },
+        {
+          "id": "1",
+          "rotulo": "Superior direito"
+        },
+        {
+          "id": "2",
+          "rotulo": "Inferior esquerdo"
+        },
+        {
+          "id": "3",
+          "rotulo": "Inferior direito"
+        }
+      ],
+      "visivelSe": {
+        "id": "enableResourceOverlay",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "resourceOverlayFontSp",
+      "secao": "sistema",
+      "rotulo": "Tamanho do texto do indicador",
+      "tipo": "numero",
+      "padrao": 14,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "min": 10,
+      "max": 30,
+      "passo": 1,
+      "unidade": "sp",
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "enableResourceOverlay",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "resourceOverlayX",
+      "secao": "sistema",
+      "rotulo": "Distância horizontal do canto",
+      "tipo": "numero",
+      "padrao": 12,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 400,
+      "passo": 1,
+      "unidade": "dp",
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "enableResourceOverlay",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "resourceOverlayY",
+      "secao": "sistema",
+      "rotulo": "Distância vertical do canto",
+      "tipo": "numero",
+      "padrao": 90,
+      "efeito": "barra inferior",
+      "origem": "preferencia",
+      "min": 0,
+      "max": 300,
+      "passo": 1,
+      "unidade": "dp",
+      "inteiro": true,
+      "avancado": true,
+      "visivelSe": {
+        "id": "enableResourceOverlay",
+        "valores": [
+          "true"
+        ]
+      },
+      "recurso": "sistema",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "homeLauncher3dFixo",
+      "secao": "launcher",
+      "rotulo": "Launcher 3D como tela inicial",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "tela inicial do carro",
+      "origem": "preferencia",
+      "ajuda": "Ligado, o carro abre no launcher 3D e o OPEN GW o devolve quando a tela de fábrica abrir como início. Desligado, volta a tela de fábrica.",
+      "recurso": "launcher3d",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "viewerCommandsEnabled",
+      "secao": "launcher",
+      "rotulo": "Launcher 3D abre e fecha vidros, teto e cortina",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Com isto desligado, os botões do carro 3D só mostram o estado.",
+      "recurso": "launcher3d",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "interfaceStyle",
+      "secao": "interface",
+      "rotulo": "Estilo",
+      "tipo": "opcoes",
+      "padrao": "grade",
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Grade: blocos com ícone, o visual de sempre. Bávaro: menu em lista com barra vermelha e medalhão. Estugarda: carrossel de três itens sobre azul profundo. Cupertino: fundo grafite sóbrio, ícones escuros arredondados e Dock de vidro. Muda só as telas do app, não a barra nem o painel.",
+      "opcoes": [
+        {
+          "id": "grade",
+          "rotulo": "Grade"
+        },
+        {
+          "id": "bavaro",
+          "rotulo": "Bávaro"
+        },
+        {
+          "id": "estugarda",
+          "rotulo": "Estugarda"
+        },
+        {
+          "id": "cupertino",
+          "rotulo": "Cupertino"
+        }
+      ],
+      "recurso": "interface",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "interfaceEscala",
+      "secao": "interface",
+      "rotulo": "Tamanho da interface",
+      "tipo": "numero",
+      "padrao": 100,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "O tamanho de botões, cartões e ícones nas telas do app. No carro: 90 (Compacto), 100 (Padrão), 115 (Grande) e 125 (Extra). Não muda a barra, o painel nem o HUD.",
+      "min": 85,
+      "max": 130,
+      "passo": 5,
+      "unidade": "%",
+      "inteiro": true,
+      "recurso": "interface",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "interfaceEscalaTexto",
+      "secao": "interface",
+      "rotulo": "Tamanho das letras",
+      "tipo": "numero",
+      "padrao": 100,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Só os textos das telas do app. No carro: 90, 100, 115 e 130.",
+      "min": 85,
+      "max": 140,
+      "passo": 5,
+      "unidade": "%",
+      "inteiro": true,
+      "recurso": "interface",
+      "nivelExigido": "drive"
+    }
+  ]
+}

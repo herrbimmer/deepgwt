@@ -1,0 +1,31 @@
+<theme>
+    <name>Modo Pista</name>
+    <description>Numa volta rápida o que interessa é marcha, luz de troca e tempo -- velocidade e giro descem para a periferia. Dezoito luzes atravessam o topo em verde, âmbar e vermelho, a marcha ocupa o meio em trezentos e quarenta pixels e o cronômetro corre desde a abertura do tema. A aceleração longitudinal em g é derivada de dv/dt, porque o barramento não publica acelerômetro, e o rodapé diz isso com todas as letras.</description>
+    <version>1.2.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <!-- Tela cheia do painel: o tema é opaco e cobre os mostradores nativos por cima,
+         mesma estratégia do Default e do Bavarian ID7 (sem <nativeMasks>). -->
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+    <!-- Preferência do próprio tema (não é telemetria): lida no carregamento com
+         Android.getPreference('displayMode','Dia') e reaplicada a cada 2s pelo núcleo,
+         sem recarregar a página. -->
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

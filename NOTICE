@@ -1,0 +1,109 @@
+OPEN GW
+Copyright (c) 2026 Miguel Araujo. All rights reserved.
+
+This product is proprietary software (see LICENSE). It includes third-party
+material that remains under its own license terms. The notices below must be
+reproduced with every copy of the product, in source or binary form.
+
+The complete inventory, with full license texts and the location of each
+component inside the product, is in THIRD_PARTY_LICENSES.md.
+
+===============================================================================
+1. ANDROID / JETPACK / GOOGLE LIBRARIES — Apache License 2.0
+===============================================================================
+
+This product includes software developed by The Android Open Source Project,
+Google LLC, and the Apache Software Foundation, licensed under the Apache
+License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0), including
+AndroidX, Jetpack Compose, Material Components for Android, Gson, Coil,
+Apache Commons Net, Apache Commons IO, Guava, and Kotlin/kotlinx libraries by
+JetBrains.
+
+ZXing ("Zebra Crossing") core library 3.5.3, Copyright 2007 ZXing authors, Apache
+License 2.0, is used only to draw the QR code of the license page in the Android APK.
+
+The Roboto font (Copyright 2011 Google Inc., Apache License 2.0) is embedded in
+the Android APK at assets/PreinstalledThemes/bavaroid8/RobotoV.woff and
+assets/PreinstalledThemes/sweedesensus/RobotoV.woff, and in the desktop installer
+at instalador/public/fonts/.
+
+===============================================================================
+2. RIKKA / LSPOSED LIBRARIES
+===============================================================================
+
+    Shizuku API and Provider — Copyright (c) Rikka (RikkaApps) — MIT License
+    dev.rikka.tools.refine — Copyright (c) Rikka — MIT License
+    HiddenApiBypass — Copyright (c) LSPosed — Apache License 2.0
+
+The desktop installer also carries, as resources, the Shizuku manager application
+(resources/shizuku.apk) and the shizuku_starter binary (resources/shizuku-starter):
+
+    Shizuku — Copyright (c) RikkaApps — Apache License 2.0
+    Source: https://github.com/RikkaApps/Shizuku
+
+The manager application was recompiled from the official source (commit b844bc4) with a
+different application id (br.com.opengw.shizuku instead of moe.shizuku.privileged.api), so
+that the head unit's package manager accepts it, and rebranded as "OPEN GW Acesso" (name
+and icons replaced, as the project's README asks of forks). The patch against the official
+source, the build instructions and the licence texts are in third_party/open-gw-acesso/.
+It still declares the permission moe.shizuku.manager.permission.API_V23, which is the
+contract with the Shizuku client library; see third_party/open-gw-acesso/AVISO-OPEN-GW-ACESSO.md.
+The full Apache License 2.0 text is in THIRD_PARTY_LICENSES.md §7.4.
+
+===============================================================================
+3. FONTS — SIL Open Font License 1.1
+===============================================================================
+
+    IBM Plex Sans — Copyright 2018 IBM Corp. — SIL OFL 1.1
+      (Bold Monday: Mike Abbink, Paul van der Laan, Pieter van Rosmalen)
+    Michroma — Copyright The Michroma Project Authors — SIL OFL 1.1
+    Exo (ExoV.woff2) — Copyright The Exo Project Authors — SIL OFL 1.1
+
+These fonts are embedded in the Android APK (res/font/ and
+assets/PreinstalledThemes/). They are used under the OFL and are not sold
+separately. Reserved Font Names must not be used for modified versions.
+
+===============================================================================
+4. RUST / NPM COMPONENTS OF THE DESKTOP INSTALLER
+===============================================================================
+
+The desktop installer (instalador) links Rust crates and bundles JavaScript
+packages licensed under MIT, Apache-2.0, ISC, BSD, Zlib, Unicode-3.0,
+BlueOak-1.0.0, 0BSD and MPL-2.0, including Tauri, React, React Router, Motion,
+Lucide, Tailwind CSS, Vite, Tokio, Serde and reqwest.
+
+MPL-2.0 components are used unmodified; their source is available from their
+respective projects, and from the licensor on request.
+
+The per-package inventory is in THIRD_PARTY_LICENSES.md.
+
+===============================================================================
+5. VEHICLE-VENDOR SOFTWARE — NOT DISTRIBUTED
+===============================================================================
+
+This product does not contain, modify or redistribute any application package that
+belongs to the head-unit software vendor (for example com.ts.androidauto.app,
+com.ts.androidauto.projectionservice, com.ts.carplay.app, com.ts.carplay). The
+product only starts and talks to the applications that are already installed in the
+vehicle.
+
+===============================================================================
+6. ARTWORK AND CONTENT
+===============================================================================
+
+The background images and the installer header art that ship with the product are
+original works generated by script (scripts/gerar-arte-original.py); no third-party
+photographs or wallpapers are included.
+
+Some features fetch content from third parties only when you use them, and that
+content is not part of this product or distributed with it: wallpaper search
+(wallhaven.cc) and daily images (Microsoft Bing), whose images remain under their
+authors' rights; and the QR-code image service (api.qrserver.com).
+
+===============================================================================
+
+Trademarks: Haval, GWM, Android Auto, Apple, CarPlay, macOS, BMW, iDrive,
+Mercedes-Benz, MBUX, Volvo, Sensus, Tesla and all other marks are the property of
+their respective owners. Where a name appears it is only to identify the owner's
+product. This product is not affiliated with, endorsed by, or connected to any of
+them.

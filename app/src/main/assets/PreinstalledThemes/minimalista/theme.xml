@@ -1,0 +1,31 @@
+<theme>
+    <name>Minimalist</name>
+    <description>Painel sem mostradores: velocidade em número grande e fino à esquerda, barra bipolar de potência e regeneração abaixo dela, marcha e modo de energia no topo, card de mídia à direita e faixa de autonomia, modo de condução e carga na base. Os números ficam vermelhos acima do limite da via lido pela câmera.</description>
+    <version>1.0.23459700</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <AppDefaultPosition>
+        <x>640</x>
+        <y>95</y>
+        <width>640</width>
+        <height>560</height>
+    </AppDefaultPosition>
+    <nativeMasks>
+        <speedMask enabled="true" x="0" y="0" width="640" height="720" opacity="1" />
+        <infoMask enabled="true" x="1280" y="0" width="640" height="720" opacity="1" />
+        <topCenterMask enabled="true" x="660" y="0" width="600" height="200" opacity="1" />
+    </nativeMasks>
+    <configurations>
+        <configuration>
+            <id>display_mode</id>
+            <label>Modo de Exibição</label>
+            <type>combo</type>
+            <options>Dia, Noite</options>
+            <default>Dia</default>
+            <stateVariable>displayMode</stateVariable>
+            <group>Geral</group>
+        </configuration>
+    </configurations>
+</theme>

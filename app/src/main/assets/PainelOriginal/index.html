@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=720, initial-scale=1">
+<title>Painel original</title>
+<!--
+  Página do painel original do OPEN GW (docs/independencia/specs/projetores-pagina-original.md).
+  Modo A (clusterEnabled = false): só a temperatura externa e a placa de limite da via, sobre o
+  painel de fábrica. Modo B (clusterEnabled = true): painel inteiro de reserva, mínimo e somente
+  leitura. Nada aparece antes do primeiro control('clusterEnabled').
+
+  Motor: WebView antigo (Chrome 84). JS ES5, sem console por evento, sem camada composta
+  (nada de will-change, transform/opacidade animados, clip-path). Fonte: Exo (OFL 1.1), o mesmo
+  arquivo do tema coffe3.
+-->
+<style>
+@font-face {
+  font-family: "Exo Painel";
+  src: url("../PreinstalledThemes/coffe3/ExoV.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 1920px;
+  height: 720px;
+  overflow: hidden;
+  background: transparent;
+}
+body {
+  position: relative;
+  font-family: "Exo Painel", sans-serif;
+  color: rgb(255, 255, 255);
+}
+.oculto { display: none !important; }
+.camada { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+
+/* ── Modo A ── */
+#temperatura {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 480px;
+  text-align: center;
+  white-space: nowrap;
+}
+#temperatura .numero {
+  display: block;
+  font-size: calc(44px * var(--orig-temp-scale, 1));
+  line-height: calc(44px * var(--orig-temp-scale, 1));
+  font-weight: 500;
+  color: rgb(255, 255, 255);
+}
+#temperatura .rotulo {
+  display: block;
+  font-size: calc(21px * var(--orig-temp-scale, 1));
+  line-height: calc(24px * var(--orig-temp-scale, 1));
+  font-weight: 300;
+  color: rgb(163, 174, 208);
+}
+#placa {
+  position: absolute;
+  left: 32px;
+  top: 560px;
+  width: 128px;
+  height: 128px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 13px solid rgb(224, 32, 27);
+  background: rgb(255, 255, 255);
+  color: rgb(17, 17, 17);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 102px;
+  letter-spacing: -1px;
+  text-align: center;
+  white-space: nowrap;
+}
+#placa.tres { font-size: 44px; }
+
+/* ── Modo B (reserva) ── */
+.faixa { position: absolute; left: 0; width: 1920px; background: rgb(7, 9, 13); }
+#faixaDeCima { top: 0; height: 125px; }
+#faixaDeBaixo { top: 660px; height: 60px; }
+.centrado { position: absolute; text-align: center; white-space: nowrap; }
+#relogio { left: 745px; width: 160px; top: 34px; font-size: 36px; line-height: 44px; font-weight: 500; }
+#marcha { left: 910px; width: 100px; top: 20px; font-size: 64px; line-height: 72px; font-weight: 700; color: rgb(230, 40, 40); }
+#modo { left: 1018px; width: 180px; top: 44px; font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: 1px; color: rgb(163, 174, 208); }
+#mostrador {
+  position: absolute;
+  left: 62px;
+  top: 202px;
+  width: 456px;
+  height: 456px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 3px solid rgb(58, 66, 86);
+  background: rgb(8, 10, 14);
+}
+#velocidade { left: 62px; width: 456px; top: 350px; font-size: 128px; line-height: 128px; font-weight: 600; }
+#kmh { left: 62px; width: 456px; top: 496px; font-size: 26px; line-height: 30px; font-weight: 400; color: rgb(163, 174, 208); }
+.energia { position: absolute; top: 664px; width: 250px; height: 52px; font-size: 18px; line-height: 22px; }
+#combustivel { left: 420px; }
+#bateria { left: 1260px; }
+.energia .linha { position: relative; height: 22px; }
+.energia .esquerda { position: absolute; left: 0; top: 0; }
+.energia .direita { position: absolute; right: 0; top: 0; }
+.energia .barra { position: absolute; left: 22px; right: 22px; top: 32px; height: 8px; }
+.energia .ponta { position: absolute; top: 26px; font-size: 16px; line-height: 20px; color: rgb(163, 174, 208); }
+.energia .e { left: 0; }
+.energia .f { right: 0; }
+.segmento { position: absolute; top: 0; height: 8px; width: 23%; background: rgb(40, 46, 60); }
+.segmento .cheio { position: absolute; left: 0; top: 0; height: 8px; width: 0; background: rgb(255, 255, 255); }
+#odometro { left: 830px; width: 260px; top: 676px; font-size: 20px; line-height: 26px; font-weight: 500; }
+.temperaturaB { position: absolute; top: 663px; font-size: 18px; line-height: 24px; white-space: nowrap; }
+#externa { left: 65px; }
+#interna { right: 65px; text-align: right; }
+.temperaturaB .nome { color: rgb(163, 174, 208); margin-right: 8px; }
+</style>
+</head>
+<body>
+<div id="modoA" class="camada oculto">
+  <div id="temperatura"><span class="numero" id="temperaturaNumero">--</span><span class="rotulo">Temp.</span></div>
+  <div id="placa" class="oculto"></div>
+</div>
+<div id="modoB" class="camada oculto">
+  <div id="faixaDeCima" class="faixa"></div>
+  <div id="faixaDeBaixo" class="faixa"></div>
+  <div id="relogio" class="centrado">--:--</div>
+  <div id="marcha" class="centrado">-</div>
+  <div id="modo" class="centrado">--</div>
+  <div id="grupoDaVelocidade">
+    <div id="mostrador"></div>
+    <div id="velocidade" class="centrado">--</div>
+    <div id="kmh" class="centrado">km/h</div>
+  </div>
+  <div id="combustivel" class="energia">
+    <div class="linha"><span class="esquerda" id="combustivelAutonomia">-- km</span><span class="direita" id="combustivelNivel">--</span></div>
+    <span class="ponta e">E</span><div class="barra" id="combustivelBarra"></div><span class="ponta f">F</span>
+  </div>
+  <div id="odometro" class="centrado">ODO -- km</div>
+  <div id="bateria" class="energia">
+    <div class="linha"><span class="esquerda" id="bateriaAutonomia">-- km</span><span class="direita" id="bateriaNivel">--</span></div>
+    <span class="ponta e">E</span><div class="barra" id="bateriaBarra"></div><span class="ponta f">F</span>
+  </div>
+  <div id="externa" class="temperaturaB"><span class="nome">External</span><span id="externaValor">--</span></div>
+  <div id="interna" class="temperaturaB"><span class="nome">Internal</span><span id="internaValor">--</span></div>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE_EXTERNA = 'car.basic.outside_temp';
+  var CHAVE_INTERNA = 'car.basic.inside_temp';
+  var CHAVE_UNIDADE = 'car.configure.default_temp_unit';
+  var CHAVE_LIMITE = 'car.map.tsr.nav_speed_limit';
+  var CHAVE_STATUS = 'car.map.tsr.nav_speed_limit_sign_status';
+  var TANQUE_LITROS = 55;
+
+  var estado = {
+    clusterEnabled: null,
+    originalInfo: true,
+    unidade: '°C',
+    externa: null,
+    interna: null,
+    limite: null,
+    status: null,
+    cartao: 0,
+    controles: {}
+  };
+
+  function el(id) { return document.getElementById(id); }
+
+  function aparar(valor) {
+    return String(valor).replace(/^\s+|\s+$/g, '');
+  }
+
+  function verdade(valor) {
+    return valor === true || valor === 1 || valor === 'true' || valor === '1';
+  }
+
+  function mostrar(no, sim) {
+    if (!no) { return; }
+    if (sim) { no.classList.remove('oculto'); } else { no.classList.add('oculto'); }
+  }
+
+  function texto(no, valor) {
+    if (no && no.textContent !== valor) { no.textContent = valor; }
+  }
+
+  /** Número de um texto (o primeiro, tirando chaves de vetor); null se não há. */
+  function primeiroNumero(valor) {
+    if (valor === null || valor === undefined) { return null; }
+    var achado = String(valor).replace(/[{}]/g, ' ').match(/-?\d+(\.\d+)?/);
+    if (!achado) { return null; }
+    var n = parseFloat(achado[0]);
+    return isNaN(n) ? null : n;
+  }
+
+  /** Número só se o texto inteiro é numérico. */
+  function numero(valor) {
+    if (valor === null || valor === undefined) { return null; }
+    var t = aparar(valor);
+    if (!/^[-+]?(\d+(\.\d*)?|\.\d+)$/.test(t)) { return null; }
+    var n = parseFloat(t);
+    return isNaN(n) ? null : n;
+  }
+
+  /** Temperatura (5.2): o texto do carro como veio + unidade; fora de (−40, 85), −1 e não numérico → "--". */
+  function textoDaTemperatura(valor) {
+    if (valor === null || valor === undefined) { return '--'; }
+    var t = aparar(valor);
+    var n = numero(t);
+    if (n === null || n >= 85 || n <= -40 || n === -1) { return '--'; }
+    return t + estado.unidade;
+  }
+
+  /** Placa (5.3): status 1/true/on/active e o primeiro número do limite, arredondado, em 1..300. */
+  function limiteDaPlaca() {
+    var status = estado.status === null ? '' : aparar(estado.status).toLowerCase();
+    if (status !== '1' && status !== 'true' && status !== 'on' && status !== 'active') { return null; }
+    var n = primeiroNumero(estado.limite);
+    if (n === null) { return null; }
+    var r = Math.round(n);
+    return (r >= 1 && r <= 300) ? r : null;
+  }
+
+  function desenharModoA() {
+    texto(el('temperaturaNumero'), textoDaTemperatura(estado.externa));
+    var placa = el('placa');
+    var limite = limiteDaPlaca();
+    if (limite === null) {
+      mostrar(placa, false);
+    } else {
+      texto(placa, String(limite));
+      if (limite >= 100) { placa.classList.add('tres'); } else { placa.classList.remove('tres'); }
+      mostrar(placa, true);
+    }
+    mostrar(el('temperatura'), estado.originalInfo);
+    if (!estado.originalInfo) { mostrar(placa, false); }
+  }
+
+  function barra(id, porcento) {
+    var no = el(id);
+    if (!no) { return; }
+    if (!no.firstChild) {
+      for (var i = 0; i < 4; i++) {
+        var seg = document.createElement('div');
+        seg.className = 'segmento';
+        seg.style.left = (i * 25.66) + '%';
+        var cheio = document.createElement('div');
+        cheio.className = 'cheio';
+        seg.appendChild(cheio);
+        no.appendChild(seg);
+      }
+    }
+    var p = porcento === null ? 0 : Math.max(0, Math.min(100, porcento));
+    for (var j = 0; j < 4; j++) {
+      var parte = Math.max(0, Math.min(1, (p - 25 * j) / 25));
+      no.children[j].firstChild.style.width = (parte * 100) + '%';
+    }
+  }
+
+  function km(valor) {
+    var n = primeiroNumero(valor);
+    return n === null ? '-- km' : Math.round(n) + ' km';
+  }
+
+  function desenharModoB() {
+    var c = estado.controles;
+    texto(el('relogio'), c.clockTime ? String(c.clockTime) : '--:--');
+    texto(el('marcha'), c.gearState ? String(c.gearState) : '-');
+    texto(el('modo'), c.evModeLabel ? String(c.evModeLabel).toUpperCase() : '--');
+    var v = numero(c.carSpeed);
+    texto(el('velocidade'), v === null ? '--' : String(Math.round(v)));
+
+    var combustivel = numero(c.fuelPercent);
+    texto(el('combustivelAutonomia'), km(c.fuelRange));
+    if (combustivel === null) {
+      texto(el('combustivelNivel'), '--');
+    } else if (c.fuelDisplayUnit === 'percent') {
+      texto(el('combustivelNivel'), Math.round(combustivel) + '%');
+    } else {
+      texto(el('combustivelNivel'), (TANQUE_LITROS * combustivel / 100).toFixed(1) + ' L');
+    }
+    barra('combustivelBarra', combustivel);
+
+    var bateria = numero(c.batteryPercent);
+    texto(el('bateriaAutonomia'), km(c.batteryRange));
+    texto(el('bateriaNivel'), bateria === null ? '--' : Math.round(bateria) + '%');
+    barra('bateriaBarra', bateria);
+
+    var odo = primeiroNumero(c.odometer);
+    texto(el('odometro'), 'ODO ' + (odo === null ? '--' : Math.round(odo)) + ' km');
+    texto(el('externaValor'), textoDaTemperatura(estado.externa));
+    texto(el('internaValor'), textoDaTemperatura(estado.interna));
+
+    // O mostrador sai da frente de um app ou de uma projeção à esquerda.
+    var app = c.appInDash;
+    var projecao = verdade(c.carPlayInDash) || verdade(c.projectionMirrorInDash) || verdade(c.projectionPreparingD3);
+    mostrar(el('grupoDaVelocidade'), !(projecao || app === true || app === 'left'));
+  }
+
+  function desenhar() {
+    if (estado.clusterEnabled === null) {
+      mostrar(el('modoA'), false);
+      mostrar(el('modoB'), false);
+      return;
+    }
+    mostrar(el('modoA'), !estado.clusterEnabled);
+    mostrar(el('modoB'), estado.clusterEnabled);
+    if (estado.clusterEnabled) { desenharModoB(); } else { desenharModoA(); }
+  }
+
+  // ── O que o app chama ──
+
+  window.control = function (chave, valor) {
+    try {
+      estado.controles[chave] = valor;
+      if (chave === 'clusterEnabled') {
+        estado.clusterEnabled = verdade(valor);
+      } else if (chave === 'originalInfo') {
+        estado.originalInfo = !(valor === false || valor === 'false' || valor === 0 || valor === '0');
+      } else if (chave === 'tempUnit') {
+        if (valor === '°F' || valor === '°C') { estado.unidade = valor; }
+      }
+      desenhar();
+    } catch (e) { /* nunca lança */ }
+  };
+
+  window.onDataChanged = function (chave, valor) {
+    try {
+      if (chave === CHAVE_EXTERNA) {
+        estado.externa = valor;
+      } else if (chave === CHAVE_INTERNA) {
+        estado.interna = valor;
+      } else if (chave === CHAVE_UNIDADE) {
+        estado.unidade = (valor !== null && valor !== undefined && aparar(valor) === '1') ? '°F' : '°C';
+      } else if (chave === CHAVE_LIMITE) {
+        estado.limite = valor;
+      } else if (chave === CHAVE_STATUS) {
+        estado.status = valor;
+      } else {
+        return;
+      }
+      desenhar();
+    } catch (e) { /* nunca lança */ }
+  };
+
+  window.onCardChanged = function (cartao) {
+    try {
+      var n = parseInt(cartao, 10);
+      estado.cartao = isNaN(n) ? 0 : n;
+    } catch (e) { /* nunca lança */ }
+  };
+
+  // Nenhuma tecla faz nada (modo A, modo B mínimo e cartão 0).
+  window.onKeyEvent = function () {};
+
+  // O app não chama mais; temas antigos chamam no preview.
+  window.updateWarning = function () {};
+
+  // Não há temporizador na página: o relógio vem do app.
+  window.cleanup = function () {};
+
+  window.__havalProjectionDebug = function () {
+    var c = estado.controles;
+    return {
+      carPlayInDash: verdade(c.carPlayInDash),
+      projectionMirrorInDash: verdade(c.projectionMirrorInDash),
+      projectionPreparingD3: verdade(c.projectionPreparingD3),
+      cardId: estado.cartao,
+      clusterEnabled: estado.clusterEnabled,
+      appClass: c.appInDash === undefined ? null : String(c.appInDash)
+    };
+  };
+
+  // ── Ponte, na carga ──
+
+  var android = window.Android;
+  if (android) {
+    try {
+      android.subscribe(JSON.stringify([CHAVE_EXTERNA, CHAVE_UNIDADE, CHAVE_LIMITE, CHAVE_STATUS, CHAVE_INTERNA]));
+    } catch (e) { /* sem ponte */ }
+    try {
+      android.setAppDefaultDimensions(0, 62, 1920, 596);
+    } catch (e) { /* sem ponte */ }
+  }
+  desenhar();
+})();
+</script>
+</body>
+</html>

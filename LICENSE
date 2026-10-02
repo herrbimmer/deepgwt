@@ -1,0 +1,154 @@
+OPEN GW — Proprietary Software License
+Version 1.1, effective 2026-10-02
+
+Copyright (c) 2026 Miguel Araujo. All rights reserved.
+
+-------------------------------------------------------------------------------
+IMPORTANT — SCOPE OF THIS LICENSE
+-------------------------------------------------------------------------------
+
+This license governs ONLY the parts of OPEN GW (the "Software") whose copyright
+is held by the licensor named above.
+
+This Software also incorporates third-party components. Those parts are NOT
+covered by this license: each remains subject to its own license terms, which
+are reproduced or referenced in the accompanying files THIRD_PARTY_LICENSES.md
+and NOTICE. Nothing in this license restricts, replaces, or revokes any right
+granted to you by those third-party licenses, and nothing here asserts
+ownership over that third-party material. See COPYRIGHT.md for the ownership
+breakdown and LICENSING.md for how the pieces fit together.
+
+-------------------------------------------------------------------------------
+1. GRANT
+-------------------------------------------------------------------------------
+
+Subject to your compliance with this license, the licensor grants you a
+personal, non-exclusive, non-transferable, revocable license to install and use
+one copy of the Software, in object-code form, on vehicles and devices you own
+or are authorized to service, for your own purposes.
+
+No other rights are granted. All rights not expressly granted here are reserved
+by the licensor.
+
+-------------------------------------------------------------------------------
+2. RESTRICTIONS
+-------------------------------------------------------------------------------
+
+Except as permitted by section 3, you may not:
+
+  a) reproduce the Software beyond the copies reasonably needed for the use
+     granted in section 1, including backup copies;
+
+  b) distribute, publish, sublicense, rent, lease, lend, sell, or otherwise make
+     the Software available to third parties;
+
+  c) remove, obscure, or alter any copyright, trademark, attribution, or license
+     notice contained in or delivered with the Software;
+
+  d) represent the Software, or any part of it, as your own work.
+
+-------------------------------------------------------------------------------
+3. RIGHTS THAT REMAIN WITH YOU
+-------------------------------------------------------------------------------
+
+This section prevails over section 2 wherever they conflict.
+
+  a) Applicable law may grant you rights that cannot be removed by a license
+     agreement — for example, rights to decompile or otherwise analyse software
+     for interoperability, to make a backup copy, to study how it works, or
+     consumer rights under mandatory local law. This license does not limit,
+     waive, or purport to waive any such right. Acts of reverse engineering,
+     decompilation, and modification are governed by applicable law, not by any
+     broader prohibition asserted here.
+
+  b) Third-party components included in the Software carry their own licenses,
+     several of which grant you rights this license does not (including rights to
+     copy, modify, and redistribute those components). Those grants stand on
+     their own. Where a third-party license requires that you receive its terms,
+     or the corresponding source code, those requirements are satisfied through
+     THIRD_PARTY_LICENSES.md and NOTICE, and by the licensor on request.
+
+-------------------------------------------------------------------------------
+4. NO WARRANTY
+-------------------------------------------------------------------------------
+
+To the maximum extent permitted by applicable law, the Software is provided
+"as is", without warranty of any kind, express or implied, including but not
+limited to warranties of merchantability, fitness for a particular purpose, and
+non-infringement.
+
+The Software interacts with vehicle systems. Use it only when the vehicle is in
+a safe state, and understand that modifying a vehicle's software may affect its
+behaviour, may void manufacturer warranties, and may conflict with the vehicle
+manufacturer's terms of service.
+
+-------------------------------------------------------------------------------
+5. LIMITATION OF LIABILITY
+-------------------------------------------------------------------------------
+
+To the maximum extent permitted by applicable law, the licensor is not liable
+for any indirect, incidental, special, or consequential damages, or for loss of
+data, arising from the use of or inability to use the Software.
+
+Nothing in this license excludes or limits liability that cannot be excluded or
+limited under applicable law — including liability for death or personal injury
+caused by negligence, for fraud, or for wilful misconduct.
+
+-------------------------------------------------------------------------------
+6. NOT AFFILIATED WITH THE VEHICLE MANUFACTURER
+-------------------------------------------------------------------------------
+
+The Software is an independent work. It is not affiliated with, endorsed by, or
+connected to Haval, Great Wall Motors (GWM), or any related entity, nor with any
+third-party hardware or software vendor referenced in the Software. All
+trademarks are the property of their respective owners and are used only to
+identify the systems the Software interoperates with.
+
+-------------------------------------------------------------------------------
+7. TERMINATION
+-------------------------------------------------------------------------------
+
+This license terminates automatically if you materially breach it. On
+termination you must stop using the Software and delete your copies. Sections 3
+through 6 survive termination. Termination of this license does not affect any
+right you hold under a third-party license covering a component of the Software.
+
+-------------------------------------------------------------------------------
+8. SEVERABILITY
+-------------------------------------------------------------------------------
+
+If any provision of this license is held unenforceable, that provision is
+limited to the minimum extent necessary, or severed, and the remainder stays in
+effect.
+
+-------------------------------------------------------------------------------
+
+Contact for licensing questions, source-code requests required by a third-party
+license, and permissions beyond this license: the copyright holder listed above.
+
+===============================================================================
+PORTUGUÊS (tradução de cortesia; em caso de divergência, prevalece o texto em
+inglês acima)
+===============================================================================
+
+Este software é proprietário. Todos os direitos não expressamente concedidos são
+reservados. Reprodução e redistribuição não autorizadas são proibidas.
+
+Esta licença cobre APENAS as partes cujo titular de direito autoral é o
+licenciante indicado acima. O software também incorpora componentes de
+terceiros, que continuam sujeitos às suas próprias licenças — veja
+THIRD_PARTY_LICENSES.md e NOTICE. Nada aqui restringe, substitui ou revoga
+direitos concedidos a você por essas licenças, nem declara como nossa a
+propriedade desse material de terceiros.
+
+Engenharia reversa, descompilação e modificação são regidas pela legislação
+aplicável. Esta licença não pretende afastar direitos que a lei não permite
+afastar por contrato — inclusive direitos de interoperabilidade, cópia de
+segurança e direitos do consumidor.
+
+O software é fornecido "como está", sem garantias, na máxima extensão permitida
+pela lei aplicável. Nada aqui exclui responsabilidade que a lei não permita
+excluir.
+
+Não afiliado à Haval, à Great Wall Motors (GWM) nem a qualquer entidade
+relacionada.

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Marca própria do OPEN GW: monograma "OG" geométrico, só branco (o app tinge quando precisa).
+    Anel (O) de traço 7 e raio externo 34, centrado em (48,48), aberto à direita; a haste do G
+    é uma barra horizontal que sai do corte e entra no anel até o centro.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Anel: do terminal superior direito, pelo topo e pela esquerda, até a base da haste. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M77.44,31 A34,34 0 1 0 81.82,51.5 L74.77,51.5 A27,27 0 1 1 71.38,34.5 Z" />
+
+    <!-- Haste do G. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M48,44.5 L81.82,44.5 L81.82,51.5 L48,51.5 Z" />
+</vector>

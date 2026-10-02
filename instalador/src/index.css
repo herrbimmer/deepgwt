@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter',
+    'Helvetica Neue', Arial, sans-serif;
+
+  --color-base: #0b0c0e;
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-strong: rgba(255, 255, 255, 0.09);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+
+  --color-primary: #0a84ff;
+  --color-primary-hover: #3396ff;
+  --color-danger: #ff453a;
+  --color-danger-hover: #ff6961;
+  --color-warning: #ff9f0a;
+  --color-warning-hover: #ffb13d;
+  --color-success: #30d158;
+  --color-success-hover: #4fe377;
+
+  --color-text: #f5f5f7;
+  --color-text-secondary: rgba(245, 245, 247, 0.7);
+  --color-text-tertiary: rgba(245, 245, 247, 0.46);
+}
+
+/* Tipografia por tamanho (skill apple-design: tracking/leading é específico do tamanho, nunca
+   um valor único repetido em toda a UI) — antes disso `tracking-tight`/`tracking-wide` eram
+   aplicados igual em títulos de tamanhos diferentes por toda a tela. */
+@utility type-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+@utility type-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+html {
+  height: 100%;
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--color-base);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(10, 132, 255, 0.35);
+}
+
+input,
+textarea,
+button,
+select {
+  font-family: inherit;
+}
+
+input[type='checkbox'],
+input[type='range'] {
+  accent-color: var(--color-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+  background-clip: padding-box;
+}
+
+/* ============================================================================
+   Modo desktop (janela deitada / PC) — dirigido por `html[data-mode='desktop']`,
+   que o FormFactorProvider liga/desliga pela proporção da janela.
+
+   Toda a UI é mobile-first: cada tela é `flex-1 ... items-center justify-center`
+   com um `Card` estreito centralizado. Numa janela de PC isso vira uma tira de
+   celular flutuando no meio, sob uma foto gigante. As regras abaixo reaproveitam
+   esse mesmo HTML como um app de desktop — SEM tocar nas 45 telas — via três
+   ganchos: `.app-shell` (raiz), `.app-main` (área de conteúdo) e `.app-card`.
+   No modo phone nada disto se aplica: o layout original fica intacto.
+   ============================================================================ */
+
+/* 1. Moldura de janela: limita a largura no ultrawide e centraliza, em vez de
+      esticar o conteúdo de borda a borda. Hairline lateral leve = "isto é um app". */
+html[data-mode='desktop'] .app-shell {
+  max-width: 1600px;
+  margin-inline: auto;
+  border-inline: 1px solid var(--color-border);
+}
+
+/* Fundo com leve profundidade atrás da janela, para as bordas laterais lerem
+   como uma janela de app pousada sobre a mesa, não como conteúdo cortado. */
+html[data-mode='desktop'] body {
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(10, 132, 255, 0.06), transparent 60%),
+    var(--color-base);
+}
+
+/* 2. Conteúdo alinhado ao topo e preenchendo a altura. `justify-center` (herança
+      mobile) faz um cartão curto flutuar no meio de uma janela alta — jeito de
+      modal de celular. No desktop o conteúdo começa no topo, como app de verdade.
+      Especificidade (0,3,0) vence as utilidades `.justify-center`/`.p-6` (0,1,0);
+      só o eixo vertical é sobrescrito, o gutter horizontal do `p-6` permanece. */
+html[data-mode='desktop'] .app-main > .flex-1 {
+  justify-content: flex-start;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* 3. Cada nível de largura de `Card` respira mais na janela de PC. O celular
+      mantém os tetos originais (max-w-*); aqui eles crescem um degrau. */
+html[data-mode='desktop'] .app-card[data-w='sm'] {
+  max-width: 34rem;
+}
+html[data-mode='desktop'] .app-card[data-w='md'] {
+  max-width: 44rem;
+}
+html[data-mode='desktop'] .app-card[data-w='lg'] {
+  max-width: 56rem;
+}
+html[data-mode='desktop'] .app-card[data-w='xl'] {
+  max-width: 68rem;
+}
+html[data-mode='desktop'] .app-card[data-w='2xl'] {
+  max-width: 80rem;
+}
+
+/* A trilha (breadcrumb) acompanha a largura do conteúdo em vez de ficar presa
+   em max-w-3xl, para alinhar com os cartões mais largos. */
+html[data-mode='desktop'] .app-chrome {
+  max-width: 72rem;
+}
+
+/* 4. Menus de navegação (Hub, Configurações Avançadas, Opções de Desenvolvedor):
+      pilha de uma coluna no celular, grade de duas colunas no desktop — é o que faz
+      um menu preencher a largura da janela em vez de virar uma tira central. No
+      celular é idêntico a `space-y-3` (uma coluna, mesmo gap). */
+.tile-grid {
+  display: grid;
+  /* `minmax(0, 1fr)` e não `1fr`: `1fr` tem mínimo `auto`, e um título longo que não quebra
+     ("Alterações e restauração") esticava a coluna para além do cartão no celular. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+html[data-mode='desktop'] .tile-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}

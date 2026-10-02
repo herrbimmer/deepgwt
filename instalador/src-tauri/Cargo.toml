@@ -1,0 +1,30 @@
+[package]
+name = "opengw-instalador"
+version = "9.7.0"
+description = "Instalador do OPEN GW para macOS"
+authors = ["OPEN GW"]
+edition = "2021"
+publish = false
+
+[lib]
+# Nome diferente do binário (`opengw-instalador`): com os dois iguais o cargo confunde os artefatos.
+# Só rlib: o instalador roda em desktop e o binário liga a biblioteca estaticamente.
+name = "opengw_instalador_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = "2"
+
+[dependencies]
+tauri = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-log = "2.6"
+tauri-plugin-opener = "2.4"
+serde = { features = ["derive"], version = "1.0" }
+serde_json = "1.0"
+tokio = { version = "1", features = ["full"] } # rede e temporizadores assíncronos
+default-net = "0.22" # interfaces de rede desta máquina (achar a do Wi-Fi do carro)
+thiserror = "1.0" # mensagens de erro do instalador
+reqwest = { version = "0.11", features = ["json", "rustls-tls", "stream"], default-features = false }
+tiny_http = "0.12" # Servidor HTTP embarcado em Rust puro (sem depender de python3, funciona no Android)
+base64 = "0.21" # Codifica frames JPEG do mirror como data URL pros eventos do frontend

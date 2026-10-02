@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Backup na nuvem e transferência entre aparelhos (Android 12 em diante). A licença
+     (licenca.xml) fica de fora dos dois pelo mesmo motivo do backup_rules.xml. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="licenca.xml"/>
+        <exclude domain="device_sharedpref" path="licenca.xml"/>
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="licenca.xml"/>
+        <exclude domain="device_sharedpref" path="licenca.xml"/>
+    </device-transfer>
+</data-extraction-rules>

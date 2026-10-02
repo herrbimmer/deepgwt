@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tela inicial 3D: uma View pura que monta a interface em código e depende destes valores.
+         O pai é o da plataforma, e não o MaterialComponents, de propósito: trocá-lo mudaria cores e
+         insets de dezenas de Views desenhadas à mão. -->
+    <style name="Theme.OpenGwLauncher" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item> <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">#4fd6e8</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Tema das telas do app. É sempre escuro: um tema só, sem variante noturna. -->
+    <style name="Theme.OpenGw" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Fundo escuro desde o primeiro quadro: não pisca claro antes de a tela desenhar. -->
+        <item name="android:windowBackground">@color/grafite</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item> <!-- a barra de status usa o tom mais alto do grafite -->
+        <item name="colorPrimary">@color/destaque</item>
+        <item name="colorPrimaryVariant">@color/grafite_alto</item>
+        <item name="colorOnPrimary">@color/preto</item>
+        <item name="colorSecondary">@color/destaque</item>
+        <item name="colorSecondaryVariant">@color/destaque_escuro</item>
+        <item name="colorOnSecondary">@color/preto</item>
+    </style>
+
+    <!-- Telas cheias: painel expandido, HUD, tela esportiva e projeção. O pai já não tem barra de
+         título nem de ação. -->
+    <style name="Theme.OpenGw.TelaCheia" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item> <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/preto</item>
+        <item name="android:navigationBarColor">@color/preto</item>
+        <!-- O pai é DayNight: sem este fundo preto, no modo diurno a tela piscaria branca. -->
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>

@@ -1,0 +1,20 @@
+{
+  "formato": "opengw-hud-tema",
+  "versao": 1,
+  "nome": "Aviação de teste",
+  "estilo": { "corRotulo": "#8FC29A", "fonte": "condensada", "peso": 500, "cabecalho": false, "pontos": true },
+  "velocidade": { "tamanho": 80, "cor": "#7ED957", "unidade": false },
+  "placa": { "mostrar": true, "tamanho": 26, "lado": "esquerda" },
+  "alertas": true,
+  "paginas": [
+    { "pagina": "VELOCIDADE", "ativa": true },
+    {
+      "pagina": "POWERTRAIN", "ativa": true, "cor": "#7ED957", "escala": 110, "titulo": "Motor",
+      "linhaA": ["POTENCIA", "ROTACAO"],
+      "linhaB": ["TORQUE", "MARCHA", "TRACAO"]
+    },
+    { "pagina": "CONSUMO", "ativa": true },
+    { "pagina": "MIDIA", "ativa": false },
+    { "pagina": "VEICULO", "ativa": true }
+  ]
+}

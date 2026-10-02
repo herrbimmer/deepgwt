@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Serviço de acessibilidade do app. Recebe os eventos de janela e filtra as teclas do volante;
+     não lê o conteúdo de nenhuma janela. -->
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/descricao_da_acessibilidade" android:notificationTimeout="100"
+    android:accessibilityEventTypes="typeAllMask" android:accessibilityFeedbackType="feedbackAllMask"
+    android:accessibilityFlags="flagRequestFilterKeyEvents|flagDefault"
+    android:canRequestFilterKeyEvents="true" android:canRetrieveWindowContent="false"/>

@@ -1,0 +1,15 @@
+<theme>
+    <name>Bávaro Aberto</name>
+    <description>Dois mostradores abertos no estilo do painel de referência: aro branco fino, faixa vermelha fina, ponteiro laranja com brilho, velocímetro até 260 à esquerda e potência/regeneração à direita, marcha no mostrador direito, mini-mostradores de combustível e bateria e rodapé com autonomia, hora, ODO e temperaturas. HTML/JS próprio sobre o contrato v1.</description>
+    <version>1.6.0</version>
+    <minBridgeVersion>1.0.0</minBridgeVersion>
+    <contractVersion>v1.0</contractVersion>
+    <thumbnail>thumbnail.png</thumbnail>
+    <mainFile>app.html</mainFile>
+    <AppDefaultPosition>
+        <x>0</x>
+        <y>0</y>
+        <width>1920</width>
+        <height>720</height>
+    </AppDefaultPosition>
+</theme>

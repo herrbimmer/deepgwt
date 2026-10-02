@@ -1,0 +1,6 @@
+{
+  "identifier": "janela-principal",
+  "description": "O que a janela do instalador pode usar do Tauri: núcleo, abrir links, registro e caixas de diálogo.",
+  "windows": ["main"],
+  "permissions": ["core:default", "opener:default", "log:default", "dialog:default"]
+}

@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bávaro Chevron</title>
+<style>
+  /* Painel no estilo iDrive 8, desenhado a partir da foto de referência: dois chevrons de face
+     texturizada e aro prateado, velocidade (0-220 km/h) à esquerda e potência à direita, com a
+     zona de recarga embaixo do zero. O enchimento sobe com o valor e leva a luz junto; a mídia fica
+     no centro, entre os chevrons, e é também ali que a projeção da central aparece.
+     A geometria sai de scripts/gerar-bavaro-id8.mjs; o que está entre os marcadores GERADO não se
+     edita à mão.
+
+     Nada tem camada composta (nenhum will-change): no WebView do app a página abre ainda sem
+     tamanho, e camada criada ali saía na escala errada, menor e fora do lugar (emulador, 8.6). O
+     enchimento é uma pilha de faixas paradas, recortadas pelo chevron, que só trocam de
+     visibilidade na borda; o que anda por transform é pequeno (a linha da frente, o clarão). */
+  @font-face {
+    font-family: 'RobotoV';
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
+    src: url('RobotoV.woff') format('woff');
+  }
+
+  :root {
+    --ink: #f4f6f8;
+    --ink-dim: rgba(236, 240, 244, 0.6);
+    --ink-faint: rgba(236, 240, 244, 0.36);
+    --label: #87919a;
+    --label-viva: #f4f6f8;
+    /* Tom do painel: o JS troca pela escolha em "Tom do painel" (ou pelo modo de condução).
+       c0 é a base do braço (escura), c4 fica logo abaixo do branco. */
+    --c0: #2a1416;
+    --c1: #5a2e31;
+    --c2: #9e645a;
+    --c3: #e0ad88;
+    --c4: #f8eccb;
+    --tom: #f2b07a;
+    --parede-luz: #d8cfc2;
+    --parede-meio: #2a1a18;
+    --parede-fundo: #3a211c;
+    --ok: #3ddc68;
+    --ambar: #ffb020;
+    --vermelho: #ff3b30;
+    --azul: #3d8bff;
+    --night-tint: #ff9500;
+  }
+
+  /* Farol aceso: o app liga a classe e injeta --night-tint (Telas > cor do modo noturno). Os
+     números passam para essa cor; o enchimento continua no tom escolhido. */
+  body.mode-headlight {
+    --ink: var(--night-tint, #ff9500);
+    --label-viva: var(--night-tint, #ff9500);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 1920px;
+    height: 720px;
+    /* Transparentes: o fundo opaco mora no #bg. Ceder a tela revela o que está atrás, e o vão da
+       projeção (máscara no #bg) mostra o vídeo que o app põe por baixo da página. */
+    background: transparent;
+    overflow: hidden;
+    font-family: 'RobotoV', Roboto, 'Segoe UI', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--ink);
+  }
+
+  /* #bg e #arte são estáticos e sem camada própria: a máscara do vão é aplicada na pintura (o
+     caminho que funciona em qualquer WebView). */
+  #bg { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 0; background-color: #000; }
+  #bg svg { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+  #noite { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; background: #000; opacity: 0; }
+  body.night-mode #noite { opacity: 0.45; }
+  body.yield-to-car #bg { opacity: 0; }
+
+  #projscrim {
+    position: absolute; display: none; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 64%, rgba(0,0,0,.7) 100%);
+  }
+  body.projetando #projscrim { display: block; }
+
+  /* Sem animação de abertura no #app: ela deixava o contêiner inteiro numa camada rasterizada na
+     escala do primeiro quadro, e no WebView do Android o desenho saía deslocado e menor que o
+     layout quando o WebView mudava de escala logo depois de abrir (visto no emulador na 8.6). */
+  #app {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 1;
+    transition: opacity 0.25s ease;
+  }
+  #app.hidden { opacity: 0; pointer-events: none; }
+
+  #arte { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+  body.night-mode #arte { opacity: 0.86; }
+
+  /* ---------- SVG ---------- */
+  .grade { fill: none; stroke: rgba(170, 186, 202, 0.16); stroke-width: 1; }
+  .aro { fill: none; stroke: url(#gAro); stroke-width: 12; stroke-linejoin: round; }
+  .linha-topo { fill: none; stroke: #b3bec7; stroke-width: 2.5; }
+  .fio { fill: none; stroke: url(#gFio); stroke-width: 2; stroke-linejoin: round; }
+  .parede-sombra { fill: none; stroke: #000; stroke-opacity: 0.6; stroke-width: 14; stroke-linejoin: round; }
+  .s-parede-luz { stop-color: var(--parede-luz); }
+  .s-parede-meio { stop-color: var(--parede-meio); }
+  .s-parede-fundo { stop-color: var(--parede-fundo); }
+  .maior { stroke: #eef2f5; stroke-width: 3; }
+  .menor { stroke: #dfe6ec; stroke-opacity: 0.6; stroke-width: 2.2; }
+  .maior.escuro, .menor.escuro { stroke: #2b1812; stroke-opacity: 0.72; }
+  .rotulos text { font-family: 'RobotoV', Roboto, Arial, sans-serif; font-size: 36px; font-weight: 300; fill: var(--label); }
+  .rotulos text.viva { fill: var(--label-viva); }
+  .rotulos .titulo-escala { font-size: 25px; }
+  .horizonte { fill: none; stroke-width: 3; stroke-linejoin: round; }
+  .base-fina { fill: none; stroke: rgba(160, 175, 188, 0.45); stroke-width: 1.5; }
+  .acento { fill: none; stroke: var(--tom); stroke-width: 3; stroke-linejoin: round; }
+  .acento-brilho { fill: none; stroke: var(--tom); stroke-width: 8; opacity: 0.55; }
+  .zona-fio { fill: none; stroke: #3d8bff; stroke-width: 2.5; }
+  .zona-corte { stroke: #05070a; stroke-width: 3; }
+  .seta { fill: none; stroke: #2e5f9e; stroke-opacity: 0.5; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .seta.on { stroke: #5ab4ff; stroke-opacity: 1; }
+
+  /* ---------- Enchimento ----------
+     Sem camada composta (nenhum will-change no tema): o enchimento é pintado dentro do SVG #vivo,
+     em faixas paradas que só trocam de visibilidade (ver o gerador). Os tons vêm das variáveis. */
+  #vivo { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+  .s-c0 { stop-color: var(--c0); }
+  .s-c1 { stop-color: var(--c1); }
+  .s-c2 { stop-color: var(--c2); }
+  .s-c3 { stop-color: var(--c3); }
+  .s-c4 { stop-color: var(--c4); }
+  body.night-mode #faixasE, body.night-mode #faixasD { opacity: 0.9; }
+  .clarao {
+    position: absolute; left: 0; top: 0; width: 120px; height: 24px; opacity: 0;
+    background: radial-gradient(ellipse at center, rgba(255, 252, 246, 0.95) 0%, rgba(255, 240, 222, 0.4) 30%, rgba(255, 240, 222, 0) 70%);
+  }
+  .clarao.on { opacity: 1; }
+  #limite {
+    position: absolute; left: 0; top: 0; width: 34px; height: 5px; border-radius: 2px;
+    background: var(--vermelho); visibility: hidden;
+  }
+  #limite.on { visibility: visible; }
+
+  /* ---------- Texto ---------- */
+  .abs { position: absolute; }
+  .un { font-size: 28px; color: var(--ink-dim); }
+
+  /* A velocidade e o km/h cabem juntos entre duas luzes do painel de fábrica, que ficam por cima
+     do tema: READY (y 341-362) e a placa de velocidade (y 492-544). O par sobe 10 px em relação à
+     foto (369 e 460), o que deixa folga dos dois lados sem mudar a relação entre os dois. */
+  #vel { position: absolute; left: 0; top: 359px; width: 298px; text-align: right; font-size: 142px; line-height: 142px; font-weight: 300; letter-spacing: -3px; }
+  #vel.acima { color: var(--ambar); }
+  #velUn { position: absolute; left: 306px; top: 450px; line-height: 28px; }
+  #marcha { position: absolute; left: 1596px; top: 364px; width: 150px; font-size: 148px; line-height: 148px; font-weight: 300; }
+  #modoCond {
+    position: absolute; left: 1600px; top: 512px; width: 240px; font-size: 20px; line-height: 24px;
+    font-weight: 400; letter-spacing: 4px; color: var(--tom); text-transform: uppercase;
+  }
+
+  /* Centro: mídia, ou o cartão do modo quando nada toca. Somem na projeção (o vão é o centro). */
+  #midia, #semMidia { position: absolute; left: 700px; top: 170px; width: 520px; height: 400px; text-align: center; }
+  #midia { display: none; }
+  body.com-midia #midia { display: block; }
+  body.com-midia #semMidia, body.projetando #midia, body.projetando #semMidia { display: none; }
+  #capa {
+    position: absolute; left: 148px; top: 10px; width: 224px; height: 224px; overflow: hidden;
+    background: linear-gradient(160deg, #26303b 0%, #141a21 100%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+  #capa svg { position: absolute; left: 72px; top: 72px; width: 80px; height: 80px; color: rgba(236, 240, 244, 0.3); }
+  #capaImg { position: absolute; left: 0; top: 0; width: 224px; height: 224px; object-fit: cover; display: none; }
+  #capa.com-imagem #capaImg { display: block; }
+  #capa.com-imagem svg { display: none; }
+  .linha-midia { position: absolute; left: 0; width: 520px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #titulo { top: 240px; font-size: 36px; line-height: 44px; color: var(--tom); text-transform: uppercase; }
+  #artista { top: 284px; font-size: 32px; line-height: 40px; text-transform: uppercase; }
+  #album { top: 330px; font-size: 22px; line-height: 28px; color: var(--ink-faint); }
+  #tempo { position: absolute; right: 10px; top: 336px; font-size: 28px; line-height: 32px; color: var(--ink-dim); display: none; }
+  #progresso { position: absolute; left: 8px; top: 378px; width: 502px; height: 3px; display: none; }
+  #progresso i { position: absolute; left: 0; top: 1px; width: 502px; height: 1.5px; background: rgba(210, 220, 230, 0.45); }
+  #progresso b {
+    position: absolute; left: 0; top: 0; width: 502px; height: 3px; background: var(--tom);
+    -webkit-transform-origin: 0 50%; transform-origin: 0 50%; -webkit-transform: scaleX(0); transform: scaleX(0);
+  }
+  #midia.com-tempo #tempo, #midia.com-tempo #progresso { display: block; }
+  #midia.com-tempo #album { display: none; }
+
+  #semMidia .rot { position: absolute; left: 0; top: 92px; width: 520px; font-size: 17px; line-height: 20px; letter-spacing: 5px; color: var(--ink-faint); }
+  #semModo { position: absolute; left: 0; top: 122px; width: 520px; font-size: 60px; line-height: 70px; font-weight: 200; letter-spacing: 10px; text-transform: uppercase; }
+  #semTraco { position: absolute; left: 228px; top: 204px; width: 64px; height: 3px; background: var(--tom); }
+  #semInfo { position: absolute; left: 0; top: 224px; width: 520px; font-size: 26px; line-height: 32px; color: var(--ink-dim); }
+  #semOdo { position: absolute; left: 0; top: 264px; width: 520px; font-size: 22px; line-height: 28px; color: var(--ink-faint); }
+
+  /* Topo */
+  #ev {
+    position: absolute; left: 1832px; top: 24px; width: 46px; height: 34px; border-radius: 3px;
+    background: var(--azul); color: #fff; font-size: 18px; font-weight: 700; line-height: 34px; text-align: center;
+    visibility: hidden;
+  }
+  #ev.on { visibility: visible; }
+
+  /* Rodapé */
+  #bateria { position: absolute; left: 36px; top: 636px; height: 50px; white-space: nowrap; }
+  #bateria svg { position: absolute; left: 0; top: 11px; width: 54px; height: 30px; color: var(--ink); }
+  #bateriaTexto { position: absolute; left: 66px; top: 0; font-size: 44px; line-height: 50px; white-space: nowrap; }
+  /* Relógio e temperatura, espelhados: a luz de combustível baixo do painel de fábrica fica em
+     x 346-384, y 662-706, por cima do tema; a vaga espelhada (x 1536-1575) provavelmente também
+     tem luz. Ver docs/operations/mapa-de-luzes-do-painel.md. */
+  #relogio { position: absolute; left: 404px; top: 636px; font-size: 44px; line-height: 50px; }
+  #placa {
+    position: absolute; left: 651px; top: 614px; width: 64px; height: 64px; box-sizing: border-box;
+    border: 7px solid #e3202b; border-radius: 50%; background: #fff;
+    color: #111; font-size: 28px; font-weight: 700; line-height: 50px; text-align: center; letter-spacing: -1px;
+  }
+  #placa.off { visibility: hidden; }
+  #temp { position: absolute; left: 1246px; top: 636px; width: 270px; text-align: right; font-size: 44px; line-height: 50px; white-space: nowrap; }
+  #tempSinal { font-size: 30px; margin-right: 6px; }
+  #autonomia { position: absolute; left: 1620px; top: 636px; width: 262px; text-align: right; font-size: 44px; line-height: 50px; white-space: nowrap; }
+  #autonomia svg { display: inline-block; width: 34px; height: 36px; margin-right: 12px; color: var(--ink); vertical-align: -3px; }
+  #autonomia.baixo svg { color: var(--ambar); }
+  #combustivel { position: absolute; left: 1762px; top: 692px; width: 120px; height: 3px; background: rgba(210, 220, 230, 0.22); }
+  #combustivel b {
+    position: absolute; left: 0; top: 0; width: 120px; height: 3px; background: rgba(236, 240, 244, 0.85);
+    -webkit-transform-origin: 0 50%; transform-origin: 0 50%; -webkit-transform: scaleX(0); transform: scaleX(0);
+  }
+  #autonomia.baixo + #combustivel b { background: var(--ambar); }
+
+</style>
+</head>
+
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bomba" viewBox="0 0 34 36">
+    <path fill-rule="evenodd" fill="currentColor" d="M4 34 V6 Q4 3 7 3 H19 Q22 3 22 6 V34 Z M8 8 V15 H18 V8 Z"/>
+    <path d="M22 13 H25 Q27.5 13 27.5 16 V27 Q27.5 30 25.2 30 Q23 30 23 27 V21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M29.5 5 L34 8.5 L29.5 12 Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-bateria" viewBox="0 0 54 30">
+    <path d="M4 6 L1 9.5 L4 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="10" y="4" width="36" height="20" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+    <path d="M15 4 V1.5 H21 V4 M35 4 V1.5 H41 V4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M16 12 H21 M35 12 H41 M38 9 V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M13 27.5 H49 V8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-opacity="0.7"/>
+  </symbol>
+  <symbol id="i-nota" viewBox="0 0 40 40">
+    <path d="M15 30 V8 L33 4 V26" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+    <ellipse cx="10.5" cy="30" rx="5" ry="4" fill="currentColor"/>
+    <ellipse cx="28.5" cy="26" rx="5" ry="4" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<div id="bg">
+  <svg id="fundo" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
+  <!-- GERADO:fundo:inicio -->
+      <defs>
+        <pattern id="pGrade" patternUnits="userSpaceOnUse" width="112" height="64.7" x="904" y="12">
+          <path d="M0 0 V64.7 M56 0 V64.7 M0 0 L112 64.7 M0 64.7 L112 0" class="grade"/>
+        </pattern>
+        <radialGradient id="gGradeMascara" cx="960" cy="332" r="470" gradientUnits="userSpaceOnUse" gradientTransform="translate(960 332) scale(1 0.64) translate(-960 -332)">
+          <stop offset="0" stop-color="#fff"/><stop offset="0.62" stop-color="#fff" stop-opacity="0.7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <mask id="mGrade" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="720"><rect width="1920" height="720" fill="url(#gGradeMascara)"/></mask>
+        <radialGradient id="gNevoa" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#3f93b4" stop-opacity="0.5"/><stop offset="0.55" stop-color="#23627e" stop-opacity="0.24"/><stop offset="1" stop-color="#0b2430" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gNevoaCentro" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#6d9fb6" stop-opacity="0.4"/><stop offset="1" stop-color="#10303e" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="gChao" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#050a0e" stop-opacity="0"/><stop offset="0.5" stop-color="#03070a" stop-opacity="0.75"/><stop offset="1" stop-color="#010203"/>
+        </linearGradient>
+      </defs>
+      <rect width="1920" height="720" fill="#000"/>
+      <ellipse cx="420" cy="566" rx="470" ry="118" fill="url(#gNevoa)"/>
+      <ellipse cx="1500" cy="566" rx="470" ry="118" fill="url(#gNevoa)"/>
+      <ellipse cx="960" cy="592" rx="560" ry="64" fill="url(#gNevoaCentro)"/>
+      <rect x="0" y="592" width="1920" height="128" fill="url(#gChao)"/>
+      <rect x="480" y="40" width="960" height="600" fill="url(#pGrade)" mask="url(#mGrade)"/>
+  <!-- GERADO:fundo:fim -->
+  </svg>
+  <div id="noite"></div>
+</div>
+<div id="projscrim"></div>
+
+<div id="app">
+  <svg id="arte" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
+  <!-- GERADO:arte:inicio -->
+    <defs>
+      <linearGradient id="gAro" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="0" y2="604">
+        <stop offset="0" stop-color="#9aa6b0"/><stop offset="0.36" stop-color="#eef2f5"/><stop offset="0.52" stop-color="#d9e0e5"/><stop offset="1" stop-color="#aab4bc"/>
+      </linearGradient>
+      <linearGradient id="gFace" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="0" y2="604">
+        <stop offset="0" stop-color="#0c131a"/><stop offset="0.28" stop-color="#1a2833"/><stop offset="0.4" stop-color="#2b3e4c"/><stop offset="0.6" stop-color="#18232d"/><stop offset="1" stop-color="#0e151c"/>
+      </linearGradient>
+      <radialGradient id="gLuzPonta" gradientUnits="userSpaceOnUse" cx="450" cy="294" r="120">
+        <stop offset="0" stop-color="#dfe9f1" stop-opacity="0.22"/><stop offset="1" stop-color="#dfe9f1" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="pRiscoA" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)"><rect width="1.4" height="6" fill="#a9c2d6" fill-opacity="0.16"/></pattern>
+      <pattern id="pRiscoB" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)"><rect width="1.4" height="6" fill="#a9c2d6" fill-opacity="0.16"/></pattern>
+      <linearGradient id="gParede" gradientUnits="userSpaceOnUse" x1="0" y1="108" x2="0" y2="598">
+        <stop offset="0" stop-color="#07090c"/><stop offset="0.3" stop-color="#101317"/><stop offset="0.4" stop-color="#16171b"/><stop offset="0.62" class="s-parede-meio"/><stop offset="0.85" class="s-parede-fundo"/><stop offset="1" stop-color="#0c0908"/>
+      </linearGradient>
+      <radialGradient id="gReflexo" gradientUnits="userSpaceOnUse" cx="571.9" cy="392" r="170" gradientTransform="translate(571.9 392) rotate(-27.7) scale(0.2 1) translate(-571.9 -392)">
+        <stop offset="0" class="s-parede-luz" stop-opacity="0.95"/><stop offset="0.45" class="s-parede-luz" stop-opacity="0.35"/><stop offset="1" class="s-parede-luz" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="gFio" gradientUnits="userSpaceOnUse" x1="0" y1="108" x2="0" y2="598">
+        <stop offset="0" stop-color="#8e99a3" stop-opacity="0.2"/><stop offset="0.34" stop-color="#ffffff"/><stop offset="0.6" stop-color="#c9ced3" stop-opacity="0.7"/><stop offset="1" stop-color="#8e99a3" stop-opacity="0.25"/>
+      </linearGradient>
+      <linearGradient id="gHorizonteE" gradientUnits="userSpaceOnUse" x1="80" y1="0" x2="480" y2="0">
+        <stop offset="0" stop-color="#9fb7c8" stop-opacity="0"/><stop offset="0.35" stop-color="#b6c8d6" stop-opacity="0.8"/><stop offset="1" stop-color="#d7e1e8"/>
+      </linearGradient>
+      <linearGradient id="gHorizonteD" gradientUnits="userSpaceOnUse" x1="1840" y1="0" x2="1440" y2="0">
+        <stop offset="0" stop-color="#9fb7c8" stop-opacity="0"/><stop offset="0.35" stop-color="#b6c8d6" stop-opacity="0.8"/><stop offset="1" stop-color="#d7e1e8"/>
+      </linearGradient>
+      <linearGradient id="gZona" gradientUnits="userSpaceOnUse" x1="0" y1="478" x2="0" y2="604">
+        <stop offset="0" stop-color="#16263b"/><stop offset="1" stop-color="#0b1422"/>
+      </linearGradient>
+      <clipPath id="cFaceE"><path d="M 548,72 L 642,72 L 490,274 L 663,604 L 571,604 L 357.6,273.7 Z"/></clipPath>
+      <clipPath id="cFaixa"><rect x="0" y="72" width="1920" height="532"/></clipPath>
+      <filter id="fSuave" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <g transform="matrix(0.936 0 0 0.936 39.04 38.66)">
+      <g id="chevronE">
+      <path d="M 617.4,108 L 657.4,108 L 532.4,274.2 L 702.1,598 L 662.1,598 L 492.4,274.2 Z" fill="url(#gParede)"/>
+      <path d="M 617.4,108 L 657.4,108 L 532.4,274.2 L 702.1,598 L 662.1,598 L 492.4,274.2 Z" fill="url(#gReflexo)"/>
+      <path d="M 651.4,108 L 526.4,274.2 L 696.1,598" class="parede-sombra"/>
+      <path d="M 618.9,108 L 493.9,274.2 L 663.6,598" class="fio"/>
+      <path d="M 548,72 L 642,72 L 490,274 L 663,604 L 571,604 L 357.6,273.7 Z" fill="url(#gFace)"/>
+      <g clip-path="url(#cFaceE)">
+        <rect x="300" y="60" width="420" height="214" fill="url(#pRiscoA)"/>
+        <rect x="300" y="274" width="420" height="338" fill="url(#pRiscoB)"/>
+        <rect x="300" y="60" width="420" height="560" fill="url(#gLuzPonta)"/>
+      </g>
+      <path d="M 548,72 L 357.6,273.7 L 571,604" class="aro" clip-path="url(#cFaixa)"/>
+      <path d="M 539.7,72 H 682" class="linha-topo"/>
+      </g>
+      <g class="tracos-claros">
+      <line x1="573.7" y1="594" x2="617.7" y2="594" class="maior"/>
+      <line x1="549.4" y1="556.5" x2="571.4" y2="556.5" class="menor"/>
+      <line x1="525.2" y1="519" x2="569.2" y2="519" class="maior"/>
+      <line x1="499.7" y1="479.5" x2="521.7" y2="479.5" class="menor"/>
+      <line x1="474.2" y1="440" x2="518.2" y2="440" class="maior"/>
+      <line x1="448" y1="399.5" x2="470" y2="399.5" class="menor"/>
+      <line x1="421.8" y1="359" x2="465.8" y2="359" class="maior"/>
+      <line x1="395" y1="317.5" x2="417" y2="317.5" class="menor"/>
+      <line x1="368.2" y1="276" x2="412.2" y2="276" class="maior"/>
+      <line x1="399.7" y1="240" x2="421.7" y2="240" class="menor"/>
+      <line x1="433.6" y1="204" x2="477.6" y2="204" class="maior"/>
+      <line x1="465.7" y1="170" x2="487.7" y2="170" class="menor"/>
+      <line x1="497.8" y1="136" x2="541.8" y2="136" class="maior"/>
+      <line x1="527.1" y1="105" x2="549.1" y2="105" class="menor"/>
+      </g>
+      <g class="rotulos">
+        <text id="rE0" x="539.4" y="607" text-anchor="end">0</text>
+        <text id="rE1" x="490.9" y="532" text-anchor="end">30</text>
+        <text id="rE2" x="439.9" y="453" text-anchor="end">60</text>
+        <text id="rE3" x="387.6" y="372" text-anchor="end">90</text>
+        <text id="rE4" x="333.9" y="289" text-anchor="end">120</text>
+        <text id="rE5" x="397.1" y="217" text-anchor="end">150</text>
+        <text id="rE6" x="461.3" y="149" text-anchor="end">180</text>
+        <text id="rE7" x="519.9" y="87" text-anchor="end">220</text>
+        <text class="titulo-escala" x="580" y="61" text-anchor="middle">km/h</text>
+      </g>
+    </g>
+    <g transform="matrix(0.936 0 0 0.936 83.84 38.66)">
+      <g transform="matrix(-1 0 0 1 1920 0)">
+      <path d="M 617.4,108 L 657.4,108 L 532.4,274.2 L 702.1,598 L 662.1,598 L 492.4,274.2 Z" fill="url(#gParede)"/>
+      <path d="M 617.4,108 L 657.4,108 L 532.4,274.2 L 702.1,598 L 662.1,598 L 492.4,274.2 Z" fill="url(#gReflexo)"/>
+      <path d="M 651.4,108 L 526.4,274.2 L 696.1,598" class="parede-sombra"/>
+      <path d="M 618.9,108 L 493.9,274.2 L 663.6,598" class="fio"/>
+      <path d="M 548,72 L 642,72 L 490,274 L 663,604 L 571,604 L 357.6,273.7 Z" fill="url(#gFace)"/>
+      <g clip-path="url(#cFaceE)">
+        <rect x="300" y="60" width="420" height="214" fill="url(#pRiscoA)"/>
+        <rect x="300" y="274" width="420" height="338" fill="url(#pRiscoB)"/>
+        <rect x="300" y="60" width="420" height="560" fill="url(#gLuzPonta)"/>
+      </g>
+      <path d="M 548,72 L 357.6,273.7 L 571,604" class="aro" clip-path="url(#cFaixa)"/>
+      <path d="M 539.7,72 H 682" class="linha-topo"/>
+      </g>
+      <path d="M 1418.7,479.5 L 1325.7,479.5 L 1260.4,604 L 1338.3,604 Z" fill="url(#gZona)"/>
+      <path d="M 1325.7,479.5 L 1260.4,604" class="zona-fio"/>
+      <path d="M 1419.7,478 L 1326.4,478" class="zona-corte"/>
+      <path id="seta0" class="seta" d="M 1337.5 515 L 1348.5 525 L 1359.5 515"/>
+      <path id="seta1" class="seta" d="M 1322.3 541 L 1333.3 551 L 1344.3 541"/>
+      <path id="seta2" class="seta" d="M 1307.1 567 L 1318.1 577 L 1329.1 567"/>
+      <g class="tracos-claros">
+      <line x1="1423.9" y1="474" x2="1379.9" y2="474" class="maior"/>
+      <line x1="1456.5" y1="423.5" x2="1434.5" y2="423.5" class="menor"/>
+      <line x1="1489.1" y1="373" x2="1445.1" y2="373" class="maior"/>
+      <line x1="1521.1" y1="323.5" x2="1499.1" y2="323.5" class="menor"/>
+      <line x1="1552.4" y1="274" x2="1508.4" y2="274" class="maior"/>
+      <line x1="1503.8" y1="222.5" x2="1481.8" y2="222.5" class="menor"/>
+      <line x1="1455.2" y1="171" x2="1411.2" y2="171" class="maior"/>
+      <line x1="1409.4" y1="122.5" x2="1387.4" y2="122.5" class="menor"/>
+      </g>
+      <g class="rotulos">
+        <text id="rD0" x="1458.2" y="487">0</text>
+        <text id="rD1" x="1523.4" y="386">25</text>
+        <text id="rD2" x="1587.4" y="287">50</text>
+        <text id="rD3" x="1491.7" y="184">75</text>
+        <text id="rD4" x="1400.1" y="87">100</text>
+        <text class="titulo-escala" x="1340" y="61" text-anchor="middle">%</text>
+      </g>
+    </g>
+    <path d="M 84 576 H 340 L 382 604 H 478" class="horizonte" stroke="url(#gHorizonteE)"/>
+    <path d="M 1836 576 H 1580 L 1538 604 H 1442" class="horizonte" stroke="url(#gHorizonteD)"/>
+    <path d="M 570.8 604 H 725 M 1349.2 604 H 1195" class="base-fina"/>
+    <path d="M 725 604 H 838 L 847 598 M 1195 604 H 1082 L 1073 598" class="acento-brilho" filter="url(#fSuave)"/>
+    <path d="M 725 604 H 838 L 847 598 M 1195 604 H 1082 L 1073 598" class="acento"/>
+  <!-- GERADO:arte:fim -->
+  </svg>
+
+  <svg id="vivo" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
+  <!-- GERADO:vivo:inicio -->
+    <defs>
+      <linearGradient id="gLuzE" gradientUnits="userSpaceOnUse" x1="0" y1="336" x2="0" y2="544"><stop offset="0" stop-color="#fff"/><stop offset="0.1154" class="s-c4"/><stop offset="0.3077" class="s-c3"/><stop offset="0.5385" class="s-c2"/><stop offset="0.7692" class="s-c1"/><stop offset="1" class="s-c0"/></linearGradient>
+      <pattern id="pRiscoLuzE" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(-45)"><rect width="1" height="5" fill="#ffece0" fill-opacity="0.11"/></pattern>
+      <pattern id="pCalorE" patternUnits="userSpaceOnUse" x="326" y="60" width="390" height="552"><rect width="390" height="552" fill="url(#gLuzE)"/><rect width="390" height="552" fill="url(#pRiscoLuzE)"/></pattern>
+      <linearGradient id="gLuzD" gradientUnits="userSpaceOnUse" x1="0" y1="210" x2="0" y2="418"><stop offset="0" stop-color="#fff"/><stop offset="0.1154" class="s-c4"/><stop offset="0.3077" class="s-c3"/><stop offset="0.5385" class="s-c2"/><stop offset="0.7692" class="s-c1"/><stop offset="1" class="s-c0"/></linearGradient>
+      <pattern id="pRiscoLuzD" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)"><rect width="1" height="5" fill="#ffece0" fill-opacity="0.11"/></pattern>
+      <pattern id="pCalorD" patternUnits="userSpaceOnUse" x="1204" y="60" width="390" height="552"><rect width="390" height="552" fill="url(#gLuzD)"/><rect width="390" height="552" fill="url(#pRiscoLuzD)"/></pattern>
+      <linearGradient id="gFrente" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="0.22" stop-color="#fff"/><stop offset="0.33" stop-color="#fff" stop-opacity="0.45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <linearGradient id="gZonaAzul" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#52a0ff" stop-opacity="0.95"/><stop offset="1" stop-color="#235fe1" stop-opacity="0.7"/></linearGradient>
+      <clipPath id="cEnchE"><path d="M 560.4,72 L 638.2,72 L 486.5,273.7 L 659.6,604 L 581.7,604 L 369,274.7 Z"/></clipPath>
+      <clipPath id="cEnchD"><path d="M 1359.6,72 L 1281.8,72 L 1433.5,273.7 L 1327.2,476.5 L 1420.7,476.5 L 1551,274.7 Z"/></clipPath>
+    </defs>
+    <g transform="matrix(0.936 0 0 0.936 39.04 38.66)">
+      <g clip-path="url(#cEnchE)">
+        <g id="faixasE">
+        <rect x="326" y="72" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="75" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="78" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="81" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="84" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="87" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="90" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="93" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="96" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="99" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="102" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="105" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="108" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="111" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="114" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="117" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="120" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="123" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="126" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="129" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="132" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="135" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="138" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="141" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="144" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="147" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="150" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="153" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="156" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="159" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="162" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="165" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="168" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="171" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="174" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="177" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="180" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="183" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="186" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="189" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="192" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="195" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="198" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="201" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="204" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="207" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="210" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="213" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="216" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="219" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="222" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="225" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="228" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="231" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="234" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="237" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="240" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="243" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="246" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="249" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="252" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="255" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="258" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="261" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="264" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="267" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="270" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="273" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="276" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="279" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="282" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="285" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="288" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="291" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="294" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="297" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="300" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="303" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="306" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="309" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="312" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="315" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="318" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="321" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="324" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="327" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="330" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="333" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="336" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="339" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="342" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="345" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="348" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="351" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="354" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="357" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="360" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="363" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="366" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="369" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="372" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="375" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="378" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="381" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="384" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="387" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="390" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="393" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="396" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="399" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="402" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="405" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="408" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="411" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="414" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="417" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="420" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="423" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="426" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="429" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="432" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="435" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="438" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="441" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="444" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="447" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="450" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="453" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="456" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="459" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="462" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="465" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="468" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="471" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="474" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="477" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="480" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="483" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="486" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="489" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="492" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="495" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="498" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="501" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="504" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="507" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="510" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="513" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="516" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="519" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="522" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="525" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="528" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="531" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="534" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="537" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="540" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="543" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="546" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="549" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="552" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="555" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="558" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="561" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="564" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="567" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="570" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="573" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="576" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="579" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="582" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="585" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="588" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="591" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="594" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="597" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="600" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        <rect x="326" y="603" width="390" height="3.5" fill="url(#pCalorE)" visibility="hidden"/>
+        </g>
+        <g id="tracosE">
+        <line x1="573.7" y1="594" data-y="594" x2="617.7" y2="594" class="maior escuro" visibility="hidden"/>
+        <line x1="549.4" y1="556.5" data-y="556.5" x2="571.4" y2="556.5" class="menor escuro" visibility="hidden"/>
+        <line x1="525.2" y1="519" data-y="519" x2="569.2" y2="519" class="maior escuro" visibility="hidden"/>
+        <line x1="499.7" y1="479.5" data-y="479.5" x2="521.7" y2="479.5" class="menor escuro" visibility="hidden"/>
+        <line x1="474.2" y1="440" data-y="440" x2="518.2" y2="440" class="maior escuro" visibility="hidden"/>
+        <line x1="448" y1="399.5" data-y="399.5" x2="470" y2="399.5" class="menor escuro" visibility="hidden"/>
+        <line x1="421.8" y1="359" data-y="359" x2="465.8" y2="359" class="maior escuro" visibility="hidden"/>
+        <line x1="395" y1="317.5" data-y="317.5" x2="417" y2="317.5" class="menor escuro" visibility="hidden"/>
+        <line x1="368.2" y1="276" data-y="276" x2="412.2" y2="276" class="maior escuro" visibility="hidden"/>
+        <line x1="399.7" y1="240" data-y="240" x2="421.7" y2="240" class="menor escuro" visibility="hidden"/>
+        <line x1="433.6" y1="204" data-y="204" x2="477.6" y2="204" class="maior escuro" visibility="hidden"/>
+        <line x1="465.7" y1="170" data-y="170" x2="487.7" y2="170" class="menor escuro" visibility="hidden"/>
+        <line x1="497.8" y1="136" data-y="136" x2="541.8" y2="136" class="maior escuro" visibility="hidden"/>
+        <line x1="527.1" y1="105" data-y="105" x2="549.1" y2="105" class="menor escuro" visibility="hidden"/>
+        </g>
+        <g id="frenteE" transform="translate(0 -40)" visibility="hidden"><rect x="326" y="0" width="390" height="9" fill="url(#gFrente)"/></g>
+      </g>
+    </g>
+    <g transform="matrix(0.936 0 0 0.936 83.84 38.66)">
+      <g clip-path="url(#cEnchD)">
+        <g id="faixasD">
+        <rect x="1204" y="72" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="75" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="78" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="81" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="84" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="87" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="90" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="93" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="96" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="99" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="102" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="105" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="108" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="111" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="114" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="117" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="120" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="123" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="126" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="129" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="132" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="135" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="138" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="141" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="144" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="147" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="150" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="153" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="156" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="159" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="162" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="165" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="168" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="171" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="174" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="177" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="180" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="183" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="186" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="189" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="192" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="195" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="198" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="201" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="204" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="207" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="210" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="213" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="216" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="219" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="222" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="225" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="228" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="231" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="234" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="237" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="240" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="243" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="246" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="249" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="252" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="255" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="258" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="261" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="264" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="267" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="270" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="273" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="276" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="279" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="282" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="285" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="288" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="291" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="294" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="297" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="300" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="303" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="306" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="309" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="312" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="315" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="318" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="321" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="324" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="327" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="330" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="333" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="336" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="339" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="342" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="345" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="348" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="351" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="354" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="357" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="360" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="363" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="366" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="369" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="372" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="375" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="378" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="381" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="384" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="387" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="390" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="393" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="396" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="399" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="402" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="405" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="408" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="411" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="414" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="417" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="420" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="423" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="426" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="429" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="432" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="435" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="438" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="441" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="444" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="447" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="450" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="453" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="456" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="459" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="462" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="465" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="468" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="471" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="474" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        <rect x="1204" y="477" width="390" height="3.5" fill="url(#pCalorD)" visibility="hidden"/>
+        </g>
+        <g id="tracosD">
+        <line x1="1423.9" y1="474" data-y="474" x2="1379.9" y2="474" class="maior escuro" visibility="hidden"/>
+        <line x1="1456.5" y1="423.5" data-y="423.5" x2="1434.5" y2="423.5" class="menor escuro" visibility="hidden"/>
+        <line x1="1489.1" y1="373" data-y="373" x2="1445.1" y2="373" class="maior escuro" visibility="hidden"/>
+        <line x1="1521.1" y1="323.5" data-y="323.5" x2="1499.1" y2="323.5" class="menor escuro" visibility="hidden"/>
+        <line x1="1552.4" y1="274" data-y="274" x2="1508.4" y2="274" class="maior escuro" visibility="hidden"/>
+        <line x1="1503.8" y1="222.5" data-y="222.5" x2="1481.8" y2="222.5" class="menor escuro" visibility="hidden"/>
+        <line x1="1455.2" y1="171" data-y="171" x2="1411.2" y2="171" class="maior escuro" visibility="hidden"/>
+        <line x1="1409.4" y1="122.5" data-y="122.5" x2="1387.4" y2="122.5" class="menor escuro" visibility="hidden"/>
+        </g>
+        <g id="frenteD" transform="translate(0 -40)" visibility="hidden"><rect x="1204" y="0" width="390" height="9" fill="url(#gFrente)"/></g>
+      </g>
+      <path id="zonaAzul" d="M 1418.7,479.5 L 1325.7,479.5 L 1260.4,604 L 1338.3,604 Z" fill="url(#gZonaAzul)" style="opacity: 0"/>
+    </g>
+  <!-- GERADO:vivo:fim -->
+  </svg>
+  <div class="clarao" id="claraoE"></div>
+  <div class="clarao" id="claraoD"></div>
+  <div id="limite"></div>
+
+  <!-- Velocidade e marcha -->
+  <div id="vel"><span id="velValor">0</span></div>
+  <div id="velUn" class="un">km/h</div>
+  <div id="marcha">P</div>
+  <div id="modoCond"></div>
+
+  <!-- Centro -->
+  <div id="midia">
+    <div id="capa"><svg viewBox="0 0 40 40"><use href="#i-nota"/></svg><img id="capaImg" alt=""></div>
+    <div id="titulo" class="linha-midia"></div>
+    <div id="artista" class="linha-midia"></div>
+    <div id="album" class="linha-midia"></div>
+    <div id="tempo"></div>
+    <div id="progresso"><i></i><b id="progressoCheio"></b></div>
+  </div>
+  <div id="semMidia">
+    <div class="rot">MODO DE CONDUÇÃO</div>
+    <div id="semModo">Normal</div>
+    <div id="semTraco"></div>
+    <div id="semInfo">HEV</div>
+    <div id="semOdo"></div>
+  </div>
+
+  <!-- Topo -->
+  <div id="ev">EV</div>
+
+  <!-- Rodapé -->
+  <div id="bateria"><svg viewBox="0 0 54 30"><use href="#i-bateria"/></svg><span id="bateriaTexto"><span id="bateriaValor">--</span> <span class="un">%</span></span></div>
+  <div id="relogio">--:--</div>
+  <div id="placa" class="off"><span id="placaValor">--</span></div>
+  <div id="temp"><span id="tempSinal"></span><span id="tempValor">--</span> <span id="tempUn" class="un">°C</span></div>
+  <div id="autonomia"><svg viewBox="0 0 34 36"><use href="#i-bomba"/></svg><span id="autonomiaValor">---</span> <span class="un">km</span></div>
+  <div id="combustivel"><b id="combustivelCheio"></b></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* GERADO:js:inicio */
+  const GEO = {"escalaE":[[0,594],[30,519],[60,440],[90,359],[120,276],[150,204],[180,136],[220,74]],"escalaD":[[0,474],[25,373],[50,274],[75,171],[100,74]],"zeroD":478,"topo":72,"base":604,"faixa":3,"faixasE":[72,178],"faixasD":[72,136],"aro":{"ponta":273,"alto":[350,273,-0.944],"baixo":[350,273,0.646]},"dentro":{"ponta":274,"alto":[642,72,-0.7525],"baixo":[490,274,0.5242]},"escala":{"k":0.936,"e":[610,604],"d":[1310,604]}};
+  /* GERADO:js:fim */
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    app: $('app'), bg: $('bg'),
+    zonaAzul: $('zonaAzul'), claraoE: $('claraoE'), claraoD: $('claraoD'), limite: $('limite'),
+    frenteE: $('frenteE'), frenteD: $('frenteD'),
+    setas: [$('seta0'), $('seta1'), $('seta2')],
+    vel: $('vel'), velValor: $('velValor'), marcha: $('marcha'), modoCond: $('modoCond'),
+    midia: $('midia'), capa: $('capa'), capaImg: $('capaImg'),
+    titulo: $('titulo'), artista: $('artista'), album: $('album'),
+    tempo: $('tempo'), progressoCheio: $('progressoCheio'),
+    semModo: $('semModo'), semInfo: $('semInfo'), semOdo: $('semOdo'),
+    ev: $('ev'),
+    bateriaValor: $('bateriaValor'), relogio: $('relogio'),
+    placa: $('placa'), placaValor: $('placaValor'),
+    tempSinal: $('tempSinal'), tempValor: $('tempValor'), tempUn: $('tempUn'),
+    autonomia: $('autonomia'), autonomiaValor: $('autonomiaValor'), combustivelCheio: $('combustivelCheio'),
+  };
+  const rotulosE = GEO.escalaE.map((p, i) => $('rE' + i));
+  const rotulosD = GEO.escalaD.map((p, i) => $('rD' + i));
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function numero(v) { const n = parseFloat(v); return Number.isFinite(n) ? n : null; }
+  function ligado(v) {
+    return v === true || ['1', 'true', 'on', 'yes', 'ligado']
+      .indexOf(String(v == null ? '' : v).trim().toLowerCase()) >= 0;
+  }
+  function milhar(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function virgula(n, casas) { return n.toFixed(casas).replace('.', ','); }
+
+  // ----- Suavização -----
+  // Filtro criticamente amortecido de segunda ordem sobre o VALOR (não transição de desenho), o
+  // mesmo do Stuttgart MBUX: `ms` é o tempo para andar 95% de um degrau. Solução exata do passo,
+  // então um quadro longo (rAF estrangulado) não desestabiliza; acima de 400 ms crava.
+  function canal(ms, eps) { return { alvo: null, atual: null, taxa: 0, omega: 4.744 / Math.max(0.001, ms / 1000), eps: eps }; }
+  function mirar(c, v) {
+    if (c.atual === null) { c.atual = v; c.alvo = v; c.taxa = 0; return; }
+    c.alvo = v;
+  }
+  function passo(c, dt) {
+    if (c.atual === null || (c.atual === c.alvo && c.taxa === 0)) return false;
+    if (dt > 0.4) { c.atual = c.alvo; c.taxa = 0; return false; }
+    const e0 = c.atual - c.alvo;
+    const b = c.taxa + c.omega * e0;
+    const k = Math.exp(-c.omega * dt);
+    c.atual = c.alvo + (e0 + b * dt) * k;
+    c.taxa = (c.taxa - c.omega * b * dt) * k;
+    if (Math.abs(c.alvo - c.atual) <= c.eps && Math.abs(c.taxa) <= c.omega * c.eps) {
+      c.atual = c.alvo; c.taxa = 0; return false;
+    }
+    return true;
+  }
+  const C = {
+    vel: canal(300, 0.05),
+    pot: canal(260, 0.1),
+  };
+  const CANAIS = Object.keys(C).map((k) => C[k]);
+
+  // ----- Geometria (tabelas do gerador) -----
+  function yDaEscala(tab, v) {
+    if (v <= tab[0][0]) return tab[0][1];
+    for (let i = 1; i < tab.length; i++) {
+      if (v <= tab[i][0]) {
+        const a = tab[i - 1], b = tab[i];
+        return a[1] + (b[1] - a[1]) * (v - a[0]) / (b[0] - a[0]);
+      }
+    }
+    return tab[tab.length - 1][1];
+  }
+  function xDaReta(r, y) { return r[0] + r[2] * (y - r[1]); }
+  function xAro(y) { return y <= GEO.aro.ponta ? xDaReta(GEO.aro.alto, y) : xDaReta(GEO.aro.baixo, y); }
+  function xDentro(y) { return y <= GEO.dentro.ponta ? xDaReta(GEO.dentro.alto, y) : xDaReta(GEO.dentro.baixo, y); }
+  // Os chevrons são desenhados na medida da foto e encolhidos no SVG, cada um em volta do meio da
+  // própria base (GEO.escala). O que é HTML por cima deles (o clarão da frente e a marca do limite)
+  // passa pela mesma conta para cair no mesmo lugar.
+  function naTela(lado, x, y) {
+    const e = GEO.escala, a = lado === 'E' ? e.e : e.d;
+    return [a[0] + (x - a[0]) * e.k, a[1] + (y - a[1]) * e.k];
+  }
+
+  // ----- Desenho (só escreve no DOM quando o valor desenhado muda) -----
+  const escrito = {};
+  function mudou(chave, valor) { if (escrito[chave] === valor) return false; escrito[chave] = valor; return true; }
+
+  // Faixas do enchimento (paradas, de cima para baixo) e traços escuros de dentro dele.
+  function montarFaixas(lado) {
+    const itens = Array.prototype.slice.call($('faixas' + lado).children);
+    return { itens: itens, y0: GEO['faixas' + lado][0], primeira: itens.length };
+  }
+  function montarTracos(lado) {
+    return Array.prototype.slice.call($('tracos' + lado).children)
+      .map((el) => ({ el: el, y: parseFloat(el.getAttribute('data-y')), on: false }));
+  }
+  const FAIXAS = { E: montarFaixas('E'), D: montarFaixas('D') };
+  const TRACOS = { E: montarTracos('E'), D: montarTracos('D') };
+
+  // A frente do enchimento em y (página). Aparecem as faixas cujo meio está abaixo dela; só as da
+  // borda que mudaram de lado são tocadas, e a área repintada é a delas. A linha branca (2 px) fica
+  // logo acima de y e cobre o degrau de meia faixa.
+  function desenharEnchimento(lado, y, vazio) {
+    const f = FAIXAS[lado];
+    const n = f.itens.length;
+    const k = vazio ? n : clamp(Math.ceil((y - f.y0 - GEO.faixa / 2) / GEO.faixa), 0, n);
+    if (k !== f.primeira) {
+      const a = Math.min(k, f.primeira), b = Math.max(k, f.primeira);
+      for (let i = a; i < b; i++) f.itens[i].style.visibility = i >= k ? 'visible' : 'hidden';
+      f.primeira = k;
+    }
+    const tracos = TRACOS[lado];
+    for (let i = 0; i < tracos.length; i++) {
+      const t = tracos[i];
+      const on = !vazio && t.y >= y + 1;
+      if (on !== t.on) { t.on = on; t.el.style.visibility = on ? 'visible' : 'hidden'; }
+    }
+    // A linha da frente e o clarão que atravessa a borda interna somem com o enchimento vazio.
+    const clarao = els['clarao' + lado];
+    const frente = els['frente' + lado];
+    if (mudou('frenteOn' + lado, !vazio)) {
+      clarao.classList.toggle('on', !vazio);
+      frente.style.visibility = vazio ? 'hidden' : 'visible';
+    }
+    if (vazio) return;
+    const tf = 'translate(0 ' + (y - 2).toFixed(1) + ')';
+    if (mudou('frente' + lado, tf)) frente.setAttribute('transform', tf);
+    const xd = xDentro(y);
+    const c = naTela(lado, (lado === 'E' ? xd - 70 : 1920 - xd - 50) + 60, y);
+    const t = 'translate(' + (c[0] - 60).toFixed(1) + 'px, ' + (c[1] - 12).toFixed(1) + 'px)';
+    if (mudou('clarao' + lado, t)) clarao.style.transform = t;
+  }
+
+  // O rótulo logo abaixo da frente acende, como na foto (o "90" branco com 98 km/h).
+  function destacarRotulo(rotulos, tab, v, chave) {
+    let i = 0;
+    for (let k = 0; k < tab.length; k++) if (tab[k][0] <= v + 0.01) i = k;
+    if (!mudou(chave, i)) return;
+    for (let k = 0; k < rotulos.length; k++) if (rotulos[k]) rotulos[k].classList.toggle('viva', k === i);
+  }
+
+  function desenharVelocidade(v) {
+    const vazio = v < 0.5;
+    desenharEnchimento('E', vazio ? GEO.base : yDaEscala(GEO.escalaE, v), vazio);
+    destacarRotulo(rotulosE, GEO.escalaE, v, 'rotE');
+  }
+
+  function desenharPotencia(p) {
+    const vazio = p < 0.5;
+    desenharEnchimento('D', vazio ? GEO.zeroD : yDaEscala(GEO.escalaD, p), vazio);
+    destacarRotulo(rotulosD, GEO.escalaD, Math.max(0, p), 'rotD');
+    const r = clamp(-p / 100, 0, 1);
+    const op = (r * 0.7).toFixed(3);
+    if (mudou('zona', op)) els.zonaAzul.style.opacity = op;
+  }
+
+  // ----- Estado bruto (texto) -----
+  const est = {
+    velocidade: null, potencia: 0,
+    pronto: null, prontoPeloReady: false, motorGirando: false,
+    tempExt: null, fahrenheit: false,
+    limite: null, limiteOk: false,
+    modo: '0', modoEnergia: '0', consumo: null, odo: null,
+    midia: { titulo: '', artista: '', album: '', capa: '', posicao: null, duracao: null },
+  };
+
+  // Motor a combustão girando, com histerese (o engine_state é ignição, não motor).
+  const ICE_LIGA = 400, ICE_DESLIGA = 150;
+  function atualizarEv() {
+    const pronto = est.pronto === true;
+    els.ev.classList.toggle('on', pronto && !est.motorGirando);
+  }
+
+  // Setas da recarga: acendem de cima para baixo com a força da regeneração.
+  function desenharSetas(p) {
+    const r = clamp(-p / 100, 0, 1);
+    const n = r <= 0.02 ? 0 : r < 0.34 ? 1 : r < 0.67 ? 2 : 3;
+    if (!mudou('setas', n)) return;
+    for (let i = 0; i < els.setas.length; i++) if (els.setas[i]) els.setas[i].classList.toggle('on', i < n);
+  }
+
+  function desenharTemp() {
+    if (est.tempExt === null) return;
+    const v = est.fahrenheit ? est.tempExt * 9 / 5 + 32 : est.tempExt;
+    els.tempSinal.textContent = v < -0.05 ? '−' : '+';
+    els.tempValor.textContent = virgula(Math.abs(v), 1);
+    els.tempUn.textContent = est.fahrenheit ? '°F' : '°C';
+  }
+
+  // Placa da via (TSR) no rodapé e a marca vermelha na escala; a velocidade fica âmbar acima dela.
+  function atualizarLimite() {
+    const ok = est.limiteOk && est.limite !== null && est.limite > 0;
+    els.placa.classList.toggle('off', !ok);
+    els.limite.classList.toggle('on', ok);
+    if (ok) {
+      els.placaValor.textContent = Math.round(est.limite);
+      const y = yDaEscala(GEO.escalaE, est.limite);
+      const c = naTela('E', xAro(y) - 6 + 17, y);
+      els.limite.style.transform = 'translate(' + (c[0] - 17).toFixed(1) + 'px, ' + (c[1] - 2.5).toFixed(1) + 'px)';
+    }
+    atualizarAcima();
+  }
+  function atualizarAcima() {
+    const ok = est.limiteOk && est.limite !== null && est.limite > 0;
+    const acima = ok && est.velocidade !== null && est.velocidade > est.limite + 3;
+    if (mudou('acima', acima)) els.vel.classList.toggle('acima', acima);
+  }
+
+  // ----- Mídia -----
+  function mmss(seg) {
+    const s = Math.max(0, Math.round(seg));
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+  function atualizarMidia() {
+    const m = est.midia;
+    const tem = m.titulo.trim().length > 0;
+    document.body.classList.toggle('com-midia', tem);
+    if (!tem) return;
+    els.titulo.textContent = m.titulo;
+    els.artista.textContent = m.artista;
+    els.album.textContent = m.album && m.album !== m.titulo ? m.album : '';
+    if (m.capa) {
+      if (els.capaImg.getAttribute('src') !== m.capa) els.capaImg.setAttribute('src', m.capa);
+      els.capa.classList.add('com-imagem');
+    } else {
+      els.capaImg.removeAttribute('src');
+      els.capa.classList.remove('com-imagem');
+    }
+    atualizarTempo();
+  }
+  // Posição e duração ainda não chegam do app (as chaves existem no contrato); a barra só aparece
+  // quando as duas vierem. Milissegundos ou segundos: acima de 10 h só pode ser milissegundo.
+  function atualizarTempo() {
+    const m = est.midia;
+    let dur = m.duracao, pos = m.posicao;
+    const tem = dur !== null && dur > 0 && pos !== null && pos >= 0;
+    els.midia.classList.toggle('com-tempo', tem);
+    if (!tem) return;
+    if (dur > 36000) { dur /= 1000; pos /= 1000; }
+    pos = Math.min(pos, dur);
+    els.tempo.textContent = '- ' + mmss(dur - pos);
+    els.progressoCheio.style.transform = 'scaleX(' + (pos / dur).toFixed(4) + ')';
+  }
+
+  // ----- Cartão do modo (centro sem mídia) -----
+  const DRIVE_MODE_LABELS = { '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama', '11': 'AWD' };
+  const EV_MODE_LABELS = { '0': 'HEV', '1': 'EVP', '3': 'EV' };
+  function atualizarCartao() {
+    const nome = DRIVE_MODE_LABELS[est.modo] || 'Normal';
+    els.semModo.textContent = nome;
+    els.modoCond.textContent = est.modo === '0' ? '' : nome;
+    const partes = [EV_MODE_LABELS[est.modoEnergia] || 'HEV'];
+    if (est.consumo !== null) partes.push(virgula(Math.min(est.consumo, 99.9), 1) + ' km/l');
+    els.semInfo.textContent = partes.join('  ·  ');
+    els.semOdo.textContent = est.odo === null ? '' : 'ODO  ' + milhar(Math.round(est.odo)) + ' km';
+  }
+
+  // Consumo instantâneo: "{métrica,consumo}" ou número solto. Métrica 1 = L/100 km (vira km/l);
+  // métrica 4 = parado, em L/h, sem distância: não existe km/l.
+  function consumoKml(raw) {
+    const s = raw == null ? '' : String(raw);
+    let metrica = 1;
+    let consumo = 0;
+    if (s.charAt(0) === '{' && s.charAt(s.length - 1) === '}' && s.indexOf(',') > 0) {
+      const p = s.slice(1, -1).split(',');
+      metrica = parseFloat(p[0]) || 0;
+      consumo = parseFloat(p[1]) || 0;
+    } else {
+      consumo = parseFloat(s) || 0;
+    }
+    if (metrica === 4 || consumo <= 0) return null;
+    return Math.trunc((100 / consumo) * 10) / 10;
+  }
+
+  // ----- Câmbio -----
+  const GEAR_LABELS = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+
+  // ----- Tom do painel (ajuste do tema) -----
+  // c0..c4: da base do braço (escura) até logo abaixo do branco; parede: reflexo, meio e fundo.
+  const TONS = {
+    cobre: { c: ['#2a1416', '#5a2e31', '#9e645a', '#e0ad88', '#f8eccb'], tom: '#f2b07a', parede: ['#d8cfc2', '#2a1a18', '#3a211c'] },
+    azul: { c: ['#0c1a2e', '#1d3a63', '#3c6ea5', '#8fc0ea', '#e3f2ff'], tom: '#8cc8ff', parede: ['#c6d4e2', '#151d28', '#16263a'] },
+    vermelho: { c: ['#2a0c0a', '#641a14', '#b23a26', '#f08a66', '#ffe3d6'], tom: '#ff8c64', parede: ['#dcc6bd', '#2b1411', '#44150f'] },
+  };
+  // "Seguir modo": Eco no azul, Sport no vermelho, o resto no cobre da foto.
+  const TOM_DO_MODO = { '2': 'azul', '1': 'vermelho' };
+  let preferenciaDeTom = 'cobre';
+  let tomAtual = null;
+  function aplicarTom() {
+    const nome = preferenciaDeTom === 'modo' ? (TOM_DO_MODO[est.modo] || 'cobre') : preferenciaDeTom;
+    if (nome === tomAtual) return;
+    tomAtual = nome;
+    const t = TONS[nome] || TONS.cobre;
+    const r = document.documentElement.style;
+    t.c.forEach((c, i) => r.setProperty('--c' + i, c));
+    r.setProperty('--tom', t.tom);
+    r.setProperty('--parede-luz', t.parede[0]);
+    r.setProperty('--parede-meio', t.parede[1]);
+    r.setProperty('--parede-fundo', t.parede[2]);
+  }
+  function lerPreferencias() {
+    try {
+      if (!window.Android || typeof window.Android.getPreference !== 'function') return;
+      const modo = String(window.Android.getPreference('displayMode', 'Dia') || '');
+      document.body.classList.toggle('night-mode', modo === 'Noite');
+      const tom = String(window.Android.getPreference('panelTone', 'Cobre') || '').toLowerCase();
+      const pref = tom.indexOf('azul') >= 0 ? 'azul'
+        : tom.indexOf('verm') >= 0 ? 'vermelho'
+        : (tom.indexOf('seguir') >= 0 || tom.indexOf('modo') >= 0) ? 'modo'
+        : 'cobre';
+      if (pref !== preferenciaDeTom) { preferenciaDeTom = pref; aplicarTom(); }
+    } catch (e) { /* ignore */ }
+  }
+
+  function tickClock() {
+    const d = new Date();
+    els.relogio.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
+  tickClock();
+  setInterval(tickClock, 5000);
+
+  // ----- Coalescência de render -----
+  // Cada chave chega num evaluateJavascript separado; desenhar uma vez por quadro. Os canais
+  // suavizados pedem o próximo quadro só enquanto ainda estão andando.
+  let renderScheduled = false;
+  let renderFallbackTimer = 0;
+  let ultimoQuadro = 0;
+  function flushRender(ts) {
+    if (!renderScheduled) return;
+    renderScheduled = false;
+    clearTimeout(renderFallbackTimer);
+    const agora = typeof ts === 'number' && ts > 0 ? ts : performance.now();
+    const dt = ultimoQuadro ? (agora - ultimoQuadro) / 1000 : 0;
+    ultimoQuadro = agora;
+    let andando = false;
+    for (let i = 0; i < CANAIS.length; i++) if (passo(CANAIS[i], dt)) andando = true;
+
+    if (est.velocidade !== null) {
+      const v = String(Math.round(est.velocidade));
+      if (mudou('vel', v)) els.velValor.textContent = v;
+    }
+    if (C.vel.atual !== null) desenharVelocidade(C.vel.atual);
+    if (C.pot.atual !== null) desenharPotencia(C.pot.atual);
+
+    if (andando) scheduleRender();
+    else ultimoQuadro = 0;
+  }
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(flushRender);
+    // Rede de segurança: com o WebView oculto o rAF não dispara; os valores não podem congelar.
+    renderFallbackTimer = setTimeout(flushRender, 120);
+  }
+
+  function handleTelemetry(key, raw) {
+    switch (key) {
+      case 'car.basic.vehicle_speed': {
+        const v = numero(raw);
+        est.velocidade = v === null ? 0 : Math.max(0, v);
+        mirar(C.vel, clamp(est.velocidade, 0, 220));
+        atualizarAcima();
+        scheduleRender();
+        break;
+      }
+      case 'car.basic.engine_speed': {
+        const rpm = Math.max(0, numero(raw) || 0);
+        if (!est.motorGirando && rpm >= ICE_LIGA) est.motorGirando = true;
+        else if (est.motorGirando && rpm <= ICE_DESLIGA) est.motorGirando = false;
+        atualizarEv();
+        break;
+      }
+      case 'car.ev_info.energy_output_percentage': {
+        const p = clamp(numero(raw) || 0, -100, 100);
+        est.potencia = p;
+        mirar(C.pot, p);
+        desenharSetas(p);
+        scheduleRender();
+        break;
+      }
+      case 'car.ev_info.cur_battery_power_percentage': {
+        const pct = numero(raw);
+        els.bateriaValor.textContent = pct === null ? '--' : Math.round(clamp(pct, 0, 100));
+        break;
+      }
+      case 'car.basic.remain_fuel_percentage': {
+        const pct = clamp(numero(raw) || 0, 0, 100);
+        els.combustivelCheio.style.transform = 'scaleX(' + (pct / 100).toFixed(3) + ')';
+        els.autonomia.classList.toggle('baixo', pct < 12);
+        break;
+      }
+      case 'car.ev_info.fuel_mode_remain_odometer': {
+        const km = numero(raw);
+        els.autonomiaValor.textContent = km === null ? '---' : Math.round(km);
+        break;
+      }
+      case 'car.basic.total_odometer':
+        est.odo = numero(raw);
+        atualizarCartao();
+        break;
+      case 'car.basic.gear_status': {
+        // O carro manda o código (2 = D); o simulador do app manda a letra.
+        const s = String(raw == null ? '' : raw).trim().toUpperCase();
+        els.marcha.textContent = /^[PRND]$/.test(s) ? s : (GEAR_LABELS[String(parseInt(s, 10))] || 'N');
+        break;
+      }
+      case 'car.drive_setting.drive_mode': {
+        const m = String(parseInt(raw, 10));
+        est.modo = DRIVE_MODE_LABELS[m] ? m : '0';
+        atualizarCartao();
+        aplicarTom();
+        break;
+      }
+      case 'car.ev_setting.power_model_config':
+        est.modoEnergia = String(raw).trim();
+        atualizarCartao();
+        break;
+      case 'car.basic.outside_temp': {
+        const t = numero(raw);
+        if (t !== null) { est.tempExt = t; desenharTemp(); }
+        break;
+      }
+      case 'car.configure.default_temp_unit':
+        est.fahrenheit = String(raw).trim() === '1';
+        desenharTemp();
+        break;
+      case 'car.basic.instant_fuel_consumption':
+        est.consumo = consumoKml(raw);
+        atualizarCartao();
+        break;
+      case 'car.basic.head_light_status': {
+        // O app entrega o estado já resolvido (HeadlightPolicy); aqui é só ligado/desligado.
+        const aceso = ligado(raw);
+        document.body.classList.toggle('mode-headlight', aceso);
+        break;
+      }
+      // READY vem de driving_ready_state ("1" pronto). O engine_state é ignição e, lido no carro
+      // em 30/09, vinha 11 parado em READY: por ele (=== '13') o READY apagava com o carro pronto.
+      case 'car.basic.driving_ready_state': {
+        const s = String(raw).trim();
+        est.prontoPeloReady = s !== '';
+        est.pronto = s === '1' ? true : (s === '0' || s === '-1') ? false : null;
+        atualizarEv();
+        break;
+      }
+      // Reserva para um app sem driving_ready_state no contrato (anterior à Alpha 9.4).
+      case 'car.basic.engine_state': {
+        if (est.prontoPeloReady) break;
+        const n = parseInt(raw, 10);
+        est.pronto = n === 11 || n === 13;
+        atualizarEv();
+        break;
+      }
+      case 'car.map.tsr.nav_speed_limit':
+        est.limite = numero(raw);
+        atualizarLimite();
+        break;
+      case 'car.map.tsr.nav_speed_limit_sign_status':
+        est.limiteOk = ligado(raw);
+        atualizarLimite();
+        break;
+      case 'app.media.title':
+        est.midia.titulo = raw ? String(raw) : '';
+        atualizarMidia();
+        break;
+      case 'app.media.artist':
+        est.midia.artista = raw ? String(raw) : '';
+        atualizarMidia();
+        break;
+      case 'app.media.album':
+        est.midia.album = raw ? String(raw).trim() : '';
+        atualizarMidia();
+        break;
+      case 'app.media.album_art':
+        est.midia.capa = raw ? String(raw).trim() : '';
+        atualizarMidia();
+        break;
+      case 'app.media.position':
+        est.midia.posicao = numero(raw);
+        atualizarTempo();
+        break;
+      case 'app.media.duration':
+        est.midia.duracao = numero(raw);
+        atualizarTempo();
+        break;
+      default:
+        break;
+    }
+  }
+
+  // ----- Ceder a tela -----
+  // Só projeção de verdade (CarPlay/Android Auto/espelhamento) tira o tema da frente. Aviso do
+  // carro não: ele é desenhado pelo próprio tema (ver desenharAvisos).
+  const projectionState = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  function applyYieldToCar() {
+    const yielding = projectionState.carPlayInDash ||
+      projectionState.projectionMirrorInDash || projectionState.projectionPreparingD3;
+    els.app.classList.toggle('hidden', yielding);
+    document.body.classList.toggle('yield-to-car', yielding);
+  }
+
+  // ----- Vão da projeção da central -----
+  // O centro, entre as paredes dos dois chevrons. Declarar faz o app pôr o vídeo POR BAIXO desta
+  // página; o fundo abre o buraco (aplicarVaoDaProjecao) e os chevrons continuam por cima.
+  // Alpha 9.5: o vão entra no V de cada chevron, como no NTG 5.5 (coffe3): as barras (opacas)
+  // desenham por cima e a imagem aparece por dentro delas.
+  const PROJ_BOX = { x: 520, y: 84, w: 880, h: 520 };
+  const PROJ_PENA_X = 96;
+  const PROJ_PENA_Y = 48;
+
+  function sabeRecortarOFundo() {
+    try {
+      if (!window.CSS || typeof window.CSS.supports !== 'function') return false;
+      const g = 'linear-gradient(to right, #000 0px, transparent 10px)';
+      return window.CSS.supports('-webkit-mask-image', g) || window.CSS.supports('mask-image', g);
+    } catch (e) { return false; }
+  }
+  let recortaOFundo = null;
+  function declararVaoDaProjecao() {
+    if (recortaOFundo === null) {
+      recortaOFundo = sabeRecortarOFundo();
+      if (!recortaOFundo) console.warn('[ID8] sem suporte a mascara: a projecao vai por cima do tema');
+    }
+    if (!recortaOFundo) return;
+    try {
+      if (window.Android && typeof window.Android.setProjectionBox === 'function') {
+        window.Android.setProjectionBox(PROJ_BOX.x, PROJ_BOX.y, PROJ_BOX.w, PROJ_BOX.h);
+      }
+    } catch (e) { /* ponte antiga: sem declaração, o app volta a varrer o DOM */ }
+  }
+  function aplicarVaoDaProjecao(valor) {
+    const bg = els.bg;
+    const n = String(valor == null ? '' : valor).split(',');
+    const x = parseInt(n[0], 10), y = parseInt(n[1], 10);
+    const l = parseInt(n[2], 10), a = parseInt(n[3], 10);
+    if (n.length < 4 || !(l > 0) || !(a > 0)) {
+      bg.style.webkitMaskImage = '';
+      bg.style.maskImage = '';
+      document.body.classList.remove('projetando');
+      return;
+    }
+    const L = x, R = x + l, T = y, B = y + a;
+    const px = Math.min(PROJ_PENA_X, Math.floor(l / 3));
+    const py = Math.min(PROJ_PENA_Y, Math.floor(a / 3));
+    const pe = L <= 0 ? 0 : px, pd = R >= 1920 ? 0 : px;
+    const pt = T <= 0 ? 0 : py, pb = B >= 720 ? 0 : py;
+    const gx = 'linear-gradient(to right, #000 ' + L + 'px, transparent ' + (L + pe) + 'px, transparent ' + (R - pd) + 'px, #000 ' + R + 'px)';
+    const gy = 'linear-gradient(to bottom, #000 ' + T + 'px, transparent ' + (T + pt) + 'px, transparent ' + (B - pb) + 'px, #000 ' + B + 'px)';
+    const veu = $('projscrim');
+    if (veu) {
+      veu.style.left = L + 'px';
+      veu.style.top = T + 'px';
+      veu.style.width = l + 'px';
+      veu.style.height = a + 'px';
+      const mv = 'linear-gradient(to right, transparent 0px, #000 ' + pe + 'px, #000 ' + (l - pd) + 'px, transparent ' + l + 'px)';
+      veu.style.webkitMaskImage = mv;
+      veu.style.maskImage = mv;
+    }
+    bg.style.webkitMaskImage = gx + ', ' + gy;
+    bg.style.maskImage = gx + ', ' + gy;
+    document.body.classList.add('projetando');
+  }
+
+  const SUBSCRIBE_KEYS = [
+    'car.basic.vehicle_speed',
+    'car.basic.engine_speed',
+    'car.ev_info.energy_output_percentage',
+    'car.ev_info.cur_battery_power_percentage',
+    'car.basic.remain_fuel_percentage',
+    'car.ev_info.fuel_mode_remain_odometer',
+    'car.basic.total_odometer',
+    'car.basic.gear_status',
+    'car.drive_setting.drive_mode',
+    'car.ev_setting.power_model_config',
+    'car.basic.outside_temp',
+    'car.configure.default_temp_unit',
+    'car.basic.instant_fuel_consumption',
+    'car.basic.head_light_status',
+    'car.basic.driving_ready_state',
+    'car.basic.engine_state',
+    'car.map.tsr.nav_speed_limit',
+    'car.map.tsr.nav_speed_limit_sign_status',
+    'app.media.title',
+    'app.media.artist',
+    'app.media.album',
+    'app.media.album_art',
+    'app.media.position',
+    'app.media.duration',
+    'warningActive'
+  ];
+
+  // ===================== Simulação local (sem window.Android) =====================
+  // ?photo=1 congela o quadro da foto; ?mode=Noite, ?tom=Azul|Vermelho|Seguir modo, ?dm=1,
+  // ?farol=1 (modo farol), ?proj=1, ?regen=1, ?sem=1 (sem mídia),
+  // ?limite=80, ?vel=, ?pot= e ?tempo=1 exercitam o resto.
+  const CAPA_DEMO = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 224">' +
+    '<defs><linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9c8a8"/>' +
+    '<stop offset="0.55" stop-color="#b98a86"/><stop offset="1" stop-color="#3b4a6b"/></linearGradient></defs>' +
+    '<rect width="224" height="224" fill="url(#c)"/>' +
+    '<path d="M0 118 L120 96 L224 132 V224 H0 Z" fill="#3c4b6e" fill-opacity="0.9"/>' +
+    '<path d="M0 96 L150 128 L224 104 V150 L120 118 L0 140 Z" fill="#f3d9c4" fill-opacity="0.35"/>' +
+    '<path d="M60 0 L224 70 V90 L40 0 Z" fill="#fff" fill-opacity="0.12"/></svg>');
+  function installMockBridge() {
+    console.warn('[ID8] window.Android ausente — usando simulação local para preview.');
+    const q = new URLSearchParams(location.search);
+    const foto = q.get('photo') === '1';
+    window.Android = {
+      getAvailableKeys: () => JSON.stringify(SUBSCRIBE_KEYS),
+      subscribe: () => {}, unsubscribe: () => {},
+      getCarData: () => '0', updateCarData: () => {},
+      getPreference: (k, d) => {
+        if (k === 'displayMode') return q.get('mode') || d;
+        if (k === 'panelTone') return q.get('tom') || d;
+        return d;
+      },
+      savePreference: () => {}, heartbeat: () => {}, triggerSystemAction: () => {},
+      setAppDefaultDimensions: () => {}, setProjectionBox: () => {},
+    };
+    const regen = q.get('regen') === '1';
+    const semMidia = q.get('sem') === '1';
+    const seed = {
+      'car.basic.vehicle_speed': q.get('vel') || '98',
+      'car.basic.engine_speed': '1800',
+      'car.ev_info.energy_output_percentage': regen ? '-58' : (q.get('pot') || '50'),
+      'car.ev_info.cur_battery_power_percentage': '83',
+      'car.basic.remain_fuel_percentage': '64',
+      'car.ev_info.fuel_mode_remain_odometer': '491',
+      'car.basic.total_odometer': '18427',
+      'car.basic.gear_status': '2',
+      'car.drive_setting.drive_mode': q.get('dm') || '0',
+      'car.ev_setting.power_model_config': '0',
+      'car.basic.outside_temp': '21',
+      'car.basic.instant_fuel_consumption': '{1,7.4}',
+      'car.basic.head_light_status': q.get('farol') === '1' ? '1' : '0',
+      'car.basic.driving_ready_state': '1',
+      'car.basic.engine_state': '11',
+      'car.map.tsr.nav_speed_limit': q.get('limite') || '0',
+      'car.map.tsr.nav_speed_limit_sign_status': q.get('limite') ? '1' : '0',
+      'app.media.state': 'playing',
+      'app.media.title': semMidia ? '' : 'Águas de Março',
+      'app.media.artist': semMidia ? '' : 'Elis Regina',
+      'app.media.album': semMidia ? '' : 'Elis & Tom',
+      'app.media.album_art': semMidia ? '' : CAPA_DEMO,
+    };
+    if (q.get('tempo') === '1') { seed['app.media.duration'] = '212000'; seed['app.media.position'] = '49000'; }
+    Object.keys(seed).forEach((k) => handleTelemetry(k, seed[k]));
+    if (q.get('proj') === '1') window.control('projectionWindow', PROJ_BOX.x + ',' + PROJ_BOX.y + ',' + PROJ_BOX.w + ',' + PROJ_BOX.h);
+    if (foto) return;
+
+    let t = 0;
+    let vel = 0;
+    setInterval(() => {
+      t += 0.1;
+      const alvo = 100 + 95 * Math.sin(t / 6);
+      vel += clamp(alvo - vel, -2.4, 1.8);
+      handleTelemetry('car.basic.vehicle_speed', vel.toFixed(1));
+      handleTelemetry('car.basic.engine_speed', vel < 30 ? '0' : String(Math.round(1200 + vel * 18)));
+      handleTelemetry('car.ev_info.energy_output_percentage', String(Math.round(75 * Math.sin(t / 2.2))));
+    }, 100);
+  }
+
+  function initBridge() {
+    installHandlers();
+    if (!window.Android || typeof window.Android.subscribe !== 'function') installMockBridge();
+
+    try {
+      if (window.Android && typeof window.Android.subscribe === 'function') {
+        window.Android.subscribe(JSON.stringify(SUBSCRIBE_KEYS));
+      }
+      if (window.Android && typeof window.Android.setAppDefaultDimensions === 'function') {
+        window.Android.setAppDefaultDimensions(690, 84, 540, 516); // área de app de antes: o vão largo da 9.5 é só da projeção
+      }
+      declararVaoDaProjecao();
+      lerPreferencias();
+    } catch (e) {
+      console.error('[ID8] bridge init failed:', e);
+    }
+
+    setInterval(() => {
+      try {
+        if (window.Android && typeof window.Android.heartbeat === 'function') window.Android.heartbeat();
+      } catch (e) { /* ignore */ }
+      lerPreferencias();
+      // Redeclara o vão a cada batida: idempotente no app, e a rede se a carga se perder.
+      try { declararVaoDaProjecao(); } catch (e) { /* ignore */ }
+    }, 2000);
+  }
+
+  function installHandlers() {
+    const prevOnDataChanged = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevOnDataChanged === 'function') {
+        try { prevOnDataChanged(key, value); } catch (e) { console.error(e); }
+      }
+      handleTelemetry(key, value);
+    };
+    // O tema não se esconde no card 0 e não trata volante (é um mostrador passivo).
+    window.onCardChanged = function () {};
+
+    const prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') {
+        try { prevControl(key, value); } catch (e) { /* ignore */ }
+      }
+      if (Object.prototype.hasOwnProperty.call(projectionState, key)) {
+        projectionState[key] = (value === true || value === 'true');
+        applyYieldToCar();
+        return;
+      }
+      if (key === 'projectionWindow') { aplicarVaoDaProjecao(value); return; }
+    };
+  }
+
+  aplicarTom();
+  atualizarCartao();
+  desenharEnchimento('E', GEO.base, true);
+  desenharEnchimento('D', GEO.zeroD, true);
+  initBridge();
+})();
+</script>
+</body>
+</html>

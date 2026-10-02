@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "instalador-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "instalador",
+      "port": 1420
+    },
+    {
+      "name": "temas-preinstalados",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8791",
+        "--directory",
+        "app/src/main/assets/PreinstalledThemes"
+      ],
+      "port": 8791
+    }
+  ]
+}

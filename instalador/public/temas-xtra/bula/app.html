@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1920, height=720, initial-scale=1" />
+<title>Bula</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #root { position: absolute; left: 0; top: 0; width: 1920px; height: 720px;
+    transform-origin: 0 0; overflow: hidden; }
+
+  #root { background: #fdfdfb; color: #1a1a1c;
+    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; }
+  body[data-mode="noite"] #root { background: #101011; color: #e9e9ea; }
+  /* Bula: tipo pequeno, tres colunas apertadas, titulos em caixa alta e um
+     quadro de advertencia. A densidade E' o efeito. */
+  #hd { position: absolute; left: 76px; top: 40px; font-size: 27px; font-weight: 700;
+    letter-spacing: -.5px; }
+  #sub { position: absolute; left: 78px; top: 76px; font-size: 12px; letter-spacing: .3em;
+    text-transform: uppercase; color: #86868a; }
+  #rule { position: absolute; left: 76px; right: 76px; top: 106px; border-top: 2px solid #1a1a1c; }
+  body[data-mode="noite"] #rule { border-top-color: #e9e9ea; }
+  #cols { position: absolute; left: 76px; right: 76px; top: 126px; bottom: 122px;
+    column-count: 3; column-gap: 40px; column-rule: 1px solid #ddd; font-size: 13px;
+    line-height: 1.62; text-align: justify; }
+  body[data-mode="noite"] #cols { column-rule-color: #2a2a2c; }
+  #cols h4 { font-size: 12px; letter-spacing: .24em; text-transform: uppercase; margin: 0 0 4px;
+    break-after: avoid; }
+  #cols p { margin: 0 0 12px; color: #4a4a4e; }
+  body[data-mode="noite"] #cols p { color: #a0a0a6; }
+  #cols b { color: #1a1a1c; } body[data-mode="noite"] #cols b { color: #e9e9ea; }
+  #box { position: absolute; left: 76px; right: 76px; bottom: 40px; border: 2px solid #1a1a1c;
+    padding: 14px 20px; display: flex; align-items: center; gap: 26px; }
+  body[data-mode="noite"] #box { border-color: #e9e9ea; }
+  #box .t { font-size: 12px; letter-spacing: .3em; text-transform: uppercase; font-weight: 700; }
+  #box .v { font-size: 34px; font-weight: 300; letter-spacing: -1px; }
+  #box .s { font-size: 12px; color: #86868a; flex: 1; text-align: right; letter-spacing: .12em; }
+</style>
+</head>
+<body>
+<div id="root">
+
+  <div id="hd">Painel do veículo <span style="font-weight:400">1920 × 720</span></div>
+  <div id="sub">leitura do barramento · contrato v1.0 · 60 chaves disponíveis</div>
+  <div id="rule"></div>
+  <div id="cols"></div>
+  <div id="box"></div>
+</div>
+
+<script>
+/* ============================================================================
+   Núcleo comum dos temas OPEN GW — contrato v1.0 (núcleo v1.2)
+   ----------------------------------------------------------------------------
+   Faz o que TODO tema é obrigado a fazer, e nada além:
+
+   1. ASSINATURA — só pede chaves que `ThemeBridgeImpl.getAvailableKeys()`
+      declara; qualquer outra é recusada com "Blocked subscription to
+      undeclared theme key" e o mostrador fica com o dado velho para sempre.
+      O núcleo ainda cruza a lista pedida com a que o host informa e avisa no
+      console o que ficou de fora, em vez de deixar o campo morto na tela.
+
+   2. CEDER A TELA — o painel é do carro, não do tema. Ele some inteiro quando:
+        • `warningActive`            -> o carro abriu o popup de aviso;
+        • projeção no painel         -> CarPlay / Android Auto / espelhamento;
+        • `appInDash`                -> um app foi colocado no painel e o host
+                                        abriu um buraco na máscara para ele.
+      ATENÇÃO AO CANAL: `warningActive` e `warningDismissed` chegam como STRING
+      ("true"/"false") uma única vez, no subscribe, e depois SÓ como booleano
+      de verdade por `window.control(...)` -- é o que
+      `InstrumentProjector2.pushWarningStateToTheme()` chama. Um tema que só
+      escuta `onDataChanged` nunca fica sabendo do aviso e continua desenhando
+      por cima do popup do carro. `bsdLeft`/`bsdRight` são control-only também.
+
+   3. AVISO PENDENTE — depois que o motorista fecha o popup do carro (BACK), o
+      aviso continua ativo mas nada mais aparece. O núcleo conta os avisos que
+      levantam a tarja (mesmo conjunto de `ClusterWarningPolicy`, sem os
+      transitórios) e mantém uma pílula discreta, para o tema não fingir que
+      está tudo bem.
+
+   4. RITMO — `Android.heartbeat()` a cada 2s (sem isso o projetor derruba a
+      página) e uma pintura por quadro, com rede de segurança de 140ms porque a
+      telemetria chega em `evaluateJavascript` separados, uma chave por vez.
+
+   5. SIMULAÇÃO — quando `window.Android` não existe o tema abre no navegador do
+      Mac exatamente como abre no painel (`?photo=1` congela o quadro).
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  var S = Object.create(null);          // último valor bruto por chave
+  var cfg = null;
+  var scheduled = false, fbTimer = 0, animating = false, yielding = false;
+  var warningActive = false, warningDismissed = false;
+  var projection = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  var appInDash = false;
+  var EASE = Object.create(null);
+  var warnEl = null, warnTxtEl = null, mocked = false;
+
+  function truthy(v) {
+    if (v === true) return true;
+    if (v === false || v === null || v === undefined) return false;
+    var s = String(v).trim().toLowerCase();
+    return s === 'true' || s === '1' || s === 'on' || s === 'yes' || s === 'left' || s === 'right';
+  }
+
+  /* ---- leitura de estado -------------------------------------------------- */
+  function num(k, d) { var v = parseFloat(S[k]); return isFinite(v) ? v : (d === undefined ? 0 : d); }
+  function str(k, d) { var v = S[k]; return (v === undefined || v === null || v === '') ? (d === undefined ? '' : d) : String(v); }
+  function on(k) { return truthy(S[k]); }
+  function has(k) { return S[k] !== undefined && S[k] !== ''; }
+
+  /* ---- matemática de mostrador -------------------------------------------- */
+  function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function polar(cx, cy, r, deg) { var a = (deg - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  function arcPath(cx, cy, r, a0, a1) {
+    var p0 = polar(cx, cy, r, a0), p1 = polar(cx, cy, r, a1);
+    var large = Math.abs(a1 - a0) > 180 ? 1 : 0;
+    var sweep = a1 > a0 ? 1 : 0;
+    return 'M' + p0[0].toFixed(2) + ' ' + p0[1].toFixed(2) + 'A' + r + ' ' + r + ' 0 ' + large + ' ' + sweep + ' ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2);
+  }
+  function fmt(v, d) { return (isFinite(v) ? v : 0).toFixed(d || 0); }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* ---- amortecimento -------------------------------------------------------
+     A telemetria não chega suave: a velocidade pula de 60 para 63, o giro de
+     2250 para 2600. Ponteiro e barra que saltam desses degraus ficam nervosos
+     no canto do olho. Cada valor animado persegue o alvo com constante de tempo
+     própria e o núcleo continua pedindo quadros enquanto não assenta. */
+  function ease(name, target, tau) {
+    if (!isFinite(target)) target = 0;
+    var now = (window.performance && performance.now) ? performance.now() : Date.now();
+    var e = EASE[name];
+    if (!e) { EASE[name] = { v: target, t: now }; return target; }
+    var dt = clamp((now - e.t) / 1000, 0, 0.25); e.t = now;
+    var k = 1 - Math.exp(-dt / (tau || 0.16));
+    e.v += (target - e.v) * k;
+    var tol = Math.max(0.02, Math.abs(target) * 0.0008);
+    if (Math.abs(target - e.v) <= tol) e.v = target; else animating = true;
+    return e.v;
+  }
+
+  /* ---- dicionários confirmados nos temas de fábrica ----------------------- */
+  var GEAR = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+  var MODE = { '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama', '11': 'AWD' };
+  var POWERMODE = { '0': 'HEV', '1': 'EVP', '3': 'EV' };
+  function gear() { return GEAR[String(parseInt(S['car.basic.gear_status'], 10))] || 'N'; }
+  function mode() { return MODE[String(S['car.drive_setting.drive_mode'])] || 'Normal'; }
+  function powerMode() { return POWERMODE[String(S['car.ev_setting.power_model_config'])] || 'HEV'; }
+  /* O host manda a hora do carro por control('clockTime', 'HH:MM'); só cai no
+     relógio do próprio WebView enquanto essa mensagem não chega. */
+  function clock() {
+    var t = S['__clockTime'];
+    if (t) return String(t);
+    var d = new Date(); return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+  /* Limite da via: só vale com a placa confirmada pela câmera. O valor bruto ainda
+     não foi conferido neste veículo (pode vir em km/h ou como código), então ele é
+     repassado como está — mesma postura do Cupertino Ultra. */
+  function roadLimit() {
+    var ok = on('car.map.tsr.nav_speed_limit_sign_status');
+    var v = num('car.map.tsr.nav_speed_limit', 0);
+    return (ok && v > 0) ? Math.round(v) : null;
+  }
+
+  /* ---- atalhos de chave ----------------------------------------------------
+     As mesmas 20 chaves aparecem em quase todo tema. Escrever a string inteira
+     em 40 arquivos é convite a erro de digitação -- e uma chave com erro é
+     recusada em silêncio pelo bridge, virando campo morto na tela. */
+  var K = {
+    spd: 'car.basic.vehicle_speed', rpm: 'car.basic.engine_speed',
+    gear: 'car.basic.gear_status', mode: 'car.drive_setting.drive_mode',
+    fuel: 'car.basic.remain_fuel_percentage', soc: 'car.ev_info.cur_battery_power_percentage',
+    odo: 'car.basic.total_odometer', out: 'car.basic.outside_temp', ins: 'car.basic.inside_temp',
+    unit: 'car.configure.default_temp_unit', cons: 'car.basic.instant_fuel_consumption',
+    kwh: 'car.ev_info.Instant_energy_consumption', flow: 'car.ev_info.energy_output_percentage',
+    volt: 'car.ev_info.power_battery_voltage', amp: 'car.ev_info.cur_charge_current',
+    rngE: 'car.ev_info.electric_mode_remain_odometer', rngF: 'car.ev_info.fuel_mode_remain_odometer',
+    head: 'car.basic.head_light_status', esp: 'car.drive_setting.esp_enable',
+    engine: 'car.basic.engine_state', pwr: 'car.ev_setting.power_model_config',
+    recov: 'car.ev_setting.energy_recovery_level', pedal: 'car.ev.setting.pedal_control_enable',
+    steer: 'car.drive_setting.steering_wheel_assist_mode',
+    limit: 'car.map.tsr.nav_speed_limit', limitOk: 'car.map.tsr.nav_speed_limit_sign_status',
+    radio: 'sys.radio.cur_channel_info',
+    mTitle: 'app.media.title', mArtist: 'app.media.artist', mAlbum: 'app.media.album',
+    mArt: 'app.media.album_art', mState: 'app.media.state',
+    mPos: 'app.media.position', mDur: 'app.media.duration',
+    pState: 'app.phone.state', pName: 'app.phone.caller_name', pNum: 'app.phone.caller_number',
+    nav: 'app.navigation.directions', app3: 'app.display.3.active_app_label',
+    hvacT: 'car.hvac.driver_temperature', hvacFan: 'car.hvac.fan_speed',
+    hvacAuto: 'car.hvac.auto_enable', hvacCycle: 'car.hvac.cycle_mode',
+    hvacPwr: 'car.hvac.power_mode', hvacIon: 'car.hvac.anion_enable'
+  };
+  function spd() { return num(K.spd); }
+  function rpm() { return num(K.rpm); }
+  function fuelPct() { return clamp(num(K.fuel), 0, 100); }
+  function socPct() { return clamp(num(K.soc), 0, 100); }
+  /* 1 = Fahrenheit no carro; o tema mostra na unidade que o motorista escolheu. */
+  function tempF() { return String(S[K.unit]) === '1'; }
+  function temp(k, d) { var v = num(k, d); return tempF() ? v * 9 / 5 + 32 : v; }
+  function tempU() { return tempF() ? '°F' : '°C'; }
+
+  /* ---- ferramentas de desenho --------------------------------------------- */
+  function E(id) { return document.getElementById(id); }
+  function attr(el, o) { for (var k in o) el.setAttribute(k, o[k]); return el; }
+  /* Gira um elemento SVG em torno de um ponto -- ponteiro de mostrador. */
+  function rot(el, deg, cx, cy) {
+    if (el) el.setAttribute('transform', 'rotate(' + deg.toFixed(2) + ' ' + cx + ' ' + cy + ')');
+  }
+  /* Marcas radiais de um mostrador inteiro em UM path: n+1 traços entre a0 e a1.
+     Um <line> por marca custa dezenas de nós no DOM e o WebView do painel sente. */
+  function ticks(cx, cy, r0, r1, a0, a1, n) {
+    var d = '', i, a, p, q;
+    for (i = 0; i <= n; i++) {
+      a = a0 + (a1 - a0) * i / n;
+      p = polar(cx, cy, r0, a); q = polar(cx, cy, r1, a);
+      d += 'M' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + 'L' + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+    }
+    return d;
+  }
+  /* Ponteiro desenhado APONTANDO PARA CIMA a partir da origem (0,0): a mesma
+     forma serve para qualquer mostrador, e girar é só compor a translação. */
+  function pin(el, cx, cy, deg) {
+    if (el) el.setAttribute('transform', 'translate(' + cx + ',' + cy + ') rotate(' + deg.toFixed(2) + ')');
+  }
+  /* Numeração de um mostrador: n+1 rótulos distribuídos entre a0 e a1. */
+  function nums(svg, cx, cy, r, a0, a1, n, label, cls, dy) {
+    var NS = 'http://www.w3.org/2000/svg';
+    for (var i = 0; i <= n; i++) {
+      var txt = label(i, n);
+      if (txt === null || txt === undefined || txt === '') continue;
+      var p = polar(cx, cy, r, n === 0 ? a0 : a0 + (a1 - a0) * i / n);
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', p[0].toFixed(1));
+      t.setAttribute('y', (p[1] + (dy === undefined ? 10 : dy)).toFixed(1));
+      if (cls) t.setAttribute('class', cls);
+      t.textContent = txt;
+      svg.appendChild(t);
+    }
+  }
+  /* Arco preenchido por fração usando dasharray: o path fica fixo, só o traço anda. */
+  function dash(el, r, a0, a1, frac) {
+    if (!el) return;
+    var len = Math.abs(a1 - a0) * Math.PI / 180 * r;
+    el.style.strokeDasharray = len.toFixed(1) + ' ' + (len * 4).toFixed(1);
+    el.style.strokeDashoffset = (len * (1 - clamp(frac, 0, 1))).toFixed(1);
+  }
+
+  /* ---- avisos do carro -----------------------------------------------------
+     `updateWarning(chave, valor)` é chamado pelo host para cada chave vigiada.
+     É informativo: quem manda na tarja é `warningActive`. O conjunto abaixo é o
+     mesmo que levanta a tarja em ClusterWarningPolicy -- os transitórios (ponto
+     cego, FCW, FCTA, DOW, TTS) e os crônicos (revisão, pressão/temperatura de
+     pneu) ficam de fora de propósito: piscariam a pílula a cada ultrapassagem
+     ou ficariam acesos para sempre. */
+  var WARN_LABEL = {
+    'car.basic.coolant_temp_warning': 'Temperatura',
+    'car.basic.engine_oil_low_pressure_warning': 'Pressão do óleo',
+    'car.ipk_light.engine_oil_low_pressure_warning': 'Pressão do óleo',
+    'car.basic.oil_low_warning': 'Nível de óleo',
+    'car.basic.fatigue_warning': 'Fadiga',
+    'car.basic.seat_belt_warning': 'Cinto',
+    'car.basic.tpms_warning': 'Pneus',
+    'car.ipk_light.tpms_warning': 'Pneus',
+    'car.ipk_light.door_warning': 'Porta aberta',
+    'car.ipk_light.fuel_low': 'Combustível'
+  };
+  var warnRaw = Object.create(null);
+  function warnValueActive(v) {
+    if (v === null || v === undefined) return false;
+    var s = String(v).trim().toLowerCase();
+    return s !== '' && s !== '0' && s !== 'false' && s !== 'null' && s !== 'undefined' &&
+      s !== 'unknown' && s !== '--' && s !== 'nan' && s !== '{0,0,0,0}' && s !== '{0,0,0,0,0}';
+  }
+  function warnLabels() {
+    var seen = {}, out = [];
+    for (var k in warnRaw) {
+      var lbl = WARN_LABEL[k];
+      if (!lbl || !warnValueActive(warnRaw[k])) continue;
+      if (seen[lbl]) continue;
+      seen[lbl] = 1; out.push(lbl);
+    }
+    return out;
+  }
+  function paintWarnPill() {
+    if (!warnEl) return;
+    var l = warnLabels();
+    var show = l.length > 0 && !yielding;
+    warnEl.classList.toggle('on', show);
+    if (show) warnTxtEl.textContent = l.length === 1 ? l[0] : (l.length + ' avisos ativos');
+  }
+
+  /* ---- pintura ------------------------------------------------------------ */
+  function flush() {
+    scheduled = false;
+    clearTimeout(fbTimer);
+    if (yielding) return;                // escondido não pinta: nada a mostrar, nada a gastar
+    animating = false;
+    try { cfg.paint(); } catch (e) { console.error('[OPENGW] paint falhou:', e); }
+    paintWarnPill();
+    if (animating) schedule();           // ainda assentando: pede o próximo quadro
+  }
+  function schedule() {
+    if (scheduled || yielding) return;
+    scheduled = true;
+    requestAnimationFrame(flush);
+    // Rede de segurança: o WebView estrangula o rAF quando a janela perde foco e
+    // o painel congelaria no meio de uma curva. Mesmo padrão do Cupertino Ultra.
+    fbTimer = setTimeout(flush, 140);
+  }
+
+  function apply(key, value) {
+    S[key] = value;
+    if (cfg.onData) { try { cfg.onData(key, value); } catch (e) {} }
+    schedule();
+  }
+
+  /* ---- cede a tela ao carro ----------------------------------------------- */
+  function yieldToCar() {
+    var y = warningActive || appInDash ||
+      projection.carPlayInDash || projection.projectionMirrorInDash || projection.projectionPreparingD3;
+    if (y === yielding) return;
+    yielding = y;
+    var r = document.getElementById('root');
+    if (r) r.classList.toggle('yielded', y);
+    document.body.classList.toggle('yield-to-car', y);
+    if (y) {
+      if (warnEl) warnEl.classList.remove('on');
+    } else {
+      EASE = Object.create(null);        // volta já no valor certo, sem varrer a tela
+      schedule();
+    }
+  }
+
+  /* ---- modo dia/noite ------------------------------------------------------ */
+  var displayMode = '';
+  function pollDisplayMode() {
+    var raw;
+    try { raw = String(window.Android.getPreference('displayMode', 'Dia') || 'Dia'); } catch (e) { raw = 'Dia'; }
+    var m = raw.trim().toLowerCase().indexOf('noi') === 0 ? 'noite' : 'dia';
+    // O farol aceso puxa o painel para o modo noturno sozinho, como num carro de verdade,
+    // mas só quando o usuário não fixou o modo na tela de configurações do tema.
+    if (cfg.headlightDrivesNight && !has('__modeFixed') && on('car.basic.head_light_status')) m = 'noite';
+    if (m === displayMode) return;
+    displayMode = m;
+    document.body.dataset.mode = m;
+    schedule();
+  }
+
+  /* ---- simulação para preview no Mac --------------------------------------- */
+  function installMock() {
+    console.warn('[OPENGW] window.Android ausente — simulação local.');
+    window.Android = {
+      getAvailableKeys: function () { return JSON.stringify(cfg.keys); },
+      subscribe: function () {}, unsubscribe: function () {},
+      getCarData: function (k) { return S[k] === undefined ? '' : String(S[k]); },
+      updateCarData: function () {}, getPreference: function (k, d) { return d; },
+      savePreference: function () {}, saveSetting: function () {}, heartbeat: function () {},
+      triggerSystemAction: function () {}, setAppDefaultDimensions: function () {},
+      setWarningActive: function () {}, setCardId: function () {}
+    };
+    var photo = /[?&]photo=1/.test(location.search);
+    var seed = cfg.photo || {};
+    Object.keys(seed).forEach(function (k) {
+      S[k] = String(seed[k]);
+      if (cfg.onData) { try { cfg.onData(k, S[k]); } catch (e) {} }
+    });
+    schedule();
+    if (photo || !cfg.mock) return;                    // ?photo=1 congela o quadro
+    setInterval(function () {
+      if (yielding) return;
+      var t = Date.now() / 1000;
+      var d = cfg.mock(t) || {};
+      Object.keys(d).forEach(function (k) {
+        S[k] = String(d[k]);
+        if (cfg.onData) { try { cfg.onData(k, S[k]); } catch (e) {} }
+      });
+      schedule();
+    }, 100);
+  }
+
+  /* ---- escala: 1920x720 é o painel; no Mac cabe na janela ------------------ */
+  function fit() {
+    var r = document.getElementById('root');
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 720);
+    r.style.transform = 'translate(' + ((window.innerWidth - 1920 * s) / 2).toFixed(1) + 'px,' +
+      ((window.innerHeight - 720 * s) / 2).toFixed(1) + 'px) scale(' + s + ')';
+  }
+
+  /* ---- folha de estilo do núcleo ------------------------------------------- */
+  function injectCoreCss() {
+    var css = [
+      /* dígito que não dança: sem largura tabular o hodômetro treme a cada km */
+      '#root{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}',
+      /* ceder tem de ser instantâneo e total -- nada de transição, nada de fundo */
+      '#root.yielded{opacity:0!important;visibility:hidden!important;transition:none!important;pointer-events:none!important}',
+      'body.yield-to-car{background:transparent!important}',
+      'body.yield-to-car #root{background:transparent!important}',
+      '.gw-warn{position:absolute;display:none;align-items:center;gap:11px;padding:9px 20px 10px 12px;',
+      'border-radius:999px;background:rgba(255,168,38,.15);border:1px solid rgba(255,168,38,.55);',
+      'color:#ffc266;font-family:-apple-system,"SF Pro Text",Roboto,Arial,sans-serif;font-size:19px;',
+      'font-weight:600;letter-spacing:.085em;text-transform:uppercase;white-space:nowrap;z-index:9999;',
+      '-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%)}',
+      '.gw-warn.on{display:flex}',
+      /* em tema claro a pílula translúcida some no papel: vira âmbar sólida */
+      '.gw-warn.lt{background:rgba(255,168,38,.94);border-color:#b9791a;color:#241400}',
+      '.gw-warn.lt i{background:#241400;color:#ffc266}',
+      '.gw-warn i{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#ffa826;color:#1b1000;',
+      'align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:16px;letter-spacing:0}'
+    ].join('');
+    var s = document.createElement('style');
+    s.id = 'gw-core-css';
+    s.textContent = css;
+    document.head.appendChild(s);
+  }
+
+  function buildWarnPill() {
+    var pos = cfg.warn || {};
+    if (pos.hidden) return;
+    warnEl = document.createElement('div');
+    warnEl.className = 'gw-warn';
+    warnEl.style.left = (pos.x === undefined ? 960 : pos.x) + 'px';
+    warnEl.style.top = (pos.y === undefined ? 14 : pos.y) + 'px';
+    warnEl.style.transform = 'translateX(-50%)';
+    if (pos.light) warnEl.classList.add('lt');
+    warnEl.innerHTML = '<i>!</i><span></span>';
+    warnTxtEl = warnEl.lastChild;
+    (document.getElementById('root') || document.body).appendChild(warnEl);
+  }
+
+  /* Atalhos de conferência no Mac (não têm efeito no carro, onde window.Android
+     existe): ?yield=1 simula o popup de aviso do carro -- a tela tem de ficar
+     vazia; ?warn=1 simula dois avisos ativos já dispensados -- a pílula tem de
+     aparecer e nada mais pode mudar de lugar. */
+  function previewFlags() {
+    if (!mocked) return;
+    if (/[?&]yield=1/.test(location.search)) window.control('warningActive', true);
+    if (/[?&]warn=1/.test(location.search)) {
+      window.updateWarning('car.basic.seat_belt_warning', '1');
+      window.updateWarning('car.ipk_light.door_warning', '1');
+    }
+    if (/[?&]bsd=1/.test(location.search)) { window.control('bsdLeft', true); window.control('bsdRight', true); }
+  }
+
+  function init(config) {
+    cfg = config;
+    document.body.dataset.mode = 'dia';
+    injectCoreCss();
+    buildWarnPill();
+    fit();
+    window.addEventListener('resize', fit);
+
+    if (!window.Android || typeof window.Android.subscribe !== 'function') { mocked = true; installMock(); }
+
+    var prevData = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevData === 'function') { try { prevData(key, value); } catch (e) {} }
+      // Valor inicial do subscribe: chega como a STRING "true"/"false".
+      if (key === 'warningActive') { warningActive = String(value) === 'true'; yieldToCar(); return; }
+      if (key === 'warningDismissed') { warningDismissed = String(value) === 'true'; return; }
+      apply(key, value);
+    };
+    window.onCardChanged = function () {};
+
+    // Único caminho vivo de warningActive/warningDismissed/bsd/appInDash.
+    var prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') { try { prevControl(key, value); } catch (e) {} }
+      if (Object.prototype.hasOwnProperty.call(projection, key)) {
+        projection[key] = truthy(value); yieldToCar(); return;
+      }
+      if (key === 'warningActive') { warningActive = truthy(value); yieldToCar(); return; }
+      if (key === 'warningDismissed') { warningDismissed = truthy(value); schedule(); return; }
+      if (key === 'appInDash') { appInDash = truthy(value); yieldToCar(); return; }
+      if (key === 'bsdLeft' || key === 'bsdRight') { S[key] = truthy(value) ? '1' : '0'; schedule(); return; }
+      if (key === 'clockTime') { S['__clockTime'] = String(value || ''); schedule(); return; }
+      // As demais chaves de control são do fluxo de cartões do host; ignorar em
+      // silêncio (o polyfill do host logaria uma linha por evento no disco).
+    };
+
+    window.updateWarning = function (key, value) {
+      warnRaw[key] = value;
+      schedule();
+    };
+
+    try { if (cfg.setup) cfg.setup(); } catch (e) { console.error('[OPENGW] setup falhou:', e); }
+
+    // Só pede o que este host aceita: uma chave fora da lista viraria campo morto.
+    var want = cfg.keys.concat(['warningActive', 'warningDismissed']);
+    try {
+      var host = JSON.parse(window.Android.getAvailableKeys() || '[]');
+      if (host && host.length) {
+        var allowed = want.filter(function (k) { return host.indexOf(k) >= 0; });
+        var dropped = want.filter(function (k) { return host.indexOf(k) < 0; });
+        if (dropped.length) console.warn('[OPENGW] fora do contrato deste host:', dropped.join(', '));
+        if (allowed.length) want = allowed;
+      }
+    } catch (e) { /* host antigo sem getAvailableKeys: manda a lista original */ }
+
+    try {
+      window.Android.subscribe(JSON.stringify(want));
+      window.Android.setAppDefaultDimensions(0, 0, 1920, 720);
+    } catch (e) { console.error('[OPENGW] bridge init falhou:', e); }
+
+    previewFlags();
+
+    pollDisplayMode();
+    setInterval(pollDisplayMode, 2000);
+    setInterval(function () { try { window.Android.heartbeat(); } catch (e) {} }, 2000);
+    setInterval(schedule, 1000);        // relógio e afins
+    schedule();
+  }
+
+  window.GW = {
+    init: init, num: num, str: str, on: on, has: has, clamp: clamp, lerp: lerp, ease: ease,
+    polar: polar, arcPath: arcPath, fmt: fmt, pad2: pad2, gear: gear, mode: mode,
+    powerMode: powerMode, clock: clock, roadLimit: roadLimit, schedule: schedule,
+    warnings: warnLabels, state: S, GEAR: GEAR, MODE: MODE, K: K,
+    spd: spd, rpm: rpm, fuelPct: fuelPct, socPct: socPct,
+    temp: temp, tempU: tempU, tempF: tempF,
+    E: E, attr: attr, rot: rot, pin: pin, ticks: ticks, nums: nums, dash: dash,
+    yielding: function () { return yielding; }
+  };
+})();
+
+</script>
+<script>
+(function () {
+  var E = GW.E, K = GW.K;
+
+  function sec(t, html) { return '<h4>' + t + '</h4><p>' + html + '</p>'; }
+
+  GW.init({
+    keys: [
+      K.spd, K.rpm, K.gear, K.mode, K.fuel, K.soc, K.pwr, K.cons, K.rngF, K.rngE, K.odo,
+      K.out, K.ins, K.unit, K.hvacFan, K.esp, K.recov, K.head, K.limit, K.limitOk
+    ],
+    warn: { x: 960, y: 22, light: true },
+    photo: {
+      [K.spd]: 72, [K.rpm]: 2450, [K.gear]: 2, [K.mode]: 0, [K.fuel]: 58, [K.soc]: 71,
+      [K.pwr]: 0, [K.cons]: 6.8, [K.rngF]: 438, [K.rngE]: 64, [K.odo]: 18427, [K.out]: 23,
+      [K.ins]: 22, [K.unit]: 0, [K.hvacFan]: 3, [K.esp]: 1, [K.recov]: 1, [K.head]: 0,
+      [K.limit]: 80, [K.limitOk]: 1
+    },
+
+    mock: function (t) {
+      var o = {};
+      o[K.spd] = (80 + 56 * Math.sin(t / 12)).toFixed(1);
+      o[K.rpm] = (2500 + 1700 * Math.sin(t / 6)).toFixed(0);
+      return o;
+    },
+
+    paint: function () {
+      E('cols').innerHTML =
+        sec('1. Movimento', 'Velocidade registrada de <b>' + GW.fmt(GW.spd(), 0) +
+          ' km/h</b>, com marcha <b>' + GW.gear() + '</b> engatada e modo de condução <b>' +
+          GW.mode() + '</b>. O giro do motor está em <b>' + GW.fmt(GW.rpm(), 0) +
+          ' rpm</b>. Valores lidos diretamente do barramento, sem suavização de exibição.') +
+        sec('2. Energia', 'Tanque em <b>' + GW.fmt(GW.fuelPct(), 0) +
+          '%</b> e bateria de tração em <b>' + GW.fmt(GW.socPct(), 0) +
+          '%</b>. Fonte corrente: <b>' + GW.powerMode() + '</b>. Consumo instantâneo de <b>' +
+          GW.fmt(GW.num(K.cons), 1) + '</b> por cem quilômetros.') +
+        sec('3. Alcance', 'Autonomia estimada de <b>' + GW.fmt(GW.num(K.rngF), 0) +
+          ' km</b> no modo térmico e <b>' + GW.fmt(GW.num(K.rngE), 0) +
+          ' km</b> no elétrico. Hodômetro total em <b>' + GW.fmt(GW.num(K.odo), 0) + ' km</b>.') +
+        sec('4. Ambiente', 'Temperatura externa de <b>' + GW.fmt(GW.temp(K.out), 0) + GW.tempU() +
+          '</b> e interna de <b>' + GW.fmt(GW.temp(K.ins), 0) + GW.tempU() +
+          '</b>. Ventilação no nível <b>' + GW.fmt(GW.num(K.hvacFan), 0) + '</b>.') +
+        sec('5. Assistências', 'Controle de estabilidade <b>' +
+          (GW.on(K.esp) ? 'ativo' : 'desligado') + '</b>. Nível de recuperação de energia <b>' +
+          GW.fmt(GW.num(K.recov), 0) + '</b>. Farol <b>' +
+          (GW.on(K.head) ? 'aceso' : 'apagado') + '</b>.') +
+        sec('6. Advertências', 'A tarja de aviso do veículo tem precedência sobre este painel: ' +
+          'quando ela sobe, a tela é esvaziada por completo e só volta quando o carro libera. ' +
+          'Nenhuma chave fora do contrato é solicitada.') +
+        sec('7. Contrato', 'O tema assina apenas as chaves que usa e cruza a lista pedida com a que o ' +
+          'host informa no carregamento. Chave fora do allowlist é recusada em silêncio pelo ' +
+          'bridge e viraria campo morto na tela.') +
+        sec('8. Projeção', 'Com espelhamento, preparação de tela ou aplicativo no painel, ' +
+          'este tema cede a área por completo em vez de desenhar por cima -- inclusive o fundo, ' +
+          'para que o furo aberto pelo host não seja coberto.') +
+        sec('9. Exibição', 'Modo dia e noite lidos da preferência do próprio tema e relidos ' +
+          'a cada dois segundos, sem recarregar a página. Uma pintura por quadro, com ' +
+          'temporizador de segurança para quando o WebView estrangula o pedido de quadro.');
+      var lim = GW.roadLimit();
+      E('box').innerHTML = '<span class="t">Velocidade</span>' +
+        '<span class="v">' + GW.fmt(GW.spd(), 0) + ' km/h</span>' +
+        '<span class="t">Limite</span>' +
+        '<span class="v">' + (lim === null ? '—' : lim) + '</span>' +
+        '<span class="s">' + GW.clock() + ' · conservar fora do alcance de distrações</span>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

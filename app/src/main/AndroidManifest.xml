@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:tools="http://schemas.android.com/tools"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Partida da central e serviço em primeiro plano; alarmes exatos. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
+    <!-- Rede e instalação de pacotes (atualizador, temas e apps). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <!-- Áudio, Bluetooth e localização (a varredura Bluetooth exige localização). -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- Janelas e tarefas: sobreposição, trazer apps à frente, encerrar processos em segundo plano. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+
+    <!-- Arquivos. A leitura tem teto de versão aqui porque uma biblioteca a declara sem teto; o acesso total serve a temas e apps. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" tools:replace="android:maxSdkVersion"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
+
+    <!-- Só chegam por shell privilegiado (Shizuku ou ADB). Uso e histórico de rede alimentam o contador de dados móveis do carro. -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.GET_TASKS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.READ_NETWORK_USAGE_HISTORY" tools:ignore="ProtectedPermissions"/>
+
+    <!-- WebGL da tela inicial: não travar a instalação do app por isso. -->
+    <uses-feature android:glEsVersion="0x00020000" android:required="false"/>
+    <!-- Stream Deck físico, ligado por USB. -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+
+    <!-- A tela inicial 3D fala http com o servidor local; com targetSdk 28 o padrão do Android bloquearia. -->
+    <application android:name="br.com.opengw.App" android:icon="@mipmap/ic_launcher"
+                 android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round"
+                 android:theme="@style/Theme.OpenGw" android:allowBackup="true"
+                 android:dataExtractionRules="@xml/data_extraction_rules" android:fullBackupContent="@xml/backup_rules"
+                 android:hardwareAccelerated="true" android:supportsRtl="true" android:usesCleartextTraffic="true">
+
+        <!-- Atividades -->
+        <activity android:name=".AberturaActivity" android:theme="@style/Theme.OpenGw"
+            android:configChanges="orientation|keyboardHidden|screenSize" android:exported="true"
+            android:noHistory="true" android:screenOrientation="landscape"/>
+        <!-- Painel expandido da barra inferior (AtividadeDoPainel). -->
+        <activity android:name=".barra.AtividadeDoPainel" android:theme="@style/Theme.OpenGw.TelaCheia"
+            android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true"
+            android:exported="false" android:launchMode="singleTop" android:screenOrientation="landscape"/>
+        <!--
+            Exportada porque quem a inicia é o shell do Shizuku, com "am start" num display privado
+            de 480x240. A proteção é o token obrigatório no Intent.
+        -->
+        <activity android:name=".hud.HudOverlayActivity" android:theme="@style/Theme.OpenGw.TelaCheia"
+            android:excludeFromRecents="true" android:exported="true"
+            android:launchMode="singleTask" android:resizeableActivity="true" android:taskAffinity="br.com.opengw.hud"/>
+        <!--
+            O filtro USB fica numa Activity (e não num receptor): é isso que faz o Android conceder
+            a permissão USB sem diálogo e abrir o app ao plugar o Stream Deck.
+        -->
+        <activity android:name=".PrincipalActivity" android:label="@string/titulo_da_tela_principal"
+            android:theme="@style/Theme.OpenGw" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false" android:launchMode="singleTop" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/streamdeck_usb_device_filter"/>
+        </activity>
+        <!--
+            Tema translúcido e NÃO NoDisplay: o Android derruba com IllegalStateException toda
+            Activity NoDisplay que continua viva depois do onResume, e esta precisa continuar viva
+            até o resultado do pedido de captura de tela (medido no emulador: laço de queda a cada
+            toque no atalho de projeção).
+        -->
+        <activity android:name=".projection.ScreenProjectionConsentActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true" android:exported="false"
+            android:noHistory="true" android:taskAffinity="br.com.opengw.projection"/>
+        <activity android:name=".SportsDisplayActivity" android:theme="@style/Theme.OpenGw.TelaCheia"
+            android:configChanges="orientation|keyboardHidden|screenSize" android:excludeFromRecents="true"
+            android:exported="false" android:launchMode="singleTop" android:screenOrientation="landscape"/>
+        <activity android:name=".UpdateActivity" android:label="@string/rotulo_do_atualizador"
+            android:theme="@style/Theme.OpenGw" android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false" android:launchMode="singleTop" android:screenOrientation="landscape"/>
+        <activity android:name="br.com.opengw.app.AtalhoDasConfiguracoes" android:label="@string/rotulo_do_atalho_do_android"
+            android:theme="@android:style/Theme.NoDisplay" android:excludeFromRecents="true"
+            android:exported="true" android:noHistory="true"/>
+        <!-- Tela inicial do carro: categoria HOME e DEFAULT, sem LAUNCHER de propósito. -->
+        <activity android:name="com.havalh6.viewer.MainActivity" android:theme="@style/Theme.OpenGwLauncher"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:exported="true"
+            android:launchMode="singleTask" android:resizeableActivity="false" android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.HOME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Aliases (ícones de entrada) -->
+        <!--
+            O ícone da tela inicial é um alias separado da Activity para que o "modo sorrateiro"
+            desative só o ícone pelo PackageManager; "am start -n .../.AberturaActivity" segue
+            funcionando como saída de emergência. O ícone "Atualizar OPEN GW" é alias pelo mesmo
+            motivo e os dois são desligados juntos.
+        -->
+        <activity-alias android:name=".LauncherAlias" android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher_round"
+            android:enabled="true" android:exported="true" android:targetActivity=".AberturaActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+        <activity-alias android:name=".UpdaterAlias" android:icon="@mipmap/ic_launcher"
+            android:label="@string/rotulo_do_atualizador" android:roundIcon="@mipmap/ic_launcher_round"
+            android:enabled="true" android:exported="true" android:targetActivity=".UpdateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Serviços -->
+        <!--
+            O pacote tem DOIS ouvintes de notificação e DOIS serviços de acessibilidade, que são
+            linhas distintas nas listas do Android: cada um precisa de rótulo próprio, senão
+            aparecem duas linhas iguais chamadas "OPEN GW". O app concede o acesso a notificações
+            do ouvinte da barra pelo Shizuku na primeira partida.
+        -->
+        <service android:name=".barra.OuvinteDeNotificacoesDaBarra" android:enabled="true"
+            android:exported="true" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+        <service android:name=".barra.ServicoDaBarra" android:enabled="true" android:exported="false"/>
+        <service android:name=".services.ServicoDeAcessibilidade" android:label="@string/descricao_da_acessibilidade"
+            android:enabled="true" android:exported="false" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/accessibility_service_config"/>
+        </service>
+        <service android:name=".streamdeck.StreamDeckService" android:enabled="true" android:exported="false"/>
+        <service android:name="br.com.opengw.app.ServicoPrincipal" android:directBootAware="true"
+            android:enabled="true" android:exported="true" android:foregroundServiceType="dataSync">
+            <intent-filter>
+                <action android:name="br.com.opengw.ACTION_START_SERVICE"/>
+            </intent-filter>
+        </service>
+        <service android:name="br.com.opengw.luz.ServicoDaLuz" android:enabled="true" android:exported="false"/>
+        <service android:name="com.havalh6.viewer.DesktopSwitcherHitService" android:label="@string/rotulo_do_seletor_de_desktops"
+            android:exported="true" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+            <meta-data android:name="android.accessibilityservice" android:resource="@xml/desktop_switcher_hit"/>
+        </service>
+        <service android:name="com.havalh6.viewer.MediaNotificationListener" android:label="@string/rotulo_do_ouvinte_de_midia"
+            android:exported="true" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService"/>
+            </intent-filter>
+        </service>
+
+        <!-- Receptores -->
+        <receiver android:name=".barra.ReceptorDePartidaDaBarra" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        <!-- Exportado porque quem dispara a sessão de efeito de áudio é o app de mídia (mecanismo padrão de equalizador). -->
+        <receiver android:name=".broadcastReceivers.AudioEffectSessionReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION"/>
+                <action android:name="android.media.action.CLOSE_AUDIO_EFFECT_CONTROL_SESSION"/>
+            </intent-filter>
+        </receiver>
+        <!--
+            Volta de emergência à tela de fábrica pelo ADB. Sem permissão, de propósito: o único
+            efeito possível é voltar ao que veio de fábrica.
+        -->
+        <receiver android:name=".broadcastReceivers.LauncherDeFabricaReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="br.com.opengw.VOLTAR_TELA_DE_FABRICA"/>
+            </intent-filter>
+        </receiver>
+        <!--
+            Declarado aqui e não só em código porque a tela inicial pede o retrato assim que
+            aparece, antes do serviço principal subir (que depende do Shizuku). NÃO exportado
+            (auditoria B3): o launcher mora no mesmo APK e manda com setPackage; exportado,
+            qualquer app abriria o porta-malas, os vidros e escreveria chaves do carro.
+        -->
+        <receiver android:name=".broadcastReceivers.ViewerBridgeReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="com.haval.vehicle.REQUEST_SNAPSHOT"/>
+                <action android:name="br.com.opengw.ACTION_VEHICLE_COMMAND"/>
+                <action android:name="br.com.opengw.ACTION_UPDATE_CAR_DATA"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".streamdeck.StreamDeckBootReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+            </intent-filter>
+            <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" android:resource="@xml/streamdeck_usb_device_filter"/>
+        </receiver>
+        <!-- QUICKBOOT_POWERON: algumas centrais disparam só esta num "restart" que não é reboot completo. -->
+        <receiver android:name="br.com.opengw.app.ReceptorDePartida" android:directBootAware="true"
+            android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        <!-- Os alarmes do módulo de brilho chegam por intent explícito; aqui só mudanças de hora e fuso. -->
+        <receiver android:name="br.com.opengw.brilho.ReceptorDoBrilho" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <!--
+            Chamado à mão pelo ADB ("am broadcast"): só quem tem WRITE_SECURE_SETTINGS manda (o
+            shell do ADB tem, app comum não). O valor é limitado no receptor (auditoria B7).
+        -->
+        <receiver android:name="br.com.opengw.telas.ReceptorDoRecuo" android:enabled="true"
+            android:exported="true" android:permission="android.permission.WRITE_SECURE_SETTINGS">
+            <intent-filter>
+                <action android:name="br.com.opengw.ACTION_UPDATE_OVERSCAN"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="br.com.opengw.veiculo.sistema.ReceptorDeReinicio" android:exported="false"/>
+        <!--
+            Único registro do retrato dos dados do carro: o serviço principal não registra outro em
+            código (cada pedido rodaria duas vezes). A ação é contrato externo (instalador e roteiros de ADB).
+        -->
+        <receiver android:name="br.com.opengw.veiculo.sistema.ReceptorDoRetrato" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="br.com.opengw.ACTION_DISPATCH_ALL_DATAS"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Provedores -->
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.provider"
+            android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"/>
+        </provider>
+        <provider android:name="rikka.shizuku.ShizukuProvider" android:authorities="${applicationId}.shizuku"
+            android:enabled="true" android:exported="true"
+            android:multiprocess="false" android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+    </application>
+</manifest>

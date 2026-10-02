@@ -1,0 +1,524 @@
+{
+ "canvas": [
+  1920,
+  720
+ ],
+ "fonte": "2 fotos do usuário, 27/09/2026 12:25:42 (checagem das lâmpadas na partida) e 12:26:36 (READY, parado, porta aberta, cinto solto, freio de mão); 27 e 28: 2 fotos do usuário de 28/09/2026 21:18-21:19 (carro em P, farol aceso), medidas por homografia dos cantos da tela + luzes 13, 14 e 18 (erro 4-6 px)",
+ "erro_estimado_px": "rms 1-2 na grade; caixas incluem o brilho da foto (+2 a 4 px)",
+ "luzes": [
+  {
+   "n": 1,
+   "id": "tpms",
+   "nome": "Pressão dos pneus (TPMS)",
+   "cor": "ambar",
+   "x": 337,
+   "y": 74,
+   "w": 43,
+   "h": 43,
+   "centro": [
+    358,
+    95
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 2,
+   "id": "epb_falha",
+   "nome": "Freio de estacionamento – falha",
+   "cor": "ambar",
+   "x": 281,
+   "y": 99,
+   "w": 47,
+   "h": 37,
+   "centro": [
+    304,
+    117
+   ],
+   "foto": "f2",
+   "identificacao": "alta (ícone); média (significado)"
+  },
+  {
+   "n": 3,
+   "id": "carro_exclamacao",
+   "nome": "Carro com ! (falha do sistema)",
+   "cor": "vermelho",
+   "x": 226,
+   "y": 127,
+   "w": 49,
+   "h": 31,
+   "centro": [
+    250,
+    142
+   ],
+   "foto": "f2",
+   "identificacao": "baixa"
+  },
+  {
+   "n": 4,
+   "id": "abs",
+   "nome": "ABS",
+   "cor": "ambar",
+   "x": 172,
+   "y": 152,
+   "w": 49,
+   "h": 41,
+   "centro": [
+    196,
+    172
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 5,
+   "id": "airbag",
+   "nome": "Airbag",
+   "cor": "vermelho",
+   "x": 118,
+   "y": 179,
+   "w": 49,
+   "h": 45,
+   "centro": [
+    142,
+    201
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 6,
+   "id": "colisao_off",
+   "nome": "Colisão OFF (frenagem automática?)",
+   "cor": "ambar",
+   "x": 69,
+   "y": 206,
+   "w": 31,
+   "h": 45,
+   "centro": [
+    84,
+    228
+   ],
+   "foto": "f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 7,
+   "id": "esp_off",
+   "nome": "ESP OFF",
+   "cor": "ambar",
+   "x": 15,
+   "y": 252,
+   "w": 31,
+   "h": 47,
+   "centro": [
+    30,
+    275
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 8,
+   "id": "esp",
+   "nome": "ESP / controle de tração",
+   "cor": "ambar",
+   "x": 13,
+   "y": 310,
+   "w": 36,
+   "h": 41,
+   "centro": [
+    30,
+    330
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 9,
+   "id": "motor",
+   "nome": "Injeção / check engine",
+   "cor": "ambar",
+   "x": 10,
+   "y": 369,
+   "w": 45,
+   "h": 29,
+   "centro": [
+    32,
+    383
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 10,
+   "id": "direcao",
+   "nome": "Direção elétrica (volante com !)",
+   "cor": "vermelho",
+   "x": 8,
+   "y": 474,
+   "w": 47,
+   "h": 36,
+   "centro": [
+    31,
+    492
+   ],
+   "foto": "f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 11,
+   "id": "freio",
+   "nome": "Sistema de freio",
+   "cor": "vermelho",
+   "x": 8,
+   "y": 581,
+   "w": 47,
+   "h": 40,
+   "centro": [
+    31,
+    600
+   ],
+   "foto": "f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 12,
+   "id": "combustivel",
+   "nome": "Combustível baixo",
+   "cor": "ambar",
+   "x": 346,
+   "y": 662,
+   "w": 39,
+   "h": 45,
+   "centro": [
+    365,
+    684
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 13,
+   "id": "cinto",
+   "nome": "Cinto de segurança",
+   "cor": "vermelho",
+   "x": 1261,
+   "y": 18,
+   "w": 37,
+   "h": 48,
+   "centro": [
+    1279,
+    42
+   ],
+   "foto": "f1+f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 14,
+   "id": "epb",
+   "nome": "Freio de estacionamento acionado (P)",
+   "cor": "vermelho",
+   "x": 1533,
+   "y": 77,
+   "w": 52,
+   "h": 40,
+   "centro": [
+    1558,
+    96
+   ],
+   "foto": "f1+f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 15,
+   "id": "bateria_at",
+   "nome": "Bateria de alta tensão",
+   "cor": "vermelho",
+   "x": 1590,
+   "y": 95,
+   "w": 48,
+   "h": 40,
+   "centro": [
+    1614,
+    114
+   ],
+   "foto": "f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 16,
+   "id": "bateria_12v",
+   "nome": "Bateria 12 V / carga",
+   "cor": "vermelho",
+   "x": 1646,
+   "y": 128,
+   "w": 44,
+   "h": 31,
+   "centro": [
+    1668,
+    143
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 17,
+   "id": "manutencao",
+   "nome": "Chave inglesa (manutenção)",
+   "cor": "ambar",
+   "x": 1699,
+   "y": 163,
+   "w": 47,
+   "h": 19,
+   "centro": [
+    1722,
+    172
+   ],
+   "foto": "f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 18,
+   "id": "verde_diagonal",
+   "nome": "Verde, a confirmar (cabo de recarga?)",
+   "cor": "verde",
+   "x": 1757,
+   "y": 178,
+   "w": 35,
+   "h": 47,
+   "centro": [
+    1774,
+    201
+   ],
+   "foto": "f1",
+   "identificacao": "baixa"
+  },
+  {
+   "n": 19,
+   "id": "porta",
+   "nome": "Porta aberta",
+   "cor": "vermelho",
+   "x": 1813,
+   "y": 203,
+   "w": 40,
+   "h": 48,
+   "centro": [
+    1832,
+    226
+   ],
+   "foto": "f1+f2",
+   "identificacao": "média"
+  },
+  {
+   "n": 20,
+   "id": "temperatura",
+   "nome": "Temperatura do motor (e ícone verde no mesmo lugar)",
+   "cor": "vermelho",
+   "x": 1863,
+   "y": 253,
+   "w": 49,
+   "h": 46,
+   "centro": [
+    1887,
+    276
+   ],
+   "foto": "f1+f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 21,
+   "id": "oleo",
+   "nome": "Pressão do óleo",
+   "cor": "vermelho",
+   "x": 1864,
+   "y": 320,
+   "w": 47,
+   "h": 21,
+   "centro": [
+    1887,
+    330
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 22,
+   "id": "temp_transmissao",
+   "nome": "Engrenagem com termômetro (transmissão/motor elétrico?)",
+   "cor": "vermelho",
+   "x": 1865,
+   "y": 360,
+   "w": 45,
+   "h": 46,
+   "centro": [
+    1887,
+    382
+   ],
+   "foto": "f2",
+   "identificacao": "baixa"
+  },
+  {
+   "n": 23,
+   "id": "tartaruga",
+   "nome": "Potência limitada (tartaruga)",
+   "cor": "ambar",
+   "x": 1865,
+   "y": 429,
+   "w": 43,
+   "h": 18,
+   "centro": [
+    1886,
+    438
+   ],
+   "foto": "f2",
+   "identificacao": "alta"
+  },
+  {
+   "n": 24,
+   "id": "rbs",
+   "nome": "RBS (frenagem regenerativa?)",
+   "cor": "ambar",
+   "x": 1864,
+   "y": 481,
+   "w": 46,
+   "h": 20,
+   "centro": [
+    1886,
+    490
+   ],
+   "foto": "f2",
+   "identificacao": "baixa"
+  },
+  {
+   "n": 25,
+   "id": "ready",
+   "nome": "READY",
+   "cor": "verde",
+   "x": 247,
+   "y": 341,
+   "w": 82,
+   "h": 22,
+   "centro": [
+    288,
+    352
+   ],
+   "foto": "f1",
+   "identificacao": "alta"
+  },
+  {
+   "n": 26,
+   "id": "placa",
+   "nome": "Placa de velocidade (leitor de placas)",
+   "cor": "branco",
+   "x": 240,
+   "y": 492,
+   "w": 51,
+   "h": 53,
+   "centro": [
+    265,
+    518
+   ],
+   "foto": "f1",
+   "identificacao": "alta"
+  },
+  {
+   "n": 27,
+   "id": "luz_diurna",
+   "nome": "Sol verde (luz diurna ou farol automático)",
+   "cor": "verde",
+   "x": 394,
+   "y": 59,
+   "w": 44,
+   "h": 39,
+   "centro": [
+    416,
+    78
+   ],
+   "foto": "f3/f4 (28/09 21:18-21:19)",
+   "identificacao": "média"
+  },
+  {
+   "n": 28,
+   "id": "lanterna",
+   "nome": "Lanterna (luz de posição)",
+   "cor": "verde",
+   "x": 444,
+   "y": 53,
+   "w": 49,
+   "h": 27,
+   "centro": [
+    468,
+    66
+   ],
+   "foto": "f3/f4 (28/09 21:18-21:19)",
+   "identificacao": "média"
+  }
+ ],
+ "vagas_provaveis": [
+  {
+   "id": "vaga_col_esq_437",
+   "x": 8,
+   "y": 414,
+   "w": 47,
+   "h": 46,
+   "por": "passo da coluna esquerda (275, 330, 383, [437], 491, [545], 600)"
+  },
+  {
+   "id": "vaga_col_esq_545",
+   "x": 8,
+   "y": 522,
+   "w": 47,
+   "h": 46,
+   "por": "passo da coluna esquerda"
+  },
+  {
+   "id": "vaga_col_dir_545",
+   "x": 1864,
+   "y": 522,
+   "w": 47,
+   "h": 46,
+   "por": "passo da coluna direita e espelho do freio/direção"
+  },
+  {
+   "id": "vaga_col_dir_600",
+   "x": 1864,
+   "y": 577,
+   "w": 47,
+   "h": 46,
+   "por": "espelho do freio (11)"
+  },
+  {
+   "id": "vaga_topo_esq",
+   "x": 623,
+   "y": 18,
+   "w": 37,
+   "h": 48,
+   "por": "espelho do cinto (13)"
+  },
+  {
+   "id": "vaga_base_dir",
+   "x": 1536,
+   "y": 662,
+   "w": 39,
+   "h": 45,
+   "por": "espelho do combustível (12)"
+  },
+  {
+   "id": "vaga_espelho_diurna",
+   "x": 1482,
+   "y": 59,
+   "w": 44,
+   "h": 39,
+   "por": "espelho da luz 27 em x = 960"
+  },
+  {
+   "id": "vaga_espelho_lanterna",
+   "x": 1427,
+   "y": 53,
+   "w": 49,
+   "h": 27,
+   "por": "espelho da luz 28 em x = 960"
+  }
+ ]
+}

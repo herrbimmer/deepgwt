@@ -1,0 +1,2086 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Stuttgart NTG 5.5</title>
+<style>
+* { box-sizing: border-box; }
+
+/* O html fica SEMPRE transparente e só o body pinta. É isso que faz o "sair da frente do carro"
+   funcionar: quando o carro projeta CarPlay/Android Auto no painel, o body perde o fundo e a
+   camada nativa aparece. Pintar o html quebraria isso e o tema cobriria a projeção.
+   AVISO DO VEÍCULO NÃO ENTRA NESSA CONTA -- ver applyYieldToCar(). */
+html { background: transparent; margin: 0; padding: 0; }
+body {
+  margin: 0; padding: 0;
+  width: 1920px; height: 720px;
+  overflow: hidden;
+  color: var(--t-ink, #fff);
+  -webkit-font-smoothing: antialiased;
+}
+body.yield-to-car { background: none !important; background-color: transparent !important; }
+body.yield-to-car #app { opacity: 0; }
+body.yield-to-car #bg { opacity: 0; }
+
+/* O FUNDO MORA NUMA CAMADA PRÓPRIA, NÃO NO BODY
+   Duas coisas dependem disso e nenhuma funciona com o papel de parede no body: ceder a tela a uma
+   projeção nativa (apagar o fundo sem apagar mais nada) e, principalmente, ABRIR O VÃO da projeção
+   da central -- um buraco de borda suave no meio do fundo, por onde o vídeo aparece com os
+   mostradores desenhando por cima. Máscara aplicada ao body mascararia também os mostradores, que
+   são filhos dele; numa camada separada, mascara só o que é fundo. */
+#bg { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; z-index: 0; }
+
+/* VÉU DE LEGIBILIDADE SOBRE A PROJEÇÃO
+   O vídeo da central entra por baixo desta página, e as leituras do topo e da base do centro
+   (relógio, marcha, mídia, autonomias) passam a ficar em cima dele. Texto branco sobre imagem
+   viva é ilegível metade do tempo -- um mapa claro, uma capa de álbum branca, e sumiu. Este véu
+   é um degradê só nas duas pontas do vão: escurece exatamente onde há texto e deixa o miolo da
+   imagem intacto, que é o que foi pedido ("preenchendo tudo").
+   Fica ENTRE o fundo e o #app, então escurece o vídeo e nunca o próprio texto. */
+#projscrim {
+  position: absolute; display: none; z-index: 0; pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,.70) 100%);
+}
+body.projetando #projscrim { display: block; }
+
+/* O HALO PRETO DOS MOSTRADORES SAI DA FRENTE DA IMAGEM
+   Os dois 'glow' são manchas radiais quase pretas centradas nos mostradores. Elas existem para
+   assentar o mostrador no papel de parede, mas o vão da projeção agora chega ao CENTRO de cada
+   mostrador -- e ali a mancha está no seu ponto mais escuro. Deixada como está, ela apagaria
+   justamente a parte da imagem que deve contornar o mostrador. Enquanto projeta, ela recua para
+   um resto de sombra: o suficiente para separar o mostrador da imagem, longe de cobri-la. */
+#el-stu-glow-left, #el-stu-glow-right { transition: opacity .3s ease; }
+body.projetando #el-stu-glow-left,
+body.projetando #el-stu-glow-right { opacity: .3; }
+
+/* FACE FUMÊ ENQUANTO PROJETA
+   A face do mostrador deste tema é vidro (7,5% de branco). Sem projeção isso é o efeito
+   desejado; com o vídeo POR BAIXO da página, a imagem atravessa o disco e as marcações passam a
+   disputar espaço com telhados e ruas -- o mostrador fica ilegível justamente quando mais se
+   olha para ele. Esta é a mesma face, escurecida: a imagem continua contornando o disco e some
+   por baixo dele. O raio do mostrador é exatamente metade da caixa do elemento (273 de 546),
+   então 47%/52% dá um disco de borda macia encaixado no aro, sem cantos escapando. */
+body.projetando .el.k-dial {
+  background: radial-gradient(circle at 50% 50%,
+    rgba(6,9,14,.74) 0%, rgba(6,9,14,.70) 47%, rgba(6,9,14,0) 52%);
+}
+
+#app { position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 1; transition: opacity .25s ease; }
+.page { position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none; }
+.page.active { display: block; }
+.el { position: absolute; }
+.el.hidden-rule { opacity: 0; pointer-events: none; }
+
+/* --- mostrador redondo ------------------------------------------------------------------ */
+.dial { position: absolute; }
+.dial svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.dial-face, .dial-ring, .dial-bezel { transition: fill .3s ease, stroke .3s ease; }
+
+/* Vidro do mostrador. Existe como <div> e nao como <circle> porque 'backdrop-filter' e
+   propriedade de caixa CSS: num filho de SVG o Chromium a ignora em silencio.
+
+   O raio entra por variavel e o resto e constante, para o motor continuar byte a byte igual em
+   todo tema. 'saturate' esta junto do 'blur' pelo mesmo motivo que o vidro da Apple: desfocar
+   sozinho lava a cor do que esta atras, e o papel de parede vira cinza.
+
+   A propriedade prefixada vem ANTES da padrao de proposito: se o WebView do carro so conhecer a
+   prefixada, ela vale; se conhecer as duas, a ultima vence e as duas dizem a mesma coisa. */
+.dial-glass {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  /* z-index NEGATIVO, e isto nao e detalhe: um filho POSICIONADO pinta depois do conteudo de
+     fluxo do mesmo contexto, entao sem esta linha o vidro fica em cima do <svg> e desfoca as
+     proprias marcacoes, o ponteiro e os numeros -- o mostrador inteiro sai borrado. Com -1 ele
+     pinta entre o fundo do host e o <svg>, que e onde um fundo mora. */
+  z-index: -1;
+  -webkit-backdrop-filter: blur(var(--glass-blur, 0px)) saturate(135%);
+  backdrop-filter: blur(var(--glass-blur, 0px)) saturate(135%);
+}
+
+.tick { transition: stroke .3s ease, opacity .3s ease; }
+.tick.off { opacity: 0; }
+/* Acima do limite da via. O brilho sai de 'currentColor' via drop-shadow em vez de text-shadow
+   porque em SVG o preenchimento de um <text> não gera sombra de texto. */
+.tick.over-limit { filter: drop-shadow(0 0 4px currentColor); }
+.tick-label.over-limit { filter: drop-shadow(0 0 6px currentColor); fill-opacity: 1; }
+
+/* transform-box e transform-origin são OBRIGATÓRIOS. Sem os dois, um <text> de SVG escala a
+   partir da origem do sistema de coordenadas e o número sai voando para fora do painel — some da
+   tela sem erro nenhum no console. */
+.tick-label {
+  transform-box: fill-box;
+  transform-origin: center;
+  fill-opacity: .9;
+  transition: transform var(--zoom-dur, .38s) var(--zoom-ease, cubic-bezier(.22,.61,.36,1)),
+              fill-opacity .32s ease, fill .3s ease;
+}
+.tick-label.zoomed {
+  fill-opacity: 1;
+  font-weight: var(--zoom-weight, 700);
+  transform: scale(var(--zoom-scale, 1.5));
+}
+
+.needle { transition: stroke .3s ease; }
+/* O grupo do ponteiro gira a cada atualizacao de telemetria e o ponteiro pode ter brilho.
+   Sem a promocao a camada, o raster do brilho e refeito a cada grau. */
+.needle-rot { will-change: transform; }
+.needle-cap, .needle-cap-ring { transition: fill .3s ease, stroke .3s ease; }
+.arc { fill: none; stroke-linecap: round; transition: stroke .3s ease; }
+.seg { transition: fill .2s ease, opacity .2s ease; }
+.seg.off { opacity: .16; }
+
+.dial-center {
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.dial-center .v { line-height: .9; }
+.dial-center .l { opacity: .62; }
+
+/* --- barra ------------------------------------------------------------------------------- */
+.bar { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 8px; }
+.bar-track { position: relative; width: 100%; height: 100%; border-radius: 999px; overflow: hidden; }
+.bar-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; border-radius: 999px; transition: width .25s ease; }
+.bar.centre .bar-fill { left: 50%; transform-origin: left center; }
+.bar-segments { display: flex; width: 100%; height: 100%; gap: 3px; }
+.bar-segments > i { flex: 1; border-radius: 3px; }
+.bar-row { display: flex; justify-content: space-between; align-items: baseline; }
+.bar-row .l { opacity: .62; }
+.bar.vertical { flex-direction: row; }
+.bar.vertical .bar-fill { width: 100%; height: 0%; top: auto; bottom: 0; transition: height .25s ease; }
+
+/* --- leitura ----------------------------------------------------------------------------- */
+.readout { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+.readout.stat { flex-direction: row; gap: 10px; align-items: center; justify-content: flex-start; }
+.readout .v { line-height: .9; white-space: nowrap; }
+.readout .l { opacity: .62; }
+.readout .sub { opacity: .62; }
+.readout.text .v { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- indicador --------------------------------------------------------------------------- */
+.indicator { display: flex; align-items: center; justify-content: center; height: 100%; transition: color .25s ease, opacity .25s ease; }
+.indicator svg { width: 100%; height: 100%; display: block; }
+.indicator.badge {
+  border-radius: 999px; border: 1px solid currentColor;
+  padding: 0 .55em; opacity: .95;
+}
+
+/* --- mídia ------------------------------------------------------------------------------- */
+.media { display: flex; height: 100%; transition: opacity .35s ease, transform .35s ease; }
+.media.card { flex-direction: column; align-items: center; justify-content: center; gap: 14px; border-radius: 22px; }
+.media.line { flex-direction: row; align-items: center; justify-content: center; gap: 12px; }
+.media.empty { opacity: 0; transform: translateY(6px); }
+.media.line.empty { opacity: .45; transform: none; }
+/* 32% de uma caixa de 640 dá 205 px, que é o tamanho da capa nos temas escritos à mão. O lado
+   sai em PIXEL do renderizador (que conhece el.rect.w) e não da proporção automática, que é
+   Chrome 88 — o WebView do carro só está provado até 84, e lá a capa ficaria com altura zero. */
+.media-art { display: none; border-radius: 16px; object-fit: cover; background: rgba(255,255,255,.06); }
+.media-art.has-src { display: block; }
+.media-art-ph {
+  border-radius: 16px;
+  background: rgba(255,255,255,.06); color: var(--t-inkFaint, rgba(255,255,255,.3));
+  display: flex; align-items: center; justify-content: center;
+}
+.media-art.has-src ~ .media-art-ph { display: none; }
+/* O ícone é dimensionado aqui e não por padding no pai: padding em porcentagem resolve contra
+   a LARGURA DO BLOCO CONTENDOR, não contra o próprio elemento, e engolia a caixa inteira. */
+.media-art-ph svg { width: 32%; height: 32%; }
+/* O lado da capa na linha vem do renderizador (54% da altura da caixa); aqui só o canto. */
+.media.line .media-art, .media.line .media-art-ph { border-radius: 10px; }
+/* Sem nada tocando a linha fica a 45% e sem texto: o quadrado da capa sozinho seria um ícone de
+   nota musical solto no painel, sem dizer nada. Ele volta junto com o título. */
+.media.line.empty .media-art, .media.line.empty .media-art-ph { display: none; }
+.media.line .media-art-ph svg { width: 60%; height: 60%; }
+.media-txt { min-width: 0; text-align: center; max-width: 100%; }
+.media.line .media-txt { text-align: left; }
+.media-txt div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* --- decoração --------------------------------------------------------------------------- */
+.decor { pointer-events: none; }
+.decor.panel { border-radius: var(--decor-radius, 24px); }
+.decor.glow { border-radius: 50%; }
+.decor.divider { border-radius: 2px; }
+
+/* --- paginador --------------------------------------------------------------------------- */
+.pager { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: flex; gap: 10px; z-index: 9990; }
+.pager i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.25); display: block; }
+.pager i.on { background: rgba(255,255,255,.92); }
+
+/* --- abertura ---------------------------------------------------------------------------- */
+.boot {
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: #000; transition: opacity .6s ease;
+}
+.boot.done { opacity: 0; pointer-events: none; }
+.boot-ring {
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.14); border-top-color: var(--t-accent, #fff);
+  animation: boot-spin .9s linear infinite;
+}
+.boot-word { font-size: 18px; font-weight: 700; letter-spacing: 5px; color: var(--t-ink, #fff); }
+@keyframes boot-spin { to { transform: rotate(360deg); } }
+
+/* Quem pediu menos transparencia no sistema nao quer vidro: o desfoque sai, e o que segura a
+   legibilidade passa a ser a tinta do disco, que continua desenhada por cima. */
+@media (prefers-reduced-transparency: reduce) {
+  .dial-glass { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-ring { animation: none; }
+  .tick-label, .bar-fill, .needle, .arc, .media, #app { transition-duration: .01ms !important; }
+}
+</style>
+<style>@font-face {
+  font-family: 'ExoV';
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+  src: url('ExoV.woff2') format('woff2');
+}
+
+:root {
+  --t-ink: #f2f4f6;
+  --t-inkDim: rgba(242,244,246,.55);
+  --t-inkFaint: rgba(242,244,246,.28);
+  --t-accent: #3fa0ff;
+  --t-needle: #3fa0ff;
+  --t-needleDark: #0c4a86;
+  --t-needleBright: #eaf6ff;
+  --t-needleGlow: rgba(63,160,255,.65);
+  --t-warn: #ff4d4f;
+  --t-ok: #35d07f;
+  --t-low: #ff9500;
+  --t-face: rgba(10,14,20,.55);
+  --t-faceLow: rgba(0,0,0,.75);
+  --t-faceRing: rgba(255,255,255,.5);
+  --t-bezel: #05060a;
+  --t-panel: rgba(255,255,255,.07);
+  --t-track: rgba(255,255,255,.14);
+}
+body.mode-night {
+  --t-ink: #ff3b30;
+  --t-inkDim: rgba(255,59,48,.6);
+  --t-inkFaint: rgba(255,59,48,.32);
+  --t-accent: #ff3b30;
+  --t-needle: #ff3b30;
+  --t-needleDark: #7a1712;
+  --t-needleBright: #ff9e90;
+  --t-needleGlow: rgba(255,59,48,.7);
+  --t-warn: #ff4d4f;
+  --t-ok: #35d07f;
+  --t-low: #ff9500;
+  --t-face: rgba(10,6,6,.6);
+  --t-faceLow: rgba(0,0,0,.8);
+  --t-faceRing: rgba(255,59,48,.35);
+  --t-bezel: #05060a;
+  --t-panel: rgba(255,59,48,.08);
+  --t-track: rgba(255,59,48,.16);
+}
+body.mode-headlight {
+  --t-ink: var(--night-tint, #ff9500);
+  --t-inkDim: rgba(242,244,246,.55);
+  --t-inkFaint: rgba(242,244,246,.28);
+  --t-accent: var(--night-tint, #ff9500);
+  --t-needle: var(--night-tint, #ff9500);
+  --t-needleDark: #0c4a86;
+  --t-needleBright: #eaf6ff;
+  --t-needleGlow: var(--night-glow, rgba(255,149,0,.45));
+  --t-warn: #ff4d4f;
+  --t-ok: #35d07f;
+  --t-low: #ff9500;
+  --t-face: rgba(10,14,20,.55);
+  --t-faceLow: rgba(0,0,0,.75);
+  --t-faceRing: rgba(255,255,255,.5);
+  --t-bezel: #05060a;
+  --t-panel: rgba(255,255,255,.07);
+  --t-track: rgba(255,255,255,.14);
+}
+
+/* O fundo fica no #bg, nunca no html: é o que permite ao motor limpá-lo (cedendo a tela a uma
+   projeção nativa) e abrir nele o vão da projeção da central sem tocar nos mostradores. */
+#bg { background: #000 url('car-bg.jpg') center / cover no-repeat; }
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="projscrim"></div>
+<div id="app"></div>
+<div id="boot" class="boot"><div class="boot-ring"></div><div class="boot-word">STUTTGART NTG 5.5</div></div>
+<script>(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  var RM = false;
+  try { RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+  var THEME = null;
+  var PAGES = [];
+  var PAGE_NODES = [];
+  var ACTIVE_PAGE = 0;
+  var BY_KEY = {};       // chave do carro -> [instância]
+  var BUFFER = {};       // último valor bruto de cada chave, inclusive antes do DOM existir
+  var PENDING = {};      // chaves esperando o próximo quadro
+  var scheduled = false;
+  var fallbackTimer = null;
+  var CARD = 0;
+  var warningActiveState = false;
+  var PROJ = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  var MODE = 'day';
+  var headlightsOn = false;
+  var manualNight = false;
+
+  // --- geometria ---------------------------------------------------------------------------
+  function svgEl(tag, attrs) {
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function clamp01(v) { return clamp(v, 0, 1); }
+
+  // 0 grau aponta para cima e cresce no sentido horário.
+  function polar(cx, cy, r, deg) {
+    var rad = ((deg - 90) * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function describeArc(cx, cy, r, a0, a1) {
+    if (a1 - a0 < 0.5) return '';
+    var p1 = polar(cx, cy, r, a0), p2 = polar(cx, cy, r, a1);
+    var large = a1 - a0 > 180 ? 1 : 0;
+    return 'M ' + p1.x.toFixed(2) + ' ' + p1.y.toFixed(2) + ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + p2.x.toFixed(2) + ' ' + p2.y.toFixed(2);
+  }
+
+  function wedgePath(cx, cy, rIn, rOut, a0, a1) {
+    var o1 = polar(cx, cy, rOut, a0), o2 = polar(cx, cy, rOut, a1);
+    var i2 = polar(cx, cy, rIn, a1), i1 = polar(cx, cy, rIn, a0);
+    var large = a1 - a0 > 180 ? 1 : 0;
+    return 'M ' + o1.x.toFixed(2) + ' ' + o1.y.toFixed(2) +
+      ' A ' + rOut + ' ' + rOut + ' 0 ' + large + ' 1 ' + o2.x.toFixed(2) + ' ' + o2.y.toFixed(2) +
+      ' L ' + i2.x.toFixed(2) + ' ' + i2.y.toFixed(2) +
+      ' A ' + rIn + ' ' + rIn + ' 0 ' + large + ' 0 ' + i1.x.toFixed(2) + ' ' + i1.y.toFixed(2) + ' Z';
+  }
+
+  // O ponteiro tem as coordenadas fixadas UMA vez e depois só gira. Reescrever x1/y1/x2/y2 a cada
+  // quadro re-rasteriza o drop-shadow junto, e isso aparece como engasgo no hardware do carro.
+  function pinNeedle(line, cx, cy, rIn, rOut, startDeg) {
+    var a = polar(cx, cy, rIn, startDeg), b = polar(cx, cy, rOut, startDeg);
+    line.setAttribute('x1', a.x.toFixed(2)); line.setAttribute('y1', a.y.toFixed(2));
+    line.setAttribute('x2', b.x.toFixed(2)); line.setAttribute('y2', b.y.toFixed(2));
+  }
+  function rotateNeedle(g, deg, cx, cy, startDeg) {
+    g.setAttribute('transform', 'rotate(' + (deg - startDeg).toFixed(2) + ' ' + cx + ' ' + cy + ')');
+  }
+
+  // --- mapeamento de valor -----------------------------------------------------------------
+  // Limite da via lido pela camera. Mora fora do mapeador porque um mapeador so enxerga a chave do
+  // proprio elemento, e o limite chega por OUTRA chave -- alimentar cada velocimetro exigiria que
+  // ele assinasse a chave do vizinho.
+  var LIMITE = { valor: null, valido: true };
+  var LIMIT_KEY = 'car.map.tsr.nav_speed_limit';
+  var LIMIT_STATUS_KEY = 'car.map.tsr.nav_speed_limit_sign_status';
+  var SIGN_LIMIT_INSTS = [];
+  // Mostradores cuja escala a preferencia do carro pode trocar: os de faixa simples.
+  var DIAIS_DE_ESCALA = [];
+  var REGRA_KEYS = {};
+  var PENDING_REGRAS = false;
+
+  function limiteAtual(map) {
+    if (LIMITE.valido && LIMITE.valor !== null && isFinite(LIMITE.valor) && LIMITE.valor > 0) {
+      return LIMITE.valor;
+    }
+    return map.fallbackMax;
+  }
+
+  function parseBoolish(v) {
+    if (v === true) return true;
+    if (v === false || v === null || v === undefined) return false;
+    var s = String(v).trim().toLowerCase();
+    return s === '1' || s === 'true' || s === 'on' || s === 'yes' || s === 'ligado';
+  }
+
+  function valueToT(map, v, curMax) {
+    if (map.kind === 'linear') {
+      if (map.max === map.min) return 0;
+      return clamp01((v - map.min) / (map.max - map.min));
+    }
+    if (map.kind === 'dualRange') {
+      var top = curMax || map.low;
+      if (top === map.min) return 0;
+      return clamp01((v - map.min) / (top - map.min));
+    }
+    if (map.kind === 'signLimit') {
+      var topo = curMax || map.fallbackMax;
+      if (topo === map.min) return 0;
+      return clamp01((v - map.min) / (topo - map.min));
+    }
+    if (map.kind === 'piecewise') {
+      var p = map.points;
+      if (v <= p[0].v) return p[0].t;
+      for (var i = 1; i < p.length; i++) {
+        if (v <= p[i].v) {
+          var f = (v - p[i - 1].v) / (p[i].v - p[i - 1].v);
+          return clamp01(p[i - 1].t + f * (p[i].t - p[i - 1].t));
+        }
+      }
+      return p[p.length - 1].t;
+    }
+    return 0;
+  }
+
+  function fmtNumber(n, decimals, unit) {
+    var d = typeof decimals === 'number' ? decimals : (Math.abs(n) >= 100 ? 0 : 1);
+    var s = n.toFixed(d);
+    if (d > 0 && s.indexOf('.') >= 0) s = s.replace('.', ',');
+    if (!unit) return s;
+    // Grau e por cento colam no numero; qualquer outra unidade leva espaco. "24 °" em cima do
+    // painel e exatamente o tipo de detalhe que denuncia um tema gerado.
+    var cola = unit.charAt(0) === '°' || unit.charAt(0) === '%';
+    return cola ? s + unit : s + ' ' + unit;
+  }
+
+  function makeMapper(el) {
+    var map = el.map || { kind: 'text' };
+    var b = el.binding || {};
+    var state = {
+      curMax: map.kind === 'dualRange' ? map.low : map.kind === 'signLimit' ? limiteAtual(map) : 0,
+      limite: map.kind === 'signLimit' ? limiteAtual(map) : 0,
+      scaleChanged: false,
+    };
+
+    return function (raw) {
+      state.scaleChanged = false;
+      if (map.kind === 'text') {
+        var t = raw === null || raw === undefined ? '' : String(raw);
+        return { t: 0, num: 0, text: t || (b.fallback || ''), raw: raw, on: !!t };
+      }
+      if (map.kind === 'boolish') {
+        var on = parseBoolish(raw);
+        return { t: on ? 1 : 0, num: on ? 1 : 0, text: on ? 'ON' : 'OFF', raw: raw, on: on };
+      }
+      if (map.kind === 'enum') {
+        var key = String(raw === null || raw === undefined ? '' : raw).trim();
+        var label = Object.prototype.hasOwnProperty.call(map.labels, key) ? map.labels[key] : map.fallback;
+        return { t: 0, num: 0, text: label, raw: raw, on: true };
+      }
+      var n = parseFloat(raw);
+      if (!isFinite(n)) return { t: 0, num: 0, text: b.fallback || '--', raw: raw, on: false };
+      if (b.scale) n = n * b.scale;
+      if (b.offset) n = n + b.offset;
+      if (b.abs) n = Math.abs(n);
+
+      if (map.kind === 'dualRange') {
+        var alvo = state.curMax;
+        if (n > map.upAt) alvo = map.high;
+        else if (n < map.downAt) alvo = map.low;
+        if (alvo !== state.curMax) { state.curMax = alvo; state.scaleChanged = true; }
+      }
+
+      if (map.kind === 'signLimit') {
+        var limite = limiteAtual(map);
+        // Dentro do limite, o fim do arco E o limite da via. Ao passar, abre ate o teto e so
+        // fecha 2% abaixo do limite -- as duas bordas diferentes impedem a escala de piscar com o
+        // carro cravado na velocidade da placa.
+        var alvo2 = state.curMax || limite;
+        if (n > limite * 1.02) alvo2 = Math.max(limite, map.overshootMax);
+        else if (n < limite * 0.98) alvo2 = limite;
+        if (alvo2 !== state.curMax) { state.curMax = alvo2; state.scaleChanged = true; }
+        state.limite = limite;
+      }
+      return {
+        t: valueToT(map, n, state.curMax),
+        num: n,
+        text: fmtNumber(n, b.decimals, b.unit),
+        raw: raw,
+        on: true,
+        curMax: state.curMax,
+        limite: state.limite,
+        scaleChanged: state.scaleChanged,
+      };
+    };
+  }
+
+  // --- marcações ---------------------------------------------------------------------------
+  function tickListFor(el) {
+    var majors = el.ticks.majors, sub = Math.max(1, el.ticks.subdivisions), out = [];
+    for (var i = 0; i < majors.length; i++) {
+      out.push({ v: majors[i], level: 0 });
+      if (i < majors.length - 1) {
+        var passo = (majors[i + 1] - majors[i]) / sub;
+        for (var j = 1; j < sub; j++) {
+          out.push({ v: majors[i] + passo * j, level: j === sub / 2 ? 1 : 2 });
+        }
+      }
+    }
+    return out;
+  }
+
+  function buildTicks(inst, svg, el, g) {
+    var lista = tickListFor(el);
+    var grupo = svgEl('g', {});
+    var labelGrupo = svgEl('g', {});
+    for (var i = 0; i < lista.length; i++) {
+      var it = lista[i];
+      var len = it.level === 0 ? el.ticks.len.major : it.level === 1 ? el.ticks.len.minor : el.ticks.len.micro;
+      var w = it.level === 0 ? el.ticks.width.major : it.level === 1 ? el.ticks.width.minor : el.ticks.width.micro;
+      var cor = zoneTokenFor(el, it.v) || (it.level === 0 ? el.tickColor : el.tickColorDim);
+      var line = svgEl('line', { class: 'tick', stroke: cor, 'stroke-width': w, 'stroke-linecap': 'round' });
+      grupo.appendChild(line);
+      var label = null;
+      if (it.level === 0 && el.parts.labels) {
+        label = svgEl('text', { class: 'tick-label' });
+        svgText(label, el.ticks.labelStyle);
+        label.setAttribute('fill', zoneTokenFor(el, it.v) || el.ticks.labelStyle.color);
+        label.textContent = String(Math.round(it.v));
+        labelGrupo.appendChild(label);
+      }
+      inst.ticks.push({
+        v: it.v, level: it.level, len: len, line: line, label: label,
+        corBase: cor,
+        corLabelBase: label ? label.getAttribute('fill') : null,
+        acima: false,
+      });
+    }
+    svg.appendChild(grupo);
+    svg.appendChild(labelGrupo);
+    repositionTicks(
+      inst, el, g,
+      el.map.kind === 'dualRange' ? el.map.low : el.map.kind === 'signLimit' ? limiteAtual(el.map) : 0,
+    );
+  }
+
+  function repositionTicks(inst, el, g, curMax) {
+    var span = g.endDeg - g.startDeg;
+    // Acima do limite da via, a marcação vira alerta com brilho. 'null' quando o mostrador não
+    // segue placa nenhuma -- aí nada é "acima do limite" e nada muda de cor.
+    var limite = el.map.kind === 'signLimit' ? limiteAtual(el.map) : null;
+    for (var i = 0; i < inst.ticks.length; i++) {
+      var t = inst.ticks[i];
+      var visivel = true;
+      var tt;
+      if (el.map.kind === 'dualRange') {
+        visivel = t.v <= curMax + 1e-6;
+        tt = clamp01((t.v - el.map.min) / ((curMax || el.map.low) - el.map.min));
+      } else if (el.map.kind === 'signLimit') {
+        var topo = curMax || el.map.fallbackMax;
+        visivel = t.v <= topo + 1e-6;
+        tt = clamp01((t.v - el.map.min) / (topo - el.map.min));
+      } else {
+        tt = valueToT(el.map, t.v, curMax);
+      }
+      var acima = limite !== null && t.v > limite + 1e-6;
+      if (t.acima !== acima) {
+        t.acima = acima;
+        t.line.setAttribute('stroke', acima ? el.overLimitColor : t.corBase);
+        if (t.label) {
+          t.label.setAttribute('fill', acima ? el.overLimitColor : t.corLabelBase);
+          t.label.classList.toggle('over-limit', acima);
+        }
+      }
+      var deg = g.startDeg + span * tt;
+      var a = polar(g.cx, g.cy, g.tickOuterR, deg);
+      var b = polar(g.cx, g.cy, g.tickOuterR - t.len, deg);
+      t.line.setAttribute('x1', a.x.toFixed(2)); t.line.setAttribute('y1', a.y.toFixed(2));
+      t.line.setAttribute('x2', b.x.toFixed(2)); t.line.setAttribute('y2', b.y.toFixed(2));
+      t.line.setAttribute('class', visivel ? 'tick' : 'tick off');
+      if (acima) t.line.classList.add('over-limit');
+      if (t.label) {
+        var p = polar(g.cx, g.cy, g.labelR, deg);
+        t.label.setAttribute('x', p.x.toFixed(2));
+        t.label.setAttribute('y', p.y.toFixed(2));
+        t.label.style.opacity = visivel ? '' : '0';
+      }
+    }
+  }
+
+  // A marcação mais próxima do valor cresce. Trocar de classe é a única escrita por quadro aqui;
+  // o resto é CSS.
+  function highlightNearestTick(inst, num) {
+    var melhor = -1, dist = Infinity;
+    for (var i = 0; i < inst.ticks.length; i++) {
+      if (inst.ticks[i].level !== 0 || !inst.ticks[i].label) continue;
+      var d = Math.abs(inst.ticks[i].v - num);
+      if (d < dist) { dist = d; melhor = i; }
+    }
+    if (melhor === inst.lastZoom) return;
+    if (inst.lastZoom >= 0 && inst.ticks[inst.lastZoom].label) {
+      inst.ticks[inst.lastZoom].label.classList.remove('zoomed');
+    }
+    if (melhor >= 0 && inst.ticks[melhor].label) inst.ticks[melhor].label.classList.add('zoomed');
+    inst.lastZoom = melhor;
+  }
+
+  // O temporizador nao e redundancia: requestAnimationFrame NAO dispara enquanto o WebView esta
+  // oculto (document.visibilityState === 'hidden') -- e o do cluster fica oculto sempre que uma
+  // projecao ou um aviso do carro assume a tela. Sem esta rede, uma troca de escala iniciada nesse
+  // instante congelava no valor inicial: ao voltar, o painel continuava com o fim de escala antigo
+  // e as marcacoes na posicao errada, ate a proxima troca.
+  function animateValue(from, to, ms, cb) {
+    if (RM || ms <= 0) { cb(to); return; }
+    var t0 = performance.now();
+    var terminou = false;
+    var rede = setTimeout(function () {
+      if (terminou) return;
+      terminou = true;
+      cb(to);
+    }, ms + 250);
+    function passo(now) {
+      if (terminou) return;
+      var f = clamp01((now - t0) / ms);
+      var e = f < 0.5 ? 2 * f * f : -1 + (4 - 2 * f) * f;
+      cb(from + (to - from) * e);
+      if (f < 1) { requestAnimationFrame(passo); return; }
+      terminou = true;
+      clearTimeout(rede);
+    }
+    requestAnimationFrame(passo);
+  }
+
+
+  var ICONS = {
+    headlight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7c0-1.1.9-2 2-2h4c4 0 7 3 7 7s-3 7-7 7H5a2 2 0 0 1-2-2V7Z"/><path d="M19 8h3M19 12h4M19 16h3"/></svg>',
+    highBeam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7c0-1.1.9-2 2-2h4c4 0 7 3 7 7s-3 7-7 7H5a2 2 0 0 1-2-2V7Z"/><path d="M19 7h4M19 12h4M19 17h4"/></svg>',
+    fogFront: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7c0-1.1.9-2 2-2h3c4 0 7 3 7 7s-3 7-7 7H5a2 2 0 0 1-2-2V7Z"/><path d="M18 8.5 22 7M18 12h4M18 15.5 22 17"/></svg>',
+    fogRear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 7c0-1.1-.9-2-2-2h-3c-4 0-7 3-7 7s3 7 7 7h3a2 2 0 0 0 2-2V7Z"/><path d="M6 8.5 2 7M6 12H2M6 15.5 2 17"/></svg>',
+    handbrake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9 8h3.2a2.4 2.4 0 0 1 0 4.8H9V8Zm0 4.8V16"/></svg>',
+    epb: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 5v3M12 16v3M5 12h3M16 12h3"/></svg>',
+    seatbelt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5.5" r="2.5"/><path d="M8 20V13c0-2 1.5-3.5 4-3.5s4 1.5 4 3.5v7M8.5 11.5 15 18"/></svg>',
+    espOff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 17c2-5 5-7 7-7s5 2 7 7"/><circle cx="12" cy="6" r="2"/><path d="M4 4l16 16"/></svg>',
+    tpms: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 16V9a7 7 0 0 1 14 0v7"/><path d="M3 18h18M12 8v5M12 15.5v.5"/></svg>',
+    charging: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="2"/><path d="M20 10v4"/><path d="M10 9.5 8 12.5h3L9 15.5"/></svg>',
+    battery: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2" y="7" width="17" height="10" rx="2"/><path d="M22 10v4"/><path d="M11 9.5 9 12.5h3l-2 3"/></svg>',
+    fuel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v15M3 20h11"/><path d="M13 9h3a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V9l-2.5-2.5"/></svg>',
+    engine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 9h3V7h5v2h2l3 3v5h-3v-2H9l-3 3V9Z"/><path d="M3 11v3"/></svg>',
+    turnLeft: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 4 4 11l7 7v-4h9v-6h-9V4Z"/></svg>',
+    turnRight: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 4l7 7-7 7v-4H4V8h9V4Z"/></svg>',
+    hazard: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 3 19h18L12 3Zm0 5 5 9H7l5-9Z"/></svg>',
+    wiper: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19 12 5l8 14"/><path d="M7 15h10"/></svg>',
+    door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 19V8l6-4h8v15H4Z"/><path d="M14 12h1.5"/></svg>',
+    key: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M15 12v2"/></svg>',
+    snowflake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v18M4 7.5 20 16.5M20 7.5 4 16.5"/></svg>',
+    ready: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>',
+    eco: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 4c0 9-5 14-11 14H5c0-9 5-14 11-14h4Z"/><path d="M5 20c2-4 5-7 9-9"/></svg>',
+    sport: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>',
+    music: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="17" r="3"/><circle cx="18" cy="15" r="3"/><path d="M10 17V6l11-2v11"/></svg>',
+    road: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 21 9 3M17 21 15 3M12 5v3M12 11v3M12 17v3"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+  };
+
+
+  function applyText(node, st) {
+    if (!st) return;
+    node.style.fontFamily = st.ff;
+    node.style.fontSize = st.fs;
+    node.style.fontWeight = st.fw;
+    if (st.ls) node.style.letterSpacing = st.ls + 'px';
+    if (st.tt) node.style.textTransform = st.tt;
+    if (st.tn) node.style.fontVariantNumeric = 'tabular-nums';
+    node.style.color = st.color;
+  }
+
+  function svgText(node, st) {
+    if (!st) return;
+    node.setAttribute('font-family', st.ff);
+    node.setAttribute('font-size', st.fsRaw);
+    node.setAttribute('font-weight', st.fw);
+    if (st.ls) node.setAttribute('letter-spacing', st.ls);
+    node.setAttribute('fill', st.color);
+    node.setAttribute('text-anchor', 'middle');
+    node.setAttribute('dominant-baseline', 'central');
+  }
+
+  // Uma tinta vira ou uma cor CSS, ou um <defs> com gradiente e a referência url(#id).
+  function paintSvg(defs, paint, id, geom) {
+    if (!paint || paint.fill === 'none') return 'none';
+    if (paint.fill === 'solid') return paint.color;
+    if (paint.fill === 'linear') {
+      var lg = svgEl('linearGradient', { id: id, gradientTransform: 'rotate(' + (paint.angleDeg || 0) + ' .5 .5)' });
+      lg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': paint.from }));
+      lg.appendChild(svgEl('stop', { offset: '100%', 'stop-color': paint.to }));
+      defs.appendChild(lg);
+      return 'url(#' + id + ')';
+    }
+    if (paint.fill === 'radial') {
+      var rg = svgEl('radialGradient', {
+        id: id, cx: paint.cx, cy: paint.cy, r: 0.72,
+      });
+      rg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': paint.from }));
+      rg.appendChild(svgEl('stop', { offset: (Math.round((paint.stopAt || 0.78) * 100)) + '%', 'stop-color': paint.to }));
+      defs.appendChild(rg);
+      return 'url(#' + id + ')';
+    }
+    if (paint.fill === 'hubRadial') {
+      // userSpaceOnUse centrado no cubo: como o centro do gradiente É o eixo de rotação, girar o
+      // ponteiro não muda um pixel dele. Trocar por um radial comum faz o gradiente escorrer.
+      var hg = svgEl('radialGradient', {
+        id: id, gradientUnits: 'userSpaceOnUse',
+        cx: geom.cx, cy: geom.cy, r: geom.R,
+      });
+      hg.appendChild(svgEl('stop', { offset: '0%', 'stop-color': paint.inner }));
+      hg.appendChild(svgEl('stop', { offset: (Math.round((paint.midAt || 0.58) * 100)) + '%', 'stop-color': paint.mid }));
+      hg.appendChild(svgEl('stop', { offset: '100%', 'stop-color': paint.outer }));
+      defs.appendChild(hg);
+      return 'url(#' + id + ')';
+    }
+    return 'none';
+  }
+
+  function paintCss(paint) {
+    if (!paint || paint.fill === 'none') return 'transparent';
+    if (paint.fill === 'solid') return paint.color;
+    if (paint.fill === 'linear') return 'linear-gradient(' + (paint.angleDeg || 135) + 'deg, ' + paint.from + ', ' + paint.to + ')';
+    if (paint.fill === 'radial') return 'radial-gradient(circle at ' + Math.round(paint.cx * 100) + '% ' + Math.round(paint.cy * 100) + '%, ' + paint.from + ' 0%, ' + paint.to + ' ' + Math.round((paint.stopAt || 0.78) * 100) + '%)';
+    return 'transparent';
+  }
+
+  function zoneTokenFor(el, value) {
+    var z = el.ticks && el.ticks.zones;
+    if (!z) return null;
+    for (var i = 0; i < z.length; i++) {
+      if (value >= z[i].from && value <= z[i].to) return z[i].color;
+    }
+    return null;
+  }
+
+  // --- mostrador redondo -------------------------------------------------------------------
+  var DIAL = {
+    build: function (el, host) {
+      var g = el.geom;
+      var svg = svgEl('svg', { viewBox: '0 0 ' + el.rect.w + ' ' + el.rect.h });
+      var defs = svgEl('defs', {});
+      svg.appendChild(defs);
+
+      var inst = { el: el, svg: svg, ticks: [], labels: [], lastZoom: -1, lastDeg: null, lastArc: null, segs: [] };
+
+      if (el.parts.face && el.face.enabled) {
+        var faceR = g.R - (el.face.bezel ? el.face.bezel.width : 0);
+
+        // Vidro. Vai no host e ANTES do <svg> (que so e anexado no fim desta funcao), entao fica
+        // atras de tudo que o mostrador desenha -- e por isso o que ele desfoca e o papel de
+        // parede, nao o proprio ponteiro. Um <div>, e nao um <circle>: 'backdrop-filter' e
+        // propriedade de caixa CSS e o Chromium a ignora, sem erro, num filho de SVG.
+        if (el.face.blurPx > 0) {
+          var vidro = document.createElement('div');
+          vidro.className = 'dial-glass';
+          vidro.style.left = (g.cx - faceR) + 'px';
+          vidro.style.top = (g.cy - faceR) + 'px';
+          vidro.style.width = (faceR * 2) + 'px';
+          vidro.style.height = (faceR * 2) + 'px';
+          vidro.style.setProperty('--glass-blur', el.face.blurPx + 'px');
+          host.appendChild(vidro);
+          inst.vidro = vidro;
+        }
+
+        var face = svgEl('circle', { class: 'dial-face', cx: g.cx, cy: g.cy, r: faceR });
+        face.setAttribute('fill', paintSvg(defs, el.face.paint, el.id + '-face', g));
+        svg.appendChild(face);
+        if (el.face.ring) {
+          svg.appendChild(svgEl('circle', {
+            class: 'dial-ring', cx: g.cx, cy: g.cy, r: faceR + el.face.ring.width / 2,
+            fill: 'none', stroke: el.face.ring.color, 'stroke-width': el.face.ring.width,
+          }));
+        }
+      }
+      if (el.face.bezel) {
+        svg.appendChild(svgEl('circle', {
+          class: 'dial-bezel', cx: g.cx, cy: g.cy, r: g.R - el.face.bezel.width / 2,
+          fill: 'none', stroke: el.face.bezel.color, 'stroke-width': el.face.bezel.width,
+        }));
+      }
+
+      if (el.parts.segments) {
+        var n = el.parts.segments;
+        var span = g.endDeg - g.startDeg;
+        for (var s = 0; s < n; s++) {
+          var a0 = g.startDeg + (span * s) / n + 1;
+          var a1 = g.startDeg + (span * (s + 1)) / n - 1;
+          var p = svgEl('path', {
+            class: 'seg off',
+            d: wedgePath(g.cx, g.cy, g.tickOuterR - 26, g.tickOuterR, a0, a1),
+            fill: el.segColor,
+          });
+          svg.appendChild(p);
+          inst.segs.push(p);
+        }
+      }
+
+      if (el.parts.ticks) buildTicks(inst, svg, el, g);
+
+      if (el.parts.arc) {
+        // fill='none' como ATRIBUTO e nao so pela regra .arc do CSS: a miniatura copia o SVG
+        // sem folha de estilo, e sem o atributo o arco virava uma fatia preta preenchida por
+        // cima do disco.
+        inst.arc = svgEl('path', { class: 'arc', d: '', fill: 'none', stroke: el.arcColor, 'stroke-width': el.arc.width });
+        svg.appendChild(inst.arc);
+        if (el.arc.split) {
+          inst.arc2 = svgEl('path', { class: 'arc', d: '', fill: 'none', stroke: el.arcColorAfter, 'stroke-width': el.arc.width });
+          svg.appendChild(inst.arc2);
+        }
+      }
+
+      if (el.parts.index) {
+        inst.index = svgEl('g', {});
+        inst.index.appendChild(svgEl('circle', { cx: g.cx, cy: g.cy - g.tickOuterR, r: Math.max(4, el.needle.width), fill: el.needleColor }));
+        svg.appendChild(inst.index);
+      }
+
+      if (el.parts.needle) {
+        // A classe 'needle-rot' só existe para o CSS poder promover este grupo a camada
+        // própria. O ponteiro pode carregar sombra (el.needle.glow) e, sem a promoção, o
+        // brilho é rasterizado de novo a cada grau girado.
+        var ng = svgEl('g', { class: 'needle-rot' });
+        var line = svgEl('line', { class: 'needle', 'stroke-width': el.needle.width, 'stroke-linecap': 'round' });
+        line.setAttribute('stroke', paintSvg(defs, el.needle.paint, el.id + '-needle', g));
+        if (el.needle.glow) line.style.filter = 'drop-shadow(0 0 8px ' + el.needleGlow + ')';
+        pinNeedle(line, g.cx, g.cy, g.needleInnerR, g.needleOuterR, g.startDeg);
+        ng.appendChild(line);
+        svg.appendChild(ng);
+        inst.needleG = ng;
+
+        if (el.needle.cap === 'ring' || el.needle.cap === 'ringDot') {
+          svg.appendChild(svgEl('circle', { class: 'needle-cap-ring', cx: g.cx, cy: g.cy, r: 11, fill: 'none', stroke: el.hubRingColor, 'stroke-width': 2 }));
+        }
+        if (el.needle.cap === 'dot' || el.needle.cap === 'ringDot') {
+          svg.appendChild(svgEl('circle', { class: 'needle-cap', cx: g.cx, cy: g.cy, r: 7, fill: el.needleColor }));
+        }
+      }
+
+      host.appendChild(svg);
+
+      if (el.center) {
+        var c = document.createElement('div');
+        c.className = 'dial-center';
+        if (el.center.offsetPx) c.style.transform = 'translateY(' + el.center.offsetPx + 'px)';
+        var v = document.createElement('div');
+        v.className = 'v';
+        v.textContent = el.binding && el.binding.fallback ? el.binding.fallback : '--';
+        applyText(v, el.center.text);
+        c.appendChild(v);
+        if (el.center.label) {
+          var l = document.createElement('div');
+          l.className = 'l';
+          l.textContent = el.center.label;
+          applyText(l, el.center.labelStyle);
+          c.appendChild(l);
+        }
+        host.appendChild(c);
+        inst.value = v;
+      }
+      return inst;
+    },
+
+    update: function (inst, r) {
+      var el = inst.el, g = el.geom;
+      var deg = g.startDeg + (g.endDeg - g.startDeg) * r.t;
+
+      if (inst.needleG && deg !== inst.lastDeg) {
+        rotateNeedle(inst.needleG, deg, g.cx, g.cy, g.startDeg);
+        inst.lastDeg = deg;
+      }
+      if (inst.index) rotateNeedle(inst.index, deg, g.cx, g.cy, 0);
+
+      if (inst.arc) {
+        var q = Math.max(0.5, el.arc.quantizeDeg);
+        var qd = Math.round(deg / q) * q;
+        if (qd !== inst.lastArc) {
+          inst.lastArc = qd;
+          if (el.arc.split) {
+            var splitDeg = g.startDeg + (g.endDeg - g.startDeg) * el.arc.splitT;
+            inst.arc.setAttribute('d', describeArc(g.cx, g.cy, g.tickOuterR + el.arc.radiusOffset, g.startDeg, Math.min(qd, splitDeg)));
+            inst.arc2.setAttribute('d', qd > splitDeg ? describeArc(g.cx, g.cy, g.tickOuterR + el.arc.radiusOffset, splitDeg, qd) : '');
+          } else {
+            inst.arc.setAttribute('d', describeArc(g.cx, g.cy, g.tickOuterR + el.arc.radiusOffset, g.startDeg, qd));
+          }
+        }
+      }
+
+      if (inst.segs.length) {
+        var lit = Math.round(r.t * inst.segs.length);
+        for (var i = 0; i < inst.segs.length; i++) {
+          var on = i < lit;
+          if (inst.segs[i].__on !== on) {
+            inst.segs[i].__on = on;
+            inst.segs[i].setAttribute('class', on ? 'seg' : 'seg off');
+          }
+        }
+      }
+
+      if (inst.value) inst.value.textContent = r.text;
+      if (el.zoom && el.zoom.enabled) highlightNearestTick(inst, r.num);
+    },
+  };
+
+  // --- barra -------------------------------------------------------------------------------
+  var BAR = {
+    build: function (el, host) {
+      var wrap = document.createElement('div');
+      wrap.className = 'bar' + (el.style === 'centreOut' ? ' centre' : '') + (el.orientation === 'v' ? ' vertical' : '');
+      var track = document.createElement('div');
+      track.className = 'bar-track';
+      track.style.background = paintCss(el.track);
+      var inst = { el: el, segs: [] };
+
+      if (el.style === 'segments') {
+        var box = document.createElement('div');
+        box.className = 'bar-segments';
+        for (var i = 0; i < el.segments; i++) {
+          var s = document.createElement('i');
+          s.style.background = paintCss(el.fill);
+          s.style.opacity = '.16';
+          box.appendChild(s);
+          inst.segs.push(s);
+        }
+        track.appendChild(box);
+      } else {
+        var fill = document.createElement('div');
+        fill.className = 'bar-fill';
+        fill.style.background = paintCss(el.fill);
+        track.appendChild(fill);
+        inst.fill = fill;
+      }
+      wrap.appendChild(track);
+
+      if (el.readout) {
+        var row = document.createElement('div');
+        row.className = 'bar-row';
+        var v = document.createElement('span');
+        v.textContent = '--';
+        applyText(v, el.readout.text);
+        var l = document.createElement('span');
+        l.className = 'l';
+        l.textContent = el.readout.label;
+        applyText(l, el.readout.labelStyle);
+        row.appendChild(l);
+        row.appendChild(v);
+        wrap.appendChild(row);
+        inst.value = v;
+      }
+      host.appendChild(wrap);
+      return inst;
+    },
+    update: function (inst, r) {
+      var el = inst.el;
+      if (inst.fill) {
+        if (el.style === 'centreOut') {
+          var d = (r.t - 0.5) * 2;
+          inst.fill.style.width = (Math.abs(d) * 50).toFixed(1) + '%';
+          inst.fill.style.transform = d < 0 ? 'scaleX(-1)' : 'none';
+        } else if (el.orientation === 'v') {
+          inst.fill.style.height = (r.t * 100).toFixed(1) + '%';
+        } else {
+          inst.fill.style.width = (r.t * 100).toFixed(1) + '%';
+        }
+      }
+      if (inst.segs.length) {
+        var lit = Math.round(r.t * inst.segs.length);
+        for (var i = 0; i < inst.segs.length; i++) inst.segs[i].style.opacity = i < lit ? '1' : '.16';
+      }
+      if (inst.value) inst.value.textContent = r.text;
+    },
+  };
+
+  // --- leitura -----------------------------------------------------------------------------
+  var READOUT = {
+    build: function (el, host) {
+      var wrap = document.createElement('div');
+      wrap.className = 'readout ' + el.style;
+      var inst = { el: el };
+      if (el.icon) {
+        var ic = document.createElement('div');
+        ic.style.width = Math.round(el.rect.h * 0.55) + 'px';
+        ic.style.flex = '0 0 auto';
+        ic.innerHTML = ICONS[el.icon] || '';
+        ic.style.color = el.iconColor;
+        wrap.appendChild(ic);
+      }
+      var col = document.createElement('div');
+      var v = document.createElement('div');
+      v.className = 'v';
+      v.textContent = el.binding && el.binding.fallback ? el.binding.fallback : '--';
+      applyText(v, el.text);
+      col.appendChild(v);
+      if (el.label) {
+        var l = document.createElement('div');
+        l.className = 'l';
+        l.textContent = el.label;
+        applyText(l, el.labelStyle);
+        col.appendChild(l);
+      }
+      wrap.appendChild(col);
+      host.appendChild(wrap);
+      inst.value = v;
+      return inst;
+    },
+    update: function (inst, r) { if (inst.value) inst.value.textContent = r.text; },
+  };
+
+  // --- indicador ---------------------------------------------------------------------------
+  var INDICATOR = {
+    build: function (el, host) {
+      var wrap = document.createElement('div');
+      wrap.className = 'indicator ' + el.style;
+      var inst = { el: el, node: wrap };
+      if (el.style === 'icon') {
+        wrap.innerHTML = ICONS[el.icon] || ICONS.ready;
+      } else {
+        var t = document.createElement('span');
+        t.textContent = '--';
+        applyText(t, el.text);
+        wrap.appendChild(t);
+        inst.value = t;
+      }
+      wrap.style.color = el.offColor;
+      host.appendChild(wrap);
+      return inst;
+    },
+    update: function (inst, r) {
+      var el = inst.el;
+      if (inst.value) {
+        inst.value.textContent = r.text;
+        inst.node.style.color = el.onColor;
+        return;
+      }
+      var on = r.on;
+      inst.node.style.color = on ? el.onColor : el.offColor;
+      inst.node.style.opacity = on ? '1' : '.35';
+    },
+  };
+
+  // --- mídia -------------------------------------------------------------------------------
+  var MEDIA = {
+    build: function (el, host) {
+      var wrap = document.createElement('div');
+      wrap.className = 'media ' + el.style + ' empty';
+      wrap.style.background = paintCss(el.panel);
+      var inst = { el: el, node: wrap, title: '', artist: '' };
+      if (el.showArtwork) {
+        // Lado da capa EM PIXEL, medido aqui e nao por 'aspect-ratio' no CSS: a propriedade e
+        // Chrome 88 e o WebView do painel so esta provado ate 84, onde a declaracao inteira e
+        // descartada e a capa fica com altura zero -- some da tela sem erro nenhum.
+        //
+        // Na linha o lado sai da ALTURA da caixa, e nao de um numero fixo: 54% de 104 da 56 px,
+        // que e a capa ficar um pouco mais alta que o bloco titulo + artista ao lado dela. Os 46 px
+        // fixos de antes eram menores que o proprio texto -- um selo, nao uma capa.
+        var lado = el.style === 'line'
+          ? Math.round(el.rect.h * 0.54)
+          : Math.round(el.rect.w * 0.34);
+        var img = document.createElement('img');
+        img.className = 'media-art';
+        img.alt = '';
+        img.style.width = lado + 'px';
+        img.style.height = lado + 'px';
+        wrap.appendChild(img);
+        // Um <img> sem src desenha o icone de imagem quebrada do WebView. Enquanto nao chega capa
+        // nenhuma quem aparece e este espaco reservado.
+        var ph = document.createElement('div');
+        ph.className = 'media-art-ph';
+        ph.style.width = lado + 'px';
+        ph.style.height = lado + 'px';
+        ph.innerHTML = ICONS.music || '';
+        wrap.appendChild(ph);
+        inst.art = img;
+      }
+      var box = document.createElement('div');
+      box.className = 'media-txt';
+      var t = document.createElement('div');
+      applyText(t, el.title);
+      var a = document.createElement('div');
+      applyText(a, el.artist);
+      box.appendChild(t);
+      box.appendChild(a);
+      wrap.appendChild(box);
+      host.appendChild(wrap);
+      inst.t = t;
+      inst.a = a;
+      return inst;
+    },
+    update: function (inst, r, key) {
+      if (key === 'app.media.title') inst.title = r.text === '--' ? '' : r.text;
+      if (key === 'app.media.artist') inst.artist = r.text === '--' ? '' : r.text;
+      if (key === 'app.media.album_art' && inst.art) {
+        var src = r.raw || '';
+        inst.art.src = src;
+        inst.art.className = src ? 'media-art has-src' : 'media-art';
+      }
+      inst.t.textContent = inst.title;
+      inst.a.textContent = inst.artist;
+      inst.node.className = 'media ' + inst.el.style + (inst.title ? '' : ' empty');
+    },
+  };
+
+  // --- decoração ---------------------------------------------------------------------------
+  var DECOR = {
+    build: function (el, host) {
+      var d = document.createElement('div');
+      d.className = 'decor ' + el.style;
+      d.style.position = 'absolute';
+      // Quatro propriedades e nao 'inset': 'inset' e Chrome 87, e num WebView abaixo disso a
+      // atribuicao e um no-op silencioso -- o painel/brilho fica 0x0 e DESAPARECE. O Stuttgart
+      // NTG 5.5 tem dois elementos de decoracao, e eram os dois que sumiam.
+      d.style.left = '0';
+      d.style.top = '0';
+      d.style.right = '0';
+      d.style.bottom = '0';
+      d.style.background = paintCss(el.paint);
+      d.style.setProperty('--decor-radius', el.radius + 'px');
+      if (el.blur) d.style.filter = 'blur(' + el.blur + 'px)';
+      host.appendChild(d);
+      return { el: el };
+    },
+    update: function () {},
+  };
+
+  var REND = {
+    dial: DIAL, barLinear: BAR, readout: READOUT,
+    indicator: INDICATOR, media: MEDIA, decor: DECOR,
+  };
+
+
+  // --- suavizacao de leitura ----------------------------------------------------------------
+  //
+  // Nem toda chave do carro chega com a mesma granularidade. A velocidade sobe de 1 em 1 km/h e o
+  // ponteiro parece fluido; a porcentagem de potencia pula de 18 para 30 e fica parada, e o MESMO
+  // ponteiro, no MESMO tema, parece travado. O problema nao e taxa de quadros -- e o tamanho do
+  // degrau do dado.
+  //
+  // O filtro e exponencial de primeira ordem sobre o VALOR, antes de virar angulo e texto:
+  //
+  //   1. Sobre o valor, e nao no CSS: uma transicao de transform moveria o ponteiro e deixaria o
+  //      numero digital saltando de 18 para 30 sozinho, que e metade do defeito.
+  //   2. Exponencial, e nao animacao com inicio e fim: um valor novo no meio do caminho so muda o
+  //      alvo. Nao ha animacao para cancelar, nem emenda onde a velocidade do ponteiro salta.
+  //   3. Com o dt real: enquanto o WebView esta oculto o rAF para e so a rede de 120 ms corre.
+  //
+  // O filtro e criticamente amortecido de SEGUNDA ordem, e nao um exponencial de primeira. A
+  // diferenca aparece justamente onde o defeito estava: um exponencial e mais rapido no INICIO,
+  // entao logo depois de um degrau grande o ponteiro da um passo grande e vai freando. Medido no
+  // mostrador de potencia deste tema, com os degraus de 5 a 12 pontos que o carro publica, o pior
+  // passo de um quadro era 2,91 graus -- do tamanho do pulinho que se queria tirar. Comecando do
+  // REPOUSO, o mesmo cenario cai para 1,79 graus, e o percentil 95 de 1,82 para 1,47.
+  //
+  // A segunda ordem tambem guarda a TAXA de um quadro para o outro. Um valor novo no meio do
+  // caminho so muda o alvo: nao ha animacao para cancelar, nem o salto de velocidade que o
+  // exponencial dava a cada leitura nova -- e a chave da potencia chega a cada ~400 ms.
+  //
+  // Custa um atraso da ordem de 2/omega sobre uma rampa. Por isso e declarado por LIGACAO e nunca
+  // e padrao: num mostrador de potencia o atraso e invisivel, no NUMERO de um velocimetro seria
+  // mentira.
+  var SUAVES = [];
+
+  // O valor declarado no tema continua sendo o tempo para cobrir ~95% de um degrau -- 4,744 e onde
+  // (1 + wt)e^-wt cai a 5%. Manter o significado e o que dispensa re-afinar cada tema.
+  function fazSuave(el) {
+    if (RM) return null;
+    var b = el.binding;
+    if (!b || !b.key || !(b.smoothMs > 0)) return null;
+    // Texto, enum e booleano nao tem meio-termo entre dois valores: nao ha o que interpolar.
+    var k = el.map && el.map.kind;
+    if (!k || k === 'text' || k === 'enum' || k === 'boolish') return null;
+    var passo = b.smoothStep > 0 ? b.smoothStep : 0;
+    return {
+      chave: b.key,
+      omega: 4.744 / Math.max(0.001, b.smoothMs / 1000),
+      // O degrau do DESENHO, em unidades do dado. Sem ele o filtro desenha em precisao dupla e
+      // reescreve o transform do ponteiro a cada quadro por um movimento que nao chega a um
+      // pixel; com ele o ponteiro anda de smoothStep em smoothStep, que e como o velocimetro
+      // troca "de 1 em 1 km/h" por "de 0,25 em 0,25".
+      passo: passo,
+      // Um vigesimo da menor casa que o texto mostra. Abaixo disso o numero nao muda e o ponteiro
+      // nao anda meio grau: continuar iterando seria gastar quadro sem mover pixel. Com degrau
+      // declarado quem manda e ele: meio degrau e o ponto onde o desenho ja nao muda mais.
+      epsilon: passo > 0
+        ? passo / 2
+        : 0.05 * Math.pow(10, -(typeof b.decimals === 'number' ? b.decimals : 1)),
+      atual: null,
+      alvo: 0,
+      // A taxa de variacao do valor, por segundo. E o estado a mais que a segunda ordem tem, e o
+      // que faz o filtro sair do repouso em vez de partir a toda.
+      taxa: 0,
+      ultimo: 0,
+      ativo: false,
+    };
+  }
+
+  // O filtro chegou E parou? Estar perto do alvo nao basta: um ponteiro passando rapido tambem
+  // fica perto por um quadro, e cravar ali guardaria a taxa velha para a proxima ativacao --
+  // que e como uma mola ganha um empurrao vindo do nada.
+  function paradoNoAlvo(s) {
+    return Math.abs(s.alvo - s.atual) <= s.epsilon && Math.abs(s.taxa) <= s.omega * s.epsilon;
+  }
+
+  // O valor que vai ao desenho. Sem degrau declarado e o proprio valor do filtro -- e por isso
+  // que nenhuma ligacao antiga muda de comportamento por causa desta funcao.
+  function quantizar(s, v) {
+    return s.passo > 0 ? Math.round(v / s.passo) * s.passo : v;
+  }
+
+  // Devolve true quando o filtro assumiu o desenho; false quando o elemento deve seguir o caminho
+  // normal (primeiro valor, valor invalido, ou diferenca pequena demais para valer um caminho).
+  function mirarSuave(inst, raw) {
+    var s = inst.suave;
+    var n = parseFloat(raw);
+    if (!isFinite(n)) {
+      // Leitura vazia ou invalida: o elemento mostra o proprio fallback e o filtro esquece onde
+      // estava, para o proximo numero valido entrar cravado em vez de vir de um valor velho.
+      s.atual = null;
+      s.taxa = 0;
+      s.ativo = false;
+      return false;
+    }
+    s.alvo = n;
+    if (s.atual === null) { s.atual = n; s.taxa = 0; return false; }
+    if (paradoNoAlvo(s)) { s.atual = n; s.taxa = 0; return false; }
+    if (!s.ativo) { s.ativo = true; s.ultimo = performance.now(); SUAVES.push(inst); }
+    return true;
+  }
+
+  function passoDeSuavizacao() {
+    var agora = performance.now();
+    var restantes = [];
+    for (var i = 0; i < SUAVES.length; i++) {
+      var inst = SUAVES[i], s = inst.suave;
+      var dt = agora - s.ultimo;
+      s.ultimo = agora;
+      if (!(dt > 0)) dt = 1;
+      // Intervalo longo so acontece quando ninguem estava vendo: WebView oculto para o rAF e
+      // afina o temporizador. Interpolar a partir dai mostraria, na volta, um valor velho
+      // caminhando ate o atual. Cravar e o certo -- o salto acontece fora da tela.
+      if (dt > 400) { s.atual = s.alvo; s.taxa = 0; }
+      else {
+        // Solucao exata do sistema criticamente amortecido no intervalo, com a posicao E a taxa
+        // vindas do quadro anterior: e(t) = (e0 + c t) e^-wt, com c = taxa0 + w e0.
+        var seg = dt / 1000;
+        var erro = s.atual - s.alvo;
+        var c = s.taxa + s.omega * erro;
+        var amort = Math.exp(-s.omega * seg);
+        s.atual = s.alvo + (erro + c * seg) * amort;
+        s.taxa = (c - s.omega * erro - s.omega * c * seg) * amort;
+      }
+      if (paradoNoAlvo(s)) { s.atual = s.alvo; s.taxa = 0; s.ativo = false; }
+      else restantes.push(inst);
+      try {
+        var r = inst.map(quantizar(s, s.atual));
+        if (r.scaleChanged && inst.onScaleChange) inst.onScaleChange(r.curMax);
+        REND[inst.el.kind].update(inst, r, s.chave);
+      } catch (e) { console.error('[OPENGW] suavizacao ' + s.chave, e); }
+    }
+    SUAVES = restantes;
+    // Enquanto houver filtro andando, o proximo quadro e pedido aqui: nenhuma telemetria nova
+    // precisa chegar para o ponteiro terminar o caminho.
+    if (SUAVES.length) scheduleRender();
+  }
+
+  // --- despacho ----------------------------------------------------------------------------
+  function flush() {
+    scheduled = false;
+    if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+    for (var key in PENDING) {
+      if (!Object.prototype.hasOwnProperty.call(PENDING, key)) continue;
+      var raw = PENDING[key];
+      delete PENDING[key];
+      var lista = BY_KEY[key];
+      if (!lista) continue;
+      for (var i = 0; i < lista.length; i++) {
+        var inst = lista[i];
+        try {
+          // Chave suavizada NAO vai direto ao desenho: ela move o alvo do filtro, e quem desenha
+          // e passoDeSuavizacao(). A visibilidade nao passa pelo filtro -- um elemento que so
+          // aparece acima de um limiar tem de aparecer na hora em que o carro disse.
+          if (inst.suave && key === inst.suave.chave && mirarSuave(inst, raw)) {
+            applyVisibility(inst);
+            continue;
+          }
+          var r = inst.map(raw);
+          if (r.scaleChanged && inst.onScaleChange) inst.onScaleChange(r.curMax);
+          REND[inst.el.kind].update(inst, r, key);
+          applyVisibility(inst);
+        } catch (e) { console.error('[OPENGW]', key, e); }
+      }
+    }
+    if (SUAVES.length) passoDeSuavizacao();
+    // As regras de cor so sao varridas quando alguma chave DELAS mudou. Antes a varredura
+    // corria em todo flush -- ou seja, sessenta vezes por segundo so porque a velocidade mudou.
+    // A varredura nao escrevia nada a toa (a escrita ja e comparada em aplicarRegrasDeCor), mas
+    // montava um objeto novo e reavaliava condicaoVale() de cada regra a cada quadro, e isso e
+    // CPU e lixo de memoria num laco de 60 Hz.
+    //
+    // Para isto ser correto, dispatch() precisa marcar PENDING_REGRAS para QUALQUER chave de
+    // regra -- inclusive as que tambem alimentam um elemento. Antes so marcava as que NAO
+    // alimentavam nenhum; as outras funcionavam por acidente, porque a varredura era incondicional.
+    if (PENDING_REGRAS) { PENDING_REGRAS = false; aplicarRegrasDeCor(); }
+  }
+
+  // requestAnimationFrame é a batida certa, mas uma janela sem foco pode afinar a cadência a
+  // ponto de o painel parecer travado. O temporizador de 120 ms é a rede embaixo.
+  function scheduleRender() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(flush);
+    fallbackTimer = setTimeout(flush, 120);
+  }
+
+  function dispatch(key, raw) {
+    BUFFER[key] = raw;
+    // Antes do desvio por BY_KEY: uma chave pode alimentar um elemento E uma regra de cor.
+    if (REGRA_KEYS[key]) PENDING_REGRAS = true;
+    if (key === 'car.basic.head_light_status') setHeadlights(parseBoolish(raw));
+    if (key === 'warningActive') { warningActiveState = parseBoolish(raw); applyYieldToCar(); }
+
+    // O limite da via nao pertence a elemento nenhum: mudou o limite, TODO mostrador que segue
+    // placa precisa reescalonar, mesmo que a velocidade nao tenha mudado um km/h.
+    if (key === LIMIT_KEY) {
+      var n = parseFloat(raw);
+      LIMITE.valor = isFinite(n) ? n : null;
+      reagirAoLimite();
+    } else if (key === LIMIT_STATUS_KEY) {
+      LIMITE.valido = parseBoolish(raw);
+      reagirAoLimite();
+    }
+
+    if (!BY_KEY[key]) {
+      // Uma chave sem elemento ainda pode disparar uma regra de cor.
+      if (REGRA_KEYS[key]) scheduleRender();
+      return;
+    }
+    PENDING[key] = raw;
+    scheduleRender();
+  }
+
+  function reagirAoLimite() {
+    for (var i = 0; i < SIGN_LIMIT_INSTS.length; i++) {
+      var inst = SIGN_LIMIT_INSTS[i];
+      var lim = limiteAtual(inst.el.map);
+      if (inst.onScaleChange) inst.onScaleChange(lim);
+      else repositionTicks(inst, inst.el, inst.el.geom, lim);
+    }
+    PENDING_REGRAS = true;
+    scheduleRender();
+  }
+
+  function replayBuffer() {
+    for (var k in BUFFER) {
+      if (Object.prototype.hasOwnProperty.call(BUFFER, k) && BY_KEY[k]) {
+        PENDING[k] = BUFFER[k];
+      }
+    }
+    // Repor o buffer inteiro e repor tambem o estado das regras: a condicao de qualquer uma
+    // delas pode ter mudado enquanto este painel estava fora da tela.
+    PENDING_REGRAS = true;
+    if (Object.keys(PENDING).length) flush(); else aplicarRegrasDeCor();
+  }
+
+  /**
+   * Uma condicao do veiculo vale agora?
+   *
+   * Le do BUFFER e nao do valor que acabou de chegar: a mesma funcao serve a visibilidade de um
+   * elemento (disparada pela chave dele) e as regras de cor (que podem depender de duas chaves ao
+   * mesmo tempo, como velocidade contra limite da via).
+   */
+  function condicaoVale(v) {
+    if (!v || v.when === 'always') return true;
+    if (v.when === 'overLimit') {
+      var vel = parseFloat(BUFFER['car.basic.vehicle_speed']);
+      var lim = LIMITE.valido && LIMITE.valor !== null ? LIMITE.valor : NaN;
+      return isFinite(vel) && isFinite(lim) && lim > 0 && vel > lim + (v.marginKmh || 0);
+    }
+    var raw = BUFFER[v.key];
+    if (v.when === 'nonEmpty') return String(raw == null ? '' : raw).trim() !== '';
+    if (v.when === 'equals') return String(raw) === v.value;
+    if (v.when === 'flag') return parseBoolish(raw) === !!v.on;
+    if (v.when === 'threshold') {
+      var n = parseFloat(raw);
+      return isFinite(n) && (
+        v.op === 'gt' ? n > v.value : v.op === 'lt' ? n < v.value :
+        v.op === 'gte' ? n >= v.value : n <= v.value);
+    }
+    return true;
+  }
+
+  function applyVisibility(inst) {
+    var v = inst.el.visible;
+    if (!v || v.when === 'always') return;
+    inst.host.classList.toggle('hidden-rule', !condicaoVale(v));
+  }
+
+  // Regras de cor: trocam tokens da paleta enquanto uma condicao vale.
+  //
+  // Escritas como propriedade inline no <body>. O bloco de tokens do tema vive em ':root' e em
+  // 'body.mode-*'; um estilo inline no proprio <body> vence os dois, entao a regra funciona em
+  // qualquer modo sem precisar de um quarto bloco de cores.
+  var REGRAS_ATIVAS = {};
+  function aplicarRegrasDeCor() {
+    var regras = (THEME && THEME.colorRules) || [];
+    var querido = {};
+    for (var i = 0; i < regras.length; i++) {
+      var r = regras[i];
+      if (!r.enabled || !condicaoVale(r.when)) continue;
+      // A ULTIMA regra ativa vence: a ordem da lista e a prioridade, e ela e editavel.
+      for (var t = 0; t < r.tokens.length; t++) querido['--t-' + r.tokens[t]] = r.color;
+    }
+    for (var prop in REGRAS_ATIVAS) {
+      if (!Object.prototype.hasOwnProperty.call(REGRAS_ATIVAS, prop)) continue;
+      if (!Object.prototype.hasOwnProperty.call(querido, prop)) document.body.style.removeProperty(prop);
+    }
+    for (var prop2 in querido) {
+      if (!Object.prototype.hasOwnProperty.call(querido, prop2)) continue;
+      if (REGRAS_ATIVAS[prop2] !== querido[prop2]) document.body.style.setProperty(prop2, querido[prop2]);
+    }
+    REGRAS_ATIVAS = querido;
+  }
+
+  // --- vão da projeção da central ------------------------------------------------------------
+  //
+  // O espaço entre o velocímetro (mostrador em 62..608) e o medidor de potência (1312..1858).
+  // Declarar a caixa faz duas coisas: o app deixa de adivinhar onde cabe a imagem varrendo o DOM,
+  // e -- o que importa de verdade -- ele põe o vídeo POR BAIXO desta página, de modo que os
+  // mostradores continuem desenhando por cima. Quem declara a caixa assume a obrigação de abrir o
+  // buraco no próprio fundo, que é o que aplicarVaoDaProjecao() faz.
+  var PROJ_BOX = { x: 335, y: 127, w: 1250, h: 546 };
+
+  /**
+   * Largura do esmaecimento das bordas do vão, em px.
+   *
+   * A pena lateral é larga de propósito: a borda do vão cai em cima do mostrador, e o que se quer
+   * ali não é um corte e sim a imagem se dissolvendo por baixo do mostrador. 96px é pouco mais de
+   * um terço do raio (273), então a dissolução acontece inteira dentro do disco.
+   */
+  var PROJ_PENA_X = 96;
+  var PROJ_PENA_Y = 56;
+
+  /**
+   * Este WebView sabe recortar o fundo com mascara?
+   *
+   * A pergunta importa porque a declaracao da caixa e o que faz o app por o video POR BAIXO desta
+   * pagina. Se a mascara nao pegar, o fundo continua opaco e o video fica invisivel -- pior do que
+   * antes. Nao declarando, o app cai sozinho no modo antigo (video por cima, com esmaecimento
+   * feito no lado nativo), que funciona em qualquer WebView.
+   */
+  function sabeRecortarOFundo() {
+    try {
+      if (!window.CSS || typeof window.CSS.supports !== 'function') return false;
+      var g = 'linear-gradient(to right, #000 0px, transparent 10px)';
+      return window.CSS.supports('-webkit-mask-image', g) || window.CSS.supports('mask-image', g);
+    } catch (e) { return false; }
+  }
+
+  // Perguntado uma vez: a declaração se repete a cada 2 s, e o aviso no console vira escrita em
+  // disco no log persistente do app (InstrumentProjector2.onConsoleMessage).
+  var recortaOFundo = null;
+  function declararVaoDaProjecao() {
+    if (recortaOFundo === null) {
+      recortaOFundo = sabeRecortarOFundo();
+      if (!recortaOFundo) console.warn('[OPENGW] sem suporte a mascara: a projecao vai por cima do tema');
+    }
+    if (!recortaOFundo) return;
+    try {
+      if (window.Android && typeof window.Android.setProjectionBox === 'function') {
+        window.Android.setProjectionBox(PROJ_BOX.x, PROJ_BOX.y, PROJ_BOX.w, PROJ_BOX.h);
+      }
+    } catch (e) { /* ponte antiga: sem declaração, o app volta a varrer o DOM */ }
+  }
+
+  /**
+   * Abre (ou fecha) o buraco do vídeo no fundo.
+   *
+   * Duas máscaras lineares e o `source-over` que o navegador já usa por padrão entre camadas de
+   * máscara: a horizontal é opaca fora da faixa [L,R], a vertical é opaca fora de [T,B], e a UNIÃO
+   * das duas só fica transparente onde AMBAS estão -- exatamente o retângulo. É o jeito de ter um
+   * buraco retangular de borda suave sem 'mask-composite' exótico, que este WebView não tem.
+   *
+   * Borda encostada na tela não esmaece: ali não há tema nenhum para a imagem se dissolver, e a
+   * pena só comeria vídeo.
+   */
+  function aplicarVaoDaProjecao(valor) {
+    var bg = document.getElementById('bg');
+    if (!bg) return;
+    var n = String(valor == null ? '' : valor).split(',');
+    var x = parseInt(n[0], 10), y = parseInt(n[1], 10);
+    var l = parseInt(n[2], 10), a = parseInt(n[3], 10);
+    if (n.length < 4 || !(l > 0) || !(a > 0)) {
+      bg.style.webkitMaskImage = '';
+      bg.style.maskImage = '';
+      document.body.classList.remove('projetando');
+      return;
+    }
+    var L = x, R = x + l, T = y, B = y + a;
+    var px = Math.min(PROJ_PENA_X, Math.floor(l / 3));
+    var py = Math.min(PROJ_PENA_Y, Math.floor(a / 3));
+    var pe = L <= 0 ? 0 : px, pd = R >= 1920 ? 0 : px;
+    var pt = T <= 0 ? 0 : py, pb = B >= 720 ? 0 : py;
+    var gx = 'linear-gradient(to right, #000 ' + L + 'px, transparent ' + (L + pe) +
+      'px, transparent ' + (R - pd) + 'px, #000 ' + R + 'px)';
+    var gy = 'linear-gradient(to bottom, #000 ' + T + 'px, transparent ' + (T + pt) +
+      'px, transparent ' + (B - pb) + 'px, #000 ' + B + 'px)';
+    var veu = document.getElementById('projscrim');
+    if (veu) {
+      veu.style.left = L + 'px';
+      veu.style.top = T + 'px';
+      veu.style.width = l + 'px';
+      veu.style.height = a + 'px';
+      // O véu é um retângulo: sem máscara, a aresta dele apareceria como um degrau de brilho
+      // exatamente onde a imagem está se dissolvendo. Some junto com ela.
+      var mv = 'linear-gradient(to right, transparent 0px, #000 ' + pe + 'px, #000 ' +
+        (l - pd) + 'px, transparent ' + l + 'px)';
+      veu.style.webkitMaskImage = mv;
+      veu.style.maskImage = mv;
+    }
+    bg.style.webkitMaskImage = gx + ', ' + gy;
+    bg.style.maskImage = gx + ', ' + gy;
+    document.body.classList.add('projetando');
+  }
+
+  // --- sair da frente do carro -------------------------------------------------------------
+  /*
+   * O AVISO DO CARRO NÃO TIRA MAIS O TEMA DA TELA
+   *
+   * `warningActiveState` saiu desta conta de propósito. Enquanto ele estava aqui, QUALQUER aviso
+   * do veículo -- cinto, porta entreaberta, pressão de pneu, revisão vencida -- deixava o corpo
+   * transparente, e o que aparecia no lugar era a camada nativa: num tema com máscaras, só o
+   * fundo; num tema sem elas, o painel de fábrica inteiro. Um aviso que fica ativo a viagem toda
+   * (revisão, TPMS) simplesmente apagava o painel customizado para sempre.
+   *
+   * O painel customizado sobrepõe o de fábrica, sempre. O aviso continua chegando por
+   * `warningActive` e o tema o desenha COM OS SEUS PRÓPRIOS elementos, por cima -- que é o que
+   * mantém o alerta visível sem entregar a tela.
+   *
+   * O que continua cedendo a tela é só projeção de verdade (CarPlay/Android Auto/espelhamento):
+   * ali a tela é do outro app, não há como desenhar por cima, e insistir mostraria o painel
+   * antigo congelado sobre o vídeo.
+   */
+  function applyYieldToCar() {
+    var ceder = PROJ.carPlayInDash || PROJ.projectionMirrorInDash || PROJ.projectionPreparingD3;
+    document.body.classList.toggle('yield-to-car', ceder);
+  }
+
+  // --- paleta ------------------------------------------------------------------------------
+  function applyMode() {
+    // Escolha manual de "Noite" vence o âmbar automático do farol. Quem pediu vermelho não quer
+    // âmbar só porque acendeu o farol.
+    MODE = manualNight ? 'night' : headlightsOn ? 'headlight' : 'day';
+    document.body.className = document.body.className
+      .replace(/\bmode-(day|night|headlight)\b/g, '').trim() + ' mode-' + MODE;
+    applyYieldToCar();
+  }
+  function setHeadlights(on) { if (on !== headlightsOn) { headlightsOn = on; applyMode(); } }
+  function setManualNight(on) { if (on !== manualNight) { manualNight = on; applyMode(); } }
+
+  function pollDisplayMode() {
+    try {
+      if (window.Android && typeof window.Android.getPreference === 'function') {
+        var v = window.Android.getPreference('displayMode', 'Dia');
+        setManualNight(String(v).toLowerCase().indexOf('noite') === 0);
+        pollEscala();
+      }
+    } catch (e) {}
+  }
+
+  // --- escala do velocimetro escolhida DENTRO do carro -------------------------------------
+  //
+  // O tema ja nasce com uma escala definida no editor. Esta preferencia deixa o motorista trocar
+  // no proprio carro, sem reenviar o tema -- inclusive para "seguir a placa", que e uma decisao
+  // de quem esta dirigindo e nao de quem desenhou o painel.
+  //
+  // Guardamos a escala ORIGINAL de cada mostrador em mapOriginal: "Automatica" precisa saber
+  // voltar para o que o tema pediu, e nao para um padrao inventado aqui.
+  var escalaEscolhida = '';
+  function pollEscala() {
+    if (!THEME || !THEME.speedScaleConfig) return;
+    var v = String(window.Android.getPreference('speedScale', 'Automática') || '').toLowerCase();
+    var modo = v.indexOf('fixa') === 0 ? 'fixa' : v.indexOf('placa') >= 0 || v.indexOf('seguir') === 0 ? 'placa' : 'auto';
+    if (modo === escalaEscolhida) return;
+    escalaEscolhida = modo;
+    aplicarEscala(modo);
+  }
+
+  function aplicarEscala(modo) {
+    for (var i = 0; i < DIAIS_DE_ESCALA.length; i++) {
+      var inst = DIAIS_DE_ESCALA[i];
+      var orig = inst.mapOriginal;
+      var novo = orig;
+      if (modo === 'fixa') {
+        novo = { kind: 'linear', min: tetoMin(orig), max: tetoMax(orig) };
+      } else if (modo === 'placa') {
+        novo = {
+          kind: 'signLimit', min: tetoMin(orig),
+          fallbackMax: orig.kind === 'dualRange' ? orig.low : tetoMax(orig),
+          overshootMax: tetoMax(orig), rescaleMs: 650,
+          limitKey: LIMIT_KEY, statusKey: LIMIT_STATUS_KEY,
+        };
+      }
+      inst.el.map = novo;
+      inst.map = makeMapper(inst.el);
+      inst.curMax = novo.kind === 'dualRange' ? novo.low : novo.kind === 'signLimit' ? limiteAtual(novo) : tetoMax(novo);
+      var jaTem = SIGN_LIMIT_INSTS.indexOf(inst) >= 0;
+      if (novo.kind === 'signLimit' && !jaTem) SIGN_LIMIT_INSTS.push(inst);
+      if (novo.kind !== 'signLimit' && jaTem) SIGN_LIMIT_INSTS.splice(SIGN_LIMIT_INSTS.indexOf(inst), 1);
+      repositionTicks(inst, inst.el, inst.el.geom, inst.curMax);
+      // Reaplica o ultimo valor conhecido: sem isto o ponteiro ficaria no angulo da escala
+      // ANTIGA ate a proxima atualizacao do carro.
+      var ultimo = BUFFER[inst.el.binding && inst.el.binding.key];
+      if (ultimo !== undefined) dispatch(inst.el.binding.key, ultimo);
+    }
+  }
+
+  function tetoMin(m) { return m.kind === 'linear' ? m.min : m.min; }
+  function tetoMax(m) {
+    if (m.kind === 'linear') return m.max;
+    if (m.kind === 'dualRange') return m.high;
+    if (m.kind === 'signLimit') return m.overshootMax;
+    return 100;
+  }
+
+  // --- páginas -----------------------------------------------------------------------------
+  function showPage(i) {
+    if (!PAGE_NODES.length) return;
+    ACTIVE_PAGE = (i + PAGE_NODES.length) % PAGE_NODES.length;
+    for (var p = 0; p < PAGE_NODES.length; p++) {
+      PAGE_NODES[p].classList.toggle('active', p === ACTIVE_PAGE);
+    }
+    var dots = document.querySelectorAll('.pager i');
+    for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('on', d === ACTIVE_PAGE);
+  }
+
+  // --- bridge ------------------------------------------------------------------------------
+  function initBridge(P) {
+    if (!window.Android || typeof window.Android.subscribe !== 'function') installMockBridge(P);
+
+    // Encadear, nunca sobrescrever: o host injeta uma camada de compatibilidade antes do tema
+    // carregar, e apagar o handler dela quebra temas legados no mesmo WebView.
+    var prevData = window.onDataChanged;
+    window.onDataChanged = function (k, v) {
+      if (typeof prevData === 'function') { try { prevData(k, v); } catch (e) { console.error(e); } }
+      dispatch(k, v);
+    };
+
+    // Obrigatório no contrato v1.0 — e aqui ele NÃO esconde o tema. O card 0 é o card de abertura;
+    // esconder nele deixa o tema invisível até o motorista mexer no volante.
+    window.onCardChanged = function (id) { CARD = Number(id) || 0; };
+
+    // Sem este stub, o host lança ReferenceError a cada evento, e cada erro vira um salto JNI mais
+    // uma escrita em disco no log persistente. Além disso, é o ÚNICO caminho de entrega das seis
+    // chaves de projeção e do booleano de verdade de warningActive.
+    var prevCtl = window.control;
+    window.control = function (k, v) {
+      if (typeof prevCtl === 'function') { try { prevCtl(k, v); } catch (e) {} }
+      if (Object.prototype.hasOwnProperty.call(PROJ, k)) {
+        PROJ[k] = (v === true || v === 'true');
+        applyYieldToCar();
+        return;
+      }
+      if (k === 'warningActive') { warningActiveState = (v === true || v === 'true'); applyYieldToCar(); return; }
+      if (k === 'projectionWindow') { aplicarVaoDaProjecao(v); return; }
+      dispatch(k, v);
+    };
+
+    if (typeof window.updateWarning !== 'function') window.updateWarning = function () {};
+
+    window.onKeyEvent = function (nome) {
+      if (PAGE_NODES.length < 2) return;
+      if (nome === 'UP') showPage(ACTIVE_PAGE - 1);
+      else if (nome === 'DOWN') showPage(ACTIVE_PAGE + 1);
+    };
+
+    try {
+      if (window.Android && typeof window.Android.subscribe === 'function') {
+        window.Android.subscribe(JSON.stringify(P.subscribeKeys));
+      }
+      if (window.Android && typeof window.Android.setAppDefaultDimensions === 'function') {
+        var a = P.appDefault;
+        window.Android.setAppDefaultDimensions(a.x, a.y, a.width, a.height);
+      }
+      declararVaoDaProjecao();
+    } catch (e) { console.error('[OPENGW] bridge:', e); }
+
+    pollDisplayMode();
+    setInterval(function () {
+      pollDisplayMode();
+      // Terceira garantia da abertura: este intervalo tambem fica estrangulado enquanto a pagina
+      // esta oculta, mas volta a correr no primeiro quadro visivel -- e ai o prazo por relogio de
+      // parede ja venceu e a cortina sai. Custa uma comparacao de numeros a cada 2 s.
+      conferirPrazoDaAbertura();
+      try { if (window.Android && typeof window.Android.heartbeat === 'function') window.Android.heartbeat(); } catch (e) {}
+      // Redeclara o vão a cada batida. Idempotente do lado do app; é a rede para o caso de a
+      // declaração do carregamento se perder. Foi o defeito da Alpha 6.5: o app a apagava no
+      // onPageStarted, que podia chegar DEPOIS dela, e a projeção caía na caixinha central de
+      // último recurso (576x244) em vez de ocupar o vão entre os mostradores.
+      try { declararVaoDaProjecao(); } catch (e) {}
+    }, 2000);
+  }
+
+  // Sem o carro, o preview do editor precisa se comportar igual. Os valores são simulados e o
+  // aviso no console diz isso — nada aqui finge ser leitura de veículo.
+  function installMockBridge(P) {
+    console.warn('[OPENGW] window.Android ausente: simulação local para preview.');
+    window.Android = {
+      getAvailableKeys: function () { return JSON.stringify(P.subscribeKeys); },
+      subscribe: function () {}, unsubscribe: function () {},
+      getCarData: function () { return ''; }, updateCarData: function () {},
+      getPreference: function (k, d) { return d; }, savePreference: function () {},
+      setAppDefaultDimensions: function () {}, heartbeat: function () {},
+    };
+    var estado = {}, dir = 1, tick = 0;
+    var faixas = P.mockRanges || {};
+    for (var k in faixas) if (Object.prototype.hasOwnProperty.call(faixas, k)) estado[k] = faixas[k].min;
+
+    setInterval(function () {
+      tick++;
+      for (var key in faixas) {
+        if (!Object.prototype.hasOwnProperty.call(faixas, key)) continue;
+        var f = faixas[key];
+        if (f.kind === 'boolish') {
+          if (tick % 25 === 0) { estado[key] = estado[key] ? 0 : 1; dispatch(key, String(estado[key])); }
+          continue;
+        }
+        if (f.kind === 'text') {
+          if (tick === 1) dispatch(key, f.sample || '');
+          continue;
+        }
+        if (f.kind === 'enum') {
+          if (tick % 30 === 0) dispatch(key, f.samples[(tick / 30) % f.samples.length]);
+          else if (tick === 1) dispatch(key, f.samples[0]);
+          continue;
+        }
+        var passo = (f.max - f.min) * 0.015;
+        estado[key] += dir * passo * (0.5 + Math.random());
+        if (estado[key] >= f.max) { estado[key] = f.max; dir = -1; }
+        if (estado[key] <= f.min) { estado[key] = f.min; dir = 1; }
+        dispatch(key, String(Math.round(estado[key] * 10) / 10));
+      }
+    }, 320);
+  }
+
+  // --- montagem ----------------------------------------------------------------------------
+  function buildElement(el, pageNode) {
+    var host = document.createElement('div');
+    // Prefixo obrigatorio. Sem ele o host ganharia a classe 'media' / 'readout' / 'indicator', as
+    // MESMAS que o renderizador usa no no de dentro: o host virava contêiner flex e o card de
+    // midia encolhia para o tamanho do texto em vez de ocupar a caixa.
+    host.className = 'el k-' + el.kind;
+    host.id = 'el-' + el.id;
+    host.style.left = el.rect.x + 'px';
+    host.style.top = el.rect.y + 'px';
+    host.style.width = el.rect.w + 'px';
+    host.style.height = el.rect.h + 'px';
+    host.style.zIndex = String(el.z);
+    if (el.opacity !== 1) host.style.opacity = String(el.opacity);
+    if (el.zoom) {
+      host.style.setProperty('--zoom-scale', String(el.zoom.scale));
+      host.style.setProperty('--zoom-weight', String(el.zoom.weight));
+      host.style.setProperty('--zoom-dur', el.zoom.durationMs + 'ms');
+      host.style.setProperty('--zoom-ease', el.zoom.easing);
+    }
+    pageNode.appendChild(host);
+
+    var inst = REND[el.kind].build(el, host);
+    inst.el = el;
+    inst.host = host;
+    inst.map = makeMapper(el);
+    inst.suave = fazSuave(el);
+
+    if (el.kind === 'dial' && (el.map.kind === 'linear' || el.map.kind === 'dualRange' || el.map.kind === 'signLimit')) {
+      inst.mapOriginal = el.map;
+      DIAIS_DE_ESCALA.push(inst);
+    }
+
+    if (el.kind === 'dial' && el.map.kind === 'signLimit') {
+      SIGN_LIMIT_INSTS.push(inst);
+      inst.curMax = limiteAtual(el.map);
+      inst.onScaleChange = (function (i, e) {
+        return function (novo) {
+          var de = i.curMax || e.map.fallbackMax;
+          i.curMax = novo;
+          animateValue(de, novo, RM ? 0 : e.map.rescaleMs, function (v) {
+            repositionTicks(i, e, e.geom, v);
+          });
+        };
+      })(inst, el);
+    }
+
+    if (el.kind === 'dial' && el.map.kind === 'dualRange') {
+      inst.onScaleChange = (function (i, e) {
+        return function (novo) {
+          var de = i.curMax || e.map.low;
+          i.curMax = novo;
+          animateValue(de, novo, RM ? 0 : e.map.rescaleMs, function (v) {
+            repositionTicks(i, e, e.geom, v);
+          });
+        };
+      })(inst, el);
+    }
+
+    var chaves = [];
+    if (el.binding && el.binding.key) chaves.push(el.binding.key);
+    if (el.extraKeys) chaves = chaves.concat(el.extraKeys);
+    if (el.visible && el.visible.key) chaves.push(el.visible.key);
+    // Um elemento pode citar a mesma chave duas vezes -- por exemplo um selo de marcha que LE a
+    // marcha e so APARECE quando ela e P. Sem esta desduplicacao o elemento seria redesenhado
+    // duas vezes por atualizacao dessa chave.
+    for (var i = 0; i < chaves.length; i++) {
+      var lista = (BY_KEY[chaves[i]] = BY_KEY[chaves[i]] || []);
+      if (lista.indexOf(inst) < 0) lista.push(inst);
+    }
+    return inst;
+  }
+
+  var RELOGIOS = [];
+  function tickClocks() {
+    var d = new Date();
+    var hh = ('0' + d.getHours()).slice(-2), mm = ('0' + d.getMinutes()).slice(-2);
+    for (var i = 0; i < RELOGIOS.length; i++) RELOGIOS[i].textContent = hh + ':' + mm;
+  }
+
+  /**
+   * A CORTINA DE ABERTURA NAO PODE DEPENDER DE UM TIMER SO.
+   *
+   * '.boot' e uma caixa preta opaca cobrindo o painel inteiro em z-index 9999, e a unica coisa que
+   * a tirava era um 'setTimeout(sweepMs)'. So que o painel do cluster passa boa parte do tempo
+   * OCULTO: toda projecao (CarPlay/Android Auto), todo aviso do carro e toda carta nativa colocam a
+   * WebView em INVISIBLE, e o Chromium estrangula setTimeout e requestAnimationFrame de um
+   * documento escondido -- comportamento correto dele, nao defeito. Se a pagina carregar (ou for
+   * recarregada pelo watchdog) enquanto esta oculta, aquele unico timer nao corre no tempo
+   * esperado, e quando o painel volta a aparecer a cortina ainda esta la. Quem olha ve so o fundo.
+   *
+   * Tres garantias, nesta ordem, e nenhuma delas custa nada no caminho feliz:
+   *
+   *   1. o 'setTimeout' de sempre, que continua sendo quem encerra a abertura normal;
+   *   2. 'visibilitychange': no instante em que a pagina VOLTA a ser exibida, a cortina sai. Nao
+   *      depende de timer nenhum para acontecer -- e a mesma rede que os temas escritos a mao
+   *      (Cupertino Ultra, Stuttgart NTG 5.5) ja tinham e o motor do editor nao;
+   *   3. prazo por RELOGIO DE PAREDE, conferido no mesmo 'setInterval' de 2 s que ja manda o
+   *      heartbeat: tempo escondido conta, entao um documento que ficou oculto alem do sweep
+   *      reabre sem cortina em vez de esperar um timer que ja perdeu a hora.
+   *
+   * 'encerrarAbertura' e idempotente: quem chegar primeiro encerra, os outros nao fazem nada.
+   */
+  var FIM_DA_ABERTURA = 0;
+  var ABERTURA_ENCERRADA = false;
+  function encerrarAbertura() {
+    if (ABERTURA_ENCERRADA) return;
+    var no = document.getElementById('boot');
+    if (!no) { ABERTURA_ENCERRADA = true; return; }
+    ABERTURA_ENCERRADA = true;
+    no.className = no.className.indexOf('done') >= 0 ? no.className : no.className + ' done';
+  }
+  function conferirPrazoDaAbertura() {
+    if (ABERTURA_ENCERRADA) return;
+    if (FIM_DA_ABERTURA && Date.now() >= FIM_DA_ABERTURA) encerrarAbertura();
+  }
+  function agendarFimDaAbertura(P) {
+    var no = document.getElementById('boot');
+    if (!no) { ABERTURA_ENCERRADA = true; return; }
+    if (!P.boot || !P.boot.enabled || RM) { encerrarAbertura(); return; }
+    var sweep = P.boot.sweepMs;
+    FIM_DA_ABERTURA = Date.now() + sweep;
+    setTimeout(encerrarAbertura, sweep);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') encerrarAbertura();
+    });
+  }
+
+  function boot(P) {
+    THEME = P;
+    // Armada ANTES de qualquer outra coisa, de proposito: se 'initBridge' ou a montagem do DOM
+    // estourar, a cortina ainda assim sai sozinha. Presa, ela esconde o tema inteiro e nao ha
+    // nada na tela dizendo o que aconteceu; sem ela, um tema que falhou ao menos aparece pela
+    // metade e o console diz onde. O custo do adiantamento e sub-milissegundo.
+    agendarFimDaAbertura(P);
+    // O bridge primeiro: qualquer valor que chegue antes do DOM existir cai no BUFFER e é
+    // reaplicado logo depois. Nada se perde entre assinar e montar.
+    //
+    // Em try/catch porque ele fala com 'window.Android', que e uma ponte JNI: um throw ali
+    // abortava 'boot()' inteiro e a pagina ficava VAZIA por baixo da cortina -- exatamente o
+    // "so o fundo aparece" visto no carro, mas por um caminho que nenhum timer resolve.
+    try {
+      initBridge(P);
+    } catch (erro) {
+      console.error('[OPENGW] initBridge:', erro);
+    }
+
+    var app = document.getElementById('app');
+    PAGES = P.pages;
+    for (var p = 0; p < P.pages.length; p++) {
+      var node = document.createElement('div');
+      node.className = 'page' + (p === 0 ? ' active' : '');
+      node.setAttribute('data-page', P.pages[p].id);
+      app.appendChild(node);
+      PAGE_NODES.push(node);
+      for (var e = 0; e < P.pages[p].elements.length; e++) {
+        var el = P.pages[p].elements[e];
+        // Um elemento por vez, cada um no seu try: sem isto, um unico renderizador que estourasse
+        // (um icone que o WebView do carro nao aceita, um SVG que ele recusa) abortava o laco e
+        // TODO o resto da pagina deixava de existir. O tema aparecia pela metade e nada no carro
+        // dizia por que. Agora o que falha e um elemento, e o console diz qual.
+        try {
+          var inst = buildElement(el, node);
+          if (el.kind === 'readout' && el.style === 'clock' && inst.value) RELOGIOS.push(inst.value);
+        } catch (erro) {
+          console.error('[OPENGW] elemento ' + el.id + ' (' + el.kind + '/' + el.style + '):', erro);
+        }
+      }
+    }
+
+    if (P.pages.length > 1) {
+      var pager = document.createElement('div');
+      pager.className = 'pager';
+      for (var d = 0; d < P.pages.length; d++) {
+        var dot = document.createElement('i');
+        if (d === 0) dot.className = 'on';
+        (function (idx, node2) { node2.addEventListener('click', function () { showPage(idx); }); })(d, dot);
+        pager.appendChild(dot);
+      }
+      app.appendChild(pager);
+    }
+
+    if (RELOGIOS.length) { tickClocks(); setInterval(tickClocks, 15000); }
+
+    var regras = P.colorRules || [];
+    for (var ri = 0; ri < regras.length; ri++) {
+      var quando = regras[ri].when;
+      if (quando && quando.key) REGRA_KEYS[quando.key] = true;
+      if (quando && quando.when === 'overLimit') {
+        REGRA_KEYS['car.basic.vehicle_speed'] = true;
+        REGRA_KEYS[LIMIT_KEY] = true;
+      }
+    }
+
+    replayBuffer();
+    aplicarRegrasDeCor();
+    applyMode();
+
+  }
+
+  window.OPENGW = {
+    boot: boot,
+    // Usado pelo editor para gerar a miniatura de verdade a partir da geometria do próprio motor.
+    // Um SVG COMPLETO e autocontido da pagina ativa, para virar a miniatura do tema.
+    //
+    // Autocontido de verdade: as variaveis de cor do tema sao lidas resolvidas e coladas no
+    // proprio <svg>, senao cada 'var(--t-ink)' viraria preto ao abrir o SVG fora da pagina. Os
+    // elementos de texto sao remontados como <text>, porque HTML nao atravessa a fronteira de
+    // um <img src="data:image/svg+xml">.
+    snapshotSvg: function () {
+      var cs = getComputedStyle(document.documentElement);
+      var nomes = (THEME && THEME.tokens) || [];
+      var vars = [];
+      for (var i = 0; i < nomes.length; i++) {
+        var v = cs.getPropertyValue('--t-' + nomes[i]);
+        if (v) vars.push('--t-' + nomes[i] + ':' + v.trim() + ';');
+      }
+      // A cor sai do #bg, que é quem pinta o fundo desde que ele saiu do body para poder receber
+      // a máscara do vão da projeção. O body continua no fallback para não quebrar a miniatura de
+      // um tema derivado deste que ainda pinte lá.
+      var noFundo = document.getElementById('bg') || document.body;
+      var fundo = getComputedStyle(noFundo).backgroundColor;
+      if (!fundo || fundo === 'transparent' || fundo.indexOf('rgba(0, 0, 0, 0)') === 0) {
+        fundo = getComputedStyle(document.body).backgroundColor || '#000';
+      }
+      var partes = [];
+      partes.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 720" width="1920" height="720">');
+      partes.push('<style>svg{' + vars.join('') + '}</style>');
+      partes.push('<rect x="0" y="0" width="1920" height="720" fill="' + fundo + '"/>');
+
+      var pagina = document.querySelector('.page.active');
+      if (!pagina) return partes.join('') + '</svg>';
+      var base = pagina.getBoundingClientRect();
+      var hosts = pagina.querySelectorAll('.el');
+      for (var h = 0; h < hosts.length; h++) {
+        var host = hosts[h];
+        if (host.classList.contains('hidden-rule')) continue;
+        var r = host.getBoundingClientRect();
+        // Caixas pintadas: trilho e preenchimento de barra, espaco reservado da capa, painel de
+        // decoracao. Sem esta passagem o SVG so trazia texto e desenho de mostrador, e um tema
+        // feito de barras -- como o Minimalist -- gerava uma miniatura praticamente em branco.
+        // Fundo em gradiente fica de fora de proposito: 'fill' de SVG nao aceita gradiente CSS, e
+        // inventar uma cor media mentiria sobre o desenho.
+        var caixas = host.querySelectorAll('*');
+        for (var c = 0; c < caixas.length; c++) {
+          var cn = caixas[c];
+          if (cn.ownerSVGElement || cn.tagName === 'svg') continue;
+          var cr = cn.getBoundingClientRect();
+          if (cr.width < 1 || cr.height < 1) continue;
+          var ccs = getComputedStyle(cn);
+          var bg = ccs.backgroundColor;
+          if (!bg || bg === 'transparent' || bg.indexOf('rgba(0, 0, 0, 0)') === 0) continue;
+          if (parseFloat(ccs.opacity) === 0) continue;
+          var raio = ccs.borderRadius || '0px';
+          var rx = raio.indexOf('%') >= 0 ? Math.min(cr.width, cr.height) / 2 : parseFloat(raio) || 0;
+          rx = Math.min(rx, Math.min(cr.width, cr.height) / 2);
+          partes.push(
+            '<rect x="' + (cr.left - base.left) + '" y="' + (cr.top - base.top) + '"' +
+            ' width="' + cr.width + '" height="' + cr.height + '"' +
+            (rx ? ' rx="' + rx + '"' : '') +
+            ' fill="' + bg + '"' +
+            (parseFloat(ccs.opacity) < 1 ? ' opacity="' + ccs.opacity + '"' : '') +
+            '/>');
+        }
+
+        // Desenhos em SVG: o mostrador redondo inteiro, e tambem os icones de uma leitura ou de um
+        // indicador. Cada um e posicionado pela PROPRIA caixa e escalado do viewBox para ela.
+        //
+        // A versao anterior tratava o primeiro <svg> como se fosse o elemento todo e pulava o
+        // resto do host. Numa leitura com icone isso apagava o numero e escrevia o icone no canto
+        // errado: a miniatura do Cupertino saia sem "858 km" e sem o farolete, e a de um tema so
+        // de barras saia praticamente vazia.
+        var svgs = host.querySelectorAll('svg');
+        for (var q = 0; q < svgs.length; q++) {
+          var sv = svgs[q];
+          if (sv.ownerSVGElement) continue;
+          var sr = sv.getBoundingClientRect();
+          if (sr.width < 1 || sr.height < 1) continue;
+          var vbp = (sv.getAttribute('viewBox') || '').split(',').join(' ').split(' ');
+          var nums = [];
+          for (var w = 0; w < vbp.length; w++) if (vbp[w] !== '') nums.push(parseFloat(vbp[w]));
+          var vw = nums.length > 3 && nums[2] ? nums[2] : sr.width;
+          var vh = nums.length > 3 && nums[3] ? nums[3] : sr.height;
+          // As duas coisas que o <g> precisa herdar do <svg> de origem, porque so o innerHTML e
+          // copiado: a cor corrente, para que currentColor resolva fora da pagina, e os atributos
+          // pintura escritos na raiz. Os icones declaram fill="none" stroke="currentColor" ali;
+          // sem copiar, cada tracado virava uma mancha preta preenchida. O <svg> do mostrador nao
+          // declara nenhum dos dois, entao para ele nada muda.
+          var atrs = ' color="' + getComputedStyle(sv).color + '"';
+          var HERDA = ['fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-opacity', 'fill-opacity'];
+          for (var a = 0; a < HERDA.length; a++) {
+            var va = sv.getAttribute(HERDA[a]);
+            if (va !== null) atrs += ' ' + HERDA[a] + '="' + va + '"';
+          }
+          partes.push(
+            '<g transform="translate(' + (sr.left - base.left) + ',' + (sr.top - base.top) + ')' +
+            ' scale(' + (sr.width / vw) + ',' + (sr.height / vh) + ')"' + atrs + '>');
+          partes.push(sv.innerHTML);
+          partes.push('</g>');
+        }
+
+        var textos = host.querySelectorAll('div, span');
+        for (var t = 0; t < textos.length; t++) {
+          var n = textos[t];
+          if (n.children.length || !n.textContent) continue;
+          var tr = n.getBoundingClientRect();
+          if (!tr.width || !tr.height) continue;
+          var ts = getComputedStyle(n);
+          // text-transform e letter-spacing sao CSS e nao atravessam a fronteira do <img>: sem
+          // aplicar aqui, "NORMAL" virava "Normal" e os rotulos espacados fechavam na miniatura.
+          var conteudo = String(n.textContent);
+          if (ts.textTransform === 'uppercase') conteudo = conteudo.toUpperCase();
+          else if (ts.textTransform === 'lowercase') conteudo = conteudo.toLowerCase();
+          var esp = parseFloat(ts.letterSpacing);
+          partes.push(
+            '<text x="' + (tr.left - base.left + tr.width / 2) + '" y="' + (tr.top - base.top + tr.height / 2) + '"' +
+            ' text-anchor="middle" dominant-baseline="central"' +
+            ' font-family="' + ts.fontFamily.replace(/"/g, '&apos;') + '"' +
+            ' font-size="' + parseFloat(ts.fontSize) + '"' +
+            ' font-weight="' + ts.fontWeight + '"' +
+            (isFinite(esp) && esp ? ' letter-spacing="' + esp + '"' : '') +
+            ' fill="' + ts.color + '">' +
+            conteudo.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+            '</text>');
+        }
+      }
+      partes.push('</svg>');
+      return partes.join('');
+    },
+  };
+})()</script>
+<script>OPENGW.boot({"schema":2,"tokens":["ink","inkDim","inkFaint","accent","needle","needleDark","needleBright","needleGlow","warn","ok","low","face","faceLow","faceRing","bezel","panel","track"],"speedScaleConfig":true,"colorRules":[],"pages":[{"id":"stu-page-1","name":"Principal","elements":[{"id":"stu-glow-left","kind":"decor","style":"glow","rect":{"x":-15,"y":170,"w":700,"h":460},"z":0,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":null,"map":{"kind":"text"},"paint":{"fill":"radial","from":"rgba(0,0,0,.85)","to":"rgba(0,0,0,0)","cx":0.5,"cy":0.5,"stopAt":0.7},"radius":999,"blur":0},{"id":"stu-glow-right","kind":"decor","style":"glow","rect":{"x":1235,"y":170,"w":700,"h":460},"z":0,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":null,"map":{"kind":"text"},"paint":{"fill":"radial","from":"rgba(0,0,0,.85)","to":"rgba(0,0,0,0)","cx":0.5,"cy":0.5,"stopAt":0.7},"radius":999,"blur":0},{"id":"stu-dial-speed","kind":"dial","style":"ticksNeedle","rect":{"x":62,"y":127,"w":546,"h":546},"z":1,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.vehicle_speed","decimals":0,"unit":"","fallback":"0","smoothMs":190,"smoothStep":0.25},"map":{"kind":"dualRange","min":0,"low":120,"high":260,"upAt":120,"downAt":100,"rescaleMs":650},"geom":{"cx":273,"cy":273,"R":273,"tickOuterR":256.62,"labelR":215.42000000000002,"needleInnerR":26.78,"needleOuterR":217.38,"startDeg":-125,"endDeg":125},"parts":{"face":true,"ticks":true,"labels":true,"needle":true,"arc":false,"segments":0,"index":false},"face":{"enabled":true,"paint":{"fill":"radial","from":"rgba(255,255,255,.075)","to":"rgba(255,255,255,.012)","cx":0.34,"cy":0.28,"stopAt":0.85},"blurPx":18.5,"ring":null,"bezel":{"width":5.15,"color":"var(--t-faceRing)"}},"ticks":{"majors":[0,20,40,60,80,100,120,140,160,180,200,220,240,260],"subdivisions":4,"labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"31px","fsRaw":31,"fw":500,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"len":{"major":18.54,"minor":11.33,"micro":7.21},"width":{"major":3,"minor":1.6,"micro":1.2},"zones":[]},"needle":{"shape":"line","width":6.18,"paint":{"fill":"hubRadial","inner":"var(--t-needleDark)","mid":"var(--t-needle)","outer":"var(--t-needleBright)","midAt":0.58},"cap":"none","glow":true},"arc":{"radiusOffset":7.21,"width":7.21,"quantizeDeg":1,"split":false,"splitT":0},"arcColor":"var(--t-accent)","arcColorAfter":"var(--t-warn)","overLimitColor":"var(--t-warn)","tickColor":"var(--t-ink)","tickColorDim":"var(--t-inkFaint)","needleColor":"var(--t-needle)","needleGlow":"var(--t-needleGlow)","hubRingColor":"var(--t-faceRing)","segColor":"var(--t-accent)","zoom":{"enabled":true,"scale":1.6,"weight":800,"durationMs":380,"easing":"cubic-bezier(.22,.61,.36,1)"},"center":null},{"id":"stu-dial-power","kind":"dial","style":"ticksNeedle","rect":{"x":1312,"y":127,"w":546,"h":546},"z":1,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.energy_output_percentage","decimals":0,"unit":"","fallback":"0","smoothMs":420},"map":{"kind":"piecewise","points":[{"v":-100,"t":0},{"v":0,"t":0.16666666666666666},{"v":100,"t":1}]},"geom":{"cx":273,"cy":273,"R":273,"tickOuterR":256.62,"labelR":215.42000000000002,"needleInnerR":26.78,"needleOuterR":217.38,"startDeg":-125,"endDeg":125},"parts":{"face":true,"ticks":true,"labels":true,"needle":true,"arc":false,"segments":0,"index":false},"face":{"enabled":true,"paint":{"fill":"radial","from":"rgba(255,255,255,.075)","to":"rgba(255,255,255,.012)","cx":0.34,"cy":0.28,"stopAt":0.85},"blurPx":18.5,"ring":null,"bezel":{"width":5.15,"color":"var(--t-faceRing)"}},"ticks":{"majors":[-100,-50,0,20,40,60,80,100],"subdivisions":4,"labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"31px","fsRaw":31,"fw":500,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"len":{"major":18.54,"minor":11.33,"micro":7.21},"width":{"major":3,"minor":1.6,"micro":1.2},"zones":[{"from":-100,"to":-1,"color":"var(--t-ok)"}]},"needle":{"shape":"line","width":6.18,"paint":{"fill":"hubRadial","inner":"var(--t-needleDark)","mid":"var(--t-needle)","outer":"var(--t-needleBright)","midAt":0.58},"cap":"none","glow":true},"arc":{"radiusOffset":7.21,"width":7.21,"quantizeDeg":1,"split":false,"splitT":0},"arcColor":"var(--t-accent)","arcColorAfter":"var(--t-warn)","overLimitColor":"var(--t-warn)","tickColor":"var(--t-ink)","tickColorDim":"var(--t-inkFaint)","needleColor":"var(--t-needle)","needleGlow":"var(--t-needleGlow)","hubRingColor":"var(--t-faceRing)","segColor":"var(--t-accent)","zoom":{"enabled":true,"scale":1.6,"weight":800,"durationMs":380,"easing":"cubic-bezier(.22,.61,.36,1)"},"center":null},{"id":"stu-out-temp","kind":"readout","style":"value","rect":{"x":702,"y":10,"w":120,"h":44},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.outside_temp","decimals":0,"unit":"°","fallback":"--°"},"map":{"kind":"linear","min":-20,"max":50},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"24px","fsRaw":24,"fw":700,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-drive-mode","kind":"indicator","style":"badge","rect":{"x":840,"y":14,"w":88,"h":36},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.drive_setting.drive_mode","fallback":"0"},"map":{"kind":"enum","labels":{"0":"Normal","1":"Sport","2":"Eco","3":"Neve","4":"Areia","5":"Lama","11":"AWD"},"fallback":"Normal"},"icon":null,"onColor":"var(--t-inkDim)","offColor":"var(--t-inkFaint)","text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"13px","fsRaw":13,"fw":700,"ls":1,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"}},{"id":"stu-gear","kind":"readout","style":"value","rect":{"x":900,"y":10,"w":120,"h":44},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.gear_status","fallback":"P"},"map":{"kind":"enum","labels":{"0":"N","1":"N","2":"D","3":"P","4":"R"},"fallback":"N"},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"60px","fsRaw":60,"fw":700,"ls":0,"tt":"","tn":false,"color":"var(--t-ink)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-power-mode","kind":"indicator","style":"badge","rect":{"x":992,"y":14,"w":88,"h":36},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_setting.power_model_config","fallback":"0"},"map":{"kind":"enum","labels":{"0":"HEV","1":"EVP","3":"EV"},"fallback":"HEV"},"icon":null,"onColor":"var(--t-inkDim)","offColor":"var(--t-inkFaint)","text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"13px","fsRaw":13,"fw":700,"ls":1,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"}},{"id":"stu-clock","kind":"readout","style":"clock","rect":{"x":1100,"y":10,"w":120,"h":44},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":null,"map":{"kind":"text"},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"16px","fsRaw":16,"fw":700,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-media-line","kind":"media","style":"line","rect":{"x":780,"y":32,"w":360,"h":104},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":["app.media.artist","app.media.state","app.media.album_art"],"binding":{"key":"app.media.title","fallback":""},"map":{"kind":"text"},"showArtwork":true,"title":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"19px","fsRaw":19,"fw":600,"ls":0,"tt":"","tn":false,"color":"var(--t-ink)"},"artist":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"16px","fsRaw":16,"fw":500,"ls":0,"tt":"","tn":false,"color":"var(--t-inkDim)"},"panel":{"fill":"none"}},{"id":"stu-ev-range","kind":"readout","style":"stat","rect":{"x":700,"y":609,"w":260,"h":92},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.electric_mode_remain_odometer","decimals":0,"unit":"km","fallback":"--"},"map":{"kind":"linear","min":0,"max":200},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"60px","fsRaw":60,"fw":300,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"17px","fsRaw":17,"fw":500,"ls":0,"tt":"","tn":false,"color":"var(--t-inkDim)"},"icon":"battery","iconColor":"var(--t-inkDim)"},{"id":"stu-battery-pct","kind":"readout","style":"value","rect":{"x":812,"y":678,"w":120,"h":44},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.cur_battery_power_percentage","decimals":0,"unit":"%","fallback":"--"},"map":{"kind":"linear","min":0,"max":100},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"22px","fsRaw":22,"fw":500,"ls":0,"tt":"","tn":true,"color":"var(--t-inkDim)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-fuel-range","kind":"readout","style":"stat","rect":{"x":980,"y":609,"w":260,"h":92},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.fuel_mode_remain_odometer","decimals":0,"unit":"km","fallback":"--"},"map":{"kind":"linear","min":0,"max":900},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"60px","fsRaw":60,"fw":300,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"17px","fsRaw":17,"fw":500,"ls":0,"tt":"","tn":false,"color":"var(--t-inkDim)"},"icon":"fuel","iconColor":"var(--t-inkDim)"},{"id":"stu-fuel-pct","kind":"readout","style":"value","rect":{"x":1092,"y":678,"w":120,"h":44},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.remain_fuel_percentage","decimals":0,"unit":"%","fallback":"--"},"map":{"kind":"linear","min":0,"max":100},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"22px","fsRaw":22,"fw":500,"ls":0,"tt":"","tn":true,"color":"var(--t-inkDim)"},"label":"","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-consumption","kind":"readout","style":"value","rect":{"x":56,"y":636,"w":180,"h":64},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.Instant_energy_consumption","decimals":1,"unit":"kWh/100km","fallback":"--"},"map":{"kind":"linear","min":0,"max":40},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"26px","fsRaw":26,"fw":400,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"Consumo","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-odometer","kind":"readout","style":"value","rect":{"x":1684,"y":636,"w":180,"h":64},"z":2,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.total_odometer","decimals":0,"unit":"km","fallback":"--"},"map":{"kind":"linear","min":0,"max":999999},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"26px","fsRaw":26,"fw":400,"ls":0,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"Odômetro","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"11px","fsRaw":11,"fw":600,"ls":2,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-speed-value","kind":"readout","style":"value","rect":{"x":205,"y":567,"w":260,"h":92},"z":3,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.basic.vehicle_speed","decimals":0,"unit":"","fallback":"0"},"map":{"kind":"linear","min":0,"max":260},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"calc(100px * var(--gauge-num-scale, 1))","fsRaw":100,"fw":300,"ls":-1,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"km/h","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"15px","fsRaw":15,"fw":600,"ls":3,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-power-value","kind":"readout","style":"value","rect":{"x":1455,"y":567,"w":260,"h":92},"z":3,"opacity":1,"visible":{"when":"always"},"extraKeys":[],"binding":{"key":"car.ev_info.energy_output_percentage","decimals":0,"unit":"","fallback":"0","smoothMs":420},"map":{"kind":"linear","min":-100,"max":100},"text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"calc(100px * var(--gauge-num-scale, 1))","fsRaw":100,"fw":300,"ls":-1,"tt":"","tn":true,"color":"var(--t-ink)"},"label":"%","labelStyle":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"15px","fsRaw":15,"fw":600,"ls":3,"tt":"uppercase","tn":false,"color":"var(--t-inkDim)"},"icon":null,"iconColor":"var(--t-inkDim)"},{"id":"stu-park-badge","kind":"indicator","style":"badge","rect":{"x":129,"y":102,"w":64,"h":28},"z":4,"opacity":1,"visible":{"when":"equals","key":"car.basic.gear_status","value":"3"},"extraKeys":[],"binding":{"key":"car.basic.gear_status","fallback":""},"map":{"kind":"enum","labels":{"3":"P"},"fallback":""},"icon":null,"onColor":"var(--t-warn)","offColor":"var(--t-inkFaint)","text":{"ff":"-apple-system, \"Segoe UI\", Roboto, Arial, sans-serif","fs":"16px","fsRaw":16,"fw":700,"ls":0,"tt":"","tn":false,"color":"var(--t-warn)"}}]}],"subscribeKeys":["car.basic.vehicle_speed","car.basic.gear_status","car.ev_info.energy_output_percentage","car.basic.outside_temp","car.drive_setting.drive_mode","car.ev_setting.power_model_config","app.media.artist","app.media.state","app.media.album_art","app.media.title","car.ev_info.electric_mode_remain_odometer","car.ev_info.cur_battery_power_percentage","car.ev_info.fuel_mode_remain_odometer","car.basic.remain_fuel_percentage","car.ev_info.Instant_energy_consumption","car.basic.total_odometer","car.map.tsr.nav_speed_limit","car.map.tsr.nav_speed_limit_sign_status","car.basic.head_light_status","warningActive"],"controlKeys":[],"appDefault":{"x":640,"y":95,"width":640,"height":560},"boot":{"enabled":true,"wordmark":"STUTTGART NTG 5.5","sweepMs":1300},"mockRanges":{"car.basic.vehicle_speed":{"min":0,"max":260},"car.basic.gear_status":{"kind":"enum","samples":["0","1","2","3","4"]},"car.ev_info.energy_output_percentage":{"min":-100,"max":100},"car.basic.outside_temp":{"min":-20,"max":50},"car.drive_setting.drive_mode":{"kind":"enum","samples":["0","1","2","3","4","5","11"]},"car.ev_setting.power_model_config":{"kind":"enum","samples":["0","1","3"]},"app.media.artist":{"kind":"text","sample":"Artista"},"app.media.state":{"kind":"enum","samples":["playing","paused"]},"app.media.album_art":{"kind":"text","sample":""},"app.media.title":{"kind":"text","sample":"Faixa de demonstração"},"car.ev_info.electric_mode_remain_odometer":{"min":0,"max":200},"car.ev_info.cur_battery_power_percentage":{"min":0,"max":100},"car.ev_info.fuel_mode_remain_odometer":{"min":0,"max":900},"car.basic.remain_fuel_percentage":{"min":0,"max":100},"car.ev_info.Instant_energy_consumption":{"min":0,"max":40},"car.basic.total_odometer":{"min":0,"max":999999}}});</script>
+</body>
+</html>

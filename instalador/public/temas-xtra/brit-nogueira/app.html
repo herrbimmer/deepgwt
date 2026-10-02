@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1920, height=720, initial-scale=1" />
+<title>Britânico Nogueira</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+  #root { position: absolute; left: 0; top: 0; width: 1920px; height: 720px;
+    transform-origin: 0 0; overflow: hidden; }
+
+  #root { background: #0f1210; color: #e9e6dc;
+    font-family: "Helvetica Neue", -apple-system, Arial, sans-serif; }
+  #ov { position: absolute; left: 0; top: 0; width: 1920px; height: 720px; }
+  .cap  { fill: #8b8f86; font: 600 12px Arial, sans-serif; letter-spacing: .3em;
+    text-transform: uppercase; text-anchor: middle; }
+  .nm   { fill: #efeadd; font: 600 19px Georgia, "Times New Roman", serif; text-anchor: middle; }
+  .val  { fill: #f3efe4; font: 300 92px Georgia, "Times New Roman", serif; text-anchor: middle; }
+  .unt  { fill: #8b8f86; font: 500 13px Arial, sans-serif; letter-spacing: .3em; text-anchor: middle; }
+  .tk   { stroke: #9a9e93; fill: none; stroke-width: 2; }
+  .tkM  { stroke: #efeadd; fill: none; stroke-width: 3.4; }
+  .ndl  { fill: #d8d3c6; }
+  .hub  { fill: #1a1d19; stroke: #585c52; stroke-width: 2; }
+  .face { fill: #0a0c0a; stroke: #2c3029; stroke-width: 2; }
+  .chr  { fill: none; stroke: #8f9389; stroke-width: 3; }
+  .grn  { fill: #1f4b32; }
+  #ft { position: absolute; left: 96px; right: 96px; bottom: 26px; display: flex;
+    justify-content: space-between; font-size: 11px; letter-spacing: .3em; color: #7e8279;
+    text-transform: uppercase; }
+  #ft b { color: #e9e6dc; font-weight: 700; }
+
+  /* O sedã de 1968: régua de mostradores pequenos embutidos numa prancha de
+     nogueira, todos do mesmo tamanho e em fila, com o velocímetro maior à
+     esquerda. Madeira de verdade, não adesivo. */
+  .wood  { fill: url(#wd); stroke: #3a2a18; stroke-width: 3; }
+  .fcr   { fill: #efeadd; stroke: #9a9484; stroke-width: 2; }
+  .nmk   { fill: #22201b; font: 600 15px Georgia, "Times New Roman", serif; text-anchor: middle; }
+  .tkk   { stroke: #6c675c; fill: none; stroke-width: 1.8; }
+  .ndk   { fill: #6b2a20; }
+  .capk  { fill: #4b463d; font: 600 10px Arial, sans-serif; letter-spacing: .24em;
+    text-transform: uppercase; text-anchor: middle; }
+  .valk  { fill: #22201b; font: 400 26px Georgia, "Times New Roman", serif; text-anchor: middle; }
+</style>
+</head>
+<body>
+<div id="root">
+
+  <svg id="ov" viewBox="0 0 1920 720">
+    <defs>
+      <linearGradient id="wd" x1="0" y1="0" x2="1" y2="0.12">
+        <stop offset="0" stop-color="#4a3018"></stop>
+        <stop offset=".18" stop-color="#5c3d1f"></stop>
+        <stop offset=".34" stop-color="#402913"></stop>
+        <stop offset=".52" stop-color="#5a3b1e"></stop>
+        <stop offset=".7" stop-color="#3c2712"></stop>
+        <stop offset=".86" stop-color="#553818"></stop>
+        <stop offset="1" stop-color="#412a14"></stop>
+      </linearGradient>
+    </defs>
+    <rect class="wood" x="120" y="150" width="1680" height="420" rx="14"></rect>
+    <circle class="fcr" cx="380" cy="360" r="168"></circle>
+    <g id="dials"></g>
+
+    <path id="tkS" class="tkk"></path><g id="lblS"></g>
+    <text class="capk" x="380" y="276">km/h</text>
+    <g id="ndS"><path class="ndk" d="M-3.6 -12 L-1.6 -128 L0 -136 L1.6 -128 L3.6 -12 Z"></path></g>
+    <circle cx="380" cy="360" r="11" fill="#d6cfbd" stroke="#8b8577" stroke-width="2"></circle>
+    <text class="valk" x="380" y="448" style="font-size:36px" id="sv">0</text>
+  </svg>
+  <div id="ft"></div>
+</div>
+
+<script>
+/* ============================================================================
+   Núcleo comum dos temas OPEN GW — contrato v1.0 (núcleo v1.2)
+   ----------------------------------------------------------------------------
+   Faz o que TODO tema é obrigado a fazer, e nada além:
+
+   1. ASSINATURA — só pede chaves que `ThemeBridgeImpl.getAvailableKeys()`
+      declara; qualquer outra é recusada com "Blocked subscription to
+      undeclared theme key" e o mostrador fica com o dado velho para sempre.
+      O núcleo ainda cruza a lista pedida com a que o host informa e avisa no
+      console o que ficou de fora, em vez de deixar o campo morto na tela.
+
+   2. CEDER A TELA — o painel é do carro, não do tema. Ele some inteiro quando:
+        • `warningActive`            -> o carro abriu o popup de aviso;
+        • projeção no painel         -> CarPlay / Android Auto / espelhamento;
+        • `appInDash`                -> um app foi colocado no painel e o host
+                                        abriu um buraco na máscara para ele.
+      ATENÇÃO AO CANAL: `warningActive` e `warningDismissed` chegam como STRING
+      ("true"/"false") uma única vez, no subscribe, e depois SÓ como booleano
+      de verdade por `window.control(...)` -- é o que
+      `InstrumentProjector2.pushWarningStateToTheme()` chama. Um tema que só
+      escuta `onDataChanged` nunca fica sabendo do aviso e continua desenhando
+      por cima do popup do carro. `bsdLeft`/`bsdRight` são control-only também.
+
+   3. AVISO PENDENTE — depois que o motorista fecha o popup do carro (BACK), o
+      aviso continua ativo mas nada mais aparece. O núcleo conta os avisos que
+      levantam a tarja (mesmo conjunto de `ClusterWarningPolicy`, sem os
+      transitórios) e mantém uma pílula discreta, para o tema não fingir que
+      está tudo bem.
+
+   4. RITMO — `Android.heartbeat()` a cada 2s (sem isso o projetor derruba a
+      página) e uma pintura por quadro, com rede de segurança de 140ms porque a
+      telemetria chega em `evaluateJavascript` separados, uma chave por vez.
+
+   5. SIMULAÇÃO — quando `window.Android` não existe o tema abre no navegador do
+      Mac exatamente como abre no painel (`?photo=1` congela o quadro).
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  var S = Object.create(null);          // último valor bruto por chave
+  var cfg = null;
+  var scheduled = false, fbTimer = 0, animating = false, yielding = false;
+  var warningActive = false, warningDismissed = false;
+  var projection = { carPlayInDash: false, projectionMirrorInDash: false, projectionPreparingD3: false };
+  var appInDash = false;
+  var EASE = Object.create(null);
+  var warnEl = null, warnTxtEl = null, mocked = false;
+
+  function truthy(v) {
+    if (v === true) return true;
+    if (v === false || v === null || v === undefined) return false;
+    var s = String(v).trim().toLowerCase();
+    return s === 'true' || s === '1' || s === 'on' || s === 'yes' || s === 'left' || s === 'right';
+  }
+
+  /* ---- leitura de estado -------------------------------------------------- */
+  function num(k, d) { var v = parseFloat(S[k]); return isFinite(v) ? v : (d === undefined ? 0 : d); }
+  function str(k, d) { var v = S[k]; return (v === undefined || v === null || v === '') ? (d === undefined ? '' : d) : String(v); }
+  function on(k) { return truthy(S[k]); }
+  function has(k) { return S[k] !== undefined && S[k] !== ''; }
+
+  /* ---- matemática de mostrador -------------------------------------------- */
+  function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function polar(cx, cy, r, deg) { var a = (deg - 90) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  function arcPath(cx, cy, r, a0, a1) {
+    var p0 = polar(cx, cy, r, a0), p1 = polar(cx, cy, r, a1);
+    var large = Math.abs(a1 - a0) > 180 ? 1 : 0;
+    var sweep = a1 > a0 ? 1 : 0;
+    return 'M' + p0[0].toFixed(2) + ' ' + p0[1].toFixed(2) + 'A' + r + ' ' + r + ' 0 ' + large + ' ' + sweep + ' ' + p1[0].toFixed(2) + ' ' + p1[1].toFixed(2);
+  }
+  function fmt(v, d) { return (isFinite(v) ? v : 0).toFixed(d || 0); }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* ---- amortecimento -------------------------------------------------------
+     A telemetria não chega suave: a velocidade pula de 60 para 63, o giro de
+     2250 para 2600. Ponteiro e barra que saltam desses degraus ficam nervosos
+     no canto do olho. Cada valor animado persegue o alvo com constante de tempo
+     própria e o núcleo continua pedindo quadros enquanto não assenta. */
+  function ease(name, target, tau) {
+    if (!isFinite(target)) target = 0;
+    var now = (window.performance && performance.now) ? performance.now() : Date.now();
+    var e = EASE[name];
+    if (!e) { EASE[name] = { v: target, t: now }; return target; }
+    var dt = clamp((now - e.t) / 1000, 0, 0.25); e.t = now;
+    var k = 1 - Math.exp(-dt / (tau || 0.16));
+    e.v += (target - e.v) * k;
+    var tol = Math.max(0.02, Math.abs(target) * 0.0008);
+    if (Math.abs(target - e.v) <= tol) e.v = target; else animating = true;
+    return e.v;
+  }
+
+  /* ---- dicionários confirmados nos temas de fábrica ----------------------- */
+  var GEAR = { '0': 'N', '1': 'N', '2': 'D', '3': 'P', '4': 'R' };
+  var MODE = { '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama', '11': 'AWD' };
+  var POWERMODE = { '0': 'HEV', '1': 'EVP', '3': 'EV' };
+  function gear() { return GEAR[String(parseInt(S['car.basic.gear_status'], 10))] || 'N'; }
+  function mode() { return MODE[String(S['car.drive_setting.drive_mode'])] || 'Normal'; }
+  function powerMode() { return POWERMODE[String(S['car.ev_setting.power_model_config'])] || 'HEV'; }
+  /* O host manda a hora do carro por control('clockTime', 'HH:MM'); só cai no
+     relógio do próprio WebView enquanto essa mensagem não chega. */
+  function clock() {
+    var t = S['__clockTime'];
+    if (t) return String(t);
+    var d = new Date(); return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+  /* Limite da via: só vale com a placa confirmada pela câmera. O valor bruto ainda
+     não foi conferido neste veículo (pode vir em km/h ou como código), então ele é
+     repassado como está — mesma postura do Cupertino Ultra. */
+  function roadLimit() {
+    var ok = on('car.map.tsr.nav_speed_limit_sign_status');
+    var v = num('car.map.tsr.nav_speed_limit', 0);
+    return (ok && v > 0) ? Math.round(v) : null;
+  }
+
+  /* ---- atalhos de chave ----------------------------------------------------
+     As mesmas 20 chaves aparecem em quase todo tema. Escrever a string inteira
+     em 40 arquivos é convite a erro de digitação -- e uma chave com erro é
+     recusada em silêncio pelo bridge, virando campo morto na tela. */
+  var K = {
+    spd: 'car.basic.vehicle_speed', rpm: 'car.basic.engine_speed',
+    gear: 'car.basic.gear_status', mode: 'car.drive_setting.drive_mode',
+    fuel: 'car.basic.remain_fuel_percentage', soc: 'car.ev_info.cur_battery_power_percentage',
+    odo: 'car.basic.total_odometer', out: 'car.basic.outside_temp', ins: 'car.basic.inside_temp',
+    unit: 'car.configure.default_temp_unit', cons: 'car.basic.instant_fuel_consumption',
+    kwh: 'car.ev_info.Instant_energy_consumption', flow: 'car.ev_info.energy_output_percentage',
+    volt: 'car.ev_info.power_battery_voltage', amp: 'car.ev_info.cur_charge_current',
+    rngE: 'car.ev_info.electric_mode_remain_odometer', rngF: 'car.ev_info.fuel_mode_remain_odometer',
+    head: 'car.basic.head_light_status', esp: 'car.drive_setting.esp_enable',
+    engine: 'car.basic.engine_state', pwr: 'car.ev_setting.power_model_config',
+    recov: 'car.ev_setting.energy_recovery_level', pedal: 'car.ev.setting.pedal_control_enable',
+    steer: 'car.drive_setting.steering_wheel_assist_mode',
+    limit: 'car.map.tsr.nav_speed_limit', limitOk: 'car.map.tsr.nav_speed_limit_sign_status',
+    radio: 'sys.radio.cur_channel_info',
+    mTitle: 'app.media.title', mArtist: 'app.media.artist', mAlbum: 'app.media.album',
+    mArt: 'app.media.album_art', mState: 'app.media.state',
+    mPos: 'app.media.position', mDur: 'app.media.duration',
+    pState: 'app.phone.state', pName: 'app.phone.caller_name', pNum: 'app.phone.caller_number',
+    nav: 'app.navigation.directions', app3: 'app.display.3.active_app_label',
+    hvacT: 'car.hvac.driver_temperature', hvacFan: 'car.hvac.fan_speed',
+    hvacAuto: 'car.hvac.auto_enable', hvacCycle: 'car.hvac.cycle_mode',
+    hvacPwr: 'car.hvac.power_mode', hvacIon: 'car.hvac.anion_enable'
+  };
+  function spd() { return num(K.spd); }
+  function rpm() { return num(K.rpm); }
+  function fuelPct() { return clamp(num(K.fuel), 0, 100); }
+  function socPct() { return clamp(num(K.soc), 0, 100); }
+  /* 1 = Fahrenheit no carro; o tema mostra na unidade que o motorista escolheu. */
+  function tempF() { return String(S[K.unit]) === '1'; }
+  function temp(k, d) { var v = num(k, d); return tempF() ? v * 9 / 5 + 32 : v; }
+  function tempU() { return tempF() ? '°F' : '°C'; }
+
+  /* ---- ferramentas de desenho --------------------------------------------- */
+  function E(id) { return document.getElementById(id); }
+  function attr(el, o) { for (var k in o) el.setAttribute(k, o[k]); return el; }
+  /* Gira um elemento SVG em torno de um ponto -- ponteiro de mostrador. */
+  function rot(el, deg, cx, cy) {
+    if (el) el.setAttribute('transform', 'rotate(' + deg.toFixed(2) + ' ' + cx + ' ' + cy + ')');
+  }
+  /* Marcas radiais de um mostrador inteiro em UM path: n+1 traços entre a0 e a1.
+     Um <line> por marca custa dezenas de nós no DOM e o WebView do painel sente. */
+  function ticks(cx, cy, r0, r1, a0, a1, n) {
+    var d = '', i, a, p, q;
+    for (i = 0; i <= n; i++) {
+      a = a0 + (a1 - a0) * i / n;
+      p = polar(cx, cy, r0, a); q = polar(cx, cy, r1, a);
+      d += 'M' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + 'L' + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+    }
+    return d;
+  }
+  /* Ponteiro desenhado APONTANDO PARA CIMA a partir da origem (0,0): a mesma
+     forma serve para qualquer mostrador, e girar é só compor a translação. */
+  function pin(el, cx, cy, deg) {
+    if (el) el.setAttribute('transform', 'translate(' + cx + ',' + cy + ') rotate(' + deg.toFixed(2) + ')');
+  }
+  /* Numeração de um mostrador: n+1 rótulos distribuídos entre a0 e a1. */
+  function nums(svg, cx, cy, r, a0, a1, n, label, cls, dy) {
+    var NS = 'http://www.w3.org/2000/svg';
+    for (var i = 0; i <= n; i++) {
+      var txt = label(i, n);
+      if (txt === null || txt === undefined || txt === '') continue;
+      var p = polar(cx, cy, r, n === 0 ? a0 : a0 + (a1 - a0) * i / n);
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', p[0].toFixed(1));
+      t.setAttribute('y', (p[1] + (dy === undefined ? 10 : dy)).toFixed(1));
+      if (cls) t.setAttribute('class', cls);
+      t.textContent = txt;
+      svg.appendChild(t);
+    }
+  }
+  /* Arco preenchido por fração usando dasharray: o path fica fixo, só o traço anda. */
+  function dash(el, r, a0, a1, frac) {
+    if (!el) return;
+    var len = Math.abs(a1 - a0) * Math.PI / 180 * r;
+    el.style.strokeDasharray = len.toFixed(1) + ' ' + (len * 4).toFixed(1);
+    el.style.strokeDashoffset = (len * (1 - clamp(frac, 0, 1))).toFixed(1);
+  }
+
+  /* ---- avisos do carro -----------------------------------------------------
+     `updateWarning(chave, valor)` é chamado pelo host para cada chave vigiada.
+     É informativo: quem manda na tarja é `warningActive`. O conjunto abaixo é o
+     mesmo que levanta a tarja em ClusterWarningPolicy -- os transitórios (ponto
+     cego, FCW, FCTA, DOW, TTS) e os crônicos (revisão, pressão/temperatura de
+     pneu) ficam de fora de propósito: piscariam a pílula a cada ultrapassagem
+     ou ficariam acesos para sempre. */
+  var WARN_LABEL = {
+    'car.basic.coolant_temp_warning': 'Temperatura',
+    'car.basic.engine_oil_low_pressure_warning': 'Pressão do óleo',
+    'car.ipk_light.engine_oil_low_pressure_warning': 'Pressão do óleo',
+    'car.basic.oil_low_warning': 'Nível de óleo',
+    'car.basic.fatigue_warning': 'Fadiga',
+    'car.basic.seat_belt_warning': 'Cinto',
+    'car.basic.tpms_warning': 'Pneus',
+    'car.ipk_light.tpms_warning': 'Pneus',
+    'car.ipk_light.door_warning': 'Porta aberta',
+    'car.ipk_light.fuel_low': 'Combustível'
+  };
+  var warnRaw = Object.create(null);
+  function warnValueActive(v) {
+    if (v === null || v === undefined) return false;
+    var s = String(v).trim().toLowerCase();
+    return s !== '' && s !== '0' && s !== 'false' && s !== 'null' && s !== 'undefined' &&
+      s !== 'unknown' && s !== '--' && s !== 'nan' && s !== '{0,0,0,0}' && s !== '{0,0,0,0,0}';
+  }
+  function warnLabels() {
+    var seen = {}, out = [];
+    for (var k in warnRaw) {
+      var lbl = WARN_LABEL[k];
+      if (!lbl || !warnValueActive(warnRaw[k])) continue;
+      if (seen[lbl]) continue;
+      seen[lbl] = 1; out.push(lbl);
+    }
+    return out;
+  }
+  function paintWarnPill() {
+    if (!warnEl) return;
+    var l = warnLabels();
+    var show = l.length > 0 && !yielding;
+    warnEl.classList.toggle('on', show);
+    if (show) warnTxtEl.textContent = l.length === 1 ? l[0] : (l.length + ' avisos ativos');
+  }
+
+  /* ---- pintura ------------------------------------------------------------ */
+  function flush() {
+    scheduled = false;
+    clearTimeout(fbTimer);
+    if (yielding) return;                // escondido não pinta: nada a mostrar, nada a gastar
+    animating = false;
+    try { cfg.paint(); } catch (e) { console.error('[OPENGW] paint falhou:', e); }
+    paintWarnPill();
+    if (animating) schedule();           // ainda assentando: pede o próximo quadro
+  }
+  function schedule() {
+    if (scheduled || yielding) return;
+    scheduled = true;
+    requestAnimationFrame(flush);
+    // Rede de segurança: o WebView estrangula o rAF quando a janela perde foco e
+    // o painel congelaria no meio de uma curva. Mesmo padrão do Cupertino Ultra.
+    fbTimer = setTimeout(flush, 140);
+  }
+
+  function apply(key, value) {
+    S[key] = value;
+    if (cfg.onData) { try { cfg.onData(key, value); } catch (e) {} }
+    schedule();
+  }
+
+  /* ---- cede a tela ao carro ----------------------------------------------- */
+  function yieldToCar() {
+    var y = warningActive || appInDash ||
+      projection.carPlayInDash || projection.projectionMirrorInDash || projection.projectionPreparingD3;
+    if (y === yielding) return;
+    yielding = y;
+    var r = document.getElementById('root');
+    if (r) r.classList.toggle('yielded', y);
+    document.body.classList.toggle('yield-to-car', y);
+    if (y) {
+      if (warnEl) warnEl.classList.remove('on');
+    } else {
+      EASE = Object.create(null);        // volta já no valor certo, sem varrer a tela
+      schedule();
+    }
+  }
+
+  /* ---- modo dia/noite ------------------------------------------------------ */
+  var displayMode = '';
+  function pollDisplayMode() {
+    var raw;
+    try { raw = String(window.Android.getPreference('displayMode', 'Dia') || 'Dia'); } catch (e) { raw = 'Dia'; }
+    var m = raw.trim().toLowerCase().indexOf('noi') === 0 ? 'noite' : 'dia';
+    // O farol aceso puxa o painel para o modo noturno sozinho, como num carro de verdade,
+    // mas só quando o usuário não fixou o modo na tela de configurações do tema.
+    if (cfg.headlightDrivesNight && !has('__modeFixed') && on('car.basic.head_light_status')) m = 'noite';
+    if (m === displayMode) return;
+    displayMode = m;
+    document.body.dataset.mode = m;
+    schedule();
+  }
+
+  /* ---- simulação para preview no Mac --------------------------------------- */
+  function installMock() {
+    console.warn('[OPENGW] window.Android ausente — simulação local.');
+    window.Android = {
+      getAvailableKeys: function () { return JSON.stringify(cfg.keys); },
+      subscribe: function () {}, unsubscribe: function () {},
+      getCarData: function (k) { return S[k] === undefined ? '' : String(S[k]); },
+      updateCarData: function () {}, getPreference: function (k, d) { return d; },
+      savePreference: function () {}, saveSetting: function () {}, heartbeat: function () {},
+      triggerSystemAction: function () {}, setAppDefaultDimensions: function () {},
+      setWarningActive: function () {}, setCardId: function () {}
+    };
+    var photo = /[?&]photo=1/.test(location.search);
+    var seed = cfg.photo || {};
+    Object.keys(seed).forEach(function (k) {
+      S[k] = String(seed[k]);
+      if (cfg.onData) { try { cfg.onData(k, S[k]); } catch (e) {} }
+    });
+    schedule();
+    if (photo || !cfg.mock) return;                    // ?photo=1 congela o quadro
+    setInterval(function () {
+      if (yielding) return;
+      var t = Date.now() / 1000;
+      var d = cfg.mock(t) || {};
+      Object.keys(d).forEach(function (k) {
+        S[k] = String(d[k]);
+        if (cfg.onData) { try { cfg.onData(k, S[k]); } catch (e) {} }
+      });
+      schedule();
+    }, 100);
+  }
+
+  /* ---- escala: 1920x720 é o painel; no Mac cabe na janela ------------------ */
+  function fit() {
+    var r = document.getElementById('root');
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 720);
+    r.style.transform = 'translate(' + ((window.innerWidth - 1920 * s) / 2).toFixed(1) + 'px,' +
+      ((window.innerHeight - 720 * s) / 2).toFixed(1) + 'px) scale(' + s + ')';
+  }
+
+  /* ---- folha de estilo do núcleo ------------------------------------------- */
+  function injectCoreCss() {
+    var css = [
+      /* dígito que não dança: sem largura tabular o hodômetro treme a cada km */
+      '#root{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}',
+      /* ceder tem de ser instantâneo e total -- nada de transição, nada de fundo */
+      '#root.yielded{opacity:0!important;visibility:hidden!important;transition:none!important;pointer-events:none!important}',
+      'body.yield-to-car{background:transparent!important}',
+      'body.yield-to-car #root{background:transparent!important}',
+      '.gw-warn{position:absolute;display:none;align-items:center;gap:11px;padding:9px 20px 10px 12px;',
+      'border-radius:999px;background:rgba(255,168,38,.15);border:1px solid rgba(255,168,38,.55);',
+      'color:#ffc266;font-family:-apple-system,"SF Pro Text",Roboto,Arial,sans-serif;font-size:19px;',
+      'font-weight:600;letter-spacing:.085em;text-transform:uppercase;white-space:nowrap;z-index:9999;',
+      '-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%)}',
+      '.gw-warn.on{display:flex}',
+      /* em tema claro a pílula translúcida some no papel: vira âmbar sólida */
+      '.gw-warn.lt{background:rgba(255,168,38,.94);border-color:#b9791a;color:#241400}',
+      '.gw-warn.lt i{background:#241400;color:#ffc266}',
+      '.gw-warn i{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#ffa826;color:#1b1000;',
+      'align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:16px;letter-spacing:0}'
+    ].join('');
+    var s = document.createElement('style');
+    s.id = 'gw-core-css';
+    s.textContent = css;
+    document.head.appendChild(s);
+  }
+
+  function buildWarnPill() {
+    var pos = cfg.warn || {};
+    if (pos.hidden) return;
+    warnEl = document.createElement('div');
+    warnEl.className = 'gw-warn';
+    warnEl.style.left = (pos.x === undefined ? 960 : pos.x) + 'px';
+    warnEl.style.top = (pos.y === undefined ? 14 : pos.y) + 'px';
+    warnEl.style.transform = 'translateX(-50%)';
+    if (pos.light) warnEl.classList.add('lt');
+    warnEl.innerHTML = '<i>!</i><span></span>';
+    warnTxtEl = warnEl.lastChild;
+    (document.getElementById('root') || document.body).appendChild(warnEl);
+  }
+
+  /* Atalhos de conferência no Mac (não têm efeito no carro, onde window.Android
+     existe): ?yield=1 simula o popup de aviso do carro -- a tela tem de ficar
+     vazia; ?warn=1 simula dois avisos ativos já dispensados -- a pílula tem de
+     aparecer e nada mais pode mudar de lugar. */
+  function previewFlags() {
+    if (!mocked) return;
+    if (/[?&]yield=1/.test(location.search)) window.control('warningActive', true);
+    if (/[?&]warn=1/.test(location.search)) {
+      window.updateWarning('car.basic.seat_belt_warning', '1');
+      window.updateWarning('car.ipk_light.door_warning', '1');
+    }
+    if (/[?&]bsd=1/.test(location.search)) { window.control('bsdLeft', true); window.control('bsdRight', true); }
+  }
+
+  function init(config) {
+    cfg = config;
+    document.body.dataset.mode = 'dia';
+    injectCoreCss();
+    buildWarnPill();
+    fit();
+    window.addEventListener('resize', fit);
+
+    if (!window.Android || typeof window.Android.subscribe !== 'function') { mocked = true; installMock(); }
+
+    var prevData = window.onDataChanged;
+    window.onDataChanged = function (key, value) {
+      if (typeof prevData === 'function') { try { prevData(key, value); } catch (e) {} }
+      // Valor inicial do subscribe: chega como a STRING "true"/"false".
+      if (key === 'warningActive') { warningActive = String(value) === 'true'; yieldToCar(); return; }
+      if (key === 'warningDismissed') { warningDismissed = String(value) === 'true'; return; }
+      apply(key, value);
+    };
+    window.onCardChanged = function () {};
+
+    // Único caminho vivo de warningActive/warningDismissed/bsd/appInDash.
+    var prevControl = window.control;
+    window.control = function (key, value) {
+      if (typeof prevControl === 'function') { try { prevControl(key, value); } catch (e) {} }
+      if (Object.prototype.hasOwnProperty.call(projection, key)) {
+        projection[key] = truthy(value); yieldToCar(); return;
+      }
+      if (key === 'warningActive') { warningActive = truthy(value); yieldToCar(); return; }
+      if (key === 'warningDismissed') { warningDismissed = truthy(value); schedule(); return; }
+      if (key === 'appInDash') { appInDash = truthy(value); yieldToCar(); return; }
+      if (key === 'bsdLeft' || key === 'bsdRight') { S[key] = truthy(value) ? '1' : '0'; schedule(); return; }
+      if (key === 'clockTime') { S['__clockTime'] = String(value || ''); schedule(); return; }
+      // As demais chaves de control são do fluxo de cartões do host; ignorar em
+      // silêncio (o polyfill do host logaria uma linha por evento no disco).
+    };
+
+    window.updateWarning = function (key, value) {
+      warnRaw[key] = value;
+      schedule();
+    };
+
+    try { if (cfg.setup) cfg.setup(); } catch (e) { console.error('[OPENGW] setup falhou:', e); }
+
+    // Só pede o que este host aceita: uma chave fora da lista viraria campo morto.
+    var want = cfg.keys.concat(['warningActive', 'warningDismissed']);
+    try {
+      var host = JSON.parse(window.Android.getAvailableKeys() || '[]');
+      if (host && host.length) {
+        var allowed = want.filter(function (k) { return host.indexOf(k) >= 0; });
+        var dropped = want.filter(function (k) { return host.indexOf(k) < 0; });
+        if (dropped.length) console.warn('[OPENGW] fora do contrato deste host:', dropped.join(', '));
+        if (allowed.length) want = allowed;
+      }
+    } catch (e) { /* host antigo sem getAvailableKeys: manda a lista original */ }
+
+    try {
+      window.Android.subscribe(JSON.stringify(want));
+      window.Android.setAppDefaultDimensions(0, 0, 1920, 720);
+    } catch (e) { console.error('[OPENGW] bridge init falhou:', e); }
+
+    previewFlags();
+
+    pollDisplayMode();
+    setInterval(pollDisplayMode, 2000);
+    setInterval(function () { try { window.Android.heartbeat(); } catch (e) {} }, 2000);
+    setInterval(schedule, 1000);        // relógio e afins
+    schedule();
+  }
+
+  window.GW = {
+    init: init, num: num, str: str, on: on, has: has, clamp: clamp, lerp: lerp, ease: ease,
+    polar: polar, arcPath: arcPath, fmt: fmt, pad2: pad2, gear: gear, mode: mode,
+    powerMode: powerMode, clock: clock, roadLimit: roadLimit, schedule: schedule,
+    warnings: warnLabels, state: S, GEAR: GEAR, MODE: MODE, K: K,
+    spd: spd, rpm: rpm, fuelPct: fuelPct, socPct: socPct,
+    temp: temp, tempU: tempU, tempF: tempF,
+    E: E, attr: attr, rot: rot, pin: pin, ticks: ticks, nums: nums, dash: dash,
+    yielding: function () { return yielding; }
+  };
+})();
+
+</script>
+<script>
+(function () {
+  var E = GW.E, K = GW.K;
+
+  var NS = 'http://www.w3.org/2000/svg', A0 = -134, A1 = 134;
+  var D = [
+    { k: 'rpm × 1000', max: 7000, d: 0, s: 1000, f: function () { return GW.rpm(); } },
+    { k: 'tanque',     max: 100,  d: 0, s: 1,    f: function () { return GW.fuelPct(); } },
+    { k: 'saída',      max: 100,  d: 0, s: 1,    f: function () { return GW.num(K.flow); } },
+    { k: 'tensão',     max: 450,  d: 0, s: 1,    f: function () { return GW.num(K.volt); } },
+    { k: 'externa',    max: 50,   d: 0, s: 1,    f: function () { return GW.temp(K.out); } }
+  ];
+
+  GW.init({
+    keys: [
+      K.spd, K.rpm, K.gear, K.mode, K.fuel, K.flow, K.volt, K.out, K.unit, K.rngF, K.odo
+    ],
+    warn: { x: 960, y: 636 },
+    photo: {
+      [K.spd]: 72, [K.rpm]: 2450, [K.gear]: 2, [K.mode]: 0, [K.fuel]: 58, [K.flow]: 38,
+      [K.volt]: 352, [K.out]: 23, [K.unit]: 0, [K.rngF]: 438, [K.odo]: 18427
+    },
+
+    setup: function () {
+      E('tkS').setAttribute('d', GW.ticks(380, 360, 138, 152, A0, A1, 20));
+      GW.nums(E('lblS'), 380, 360, 118, A0, A1, 5, function (i) { return i * 48; }, 'nmk', 5);
+      var g = E('dials');
+      for (var i = 0; i < D.length; i++) {
+        var cx = 740 + i * 250;
+        var c = document.createElementNS(NS, 'circle');
+        c.setAttribute('cx', cx); c.setAttribute('cy', 360); c.setAttribute('r', 98);
+        c.setAttribute('class', 'fcr'); g.appendChild(c);
+        var tk = document.createElementNS(NS, 'path');
+        tk.setAttribute('class', 'tkk');
+        tk.setAttribute('d', GW.ticks(cx, 360, 74, 86, A0, A1, 10)); g.appendChild(tk);
+        var k = document.createElementNS(NS, 'text');
+        k.setAttribute('class', 'capk'); k.setAttribute('x', cx); k.setAttribute('y', 312);
+        k.textContent = D[i].k; g.appendChild(k);
+        var nd = document.createElementNS(NS, 'g'); nd.setAttribute('id', 'n' + i);
+        var p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'ndk');
+        p.setAttribute('d', 'M-3 -10 L-1.4 -72 L0 -78 L1.4 -72 L3 -10 Z');
+        nd.appendChild(p); g.appendChild(nd);
+        var h = document.createElementNS(NS, 'circle');
+        h.setAttribute('cx', cx); h.setAttribute('cy', 360); h.setAttribute('r', 8);
+        h.setAttribute('fill', '#d6cfbd'); h.setAttribute('stroke', '#8b8577');
+        h.setAttribute('stroke-width', 2); g.appendChild(h);
+        var v = document.createElementNS(NS, 'text');
+        v.setAttribute('class', 'valk'); v.setAttribute('x', cx); v.setAttribute('y', 432);
+        v.setAttribute('id', 'v' + i); g.appendChild(v);
+      }
+    },
+
+    mock: function (t) {
+      return { 'car.basic.vehicle_speed': 88 + 40 * Math.sin(t / 11),
+        'car.basic.engine_speed': 2400 + 1100 * Math.sin(t / 11) };
+    },
+
+    paint: function () {
+      GW.pin(E('ndS'), 380, 360, A0 + (A1 - A0) * GW.clamp(GW.ease('s', GW.spd(), 0.1) / 240, 0, 1));
+      E('sv').textContent = GW.fmt(GW.spd(), 0);
+      for (var i = 0; i < D.length; i++) {
+        var v = D[i].f();
+        GW.pin(E('n' + i), 740 + i * 250, 360, A0 + (A1 - A0) * GW.clamp(v / D[i].max, 0, 1));
+        E('v' + i).textContent = GW.fmt(v, D[i].d);
+      }
+      E('ft').innerHTML =
+        '<span>marcha <b>' + GW.gear() + '</b></span>' +
+        '<span>modo <b>' + GW.mode() + '</b></span>' +
+        '<span>autonomia <b>' + GW.fmt(GW.num(K.rngF), 0) + '</b> km</span>' +
+        '<span>hodômetro <b>' + GW.fmt(GW.num(K.odo), 0) + '</b> km</span>';
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Direção do ar: pés e para-brisa (desembaçar). O para-brisa é a linha inclinada no alto, com três
+     ondas subindo até ela. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp" android:height="32dp" android:viewportWidth="32" android:viewportHeight="32">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M10.5,12.5a3.2,3.2 0 1,0 6.4,0a3.2,3.2 0 1,0 -6.4,0z"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="2.4" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,17 L10,24 L19,24 L19,30"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="2.2" android:strokeLineCap="round"
+        android:pathData="M4,5 L28,2"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="1.6" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M10,12 Q8,10 10,8 Q12,6 10,4.5 M16,11 Q14,9 16,7 Q18,5 16,3.8 M22,10 Q20,8 22,6 Q24,4 22,3"/>
+    <path android:strokeColor="#FFFFFFFF" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M30,28 L24,28 M26,26 L24,28 L26,30"/>
+</vector>
