@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Intervalo</name>
     <description>Um campo de cada vez: a velocidade fica sempre e o resto se reveza no mesmo lugar a cada quatro segundos, contando pelo relógio em vez de por um laço próprio. A tela nunca tem mais de duas informações, e cinco pontinhos dizem em que ponto do rodízio ela está.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Modo Pista</name>
     <description>Numa volta rápida o que interessa é marcha, luz de troca e tempo -- velocidade e giro descem para a periferia. Dezoito luzes atravessam o topo em verde, âmbar e vermelho, a marcha ocupa o meio em trezentos e quarenta pixels e o cronômetro corre desde a abertura do tema. A aceleração longitudinal em g é derivada de dv/dt, porque o barramento não publica acelerômetro, e o rodapé diz isso com todas as letras.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

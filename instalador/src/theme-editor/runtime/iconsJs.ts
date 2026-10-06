@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Ícones do painel, em SVG inline. Traçado em `currentColor', então quem pinta é o elemento.
 //
 // Desenhados aqui em vez de virem de uma biblioteca porque o WebView do cluster não tem internet
@@ -33,3 +34,4 @@ export const ICONS_JS = `
     clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
   };
 `
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Mapa Cheio</name>
     <description>O oposto do painel virtual: aqui o mapa não pede licença, toma a tela inteira e os instrumentos viram fichas de vidro fosco flutuando nos cantos. A cidade é gerada no carregamento com semente fixa -- rio em diagonal, um parque, quarteirões de tamanho variável e três larguras de rua -- e a rota passa por cima em azul com contorno escuro, que é o truque para a linha não sumir na malha.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

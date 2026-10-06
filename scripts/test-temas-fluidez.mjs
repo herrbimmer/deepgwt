@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Fluidez dos temas do cluster: o que não pode voltar a acontecer a 60 quadros por segundo.
 //
 // Roda com `node scripts/test-temas-fluidez.mjs`.
@@ -240,7 +241,7 @@ for (const [nome, f] of [['stuttgart-ntg55', stg], ['engineJs.ts', motor]]) {
     'antes só as chaves SEM elemento marcavam; as outras funcionavam por acidente, porque a ' +
       'varredura era incondicional — gatear sem isto quebraria a cor')
   ok('[' + nome + '] repor o buffer repõe também o estado das regras',
-    /PENDING_REGRAS = true;\n\s*if \(Object\.keys\(PENDING\)\.length\) flush\(\); else aplicarRegrasDeCor\(\);/.test(f),
+    /PENDING_REGRAS = true;\n(\s*PENDING_PAGINAS = true;\n)?\s*if \(Object\.keys\(PENDING\)\.length\) flush\(\); else (\{ )?aplicarRegrasDeCor\(\);/.test(f),
     'a condição de uma regra pode ter mudado enquanto o painel estava fora da tela')
 }
 
@@ -381,7 +382,7 @@ for (const t of temas) {
 }
 
 // ── 8. O empurrão de telemetria não escreve no logcat por valor ────────────────────────────
-const pontePath = path.join(raiz, 'app', 'src', 'main', 'java', 'br', 'com', 'opengw',
+const pontePath = path.join(raiz, 'app', 'src', 'main', 'java', 'br', 'com', 'deepgwt',
   'bridge', 'ThemeBridgeImpl.kt')
 if (fs.existsSync(pontePath)) {
   const ponte = fs.readFileSync(pontePath, 'utf8')
@@ -397,3 +398,4 @@ if (fs.existsSync(pontePath)) {
 console.log('')
 console.log(falhas ? `${total} verificações, ${falhas} falharam.` : `${total} verificações, todas passaram.`)
 process.exit(falhas ? 1 : 0)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -12,7 +12,7 @@
   "niveis": [
     {"id": "drive", "titulo": "Essencial", "resumo": "O dia a dia: barra inferior, informações e relógios no painel original, AVAS, vidros, brilho e automações. Grátis."},
     {"id": "sport", "titulo": "Plus", "resumo": "Visual e som prontos: temas do painel que vêm no app, HUD, som do motor, áudio, tela inicial 3D, luz ambiente, perfis e gravação."},
-    {"id": "premium", "titulo": "Pro", "resumo": "Personalização total: os 275 temas XTRA, editores de tema e de HUD, macros, gestos, Stream Deck, painel esportivo, funções de fábrica e ADAS."},
+    {"id": "premium", "titulo": "Pro", "resumo": "Personalização total: os 275 temas XTRA, editores de tema e de HUD, macros, gestos, botões extra, painel esportivo, funções de fábrica e ADAS."},
     {"id": "signature", "titulo": "Max", "resumo": "Criar e programar: criador de temas, Coding completo, Oficina, Engenharia e as ferramentas que escrevem direto no carro."}
   ],
   "recursos": [
@@ -42,7 +42,7 @@
     {"id": "temas.editor", "titulo": "Editor de temas e de HUD", "nivel": "premium", "liberado": true},
     {"id": "macros", "titulo": "Macros", "nivel": "premium", "liberado": true},
     {"id": "gestos", "titulo": "Gestos na tela", "nivel": "premium", "liberado": true},
-    {"id": "streamdeck", "titulo": "Stream Deck", "nivel": "premium", "liberado": true},
+    {"id": "streamdeck", "titulo": "Botões extra", "nivel": "premium", "liberado": true},
     {"id": "painel.esportivo", "titulo": "Painel esportivo", "nivel": "premium", "liberado": true},
     {"id": "coding.guiado", "titulo": "Funções de fábrica guiadas", "nivel": "premium", "liberado": true},
     {"id": "adas", "titulo": "Assistentes de direção (ADAS)", "nivel": "premium", "liberado": true},

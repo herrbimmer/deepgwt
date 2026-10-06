@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AlertTriangleIcon, LockIcon } from 'lucide-react'
@@ -24,7 +25,7 @@ export function TelaBloqueadaPeloNivel({ recurso }: { recurso: string }) {
           {info && <p className="text-xs text-text-secondary leading-relaxed">{info.resumo}</p>}
           <p className="text-xs text-text-tertiary leading-relaxed">
             {origem === 'carro'
-              ? `O OPEN GW deste carro está no ${tituloDoNivel(nivel, tabela)}.`
+              ? `O DeepGWT deste carro está no ${tituloDoNivel(nivel, tabela)}.`
               : 'Sem o carro conectado, vale o último nível conhecido.'}{' '}
             <Link to="/licenca" className="underline underline-offset-2 hover:opacity-80">
               Ver o que cada nível libera
@@ -78,3 +79,4 @@ export function ConfirmacaoDeRisco() {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

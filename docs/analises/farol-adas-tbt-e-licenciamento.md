@@ -1,7 +1,8 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Farol alto automático, ADAS, turn-by-turn e licenciamento — análise
 
 Data: 2026-09-24 · Base: Alpha 6.3 · Nada aqui foi testado no carro; toda semântica de sinal é
-INFERIDA salvo indicação. Fontes: `knowledge/raw/OPENGW_vhal_catalogo_completo.txt` (1602 props),
+INFERIDA salvo indicação. Fontes: `knowledge/raw/DEEPGWT_vhal_catalogo_completo.txt` (1602 props),
 `knowledge/controlservice/keys.json` (818 chaves), `knowledge/coding/factory.json`,
 `docs/camera-discovery-report.md`, `docs/architecture/hud-navigation-native-reverse-engineering.md`.
 
@@ -75,7 +76,7 @@ Já existe pesquisa em `docs/architecture/hud-navigation-native-reverse-engineer
 | Google Maps / Waze rodando na central | O `NotificationListenerService` do app já existe (`BottomBarNotificationListenerService`); a notificação de navegação traz ícone da manobra + distância + via — dá para parsear |
 | Contrato de temas | `app.navigation.directions` já existe como stub (`"{}"`) — o painel tem o lugar pronto |
 
-Caminho sugerido: provedor único de TBT → `app.navigation.directions` (cluster/HUD do OPEN GW),
+Caminho sugerido: provedor único de TBT → `app.navigation.directions` (cluster/HUD do DeepGWT),
 alimentado por (1) notificação de Maps/Waze, (2) SDK Neusoft quando ativo, (3) CarPlay/AA se o
 `com.ts.carplay` expuser. O HUD de fábrica fica para depois de descobrir o gatilho nativo.
 
@@ -160,3 +161,4 @@ para um teste de 5 minutos.
 
 Decisões pendentes antes de implementar: lista de recursos por tier; pedido/resposta ou só VIN
 para as licenças por horas; o que fica liberado no plano free.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

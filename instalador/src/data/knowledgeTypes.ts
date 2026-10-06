@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Tipos da Vehicle Knowledge Base. Os DADOS ficam em `knowledge/` (fora do controle de versão,
 // por decisão do dono) e são gerados para `src/data/generated/` por
 // `node scripts/kb-build.mjs`. Estes tipos são código, não descoberta — ficam versionados.
@@ -165,6 +166,7 @@ export type VehicleNetworkLayer = {
   interfaces: NetworkInterface[]
   nodes: NetworkNode[]
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /** Um sinal VHAL que emitiu valor na sessão. */
 export type VhalObservation = {
@@ -260,3 +262,4 @@ export type ThemeBridgeLayer = {
   }
   keys: ThemeBridgeKey[]
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo, useState } from 'react'
 import { CompassIcon, SearchIcon } from 'lucide-react'
 import { BackButton, Banner, Button, Card, ConfidenceChip, ListPanel, ListRow, TextInput } from '../../ui'
@@ -145,3 +146,4 @@ function Linha({ rotulo, valor }: { rotulo: string; valor: string }) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

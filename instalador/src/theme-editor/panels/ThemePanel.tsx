@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Ajustes do tema inteiro, visíveis quando nenhum elemento está selecionado.
 //
 // As máscaras nativas moram aqui e não num canto escondido porque são a única coisa que decide o
@@ -194,6 +195,7 @@ export function ThemePanel({ spec, onChange, page }: ThemePanelProps) {
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function PaginaPanel({ page, principal, onChange }: { page: ThemePage; principal: boolean; onChange: (p: ThemePage) => void }) {
   const [erro, setErro] = useState<string | null>(null)
@@ -318,3 +320,4 @@ function EstilosPanel({ spec, onChange }: { spec: ThemeSpec; onChange: (s: Theme
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Assistido</name>
     <description>O painel dos sedãs escandinavos de obsessão por segurança: o centro não é um mostrador, é a cena. O carro visto de cima, as faixas da pista correndo e o veículo adiante, cuja distância é desenhada a partir de um tempo de seguimento de um vírgula oito segundo na velocidade atual. As faixas andam com um único keyframes de translate, que é custo de compositor e nada por quadro, e param inteiras quando o sistema pede movimento reduzido.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Zuffenhausen Híbrido</name>
     <description>O híbrido de três regimes daquela casa: recarregando, tração elétrica ou força combinada. A agulha atravessa um arco de três setores construído a partir de duas grandezas publicadas -- corrente do pacote e saída de energia -- e o texto abaixo do número diz em qual regime o carro está naquele instante, sem inventar um quarto.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

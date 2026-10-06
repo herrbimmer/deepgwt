@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Hidráulico Suspensão</name>
     <description>A alavanca de altura da suspensão hidropneumática, com as quatro posições que aquele carro oferecia -- e a carroceria subindo de verdade no desenho, com meio segundo de transição, conforme a posição muda. Como altura de carroceria não é publicada por este barramento, as posições seguem o modo de condução, e a legenda explica a troca em vez de escondê-la.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

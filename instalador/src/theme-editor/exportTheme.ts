@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Empacotar um `ThemeSpec` na pasta que o carro espera.
 //
 // Três coisas aqui custaram bug antes e por isso têm código próprio:
@@ -22,8 +23,10 @@ import { presetImageUrl } from './backgroundPresets'
 import { CENARIO_POR_ID, valoresNoInstante } from './preview/cenarios'
 import type { JanelaDaPrevia } from './preview/canal'
 
-// Pasta do OPEN GW no carro onde o `ThemeManager` procura temas locais.
-export const CAR_THEME_ROOT = '/data/data/br.com.opengw/files/themes'
+// Pasta do DeepGWT no carro onde o `ThemeManager` procura temas locais. O diretório é
+// nomeado pelo applicationId real (br.com.redesurftank.havalshisuku), não pelo namespace
+// interno do código (br.com.deepgwt) — ver nota em app/build.gradle.kts.
+export const CAR_THEME_ROOT = '/data/data/br.com.redesurftank.havalshisuku/files/themes'
 
 export type ThemeFile = { name: string; bytes: Uint8Array }
 
@@ -111,7 +114,7 @@ function capturarSvg(spec: ThemeSpec): Promise<string> {
     frame.onload = () => {
       const janela = frame.contentWindow as JanelaDaPrevia | null
       try {
-        const api = janela?.OPENGW?.preview
+        const api = janela?.DEEPGWT?.preview
         const cidade = CENARIO_POR_ID.get('cidade')
         const midia = CENARIO_POR_ID.get('midia')
         if (api && cidade && midia) {
@@ -123,7 +126,7 @@ function capturarSvg(spec: ThemeSpec): Promise<string> {
       }
       window.setTimeout(() => {
         try {
-          const svg = janela?.OPENGW?.snapshotSvg?.()
+          const svg = janela?.DEEPGWT?.snapshotSvg?.()
           window.clearTimeout(prazo)
           limpar()
           if (svg) resolve(svg)
@@ -158,6 +161,7 @@ async function arquivoDeFundo(spec: ThemeSpec): Promise<ThemeFile | null> {
   }
   return { name: nome, bytes: await rasterizar(1920, 720, (ctx) => drawBackground(ctx, spec.background, 1920, 720)) }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 async function arquivosDeFonte(spec: ThemeSpec): Promise<ThemeFile[]> {
   const saida: ThemeFile[] = []
@@ -170,13 +174,13 @@ async function arquivosDeFonte(spec: ThemeSpec): Promise<ThemeFile[]> {
 }
 
 /** Pasta do rascunho do "Ver no carro". Igual a `TemaDoPainel.PASTA_DO_RASCUNHO` no app. */
-export const PASTA_DO_RASCUNHO = 'opengw-rascunho'
+export const PASTA_DO_RASCUNHO = 'deepgwt-rascunho'
 
 /**
  * O próprio `ThemeSpec`, junto do tema no carro. É o que permite "baixar para editar" um tema que
  * está no carro: o `app.html` só leva o payload já resolvido, e dele não dá para voltar ao tema.
  */
-export const ARQUIVO_DO_EDITOR = 'theme.opengw.json'
+export const ARQUIVO_DO_EDITOR = 'theme.deepgwt.json'
 
 export type OpcoesDoPacote = {
   /**
@@ -217,3 +221,4 @@ export function bytesToBase64(bytes: Uint8Array): string {
 }
 
 export const textToBase64 = (text: string): string => bytesToBase64(textoParaBytes(text))
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

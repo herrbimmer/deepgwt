@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { BoxesIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { BackButton, Banner, Card, ConfidenceChip } from '../../ui'
@@ -24,7 +25,7 @@ const MODULOS: Modulo[] = [
   {
     id: 'multimidia',
     nome: 'Multimídia (head unit)',
-    escopo: 'O computador onde o OPEN GW roda. É daqui que todas as leituras deste app partem.',
+    escopo: 'O computador onde o DeepGWT roda. É daqui que todas as leituras deste app partem.',
     chaves: [
       { key: 'sys.basic.os_version', label: 'Versão do sistema' },
       { key: 'sys.basic.hw_version', label: 'Versão de hardware' },
@@ -130,3 +131,4 @@ export const ProModuleInformation = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

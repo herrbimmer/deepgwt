@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O canvas do editor: a pré-visualização real por baixo e as caixas de arraste por cima.
 //
 // A pré-visualização é o MESMO `app.html` que vai para o carro, dentro de um `<iframe srcDoc>`.
@@ -159,7 +160,7 @@ export function ClusterCanvas({
   const modoEnviado = useRef<string>('')
   const empurrar = useCallback((tudo: boolean) => {
     const janela = iframeRef.current?.contentWindow as JanelaDaPrevia | null
-    const api = janela?.OPENGW?.preview
+    const api = janela?.DEEPGWT?.preview
     if (!api) return
     const { valores, modo } = canal.ler()
     if (tudo) {
@@ -589,3 +590,4 @@ export function ClusterCanvas({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

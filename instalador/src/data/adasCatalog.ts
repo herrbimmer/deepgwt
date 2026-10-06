@@ -1,8 +1,9 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Catálogo ADAS — extraído de `screens/AdasSettings.tsx` para que a tela não seja a dona dos
 // dados. Outros módulos (fixture do modo demo, exploradores, relatórios) precisam desta lista
 // sem importar uma tela inteira.
 //
-// Mesma lista (chaves, rótulos e grupos) da tela ADAS do OPEN GW do app do carro — ver
+// Mesma lista (chaves, rótulos e grupos) da tela ADAS do DeepGWT do app do carro — ver
 // AdasSettingsScreen.kt — pra manter os dois apps consistentes. O valor exato de cada chave
 // nunca foi confirmado no carro real (só o padrão "0"/"1", já validado em AVAS/DMS/ESP).
 
@@ -58,3 +59,4 @@ export const ADAS_TOGGLES: AdasToggle[] = [
 ]
 
 export const ADAS_TOGGLE_KEYS: readonly string[] = ADAS_TOGGLES.map((t) => t.key)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

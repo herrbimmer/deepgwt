@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Preparador Torque</name>
     <description>A versão a diesel daquela oficina, que virou lenda por andar mais que os esportivos a gasolina: faixa de giro curta, de 800 a 4500, porque o assunto era torque e não rotação, com a faixa cheia marcada em verde entre 1600 e 3200 rpm. O arco externo de força usa a saída de energia publicada -- binário em newton-metro não existe neste barramento, e está escrito.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

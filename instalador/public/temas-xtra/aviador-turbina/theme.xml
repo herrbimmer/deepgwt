@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Aviador Turbina</name>
     <description>A turbina que dá nome ao carro, desenhada: doze pás numa roda que acelera conforme a saída de energia sobe, com as pás esquentando de cinza para cobre uma a uma. A rotação é animação de compositor com duração amarrada ao valor -- nada é redesenhado quadro a quadro -- e para sozinha em prefers-reduced-motion.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

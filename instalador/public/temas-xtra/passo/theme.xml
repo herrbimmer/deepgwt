@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Passo</name>
     <description>Uma escada de 24 degraus, um para cada 10 km/h, que acendem inteiros: não há interpolação nem meio degrau, então a leitura é discreta de propósito. Os quatro últimos degraus são âmbar e vermelho. A velocidade exata fica em corpo 300 no canto.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

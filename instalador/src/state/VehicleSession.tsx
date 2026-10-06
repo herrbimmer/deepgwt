@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import {
   createContext,
   useCallback,
@@ -185,7 +186,7 @@ export function VehicleSessionProvider({ children }: { children: ReactNode }) {
   // faixa verde dizendo "Conectado à rede do carro". Agora este é o monitor da conexão, com duas
   // perguntas separadas e sempre respondidas:
   //   - `headUnit`: a central multimídia está na rede? (telnet — é o que instalar/reparar usa)
-  //   - `connection`: o app OPEN GW do carro responde no IP? (HTTP — é o que ajustes/leitura usam)
+  //   - `connection`: o app DeepGWT do carro responde no IP? (HTTP — é o que ajustes/leitura usam)
   // Com o app respondendo, a checagem vira um batimento lento; sem ele, volta a procurar.
   const monitoring = useRef(false)
   const [recheckTick, setRecheckTick] = useState(0)
@@ -420,3 +421,4 @@ export function useCarSettings(): VehicleSessionApi {
   useEffect(() => subscribe(), [subscribe])
   return session
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

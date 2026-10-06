@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Aviador Cockpit</name>
     <description>A cabine de avião levada ao painel inteiro: fita rolante de velocidade à esquerda, fita de giro à direita, as duas com janela de seleção verde no meio, e um indicador de atitude no centro com céu, solo e horizonte. A arfagem sai de dv/dt porque este carro não publica giroscópio, e o mostrador escreve isso embaixo em vez de fingir que mede.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

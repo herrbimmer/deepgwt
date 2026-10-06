@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Gera a pasta de um tema do editor dentro de `app/src/main/assets/PreinstalledThemes/`.
 //
 // POR QUE ISSO EXISTE
@@ -85,3 +86,4 @@ for (const id of A_GERAR) {
 
   console.log(`${spec.name} -> assets/PreinstalledThemes/${spec.folderName} (v${versionFrom(spec.updatedAt)})`)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useState } from 'react'
 import { open } from '@tauri-apps/plugin-dialog'
 import { invoke } from '@tauri-apps/api/core'
@@ -27,7 +28,7 @@ function slugify(name: string): string {
 function buildMinimalThemeXml(name: string): string {
   return `<theme>
     <name>${escapeXml(name)}</name>
-    <description>Tema HTML único importado no OPEN GW.</description>
+    <description>Tema HTML único importado no DeepGWT.</description>
     <version>0.1.0</version>
     <minBridgeVersion>1.0.0</minBridgeVersion>
     <contractVersion>v1.0</contractVersion>
@@ -139,3 +140,4 @@ export const ImportHtmlTheme = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

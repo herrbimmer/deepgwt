@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Copia a miniatura de cada tema Legacy (assets/PreinstalledThemes do APK) para
 // public/temas-legacy/<pasta>.png, para "Temas no carro" mostrar a imagem sem pedir nada ao carro.
 //
@@ -19,3 +20,4 @@ mkdirSync(DESTINO, { recursive: true })
 const copiadas = pastasDe(DO_APK).filter((p) => existsSync(join(DO_APK, p, 'thumbnail.png')))
 for (const p of copiadas) copyFileSync(join(DO_APK, p, 'thumbnail.png'), join(DESTINO, `${p}.png`))
 console.log(`miniaturas Legacy: ${copiadas.join(', ')} -> ${DESTINO}`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

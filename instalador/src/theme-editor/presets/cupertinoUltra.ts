@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Cupertino Ultra, recriado como `ThemeSpec` editável.
 //
 // Não é uma cópia dos bytes do `app.html` de fábrica: é o mesmo desenho expresso em dados, que o
@@ -304,3 +305,4 @@ export const CUPERTINO_ULTRA: ThemeSpec = {
     },
   ],
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

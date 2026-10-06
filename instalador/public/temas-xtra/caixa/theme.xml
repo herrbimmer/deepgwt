@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Caixa</name>
     <description>Caixa e bigodes de verdade: quartis, mediana em vermelho e bigodes nos percentis 5 e 95, calculados sobre as 120 últimas amostras de cada grandeza. O ponto azul é o valor de agora -- dá para ver na hora se o momento é típico ou fora da curva da viagem.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

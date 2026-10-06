@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   AlertTriangleIcon, CameraIcon, DownloadIcon, HistoryIcon, RotateCcwIcon, Trash2Icon,
@@ -227,7 +228,7 @@ export const VehicleChanges = () => {
                 icon={DownloadIcon}
                 fullWidth={false}
                 disabled={entries.length === 0}
-                onClick={() => doSave(`opengw-historico-${new Date().toISOString().slice(0, 10)}.json`, exportChangeLog())}
+                onClick={() => doSave(`deepgwt-historico-${new Date().toISOString().slice(0, 10)}.json`, exportChangeLog())}
               >
                 Exportar
               </Button>
@@ -443,7 +444,7 @@ export const VehicleChanges = () => {
                           icon={DownloadIcon}
                           fullWidth={false}
                           onClick={() =>
-                            doSave(`opengw-ponto-${snap.name.replace(/\W+/g, '-').toLowerCase()}.json`, exportSnapshot(snap))
+                            doSave(`deepgwt-ponto-${snap.name.replace(/\W+/g, '-').toLowerCase()}.json`, exportSnapshot(snap))
                           }
                         >
                           Exportar
@@ -628,3 +629,4 @@ export const VehicleChanges = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

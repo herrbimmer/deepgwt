@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Isolinhas</name>
     <description>Treze curvas de nível polares, com uma linha mestra a cada cinco. Cada grandeza entra como uma harmônica diferente na deformação do contorno -- a velocidade em três lóbulos, o giro em cinco, o tanque em dois -- então o relevo muda de forma, e não só de tamanho.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

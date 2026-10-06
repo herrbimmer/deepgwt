@@ -1,14 +1,15 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Assistente de voz (Alpha 9.1) — REMOVIDO na Alpha 9.2
 
 > **Histórico — REMOVIDO na Alpha 9.2.** O dono testou no carro e o Gemini não funcionou; pediu
 > para tirar a função de IA (29/09/2026). Saíram o pacote `voz`, a tela Recursos → Assistente de voz,
 > o painel sobre a barra, a pílula FALAR, a ação `voz` do coringa, as rotas `/quick/voz` e `/voz*`, o
-> OkHttp e o `VozTest`. Na primeira abertura da 9.2 o app apaga a chave guardada (`opengw_voz.xml`),
+> OkHttp e o `VozTest`. Na primeira abertura da 9.2 o app apaga a chave guardada (`deepgwt_voz.xml`),
 > a chave de cifra do AndroidKeyStore e as preferências `voz*` (`LimpezaDoAssistenteDeVoz`). Não se
 > sabe por que falhou no carro (não houve log): **A confirmar** se era a chave, a rede do carro, o
 > microfone ou o canal de som. O texto abaixo fica só como registro.
 
-Um assistente de conversa **dentro do OPEN GW**: aperta-se um botão, fala-se, ouve-se a resposta.
+Um assistente de conversa **dentro do DeepGWT**: aperta-se um botão, fala-se, ouve-se a resposta.
 Sem app de terceiro, sem Play Store e sem serviços do Google na central (ela não tem GMS). O
 cérebro é o **Gemini Live** (Google), por WebSocket, com a chave de API da própria pessoa, grátis no
 Google AI Studio. Responde perguntas, pesquisa no Google o que muda todo dia (clima, notícias,
@@ -29,7 +30,7 @@ em 16/01/2024). Ver `alexa-no-carro.md` (histórico).
 | `ConexaoDaVoz` | WebSocket (OkHttp 4.12). Chave no cabeçalho `x-goog-api-key`; texto e binário → `mensagem`; microfone descartado se a fila de saída passar de 256 KB. |
 | `MicrofoneDaVoz` | `AudioRecord` 16 kHz mono (fonte MIC, reserva VOICE_RECOGNITION), pedaços de 100 ms, supressor de ruído e ganho automático quando há; conta `mudoMs`. |
 | `FalaDaVoz` | `AudioTrack` MODE_STREAM 24 kHz mono, buffer ~200 ms, fila com geração (interrupção sem esperar a trava). Canal de som = `AsdAudioChannel` (padrão Mídia, o único confirmado audível nesta central). |
-| `ConfigDaVoz` | Chave cifrada (AndroidKeyStore AES-GCM) em `opengw_voz.xml`, **fora** do `opengw_prefs` (perfis e ajustes remotos não a veem). Voz, busca, cidade, canal, atalhos e modelo no `opengw_prefs` (`VOZ_*`). `conferir()` = `GET …/v1beta/models/<modelo>` com a chave. |
+| `ConfigDaVoz` | Chave cifrada (AndroidKeyStore AES-GCM) em `deepgwt_voz.xml`, **fora** do `deepgwt_prefs` (perfis e ajustes remotos não a veem). Voz, busca, cidade, canal, atalhos e modelo no `deepgwt_prefs` (`VOZ_*`). `conferir()` = `GET …/v1beta/models/<modelo>` com a chave. |
 | `CodigoDoCelular` | Código de 10 min gerado pela tela do carro para a página `/voz` (comparação em tempo constante). |
 | Tela | `ui/screens/AssistenteDeVozScreen.kt` — Recursos → Assistente de voz. |
 | Painel | `ui/components/PainelDaVoz.kt` — janela sobre a barra só durante a conversa (`BottomBarService.observeAssistenteDeVoz`). |
@@ -90,7 +91,7 @@ microfone + "assistente de voz") e para a tela.
 Código errado/vencido → 403 `motivo: "token"`. Fora de `/input/*` (Espelhar). Nada muda em
 `OrigemDoPedido`.
 
-Launcher (`installVozShortcut`, pílula `#opengw-voz` "FALAR", ordem 2 do trilho): uma pergunta na
+Launcher (`installVozShortcut`, pílula `#deepgwt-voz` "FALAR", ordem 2 do trilho): uma pergunta na
 montagem e outra ao voltar a ficar visível; **durante a conversa** pergunta a cada 1,5 s para
 acender/apagar (`is-live`) e para no PARADO ou com a tela escondida.
 
@@ -108,9 +109,9 @@ trocar sem build quando o Google aposentar este.
 ## Testes
 
 - `VozTest` (18): setup/áudio, eventos, quedas reais, conferência, formato, silêncio, base64,
-  ritmo, bipes, coringa, chave fora do endereço/log e fora do `opengw_prefs`.
+  ritmo, bipes, coringa, chave fora do endereço/log e fora do `deepgwt_prefs`.
 - `scripts/voz-servidor-falso.mjs`: Live API falso (WebSocket à mão). Build de debug:
-  `setprop debug.opengw.voz_endereco ws://10.0.2.2:18900/live`; `debug.opengw.voz_ignorar_mudo 1`
+  `setprop debug.deepgwt.voz_endereco ws://10.0.2.2:18900/live`; `debug.deepgwt.voz_ignorar_mudo 1`
   quando o microfone do emulador vier em zeros. Registra chave no cabeçalho, setup, microfone
   durante a fala (não pode) e pedaços mudos.
 
@@ -123,3 +124,4 @@ trocar sem build quando o Google aposentar este.
 - Latência pela internet do carro e o comportamento do Gemini real em pt-BR (não testado com chave
   válida).
 - Foco de áudio: música do carro pausando/voltando.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Gera as imagens de fundo e a arte do cabeçalho do OPEN GW — todas originais, feitas por código.
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+"""Gera as imagens de fundo e a arte do cabeçalho do DeepGWT — todas originais, feitas por código.
 
 Existe porque as imagens que vinham antes não eram nossas:
   * 20 papéis de parede do Wallhaven (cada um de um autor, sem licença de redistribuição);
@@ -8,8 +9,8 @@ Aqui cada pixel sai de funções matemáticas (gradientes, brilhos, linhas), ent
 terceiros e o resultado se reproduz com `python3 scripts/gerar-arte-original.py`.
 
 Saídas:
-  app/src/main/assets/backgrounds/opengw-01.jpg … opengw-20.jpg   (presets do fundo do cluster)
-  app/src/main/assets/www/assets/backgrounds/opengw-01.jpg … 20   (presets do launcher 3D)
+  app/src/main/assets/backgrounds/deepgwt-01.jpg … deepgwt-20.jpg   (presets do fundo do cluster)
+  app/src/main/assets/www/assets/backgrounds/deepgwt-01.jpg … 20   (presets do launcher 3D)
   instalador/public/header-art.jpg                                (cabeçalho do instalador)
 
 Requer: Pillow e numpy.
@@ -160,7 +161,7 @@ def gerar_fundos() -> list[str]:
             indice += 1
             variacao = (indice % 4) / 3.0
             imagem = finalizar(GERADORES[padrao](x, y, a, b, variacao), 1000 + indice)
-            nome = f"opengw-{indice:02d}.jpg"
+            nome = f"deepgwt-{indice:02d}.jpg"
             for pasta in PASTAS_DE_FUNDO:
                 pasta.mkdir(parents=True, exist_ok=True)
                 imagem.save(pasta / nome, "JPEG", quality=86, optimize=True, progressive=True)
@@ -190,7 +191,7 @@ def escrever_fontes(nomes: list[str]) -> None:
     linhas = [
         "# Presets de fundo do cluster e do launcher",
         "",
-        "Imagens **originais do OPEN GW**, geradas por código — nenhuma foi baixada ou copiada de",
+        "Imagens **originais do DeepGWT**, geradas por código — nenhuma foi baixada ou copiada de",
         "terceiros. Cada pixel sai de gradientes, brilhos e linhas calculados em",
         "`scripts/gerar-arte-original.py`; para reproduzir: `python3 scripts/gerar-arte-original.py`.",
         "",
@@ -203,7 +204,7 @@ def escrever_fontes(nomes: list[str]) -> None:
         "| --- | --- |",
     ]
     linhas += [f"| `{n.split(' — ')[0]}` | gerada ({n.split(' — ')[1]}) |" for n in nomes]
-    linhas += ["", f"Total: {len(nomes)} imagens, 1920×1080, licença do OPEN GW (ver `LICENSE`).", ""]
+    linhas += ["", f"Total: {len(nomes)} imagens, 1920×1080, licença do DeepGWT (ver `LICENSE`).", ""]
     for pasta in PASTAS_DE_FUNDO:
         (pasta / "SOURCES.md").write_text("\n".join(linhas), encoding="utf-8")
 
@@ -213,3 +214,4 @@ if __name__ == "__main__":
     gerar_cabecalho()
     escrever_fontes(lista)
     print(f"{len(lista)} fundos + cabeçalho gerados", file=sys.stderr)
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

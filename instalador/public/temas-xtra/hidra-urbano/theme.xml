@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Hidráulico Urbano</name>
     <description>O quadriciclo elétrico de cidade daquela casa francesa: velocidade, carga e mais nada, em duas barras grossas de cor chapada e dígitos de 210 px. A escala de velocidade vai só até 45, que é o que o bicho faz -- e o painel diz isso na legenda em vez de desenhar uma escala de 200 que nunca seria usada.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { ActivityIcon, RefreshCwIcon, StethoscopeIcon } from 'lucide-react'
@@ -49,7 +50,7 @@ export const ProDiagnostics = () => {
     // interno — inútil para quem lê.
     if (!hasTauri()) {
       setErro(
-        'Esta tela precisa do aplicativo instalado (a janela do OPEN GW), não do navegador: a leitura passa pelo processo nativo, que o Vite sozinho não tem.',
+        'Esta tela precisa do aplicativo instalado (a janela do DeepGWT), não do navegador: a leitura passa pelo processo nativo, que o Vite sozinho não tem.',
       )
       return
     }
@@ -309,3 +310,4 @@ export const ProDiagnostics = () => {
     </DataScreen>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

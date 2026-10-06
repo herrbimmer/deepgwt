@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Figura e Fundo</name>
     <description>A tela é dividida em dois campos e a divisa entre eles é a velocidade. O algarismo atravessa a divisa e troca de cor exatamente onde ela passa -- é o mesmo número desenhado duas vezes, com o de cima recortado no ponto do corte.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

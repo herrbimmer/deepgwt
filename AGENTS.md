@@ -1,4 +1,5 @@
-# OPEN GW — IndependentGW
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
+# DeepGWT — IndependentGW
 
 App Android para a central multimídia do Haval H6 (GWM): painel de instrumentos com temas HTML,
 HUD, círculo de projeção, barra inferior, launcher 3D, macros, perfis, licença por níveis; e o
@@ -15,13 +16,13 @@ independência precisa dele: `../dossie/docs/independencia/PLANO.md` e `SALA-LIM
 ## Pastas
 
 - Backup (a versão que está no carro hoje): `~/Desktop/PROJECT OPEN GW`. Não mexer.
-- Este trabalho: `~/Desktop/IndependentGW/opengw`, ramo git `main`, repositório novo de um commit só
+- Este trabalho: `~/Desktop/IndependentGW/deepgwt`, ramo git `main`, repositório novo de um commit só
   (o `.git` anterior está em `../dossie/historico-git/` e não se publica). Sem remoto configurado: não
   empurrar para o `main` de `herrbimmer/opengw` (é o backup).
 
 ## Regras
 
-- Código novo vai em `br.com.opengw.*`.
+- Código novo vai em `br.com.deepgwt.*`.
 - Não copiar, traduzir ou parafrasear código de terceiros. Na dúvida, a lista do que ainda é
   herdado está em `../dossie/docs/independencia/medicao/<última>-herdados.txt`.
 - Contrato dos temas (v1.0): ponte `window.Android`, chaves `car.*`, formato do `theme.xml` e
@@ -45,12 +46,22 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
   `python3 ../dossie/scripts/independencia/medir_heranca.py`.
 - Não dizer que testou o que não testou. O que só o carro valida fica marcado assim.
 
-## Versão
+## Versão (regra obrigatória)
 
-Build que vai para o carro sobe de versão conforme `../VERSIONAMENTO.md` (`gradle.properties` e
-`LAUNCHER_BUILD` de `openGwClient.js`). Builds de verificação local não sobem.
+**Toda mudança que vira build entregue sobe a versão**, no formato `Alpha MAJOR.MINOR.PATCH carimbo`
+(ex.: `Alpha 9.8.0 051020261530`). Texto completo em `../VERSIONAMENTO.md`.
+
+- Função nova ou alterada: `MINOR + 1` e `PATCH = 0` (9.7.0 → 9.8.0).
+- Só correção de bug, sem função nova: `PATCH + 1` (9.7.0 → 9.7.1).
+- Carimbo = data e hora da build, `DDMMAAAAHHMM` (`date +%d%m%Y%H%M`). `appVersionCode` sobe 1.
+- Rodar `python3 scripts/subir-versao.py minor|patch` na hora de gerar o APK: ele sobe, de uma vez,
+  `gradle.properties`, `LAUNCHER_BUILD` de `deepGwtClient.js` e a versão do instalador
+  (`package.json`, `tauri.conf.json`, `Cargo.toml`, `BUILD_STAMP`). `--ver` só confere.
+- Depois: item em `onboarding/Novidades.kt` (se houver algo a mostrar) e linha no Histórico do
+  `../VERSIONAMENTO.md`. Builds de verificação local, que não vão para o carro, não sobem.
 
 ## Fim de cada rodada
 
 Atualizar `../dossie/docs/independencia/PLANO.md` (estado do módulo) e escrever o handoff da rodada
 em `../dossie/raiz/`: arquivos alterados, comandos rodados, testes feitos, riscos e próximos passos.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

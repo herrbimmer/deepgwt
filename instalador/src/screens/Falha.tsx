@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
@@ -25,7 +26,7 @@ export const Falha = () => {
   const [copiado, setCopiado] = useState(false)
 
   const copiar = async () => {
-    const texto = [`Falha na ${operacao} do OPEN GW`, `Erro: ${estado.erro ?? '(sem mensagem)'}`, '', ...log].join('\n')
+    const texto = [`Falha na ${operacao} do DeepGWT`, `Erro: ${estado.erro ?? '(sem mensagem)'}`, '', ...log].join('\n')
     try {
       await navigator.clipboard.writeText(texto)
       setCopiado(true)
@@ -111,3 +112,4 @@ export const Falha = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

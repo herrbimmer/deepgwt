@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Piso de área tocável (44dp/44px) nos controles que o motorista usa com o carro andando.
 //
 // Roda com `node scripts/test-alvos-de-toque.mjs`. A parte do launcher usa VIEWER_SRC, igual
@@ -21,10 +22,10 @@ import os from 'node:os'
 import { fileURLToPath } from 'node:url'
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-// Kit de interface e barra inferior moram em br/com/opengw; hoje
-// são br.com.opengw.ui e br.com.opengw.barra.
-const ui = path.join(raiz, 'app/src/main/java/br/com/opengw/ui')
-const barraDir = path.join(raiz, 'app/src/main/java/br/com/opengw/barra')
+// Kit de interface e barra inferior moram em br/com/deepgwt; hoje
+// são br.com.deepgwt.ui e br.com.deepgwt.barra.
+const ui = path.join(raiz, 'app/src/main/java/br/com/deepgwt/ui')
+const barraDir = path.join(raiz, 'app/src/main/java/br/com/deepgwt/barra')
 
 let falhas = 0
 const eq = (nome, got, want) => {
@@ -76,22 +77,22 @@ eq('liquidGlass() sem tier continua sem sombra', /elevation: Dp = 0\.dp/.test(vi
 // estas verificações deixaram de ser opcionais. VIEWER_SRC continua valendo para apontar para
 // uma pasta descompactada de fora, e o "PULADO" segue existindo para esse caso.
 const viewerSrc = process.env.VIEWER_SRC || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app', 'src', 'main')
-const clientPath = path.join(viewerSrc, 'assets', 'www', 'openGwClient.js')
+const clientPath = path.join(viewerSrc, 'assets', 'www', 'deepGwtClient.js')
 if (!fs.existsSync(clientPath)) {
   console.log(`PULADO (launcher): não encontrado em ${viewerSrc}`)
 } else {
   const js = fs.readFileSync(clientPath, 'utf8')
   // O atalho de projeção deixou de ser posicionado por conta própria: agora ele é um item do
-  // trilho de atalhos (#opengw-atalhos), e o que sobrou no bloco dele é só a aparência.
-  const bloco = js.slice(js.indexOf("'#opengw-projection{position:relative"), js.indexOf("document.head.appendChild(css);\n\n    var btn"))
+  // trilho de atalhos (#deepgwt-atalhos), e o que sobrou no bloco dele é só a aparência.
+  const bloco = js.slice(js.indexOf("'#deepgwt-projection{position:relative"), js.indexOf("document.head.appendChild(css);\n\n    var btn"))
   eq('pílula de projeção: 44px de altura mínima', /min-height:44px/.test(bloco), true)
   // Lado a lado no trilho, as TRÊS pílulas precisam do mesmo piso de toque: uma mais baixa que
   // as outras não é só feia, é um alvo menor que o mínimo bem ao lado de dois que passam.
-  const esportivo = js.slice(js.indexOf("'#opengw-sportsdisplay{position:relative"), js.indexOf("'#opengw-sportsdisplay.is-on{"))
+  const esportivo = js.slice(js.indexOf("'#deepgwt-sportsdisplay{position:relative"), js.indexOf("'#deepgwt-sportsdisplay.is-on{"))
   eq('pílula do painel esportivo: 44px de altura mínima', /min-height:44px/.test(esportivo), true)
   eq('pílula do painel esportivo: o mínimo inclui padding e borda', /box-sizing:border-box/.test(esportivo), true)
-  const perfilJs = fs.readFileSync(path.join(viewerSrc, 'assets', 'www', 'openGwProfile.js'), 'utf8')
-  const pilulaPerfil = perfilJs.slice(perfilJs.indexOf("'#opengw-profile{position:absolute"), perfilJs.indexOf("'#opengw-profile:active"))
+  const perfilJs = fs.readFileSync(path.join(viewerSrc, 'assets', 'www', 'deepGwtProfile.js'), 'utf8')
+  const pilulaPerfil = perfilJs.slice(perfilJs.indexOf("'#deepgwt-profile{position:absolute"), perfilJs.indexOf("'#deepgwt-profile:active"))
   eq('pílula de perfil: 44px de altura mínima', /min-height:44px/.test(pilulaPerfil), true)
   eq('pílula de perfil: o mínimo inclui padding e borda', /box-sizing:border-box/.test(pilulaPerfil), true)
   // Sem box-sizing o mínimo passaria a valer só para o conteúdo, e a pílula ficaria com 44+20.
@@ -101,7 +102,7 @@ if (!fs.existsSync(clientPath)) {
   const sombra = bloco.match(/box-shadow:([^']*)'/)
   eq('pílula: sombra em duas camadas', sombra ? sombra[1].split('),').length >= 2 : false, true)
   // As setas de página já passavam do piso antes desta rodada; o teste fixa isso.
-  const setas = js.slice(js.indexOf("'#opengw-page-nav .seta{position:absolute"), js.indexOf("'#opengw-page-nav .seta:active"))
+  const setas = js.slice(js.indexOf("'#deepgwt-page-nav .seta{position:absolute"), js.indexOf("'#deepgwt-page-nav .seta:active"))
   const w = Number(setas.match(/width:(\d+)px/)[1])
   const h = Number(setas.match(/height:(\d+)px/)[1])
   eq('setas de página passam do piso', w >= 44 && h >= 44, true)
@@ -109,3 +110,4 @@ if (!fs.existsSync(clientPath)) {
 
 console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTodas passaram')
 process.exit(falhas ? 1 : 0)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

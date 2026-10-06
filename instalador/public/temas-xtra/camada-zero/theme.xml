@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Camada Zero</name>
     <description>Camada zero: nada de menu, nada de janela por cima de janela. Tudo o que o carro tem para dizer fica num plano único, em cartões da mesma família, e a hierarquia vem do tamanho do cartão em vez de vir de navegação -- a velocidade ocupa metade da grade e o resto se acomoda em volta. É o arranjo das telas alemãs de uma peça de vidro só, traduzido para seiscentos e quarenta por trezentos.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

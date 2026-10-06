@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A galeria de presets e a operação de clonar.
 //
 // Clonar recria o tema como rascunho editável: id novo, pasta nova, e todo elemento com id novo.
@@ -86,3 +87,4 @@ export function clonePreset(presetId: string, nome?: string): ThemeSpec | null {
 }
 
 export { CUPERTINO_ULTRA, STUTTGART_NTG55, MINIMALIST }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

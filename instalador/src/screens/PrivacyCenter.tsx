@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import {
   ShieldIcon, HardDriveIcon, ArrowUpRightIcon, ArrowDownLeftIcon, Trash2Icon, RefreshCwIcon,
@@ -45,16 +46,16 @@ const EGRESS: Egress[] = [
   },
   {
     direction: 'out',
-    destination: 'http://{gateway}:8766 — app OPEN GW do carro, pelo gateway',
+    destination: 'http://{gateway}:8766 — app DeepGWT do carro, pelo gateway',
     who: 'Este computador',
     when: 'Tela GWLink (telemetria ao vivo).',
-    what: 'Lê os parâmetros que o app OPEN GW do carro expõe. Sem autenticação.',
+    what: 'Lê os parâmetros que o app DeepGWT do carro expõe. Sem autenticação.',
     source: 'src-tauri/src/lib.rs:1302',
     thirdParty: false,
   },
   {
     direction: 'out',
-    destination: 'http://{IP do carro}:8766 — app OPEN GW do carro, por IP',
+    destination: 'http://{IP do carro}:8766 — app DeepGWT do carro, por IP',
     who: 'Este computador',
     when: 'Configurações, ADAS, Coding, perfis, DVR e esta versão do histórico.',
     what: 'Lê e escreve as chaves de configuração do carro. Sem autenticação.',
@@ -219,7 +220,7 @@ export const PrivacyCenter = () => {
         <Banner tone="warning" icon={AlertTriangleIcon} className="mb-6">
           <div className="font-medium mb-1">Nada disso é autenticado.</div>
           <div className="text-xs opacity-90 leading-relaxed">
-            O telnet na porta 23 e o app OPEN GW na porta 8766 não pedem usuário nem senha, e o
+            O telnet na porta 23 e o app DeepGWT na porta 8766 não pedem usuário nem senha, e o
             tráfego não é criptografado. Quem estiver na mesma rede do carro alcança as duas
             coisas. Isso é uma característica do carro e do app no carro, não uma escolha deste app —
             mas você precisa saber antes de usar o hotspot do carro em lugar público.
@@ -245,7 +246,7 @@ export const PrivacyCenter = () => {
           O aplicativo Android que roda dentro do carro é outro programa, com outro código. Ele
           tem um envio de relatório de problema para o Supabase (
           <code className="font-mono text-[11px]">
-            app/src/main/java/br/com/opengw/diagnostics/ProblemReportSubmitter.kt
+            app/src/main/java/br/com/deepgwt/diagnostics/ProblemReportSubmitter.kt
           </code>
           ) que não existe neste instalador. Se você instalou aquele app, a privacidade dele
           precisa ser avaliada lá — esta página não fala por ele.
@@ -286,3 +287,4 @@ export const PrivacyCenter = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

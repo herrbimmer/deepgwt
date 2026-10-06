@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Mostrador Branco</name>
     <description>O kit de mostrador branco que todo mundo instalava nos anos 90: fundo claro, numeral preto de peso alto, ponteiro vermelho e aro cromado duplo. O contraste é o inverso do de fábrica, então de dia a leitura é mais rápida. Quatro dials em fila com os dois grandes no meio, faixa vermelha do giro a partir das seis mil e o número repetido em dígitos no ventre de cada mostrador grande.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

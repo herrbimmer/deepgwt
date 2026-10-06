@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Preparador Trezentos</name>
     <description>A escala inteira, de zero a trezentos, aberta num arco só de 330 px de raio, sem dobra e sem segundo mostrador. O terço de cima é desenhado mais apagado de propósito: ele existe, mas quase nunca é usado, e o painel prefere admitir isso a fingir que o carro vive lá em cima. Passando de 200, a legenda muda.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

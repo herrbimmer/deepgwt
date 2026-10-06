@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Ajustes de desempenho do launcher 3D que NÃO são o orçamento de quadros: dica de GPU na criação
 // do contexto, freio com a página escondida e o carimbo de versão da camada.
 //
@@ -19,7 +20,7 @@ import { fileURLToPath } from 'node:url'
 // estas verificações deixaram de ser opcionais. VIEWER_SRC continua valendo para apontar para
 // uma pasta descompactada de fora, e o "PULADO" segue existindo para esse caso.
 const viewerSrc = process.env.VIEWER_SRC || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app', 'src', 'main')
-const clientPath = path.join(viewerSrc, 'assets', 'www', 'openGwClient.js')
+const clientPath = path.join(viewerSrc, 'assets', 'www', 'deepGwtClient.js')
 if (!fs.existsSync(clientPath)) {
   console.log(`PULADO: launcher 3D não encontrado em ${viewerSrc}`)
   process.exit(0)
@@ -31,7 +32,7 @@ const src = fs.readFileSync(clientPath, 'utf8')
 const start = src.indexOf('  var LAUNCHER_BUILD =')
 const end = src.indexOf('  installGpuHints();')
 if (start < 0 || end < 0) {
-  console.log('FALHOU: não achei o bloco de desempenho em openGwClient.js')
+  console.log('FALHOU: não achei o bloco de desempenho em deepGwtClient.js')
   process.exit(1)
 }
 const bloco = src.slice(start, end)
@@ -71,10 +72,10 @@ const api = new Function(
 )(window, documento, FakeCanvas)
 
 // ── Carimbo de versão ─────────────────────────────────────────────────────────────────────────
-// Formato de VERSIONAMENTO.md: "Alpha <n>.<n> <DDMMAAAAHHMM>".
-const formato = /^Alpha \d+\.\d \d{12}$/
+// Formato de VERSIONAMENTO.md: "Alpha <n>.<n>.<n> <DDMMAAAAHHMM>".
+const formato = /^Alpha \d+\.\d+\.\d+ \d{12}$/
 eq('o carimbo da camada segue o formato do versionamento', formato.test(api.LAUNCHER_BUILD), true)
-eq('e ele é publicado em window', window.__openGwLauncherBuild, api.LAUNCHER_BUILD)
+eq('e ele é publicado em window', window.__deepGwtLauncherBuild, api.LAUNCHER_BUILD)
 const [, dd, mm] = api.LAUNCHER_BUILD.match(/ (\d{2})(\d{2})\d{4}\d{4}$/) || []
 eq('o dia do carimbo é um dia', Number(dd) >= 1 && Number(dd) <= 31, true)
 eq('o mês do carimbo é um mês', Number(mm) >= 1 && Number(mm) <= 12, true)
@@ -134,11 +135,11 @@ api.installVidroLeve()
 eq('fora do Android o desfoque fica', classes.has(api.CLASSE_VIDRO_LEVE), false)
 
 globalThis.location = { search: '?android&assets=x', hash: '' }
-armazenado.opengw_vidro_fosco = '1'
+armazenado.deepgwt_vidro_fosco = '1'
 api.installVidroLeve()
 eq('a chave de comparação devolve o vidro fosco', classes.has(api.CLASSE_VIDRO_LEVE), false)
 
-delete armazenado.opengw_vidro_fosco
+delete armazenado.deepgwt_vidro_fosco
 api.installVidroLeve()
 eq('no Android o desfoque sai', classes.has(api.CLASSE_VIDRO_LEVE), true)
 const regra = (anexados[anexados.length - 1] || {}).textContent || ''
@@ -162,13 +163,14 @@ eq('cada material entra uma vez no relatório', rel.clearcoatZerado.length, 1)
 let miniaturasSoltas = 0, listasSoltas = 0
 window.__app = { _thumbRenderer: {}, _disposeThumbRenderer() { miniaturasSoltas++; this._thumbRenderer = null } }
 window.__renderer = { renderLists: { dispose() { listasSoltas++ } } }
-window.__openGwPerf = { alivios: 0 }
+window.__deepGwtPerf = { alivios: 0 }
 api.aliviarMemoria(20)
 api.aliviarMemoria(20)
 eq('solta o renderizador das miniaturas quando ele existe', miniaturasSoltas, 1)
 eq('e as listas de render a cada aviso', listasSoltas, 2)
-eq('e conta os avisos no relatório', window.__openGwPerf.alivios, 2)
-eq('e fica publicado para o lado nativo', typeof window.__openGwAliviarMemoria, 'function')
+eq('e conta os avisos no relatório', window.__deepGwtPerf.alivios, 2)
+eq('e fica publicado para o lado nativo', typeof window.__deepGwtAliviarMemoria, 'function')
 
 console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTodas passaram')
 process.exit(falhas ? 1 : 0)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Retângulos</name>
     <description>Composição neoplástica: só retângulos, só filetes pretos de 14px e só as três primárias. O tamanho de cada campo é o dado -- o vermelho cresce com a velocidade, o azul com o giro, o amarelo com o tanque -- e os filetes se movem junto, refazendo a composição o tempo todo.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A tabela de desenho do motor: um par `build'/'update' por tipo de elemento.
 //
 // O que cada estilo desenha NÃO está espalhado em ramos aqui. O emissor traduz o estilo em um
@@ -631,3 +632,4 @@ export const RENDERERS_JS = `
     image: IMAGE, shape: SHAPE, chart: CHART,
   };
 `
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

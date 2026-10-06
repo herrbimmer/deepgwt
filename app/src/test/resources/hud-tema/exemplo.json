@@ -1,5 +1,5 @@
 {
-  "formato": "opengw-hud-tema",
+  "formato": "deepgwt-hud-tema",
   "versao": 1,
   "nome": "  Aviação de teste  ",
   "estilo": { "corRotulo": "#8fc29a", "fonte": "condensada", "peso": 450, "cabecalho": false, "pontos": true },

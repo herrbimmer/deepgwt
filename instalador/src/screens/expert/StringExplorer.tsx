@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { TypeIcon } from 'lucide-react'
 import { ScaffoldScreen } from '../../ui'
 
@@ -35,3 +36,4 @@ export const ExpertStringExplorer = () => (
     ]}
   />
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

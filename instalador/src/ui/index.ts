@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 export * from './Squircle'
 export * from './Button'
 export * from './Card'
@@ -20,3 +21,4 @@ export * from './SelectField'
 export * from './SliderField'
 export * from './Segmented'
 export * from './ColorField'
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

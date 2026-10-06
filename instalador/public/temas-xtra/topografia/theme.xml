@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Topografia</name>
     <description>Carta topográfica: doze curvas de nível irregulares, uma a cada 20 km/h, com curva mestra reforçada a cada 100. As curvas já vencidas pela velocidade acendem em terracota, o pico é um ponto no centro e a cota atual aparece na legenda. Seis fichas de campo trazem giro, combustível, bateria, autonomia, marcha e temperatura sobre papel de mapa.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

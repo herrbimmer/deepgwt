@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Onde o elemento fica e quanto ele ocupa.
 //
 // Sem largura e sem altura. O tamanho sai de uma tabela por tipo (PP a GG) mais um ajuste fino, e
@@ -207,3 +208,4 @@ function VisibilidadePanel({ element, onChange }: { element: Element; onChange: 
     </Grupo>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

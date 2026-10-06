@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // WMI informados manualmente pelo usuário.
 //
 // A tabela oficial que liga um WMI a um fabricante é licenciada e não está no projeto, então o
@@ -54,3 +55,4 @@ export function setWmiOverride(wmi: string, name: string): void {
   else delete rec.entries[id]
   writeRaw(STORAGE_KEYS.wmiOverrides, JSON.stringify(rec))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 (function (root) {
   'use strict';
 
@@ -139,3 +140,4 @@
   }
   root.H6ClockFaces = { version: 1, width: 224, height: 124, names: names, render: render };
 })(typeof window !== 'undefined' ? window : globalThis);
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

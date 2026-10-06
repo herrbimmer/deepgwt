@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A linha do tempo do cenário, embaixo do canvas.
 //
 // É ela quem dá o relógio da prévia: toca o cenário em laço, pausa num instante ("congelar") e
@@ -170,3 +171,4 @@ export function LinhaDoTempo({ cenarioId, modo, fixados, canal, onVerAbertura, c
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Variômetro</name>
     <description>O instrumento que a maioria dos painéis não tem: a taxa de variação da velocidade, de -6 a +6 km/h por segundo, derivada no próprio tema a partir do relógio. Arco verde de um lado, vermelho do outro, zero exatamente no topo -- constante é ponteiro em pé.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

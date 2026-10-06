@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Histórico de alterações — tudo que este app escreveu no carro.
 //
 // O que existia antes: nada. A tela de Coding comparava o estado atual contra um "ponto de
@@ -176,3 +177,4 @@ export function subscribeChangeLog(fn: Listener): () => void {
 function notify() {
   for (const fn of listeners) fn()
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

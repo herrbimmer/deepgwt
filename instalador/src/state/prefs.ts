@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Preferências do instalador, no mesmo padrão do módulo mais maduro que já existia no projeto
 // (`theme-editor/storage.ts`): registro versionado, migração na leitura, `updatedAt`, e nunca
 // estourar quando o `localStorage` não estiver disponível.
@@ -96,3 +97,4 @@ export function savePrefs(patch: Partial<Prefs>): Prefs {
   if (next.carIp) writeRaw(STORAGE_KEYS.carIp, next.carIp)
   return next
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

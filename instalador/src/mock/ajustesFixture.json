@@ -23,6 +23,7 @@
     "disableHotspotOnPowerOff": true,
     "sportPlusEnabled": false,
     "disableAvmCarStopped": false,
+    "avmManualWhenStopped": false,
     "hideLeftNavPane": false,
     "quickGesturesEnabled": false,
     "projectionGestureEnabled": true,
@@ -64,8 +65,8 @@
     "enableOdometerAndRevision": true,
     "clusterFuelDisplayUnit": "liters",
     "clusterHideSpeedometerOnMaps": false,
-    "clusterV2TripInfo": false,
     "gaugeNumberScale": 1,
+    "nightModeEnabled": true,
     "nightModeColor": "amber",
     "nightModeTrigger": "auto",
     "hudOverlayEnabled": true,
@@ -172,7 +173,7 @@
     {
       "id": "barra",
       "titulo": "Barra inferior",
-      "descricao": "A barra do OPEN GW por cima das telas: altura, botões e o cartão de volume.",
+      "descricao": "A barra do DeepGWT por cima das telas: altura, botões e o cartão de volume.",
       "recurso": "barra",
       "nivelExigido": "drive",
       "bloqueado": false
@@ -212,7 +213,7 @@
     {
       "id": "painel",
       "titulo": "Painel de instrumentos",
-      "descricao": "O que o OPEN GW mostra atrás do volante: tema, informações extras e aparência.",
+      "descricao": "O que o DeepGWT mostra atrás do volante: tema, informações extras e aparência.",
       "recurso": "temas.embutidos",
       "nivelExigido": "drive",
       "bloqueado": false
@@ -244,7 +245,7 @@
     {
       "id": "automacoes",
       "titulo": "Automações do veículo",
-      "descricao": "O que o OPEN GW faz sozinho ao ligar, desligar, trancar ou andar.",
+      "descricao": "O que o DeepGWT faz sozinho ao ligar, desligar, trancar ou andar.",
       "recurso": "automacoes",
       "nivelExigido": "drive",
       "bloqueado": false
@@ -267,8 +268,8 @@
     },
     {
       "id": "interface",
-      "titulo": "Interface do OPEN GW",
-      "descricao": "O visual das telas do app do OPEN GW na central: estilo, tamanho da interface e das letras.",
+      "titulo": "Interface do DeepGWT",
+      "descricao": "O visual das telas do app do DeepGWT na central: estilo, tamanho da interface e das letras.",
       "recurso": "interface",
       "nivelExigido": "drive",
       "bloqueado": false
@@ -481,7 +482,7 @@
         },
         {
           "id": "dashboard",
-          "rotulo": "Abrir o painel do OPEN GW"
+          "rotulo": "Abrir o painel do DeepGWT"
         },
         {
           "id": "haval_home",
@@ -537,7 +538,7 @@
       "padrao": false,
       "efeito": "lido na hora",
       "origem": "preferencia",
-      "ajuda": "O carro religa os avisos de faixa e de velocidade a cada partida; o OPEN GW devolve o que você deixou. Frenagem automática fica de fora.",
+      "ajuda": "O carro religa os avisos de faixa e de velocidade a cada partida; o DeepGWT devolve o que você deixou. Frenagem automática fica de fora.",
       "recurso": "adas.memoria",
       "nivelExigido": "drive"
     },
@@ -597,8 +598,25 @@
       "padrao": false,
       "efeito": "lido na hora",
       "origem": "preferencia",
-      "ajuda": "Fecha a câmera AVM quando o carro para fora da ré.",
-      "soNoComputador": true,
+      "ajuda": "Fecha a câmera 360° quando o carro para fora da ré.",
+      "recurso": "carro.rapidos",
+      "nivelExigido": "drive"
+    },
+    {
+      "id": "avmManualWhenStopped",
+      "secao": "carro",
+      "rotulo": "Permitir abrir pelo botão da câmera 360°",
+      "tipo": "interruptor",
+      "padrao": false,
+      "efeito": "lido na hora",
+      "origem": "preferencia",
+      "ajuda": "Com o carro parado, a câmera abre e fica aberta se você apertar o botão da câmera 360°. Só vale para o botão: a que abre sozinha continua sendo fechada.",
+      "visivelSe": {
+        "id": "disableAvmCarStopped",
+        "valores": [
+          "true"
+        ]
+      },
       "recurso": "carro.rapidos",
       "nivelExigido": "drive"
     },
@@ -1208,7 +1226,7 @@
       "padrao": false,
       "efeito": "modo do painel",
       "origem": "painel",
-      "ajuda": "O OPEN GW desenha o painel inteiro com o tema escolhido no carro.",
+      "ajuda": "O DeepGWT desenha o painel inteiro com o tema escolhido no carro.",
       "aviso": "Este painel virtual é renderizado pela multimídia, ficando sujeito a gargalos de processamento que podem causar discrepâncias ou atrasos entre as informações reais e as mostradas. A velocidade informada pode ter uma pequena variação. Confirme para aceitar os riscos e condições.",
       "recurso": "temas.embutidos",
       "nivelExigido": "sport"
@@ -1352,18 +1370,6 @@
       "nivelExigido": "sport"
     },
     {
-      "id": "clusterV2TripInfo",
-      "secao": "painel",
-      "rotulo": "Viagem e pneus no Analógico V2",
-      "tipo": "interruptor",
-      "padrao": false,
-      "efeito": "lido na hora",
-      "origem": "preferencia",
-      "ajuda": "Consumo, tempo, distância e pressão dos pneus no tema Sport.",
-      "recurso": "temas.embutidos",
-      "nivelExigido": "sport"
-    },
-    {
       "id": "gaugeNumberScale",
       "secao": "painel",
       "rotulo": "Tamanho do texto do painel",
@@ -1376,6 +1382,18 @@
       "max": 1.4,
       "passo": 0.05,
       "unidade": "×",
+      "recurso": "temas.embutidos",
+      "nivelExigido": "sport"
+    },
+    {
+      "id": "nightModeEnabled",
+      "secao": "painel",
+      "rotulo": "Modo noturno do painel",
+      "tipo": "interruptor",
+      "padrao": true,
+      "efeito": "fonte do modo noturno",
+      "origem": "preferencia",
+      "ajuda": "Com o farol aceso, os letreiros do painel mudam de cor. Desligado, o painel mantém as cores do tema mesmo com o farol aceso.",
       "recurso": "temas.embutidos",
       "nivelExigido": "sport"
     },
@@ -1403,7 +1421,13 @@
         }
       ],
       "recurso": "temas.embutidos",
-      "nivelExigido": "sport"
+      "nivelExigido": "sport",
+      "visivelSe": {
+        "id": "nightModeEnabled",
+        "valores": [
+          "true"
+        ]
+      }
     },
     {
       "id": "nightModeTrigger",
@@ -1442,7 +1466,13 @@
         }
       ],
       "recurso": "temas.embutidos",
-      "nivelExigido": "sport"
+      "nivelExigido": "sport",
+      "visivelSe": {
+        "id": "nightModeEnabled",
+        "valores": [
+          "true"
+        ]
+      }
     },
     {
       "id": "hudOverlayEnabled",
@@ -1452,7 +1482,7 @@
       "padrao": false,
       "efeito": "camada do HUD",
       "origem": "preferencia",
-      "ajuda": "Desenha a camada do OPEN GW no HUD do para-brisa.",
+      "ajuda": "Desenha a camada do DeepGWT no HUD do para-brisa.",
       "recurso": "hud",
       "nivelExigido": "sport"
     },
@@ -1796,7 +1826,7 @@
       "padrao": false,
       "efeito": "luz ambiente",
       "origem": "preferencia",
-      "ajuda": "A fita precisa ter sido pareada uma vez pela tela do carro (Recursos → Ambient Light BLE).",
+      "ajuda": "A fita precisa ter sido pareada uma vez pela tela do carro (Recursos XTRA → Ambient Light BLE).",
       "recurso": "luz",
       "nivelExigido": "sport"
     },
@@ -2778,7 +2808,7 @@
       "padrao": false,
       "efeito": "tela inicial do carro",
       "origem": "preferencia",
-      "ajuda": "Ligado, o carro abre no launcher 3D e o OPEN GW o devolve quando a tela de fábrica abrir como início. Desligado, volta a tela de fábrica.",
+      "ajuda": "Ligado, o carro abre no launcher 3D e o DeepGWT o devolve quando a tela de fábrica abrir como início. Desligado, volta a tela de fábrica.",
       "recurso": "launcher3d",
       "nivelExigido": "sport"
     },

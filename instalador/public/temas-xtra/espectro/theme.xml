@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Espectro</name>
     <description>Analisador de 32 bandas com retencão de pico: os graves seguem o giro, os médios a velocidade e os agudos o consumo, e cada banda mistura os três com um peso próprio. Verde até 60%, âmbar acima, vermelho no topo -- e o traço branco do pico desce devagar.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

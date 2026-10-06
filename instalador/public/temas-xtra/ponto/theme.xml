@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Ponto</name>
     <description>Um ponto, e nada mais: a posição horizontal é a velocidade e a vertical é o giro. Não há eixo graduado nem escala -- as quatro palavras nos cantos já orientam a leitura, e os dois números seguem o ponto de perto. Duas chaves assinadas; nada mais é pedido ao carro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

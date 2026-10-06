@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.security.KeyStore
 import java.security.MessageDigest
@@ -15,9 +16,9 @@ val nomeDaVersao: String = providers.gradleProperty("appVersionName").getOrElse(
 
 // Alpha 8.0: o nível de teste (Informações → Nível, `POST /licenca/nivel-de-teste`). O APK que o
 // instalador leva ao carro é o `debug`, então NÃO pode depender de `BuildConfig.DEBUG`: fica
-// desligado em tudo, menos no `simulator` e num build pedido com `-Popengw.nivelDeTeste=true`.
+// desligado em tudo, menos no `simulator` e num build pedido com `-Pdeepgwt.nivelDeTeste=true`.
 val nivelDeTesteNoDebug: String =
-    (providers.gradleProperty("opengw.nivelDeTeste").orNull == "true").toString()
+    (providers.gradleProperty("deepgwt.nivelDeTeste").orNull == "true").toString()
 
 // Alpha 8.1: as chaves PÚBLICAS de produção da licença, uma linha "id base64" — o licenciador
 // grava este arquivo ao criar a chave. Sem ele o build não cobra nada (ver `licenca/Portao.kt`).
@@ -30,10 +31,21 @@ val licencaChavesPublicas: String = run {
         .joinToString(";")
 }
 
+// applicationId != namespace de propósito: a central (beantechs) recusa `pm install` de
+// qualquer applicationId que ela nunca viu ("beantechs disallow apk <pkg> to be installed!")
+// — confirmado 04/10/2026 via telnet root no carro: só br.com.redesurftank.havalshisuku é uma
+// identidade já conhecida por ela (br.com.opengw e br.com.deepgwt nunca foram instalados nela).
+// Única `val` para o applicationId real: `mascararCertificado` abaixo precisa do MESMO valor
+// que `android.defaultConfig.applicationId`, porque `Integridade.revelar` desmascara em
+// runtime com `BuildConfig.APPLICATION_ID` — duplicar o literal nos dois lugares já causou um
+// descasamento silencioso (quando applicationId != namespace, o runtime manda um valor e o
+// Gradle mascarava com outro).
+val applicationIdReal = "br.com.redesurftank.havalshisuku"
+
 // Alpha 8.3: a impressão digital (SHA-256) do certificado que assina o APK, para o app conferir
 // que não foi reassinado (`licenca/Integridade.kt`). Vai mascarada — a mesma conta de
 // `Integridade.mascarar`. Keystore não achada = "" (o app não confere nada).
-// `-Popengw.certificadoEsperado=<64 hex>` troca o valor: só para testar o caminho do APK alterado.
+// `-Pdeepgwt.certificadoEsperado=<64 hex>` troca o valor: só para testar o caminho do APK alterado.
 fun impressaoDoCertificado(keystore: File, senha: String?, alias: String?): ByteArray? {
     if (!keystore.isFile || senha.isNullOrEmpty()) return null
     return runCatching {
@@ -46,11 +58,11 @@ fun impressaoDoCertificado(keystore: File, senha: String?, alias: String?): Byte
 fun mascararCertificado(impressao: ByteArray?): String {
     if (impressao == null || impressao.size != 32) return ""
     val mascara = MessageDigest.getInstance("SHA-256")
-        .digest("OPENGW-CERT|br.com.opengw".toByteArray(Charsets.UTF_8))
+        .digest("DEEPGWT-CERT|$applicationIdReal".toByteArray(Charsets.UTF_8))
     return impressao.mapIndexed { i, b -> (b.toInt() xor mascara[i].toInt()) and 0xff }.joinToString("") { "%02x".format(it) }
 }
 
-val certificadoForcado: ByteArray? = providers.gradleProperty("opengw.certificadoEsperado").orNull
+val certificadoForcado: ByteArray? = providers.gradleProperty("deepgwt.certificadoEsperado").orNull
     ?.trim()?.takeIf { it.length == 64 }
     ?.let { hex -> ByteArray(32) { i -> hex.substring(2 * i, 2 * i + 2).toInt(16).toByte() } }
 
@@ -81,11 +93,12 @@ fun literalJava(texto: String): String {
 }
 
 android {
-    namespace = "br.com.opengw"
+    namespace = "br.com.deepgwt"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "br.com.opengw"
+        // Ver nota em `applicationIdReal` acima — tem que ser a mesma `val`, não um literal.
+        applicationId = applicationIdReal
         minSdk = 28
         //noinspection ExpiredTargetSdkVersion
         targetSdk = 28
@@ -97,11 +110,11 @@ android {
         buildConfigField("boolean", "NIVEL_DE_TESTE", "false")
         buildConfigField("String", "LICENCA_CHAVES_PUBLICAS", literalJava(licencaChavesPublicas))
         // De onde o app lê "há versão nova?" (API de releases). Vazio = o app não consulta nada.
-        // Só vale um feed do próprio OPEN GW.
+        // Só vale um feed do próprio DeepGWT.
         buildConfigField(
             "String",
             "UPDATE_FEED_URL",
-            literalJava(providers.gradleProperty("opengw.updateFeedUrl").orElse("").get())
+            literalJava(providers.gradleProperty("deepgwt.updateFeedUrl").orElse("").get())
         )
         buildConfigField("String", "LICENCA_CERTIFICADO", literalJava(""))
         // Desligado em tudo, menos no build `simulator` (abaixo).
@@ -164,6 +177,7 @@ android {
         compose = true
     }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Alpha 9.7: os avisos de licença acompanham cada cópia do APK (MIT, Apache-2.0 e OFL exigem o texto
 // junto da distribuição). Fonte única: os arquivos da raiz; nada é copiado para dentro do app/.
@@ -171,6 +185,8 @@ val copiarAvisosLegais by tasks.registering(Copy::class) {
     from(rootProject.layout.projectDirectory.file("NOTICE"))
     from(rootProject.layout.projectDirectory.file("LICENSE"))
     from(rootProject.layout.projectDirectory.file("THIRD_PARTY_LICENSES.md"))
+    from(rootProject.layout.projectDirectory.file("EULA.md"))
+    from(rootProject.layout.projectDirectory.file("PRIVACIDADE.md"))
     into(layout.buildDirectory.dir("generated/avisosLegais/legal"))
 }
 tasks.named("preBuild") { dependsOn(copiarAvisosLegais) }
@@ -212,6 +228,9 @@ dependencies {
     implementation(libs.qr.zxing)
     // Testes e ferramentas de desenvolvimento
     testImplementation(libs.teste.junit)
+    testImplementation(libs.teste.json)
+    testImplementation(libs.teste.sqlite)
     debugImplementation(libs.compose.ui.ferramentas)
     debugImplementation(libs.compose.ui.manifesto.de.teste)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Deck</name>
     <description>HUD de ficção científica levado a sério: anéis concêntricos, um tracejado, uma régua de 40 marcas, dois arcos de progresso (velocidade em ciano, giro em âmbar), um ponto que corre a órbita externa e colchetes nos quatro cantos. À direita, três blocos — propulsão, reservas e navegação — com barras finas, e uma fileira de lâmpadas na base. Todo enfeite mostra um número real.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

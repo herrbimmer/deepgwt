@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Mapa das luzes e avisos do painel (1920×720)
 
 Atualizado em 29/09/2026 (Alpha 9.3): SENSUS com o mostrador esquerdo no lugar do de fábrica. Na 9.2, luzes 27 e 28 e os temas do APK reencaixados. Primeira medição
@@ -6,7 +7,7 @@ no carro em 27/09/2026, com a Calibração do painel da Alpha 8.8.
 - **Fonte:** 2 fotos do usuário:
   - **A** às 12:25:42: carro ligado antes do READY, na checagem das lâmpadas;
   - **B** às 12:26:36: READY, parado, porta aberta, cinto solto e freio de mão puxado.
-- **Ainda não usado:** o pacote `.zip` da sessão continua na central, em `/sdcard/OpenGW/calibracao/`. Veja "O que falta".
+- **Ainda não usado:** o pacote `.zip` da sessão continua na central, em `/sdcard/DeepGWT/calibracao/`. Veja "O que falta".
 - **Dados para ferramentas:** [`mapa-de-luzes/mapa-luzes-1920x720.json`](mapa-de-luzes/mapa-luzes-1920x720.json).
 - **Medição de fotos novas:** [`tools/calibracao-painel/medir_foto.py`](../../tools/calibracao-painel/medir_foto.py).
 
@@ -212,7 +213,7 @@ A caixa da projeção (`setProjectionBox`) do Cupertino e do coffe3 não mudou. 
 
 ## O que falta (A confirmar)
 
-1. **Pacote `.zip` da sessão.** Está no carro em `/sdcard/OpenGW/calibracao/calibracao-<data>.zip`; baixe pelo instalador em Arquivos. Com ele dá para responder:
+1. **Pacote `.zip` da sessão.** Está no carro em `/sdcard/DeepGWT/calibracao/calibracao-<data>.zip`; baixe pelo instalador em Arquivos. Com ele dá para responder:
    - qual chave do carro acende junto com cada luz (`linha-do-tempo.tsv`, `mudancas.tsv`, `vhal.tsv`);
    - se as luzes são desenhadas pelo Android ou fora dele, pelo QNX. Se aparecerem nas `tela-N.png` da captura, são Android; se não, são QNX.
    - **Leitura parcial (30/09, Alpha 9.3, pelo GwLink):** com `car.ipk_light.seat_belt_warning_indicator = 1` e `car.basic.seat_belt_warning = {1,0,0,0,0}`, as capturas `/screenshot?display=0|1|3` não mostram lâmpada nenhuma (0 = tela inicial, 1 = só o widget do rádio, 3 = ar-condicionado 1280×720). O display 2 devolveu erro 500. Aponta para QNX, **A confirmar** até o display 2 ser capturado.
@@ -228,3 +229,4 @@ A caixa da projeção (`setProjectionBox`) do Cupertino e do coffe3 não mudou. 
 2. ~~Corrigir os temas do APK~~: feito na Alpha 8.9 (seção acima), menos o Default. Os temas XTRA do instalador ficam para depois.
    - Os presets do editor que copiam a geometria do Cupertino e do NTG (`instalador/src/theme-editor/presets/cupertinoUltra.ts`, `stuttgartNtg55.ts`) ainda estão com os mostradores antigos.
 3. **Completar este mapa** com o `.zip` e o vídeo.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

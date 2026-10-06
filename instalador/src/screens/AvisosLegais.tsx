@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { ScaleIcon } from 'lucide-react'
 import { BackButton, Banner, Card } from '../ui'
 import { APP_VERSION, INSTALLER_VERSION } from '../lib/version'
@@ -19,7 +20,7 @@ const DOCUMENTOS: Documento[] = [
   },
   {
     id: 'license',
-    titulo: 'Licença do OPEN GW (LICENSE)',
+    titulo: 'Licença do DeepGWT (LICENSE)',
     resumo: 'Os termos do próprio produto, que é de licença proprietária.',
     texto: licenca,
   },
@@ -40,7 +41,7 @@ export const AvisosLegais = () => (
         <div>
           <h1 className="text-xl font-semibold tracking-tight text-text">Avisos legais</h1>
           <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-            OPEN GW <span className="font-mono">{APP_VERSION}</span> · instalador{' '}
+            DeepGWT <span className="font-mono">{APP_VERSION}</span> · instalador{' '}
             <span className="font-mono">{INSTALLER_VERSION}</span>
           </p>
         </div>
@@ -49,7 +50,7 @@ export const AvisosLegais = () => (
       <Banner tone="info" className="mb-4">
         <p className="text-xs leading-relaxed">
           Este produto usa software de terceiros sob as licenças abaixo. Haval, GWM, Android Auto,
-          CarPlay e as demais marcas citadas pertencem aos seus donos; o OPEN GW não é afiliado,
+          CarPlay e as demais marcas citadas pertencem aos seus donos; o DeepGWT não é afiliado,
           aprovado nem patrocinado por eles.
         </p>
       </Banner>
@@ -76,3 +77,4 @@ export const AvisosLegais = () => (
     </Card>
   </div>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

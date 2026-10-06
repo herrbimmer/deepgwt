@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Seção</name>
     <description>Perfil de terreno em corte com três camadas empilhadas: a superfície é o histórico de velocidade, a camada do meio é modulada pelo giro e a de baixo pelo tanque. Como as três nascem do mesmo perfil, elas acompanham o mesmo relevo com espessuras diferentes.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Preparador Cronômetro</name>
     <description>O cronógrafo que aquela oficina encaixava no mostrador grande: dois sub-relógios de segundos e minutos mordendo a borda do velocímetro, com agulhas verdes de fio. O tempo corre desde que o painel abriu -- é relógio de tela, não telemetria do carro, e a legenda diz isso sem meias palavras.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Os temas do painel que estão no carro: qual está ativo, ativar outro, baixar para editar, apagar.
 //
 // Com o app do carro na Alpha 6.5 ou mais nova, a lista vem de `GET /temas` — o ativo e o nome de
@@ -182,7 +183,7 @@ export const CarThemes = () => {
             {estado && !estado.temaCustomizado && (
               <Banner tone="info" className="mb-4">
                 O tema customizado do painel está desligado no carro: ele mostra o painel de fábrica.
-                Ligue em Ajustes do OPEN GW → Painel de instrumentos para ativar um tema daqui.
+                Ligue em Ajustes do DeepGWT → Painel de instrumentos para ativar um tema daqui.
               </Banner>
             )}
             {estado?.rascunho && (
@@ -377,3 +378,4 @@ export const CarThemes = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

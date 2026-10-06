@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { SelectHTMLAttributes } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
 import { Squircle } from './Squircle'
@@ -23,3 +24,4 @@ export function SelectField({ className = '', containerClassName = '', children,
     </Squircle>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

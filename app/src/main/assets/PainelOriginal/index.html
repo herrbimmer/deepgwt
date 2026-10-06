@@ -1,12 +1,13 @@
 <!doctype html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=1920, height=720, initial-scale=1">
 <title>Painel original</title>
 <!--
-  Página do painel original do OPEN GW (docs/independencia/specs/projetores-pagina-original.md).
-  Modo A (clusterEnabled = false): só a temperatura externa e a placa de limite da via, sobre o
+  Página do painel original do DeepGWT (docs/independencia/specs/projetores-pagina-original.md).
+  Modo A (clusterEnabled = false): temperatura externa, odômetro em tambor e placa de limite da via, sobre o
   painel de fábrica. Modo B (clusterEnabled = true): painel inteiro de reserva, mínimo e somente
   leitura. Nada aparece antes do primeiro control('clusterEnabled').
 
@@ -41,7 +42,7 @@ body {
 #temperatura {
   position: absolute;
   left: 0;
-  top: 14px;
+  top: 62px;
   width: 480px;
   text-align: center;
   white-space: nowrap;
@@ -79,6 +80,42 @@ body {
   white-space: nowrap;
 }
 #placa.tres { font-size: 44px; }
+/* Odômetro em tambor: seis rolos de gradiente (sem camada composta), abaixo do mostrador. */
+#tambor {
+  position: absolute;
+  left: 176px;
+  top: 650px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+#tambor .rolos {
+  display: flex;
+  padding: 2px;
+  border-radius: 7px;
+  background: rgb(4, 6, 10);
+  border: 1px solid rgba(163, 174, 208, 0.38);
+}
+#tambor .rolo {
+  width: 25px;
+  height: 34px;
+  margin: 0 1px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 25px;
+  line-height: 34px;
+  font-weight: 600;
+  color: rgb(236, 241, 255);
+  background: linear-gradient(180deg, rgb(2, 3, 6) 0%, rgb(38, 45, 62) 30%, rgb(66, 76, 100) 50%, rgb(38, 45, 62) 70%, rgb(2, 3, 6) 100%);
+}
+#tambor .rolo.zero { color: rgb(150, 160, 188); }
+#tambor .unidade {
+  margin-left: 8px;
+  font-size: 18px;
+  font-weight: 300;
+  color: rgb(163, 174, 208);
+}
 
 /* ── Modo B (reserva) ── */
 .faixa { position: absolute; left: 0; width: 1920px; background: rgb(7, 9, 13); }
@@ -124,6 +161,7 @@ body {
 <div id="modoA" class="camada oculto">
   <div id="temperatura"><span class="numero" id="temperaturaNumero">--</span><span class="rotulo">Temp.</span></div>
   <div id="placa" class="oculto"></div>
+  <div id="tambor" class="oculto"><div class="rolos" id="rolos"></div><span class="unidade">km</span></div>
 </div>
 <div id="modoB" class="camada oculto">
   <div id="faixaDeCima" class="faixa"></div>
@@ -154,6 +192,7 @@ body {
 
   var CHAVE_EXTERNA = 'car.basic.outside_temp';
   var CHAVE_INTERNA = 'car.basic.inside_temp';
+  var CHAVE_HODOMETRO = 'car.basic.total_odometer';
   var CHAVE_UNIDADE = 'car.configure.default_temp_unit';
   var CHAVE_LIMITE = 'car.map.tsr.nav_speed_limit';
   var CHAVE_STATUS = 'car.map.tsr.nav_speed_limit_sign_status';
@@ -164,7 +203,11 @@ body {
     originalInfo: true,
     unidade: '°C',
     externa: null,
+    externaExibida: null,
+    externaEm: 0,
+    externaTimer: null,
     interna: null,
+    hodometro: null,
     limite: null,
     status: null,
     cartao: 0,
@@ -227,8 +270,60 @@ body {
     return (r >= 1 && r <= 300) ? r : null;
   }
 
+  /**
+   * A temperatura externa só muda na tela a cada minuto (o sensor oscila e o número ficava inquieto).
+   * O primeiro valor entra na hora; os seguintes esperam o fim do intervalo e mostram o mais recente.
+   */
+  function atualizarExterna() {
+    var intervalo = (typeof window.INTERVALO_TEMPERATURA_MS === 'number') ? window.INTERVALO_TEMPERATURA_MS : 60000;
+    var agora = new Date().getTime();
+    if (estado.externaExibida === null || agora - estado.externaEm >= intervalo) {
+      if (estado.externaTimer !== null) { clearTimeout(estado.externaTimer); estado.externaTimer = null; }
+      estado.externaExibida = estado.externa;
+      estado.externaEm = agora;
+      return;
+    }
+    if (estado.externaTimer === null) {
+      estado.externaTimer = setTimeout(function () {
+        estado.externaTimer = null;
+        estado.externaExibida = estado.externa;
+        estado.externaEm = new Date().getTime();
+        try { desenhar(); } catch (e) { /* nunca lança */ }
+      }, intervalo - (agora - estado.externaEm));
+    }
+  }
+
+  /** Hodômetro total: inteiro de 0 a 999999, ou null se o carro não deu número. */
+  function quilometragem() {
+    var n = primeiroNumero(estado.hodometro);
+    if (n === null || n < 0) { return null; }
+    return Math.min(999999, Math.round(n));
+  }
+
+  function desenharTambor() {
+    var km = quilometragem();
+    var tambor = el('tambor');
+    if (km === null || !estado.originalInfo) { mostrar(tambor, false); return; }
+    var rolos = el('rolos');
+    if (!rolos.firstChild) {
+      for (var i = 0; i < 6; i++) {
+        var rolo = document.createElement('div');
+        rolo.className = 'rolo';
+        rolos.appendChild(rolo);
+      }
+    }
+    var digitos = String(km);
+    while (digitos.length < 6) { digitos = '0' + digitos; }
+    var zeros = 6 - String(km).length;
+    for (var j = 0; j < 6; j++) {
+      texto(rolos.children[j], digitos.charAt(j));
+      if (j < zeros) { rolos.children[j].classList.add('zero'); } else { rolos.children[j].classList.remove('zero'); }
+    }
+    mostrar(tambor, true);
+  }
+
   function desenharModoA() {
-    texto(el('temperaturaNumero'), textoDaTemperatura(estado.externa));
+    texto(el('temperaturaNumero'), textoDaTemperatura(estado.externaExibida));
     var placa = el('placa');
     var limite = limiteDaPlaca();
     if (limite === null) {
@@ -239,6 +334,7 @@ body {
       mostrar(placa, true);
     }
     mostrar(el('temperatura'), estado.originalInfo);
+    desenharTambor();
     if (!estado.originalInfo) { mostrar(placa, false); }
   }
 
@@ -294,7 +390,7 @@ body {
 
     var odo = primeiroNumero(c.odometer);
     texto(el('odometro'), 'ODO ' + (odo === null ? '--' : Math.round(odo)) + ' km');
-    texto(el('externaValor'), textoDaTemperatura(estado.externa));
+    texto(el('externaValor'), textoDaTemperatura(estado.externaExibida));
     texto(el('internaValor'), textoDaTemperatura(estado.interna));
 
     // O mostrador sai da frente de um app ou de uma projeção à esquerda.
@@ -334,8 +430,11 @@ body {
     try {
       if (chave === CHAVE_EXTERNA) {
         estado.externa = valor;
+        atualizarExterna();
       } else if (chave === CHAVE_INTERNA) {
         estado.interna = valor;
+      } else if (chave === CHAVE_HODOMETRO) {
+        estado.hodometro = valor;
       } else if (chave === CHAVE_UNIDADE) {
         estado.unidade = (valor !== null && valor !== undefined && aparar(valor) === '1') ? '°F' : '°C';
       } else if (chave === CHAVE_LIMITE) {
@@ -382,7 +481,7 @@ body {
   var android = window.Android;
   if (android) {
     try {
-      android.subscribe(JSON.stringify([CHAVE_EXTERNA, CHAVE_UNIDADE, CHAVE_LIMITE, CHAVE_STATUS, CHAVE_INTERNA]));
+      android.subscribe(JSON.stringify([CHAVE_EXTERNA, CHAVE_UNIDADE, CHAVE_LIMITE, CHAVE_STATUS, CHAVE_INTERNA, CHAVE_HODOMETRO]));
     } catch (e) { /* sem ponte */ }
     try {
       android.setAppDefaultDimensions(0, 62, 1920, 596);
@@ -393,3 +492,4 @@ body {
 </script>
 </body>
 </html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

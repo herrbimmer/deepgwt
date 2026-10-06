@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O canal entre quem decide os valores da prévia (cenário, linha do tempo, valores à mão, carro ao
 // vivo) e quem os entrega ao iframe (o canvas).
 //
@@ -39,7 +40,7 @@ export function criarCanalDePrevia(inicial: EstadoDaPrevia): CanalDePrevia {
 
 /** A janela do iframe da prévia, com a API que o motor expõe só para o editor. */
 export type JanelaDaPrevia = Window & {
-  OPENGW?: {
+  DEEPGWT?: {
     preview?: {
       simulacao: (ligada: boolean) => void
       valores: (mapa: Record<string, string>) => void
@@ -56,3 +57,4 @@ export function diferenca(antes: Record<string, string>, depois: Record<string, 
   for (const [k, v] of Object.entries(depois)) if (antes[k] !== v) d[k] = v
   return d
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

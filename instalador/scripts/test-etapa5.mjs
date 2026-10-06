@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes da camada EXPERT: busca nos catálogos, consulta de chave e a tabela de validação.
 //
 // Sem dependência de teste: o Node 22 remove os tipos do TypeScript sozinho, e
@@ -167,6 +168,7 @@ console.log('\nO que os vereditos NÃO podem afirmar')
   ok(/hipótese|precisa ser reproduzida/i.test(VERDICT_TEXT['descoberta'].body),
     'o veredito de descoberta diz que a chave ainda não vale como fato')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 console.log('\nTabela de validação')
 {
@@ -267,3 +269,4 @@ console.log('\nDiagrama de módulos do Coding (formato ISTA)')
 
 console.log(`\n${total} verificações. ${falhas === 0 ? 'Todas passaram.' : `${falhas} falharam.`}`)
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

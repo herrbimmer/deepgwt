@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Módulo</name>
     <description>Grade modular de 8 por 4 em que a velocidade ocupa seis células e as outras dezessete ocupam uma ou duas. A grade nunca se mexe -- só o que está dentro dela -- e cada célula tem um fio de proporção no pé que fica laranja quando o valor passa de 80%.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

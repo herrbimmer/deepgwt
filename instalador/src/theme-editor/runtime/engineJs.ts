@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O motor. Emitido byte a byte idêntico em todo tema — o que muda entre dois temas exportados é
 // só o payload e o bloco de tokens de cor. Isso é auditável: um `diff' entre dois 'app.html'
 // gerados não deve tocar neste trecho.
@@ -467,7 +468,7 @@ ${RENDERERS_JS}
         var r = inst.map(quantizar(s, s.atual));
         if (r.scaleChanged && inst.onScaleChange) inst.onScaleChange(r.curMax);
         REND[inst.el.kind].update(inst, r, s.chave);
-      } catch (e) { console.error('[OPENGW] suavizacao ' + s.chave, e); }
+      } catch (e) { console.error('[DEEPGWT] suavizacao ' + s.chave, e); }
     }
     SUAVES = restantes;
     // Enquanto houver filtro andando, o proximo quadro e pedido aqui: nenhuma telemetria nova
@@ -502,7 +503,7 @@ ${RENDERERS_JS}
           if (r.scaleChanged && inst.onScaleChange) inst.onScaleChange(r.curMax);
           REND[inst.el.kind].update(inst, r, key);
           applyVisibility(inst);
-        } catch (e) { console.error('[OPENGW]', key, e); }
+        } catch (e) { console.error('[DEEPGWT]', key, e); }
       }
     }
     if (SUAVES.length) passoDeSuavizacao();
@@ -807,7 +808,7 @@ ${RENDERERS_JS}
         var a = P.appDefault;
         window.Android.setAppDefaultDimensions(a.x, a.y, a.width, a.height);
       }
-    } catch (e) { console.error('[OPENGW] bridge:', e); }
+    } catch (e) { console.error('[DEEPGWT] bridge:', e); }
 
     pollDisplayMode();
     setInterval(function () {
@@ -823,13 +824,13 @@ ${RENDERERS_JS}
   // Sem o carro, o preview do editor precisa se comportar igual. Os valores são simulados e o
   // aviso no console diz isso — nada aqui finge ser leitura de veículo.
   //
-  // O editor desliga este sorteio assim que a pagina carrega (OPENGW.preview.simulacao(false)) e
+  // O editor desliga este sorteio assim que a pagina carrega (DEEPGWT.preview.simulacao(false)) e
   // passa a mandar os valores do cenario escolhido. O sorteio continua sendo o comportamento de
   // um app.html aberto sozinho num navegador.
   var MOCK_TIMER = null;
   var PREFS_DO_PREVIEW = {};
   function installMockBridge(P) {
-    console.warn('[OPENGW] window.Android ausente: simulação local para preview.');
+    console.warn('[DEEPGWT] window.Android ausente: simulação local para preview.');
     window.Android = {
       getAvailableKeys: function () { return JSON.stringify(P.subscribeKeys); },
       subscribe: function () {}, unsubscribe: function () {},
@@ -1048,7 +1049,7 @@ ${RENDERERS_JS}
     try {
       initBridge(P);
     } catch (erro) {
-      console.error('[OPENGW] initBridge:', erro);
+      console.error('[DEEPGWT] initBridge:', erro);
     }
 
     var app = document.getElementById('app');
@@ -1081,7 +1082,7 @@ ${RENDERERS_JS}
           var inst = buildElement(el, node);
           if (el.kind === 'readout' && el.style === 'clock' && inst.value) RELOGIOS.push(inst.value);
         } catch (erro) {
-          console.error('[OPENGW] elemento ' + el.id + ' (' + el.kind + '/' + el.style + '):', erro);
+          console.error('[DEEPGWT] elemento ' + el.id + ' (' + el.kind + '/' + el.style + '):', erro);
         }
       }
     }
@@ -1120,7 +1121,7 @@ ${RENDERERS_JS}
     if (ABERTURA_ENCERRADA) iniciarVarredura();
   }
 
-  window.OPENGW = {
+  window.DEEPGWT = {
     boot: boot,
     // Usado so pelo editor do instalador, com a pagina num iframe e o mock no lugar do carro. No
     // painel, window.Android e real, o mock nunca e instalado e ninguem chama nada disto.
@@ -1280,3 +1281,4 @@ ${RENDERERS_JS}
     },
   };
 })()`
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

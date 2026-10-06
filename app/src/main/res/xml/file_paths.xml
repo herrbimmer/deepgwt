@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <!-- Pastas que o FileProvider pode entregar a outros apps (instalar APK baixado, abrir arquivo). -->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path name="armazenamento_externo" path="."/>
     <external-files-path name="arquivos_do_app" path="/"/>
 </paths>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

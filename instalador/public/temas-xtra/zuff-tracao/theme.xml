@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Zuffenhausen Tração</name>
     <description>O supercarro de tração integral daquela casa trazia um diagrama do carro visto de cima com o estado da transmissão. Aqui as quatro rodas acendem conforme o modo publicado pelo carro -- integral, neve, areia e lama acendem as quatro; nos demais, só o eixo traseiro. A distribuição de torque entre eixos não é publicada, e o mostrador diz isso em vez de desenhar porcentagens inventadas.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

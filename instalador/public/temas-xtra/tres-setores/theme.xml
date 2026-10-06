@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Três Setores</name>
     <description>Um mostrador só, dividido em três setores de 120 graus: velocidade à esquerda, giro em cima, tanque à direita. Os três ponteiros saem do mesmo eixo mas cada um só anda no seu setor, então nunca se confundem. Coluna digital à direita e rodapé com marcha, modo e hodômetro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

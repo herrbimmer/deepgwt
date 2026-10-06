@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Valores iniciais: a paleta padrão e a fábrica de elementos.
 //
 // Um elemento novo tem que nascer usável — ligado a uma chave que o carro entrega de verdade, com
@@ -311,6 +312,7 @@ export function createElement(opts: NovoElemento, maxZ = 0): Element {
       }
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 const mask = (id: MaskId, enabled: boolean): MaskSpec => ({
   enabled, ...MASK_DEFAULTS[id], opacity: 1,
@@ -417,7 +419,7 @@ export function createTheme(nome: string, fontes: FontRef[] = ['sysSans']): Them
     id: novoId('theme'),
     folderName: folderNameFrom(nome),
     name: nome,
-    description: 'Tema criado no motor de temas do OPEN GW.',
+    description: 'Tema criado no motor de temas do DeepGWT.',
     version: '1.0.0',
     createdAt: agora,
     updatedAt: agora,
@@ -438,3 +440,4 @@ export function createTheme(nome: string, fontes: FontRef[] = ['sysSans']): Them
 
 export const newPage = (nome: string) => ({ id: novoId('page'), name: nome, elements: [] })
 export { novoId }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

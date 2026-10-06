@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>LED</name>
     <description>Oito colunas de vinte segmentos, verde até dois terços, âmbar depois e vermelho no topo, com o pico retido em branco descendo devagar -- o comportamento de um medidor de estúdio. Cada segmento acende inteiro, então a leitura é discreta e não depende de ler o número.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Manchete</name>
     <description>Uma palavra ocupa a tela inteira e qual palavra depende do estado: estacionado, ré, parado, cidade, seguindo, estrada, acima do limite, combustível. O número vira subtítulo. Vermelho e âmbar entram só nos dois casos que pedem reação.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <!-- Paleta do app: sempre escuro, grafite com um único destaque ciano (sem roxo). -->
 <resources>
     <!-- Fundos -->
@@ -10,6 +11,7 @@
     <color name="destaque_escuro">#FF2A8FA0</color>
     <!-- Texto -->
     <color name="branco">#FFFFFFFF</color>
-    <!-- Fundo do ícone do app (a frente é o mipmap `ic_launcher_foreground`). -->
-    <color name="icone_fundo">#FF2E7BC4</color>
+    <!-- Fundo do ícone do app (a frente é o drawable `ic_launcher_foreground`). -->
+    <color name="icone_fundo">#FF14171B</color>
 </resources>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

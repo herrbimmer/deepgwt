@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>PFD</name>
     <description>O mostrador primário de voo aplicado ao carro: o horizonte artificial arfa com a aceleração e inclina com a carga do motor, a fita esquerda é a velocidade, a direita é o giro e a régua de baixo faz as vezes de proa. O símbolo da aeronave em amarelo fica fixo no centro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

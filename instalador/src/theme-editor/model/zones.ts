@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // As zonas do canvas: o que o veículo desenha por cima do tema, e onde um elemento novo nasce.
 //
 // Ordem das camadas no cluster, de baixo para cima (`InstrumentProjector2.initNativeMaskViews`
@@ -125,3 +126,4 @@ export function zoneRect(spec: ThemeSpec, id: ZoneId): Rect {
   const z = placementZones(spec).find((v) => v.id === id)
   return z ? z.rect : { x: 0, y: 0, width: CANVAS_WIDTH, height: CANVAS_HEIGHT }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

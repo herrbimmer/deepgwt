@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Sem Painel</name>
     <description>Não há painel. O sedã elétrico de pilar B em vidro tirou o mostrador da frente do motorista e deixou só uma coluna estreita na borda de uma tela única -- aqui a mesma tese é levada ao painel inteiro: uma coluna à esquerda com marcha, velocidade e autonomia, uma linha de prumo, e mil e quatrocentos pixels de nada. Ler pouco não é falta de informação, é o recurso.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

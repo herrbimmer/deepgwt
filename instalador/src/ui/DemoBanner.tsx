@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { FlaskConicalIcon } from 'lucide-react'
 
 // Enquanto o modo demo está ativo este aviso fica visível, sempre. Dado sintético nunca pode
@@ -17,3 +18,4 @@ export function DemoBanner({ onExit }: { onExit?: () => void }) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

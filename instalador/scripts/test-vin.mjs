@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Verificação do decodificador de VIN. Roda com `npm run test:vin` (Node >= 22.18, que remove os
 // tipos sozinho — nenhuma dependência de teste foi adicionada ao projeto por causa disto).
 //
@@ -118,3 +119,4 @@ eq('VIN demo: fabricante desconhecido', demo.fields.find(f => f.id === 'manufact
 
 console.log(fails ? `\n${fails} FALHA(S)` : '\nTodas passaram')
 process.exit(fails ? 1 : 0)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

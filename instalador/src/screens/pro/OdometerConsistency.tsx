@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo } from 'react'
 import { GaugeIcon, ScaleIcon, ShieldAlertIcon } from 'lucide-react'
 import { BackButton, Banner, Card, ConfidenceChip } from '../../ui'
@@ -134,3 +135,4 @@ export const ProOdometerConsistency = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

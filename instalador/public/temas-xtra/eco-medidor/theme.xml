@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Eco Medidor</name>
     <description>No híbrido o conta-giros não serve para nada, porque o motor liga e desliga sozinho -- o que importa é para que lado a energia está indo. O arco vai de CARGA, à esquerda, passando por ECO, até FORÇA, e a posição da agulha sai de duas grandezas que o carro publica de verdade: corrente negativa vira recuperação, saída de energia vira força. Autonomia elétrica e de combustão aparecem separadas, como devem.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Registro</name>
     <description>Diário de bordo: cada mudança relevante vira uma linha com hora, grandeza e valor -- velocidade a cada 10 km/h, giro a cada 500 rpm, marcha e modo a cada troca. O painel conta o que aconteceu, e não só o que está acontecendo, com o estado corrente numa coluna à direita.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

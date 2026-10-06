@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /**
  * O ponteiro de segundos do Modo Descanso VARRE a 24 Hz.
  *
@@ -8,7 +9,7 @@
  * varredura contínua de um relógio mecânico bom.
  *
  * O QUE ESTE ARQUIVO FAZ
- * Não confere isso por expressão regular. Ele CARREGA o openGwRest.js num DOM de mentira, com um
+ * Não confere isso por expressão regular. Ele CARREGA o deepGwtRest.js num DOM de mentira, com um
  * `requestAnimationFrame` e um relógio que este teste controla, entra no Modo Descanso e conta o
  * que foi escrito em cada nó. É a única forma de provar as três coisas que importam ao mesmo
  * tempo:
@@ -21,7 +22,7 @@
  *      de uma tela que o usuário já fechou, e numa central isso é bateria e calor de graça.
  *
  * A cadência de 24 Hz em si não é imposta aqui dentro: ela vem do orçamento de quadros instalado
- * em openGwClient.js, que já limita o `requestAnimationFrame` da página inteira. O que este
+ * em deepGwtClient.js, que já limita o `requestAnimationFrame` da página inteira. O que este
  * arquivo garante é que o relógio ANDE POR QUADRO, que é o que faz a varredura acompanhar esse
  * orçamento em vez de ignorá-lo.
  *
@@ -47,11 +48,11 @@ function ok(descricao, condicao, detalhe) {
   }
 }
 
-const fonte = existsSync(join(WWW, 'openGwRest.js'))
-  ? readFileSync(join(WWW, 'openGwRest.js'), 'utf8')
+const fonte = existsSync(join(WWW, 'deepGwtRest.js'))
+  ? readFileSync(join(WWW, 'deepGwtRest.js'), 'utf8')
   : ''
 if (!fonte) {
-  console.log('openGwRest.js não encontrado.')
+  console.log('deepGwtRest.js não encontrado.')
   process.exit(1)
 }
 
@@ -132,7 +133,7 @@ function montarAmbiente(inicioMs) {
   runInContext(fonte, ctx)
 
   return {
-    api: () => win.OpenGwRest,
+    api: () => win.DeepGwtRest,
     escritas,
     /** Avança o relógio e entrega um quadro, como o navegador faria. */
     passarQuadro(deltaMs) {
@@ -154,7 +155,7 @@ const PASSO = 1000 / 24
 const amb = montarAmbiente(INICIO)
 const api = amb.api()
 
-ok('o Modo Descanso se expõe em window.OpenGwRest', !!api && typeof api.enter === 'function')
+ok('o Modo Descanso se expõe em window.DeepGwtRest', !!api && typeof api.enter === 'function')
 
 api.enter()
 ok('entrar arma um quadro', amb.quadrosArmados() === 1, 'sem rAF armado o relógio não anda')
@@ -172,6 +173,7 @@ function transformesDe(indiceDoNo) {
   }
   return nosComTransform[indiceDoNo]
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 const porNo = new Map()
 for (const e of amb.escritas) {
@@ -251,3 +253,4 @@ if (falhas > 0) {
   process.exit(1)
 }
 console.log(`${total} verificações, todas passaram.`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Caixa Alta</name>
     <description>Uma regra só: nenhum número pode ser maior que a palavra que o nomeia. A hierarquia vem do peso e do espaço entre linhas, nunca do corpo do algarismo, e tudo está em caixa alta sobre filetes que dividem a página em oito faixas.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

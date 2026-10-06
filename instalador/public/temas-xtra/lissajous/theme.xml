@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Lissajous</name>
     <description>Uma figura de Lissajous fechada, com a razão entre as frequências tirada da velocidade e do giro: a forma muda de desenho quando a marcha troca, a amplitude cresce com a velocidade e a defasagem vem do nível do tanque. Um ponto âmbar percorre a curva.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

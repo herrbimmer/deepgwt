@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Bávaro Aquecimento</name>
     <description>O cupê de Munique com zona vermelha móvel: com o motor frio ela começa em 4000 rpm e vai subindo até 7000 conforme o propulsor aquece, exatamente como no carro que inventou a ideia. Como temperatura de óleo não é publicada por este barramento, o aquecimento é estimado pelo tempo de motor em marcha -- 180 segundos até quente -- e o mostrador escreve isso embaixo.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

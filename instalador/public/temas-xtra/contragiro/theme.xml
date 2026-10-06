@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Contragiro</name>
     <description>Duas escalas no mesmo eixo girando em sentidos opostos: velocidade no anel de fora, horário, e giro no de dentro, anti-horário. Os dois ponteiros abrem em V quando as grandezas sobem juntas e se fecham quando só uma sobe, o que dá uma leitura de carga do motor sem número nenhum.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

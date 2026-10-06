@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Onde os temas ficam salvos neste computador, e como um rascunho antigo continua abrindo.
 //
 // São DUAS migrações encadeadas, cada uma do formato imediatamente anterior:
@@ -6,7 +7,7 @@
 //   v1 -> v2: `ClusterElement` (x/y/largura/altura, `dataSource` cru) virou `ThemeSpec`.
 //
 // A segunda migração troca de chave de armazenamento em vez de reescrever a antiga por cima. Se
-// algo der errado aqui, o rascunho original continua em `opengw_theme_drafts`, intacto — e o
+// algo der errado aqui, o rascunho original continua em `deepgwt_theme_drafts`, intacto — e o
 // usuário pode ter passado semanas nele.
 
 import type { Element, ElementKind, ThemeSpec } from './model/spec'
@@ -14,8 +15,8 @@ import { createElement, createTheme, folderNameFrom } from './model/defaults'
 import { firstLegalSlot, isLegal, movedTo } from './model/collision'
 import { HINT_BY_KEY } from './model/dataSources'
 
-const CHAVE_V2 = 'opengw_themes_v2'
-const CHAVE_V1 = 'opengw_theme_drafts'
+const CHAVE_V2 = 'deepgwt_themes_v2'
+const CHAVE_V1 = 'deepgwt_theme_drafts'
 
 // --- migração do formato antigo -------------------------------------------------------------
 
@@ -188,3 +189,4 @@ export function saveTheme(spec: ThemeSpec) {
 export function deleteTheme(id: string) {
   localStorage.setItem(CHAVE_V2, JSON.stringify(listThemes().filter((t) => t.id !== id)))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

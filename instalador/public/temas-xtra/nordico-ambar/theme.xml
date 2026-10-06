@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Nórdico Âmbar</name>
     <description>A retroiluminacao âmbar do hatch compacto sueco do meio dos anos 2000, com o anel quente sozinho de um lado e a coluna de console do outro -- que e onde aquela geracao pôs o radio, numa placa fina e flutuante. Anel de 252 px acionado por stroke-dasharray, número de 150 px no meio e quatro linhas de console a direita.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

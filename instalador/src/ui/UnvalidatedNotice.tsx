@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { BeakerIcon, CircleDashedIcon } from 'lucide-react'
 import { Banner } from './Banner'
 import { validationOf, type CapabilityId } from '../validation/status'
@@ -21,3 +22,4 @@ export function UnvalidatedNotice({ capability }: { capability?: CapabilityId })
     </Banner>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

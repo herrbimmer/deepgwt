@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Grafite</name>
     <description>Desenho a lápis: o valor é hachura. Cinco caixas recebem traços a 45 graus cujo passo cai de 30 para 5 pixels conforme a grandeza sobe, e a pressão do lápis -- espessura e opacidade -- sobe junto. É como se sombreia um croqui.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

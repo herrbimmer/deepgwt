@@ -1,0 +1,780 @@
+/* DeepGWT 10.2 - janela de configuracoes e botoes do cromo (visual "Grafite").
+ *
+ * Folha fina na borda direita (sem blur, sem will-change), trilho de secoes por
+ * icone + rotulo curto, segmentados no lugar de selects, sliders com valor a direita.
+ * Tokens --dg-* ficam presos aos componentes daqui (nao vazam para os widgets).
+ * Tema claro: #hv-root.hv-widgets-light. Movimento so com transform/opacity, <= 200 ms. */
+
+/* ---------- tokens ---------- */
+html body .hv-config-dock,
+html body .hv-car-stage-action,
+html body .hv-tool-btn-group,
+html body .hv-cam-fab {
+  --dg-surface: rgba(24, 25, 28, .82);
+  --dg-sheet: rgba(24, 25, 28, .94);
+  --dg-surface-2: rgba(255, 255, 255, .06);
+  --dg-surface-3: rgba(255, 255, 255, .11);
+  --dg-line: rgba(255, 255, 255, .07);
+  --dg-text: #f2f3f5;
+  --dg-text-dim: rgba(242, 243, 245, .62);
+  --dg-text-faint: rgba(242, 243, 245, .38);
+  --dg-on-bg: #f2f3f5;
+  --dg-on-fg: #111214;
+  --dg-track: rgba(255, 255, 255, .16);
+  --dg-thumb: #f2f3f5;
+  --dg-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  --dg-danger: #ef6a5f;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+html body #hv-root.hv-widgets-light .hv-config-dock,
+html body #hv-root.hv-widgets-light .hv-car-stage-action,
+html body #hv-root.hv-widgets-light .hv-tool-btn-group,
+html body #hv-root.hv-widgets-light .hv-cam-fab {
+  --dg-surface: rgba(250, 251, 252, .88);
+  --dg-sheet: rgba(250, 251, 252, .96);
+  --dg-surface-2: rgba(20, 24, 30, .06);
+  --dg-surface-3: rgba(20, 24, 30, .11);
+  --dg-line: rgba(20, 24, 30, .09);
+  --dg-text: #16181c;
+  --dg-text-dim: rgba(22, 24, 28, .66);
+  --dg-text-faint: rgba(22, 24, 28, .42);
+  --dg-on-bg: #16181c;
+  --dg-on-fg: #f6f7f9;
+  --dg-track: rgba(20, 24, 30, .16);
+  --dg-thumb: #16181c;
+  --dg-shadow: 0 10px 30px rgba(20, 28, 40, .16);
+  --dg-danger: #d44a3f;
+}
+
+/* ---------- botoes do cromo ---------- */
+html body .hv-car-stage-action {
+  position: absolute;
+  z-index: 34;
+  height: 46px;
+  min-width: 46px;
+  padding: 0 14px;
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--dg-line);
+  border-radius: 14px;
+  background: var(--dg-surface);
+  color: var(--dg-text);
+  box-shadow: var(--dg-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, background-color .16s ease;
+}
+html body .hv-car-stage-action.hv-stage-config { width: 140px; }
+html body .hv-car-stage-action.hv-stage-cam { width: 46px; padding: 0; }
+html body .hv-car-stage-action:active {
+  transform: scale(.96);
+  background: var(--dg-surface-3);
+  border-color: var(--dg-line);
+  color: var(--dg-text);
+}
+html body .hv-car-stage-action svg { width: 20px; height: 20px; flex: 0 0 auto; }
+
+/* barra do modo desktop: ajustes + papel de parede */
+html body .hv-toolbar .hv-tool-btn-group {
+  display: inline-flex;
+  align-items: stretch;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid var(--dg-line);
+  background: var(--dg-surface);
+  box-shadow: var(--dg-shadow);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+html body .hv-toolbar button.hv-tool-btn.hv-tool-btn-group-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  min-width: 46px;
+  height: 46px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dg-text);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease;
+}
+html body .hv-toolbar button.hv-tool-btn.hv-tool-btn-group-item.on {
+  background: var(--dg-on-bg);
+  color: var(--dg-on-fg);
+}
+html body .hv-toolbar button.hv-tool-btn .hv-tool-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+html body .hv-toolbar button.hv-tool-btn .hv-tool-icon svg { width: 20px; height: 20px; display: block; }
+html body .hv-tool-btn-sep {
+  width: 1px;
+  flex-shrink: 0;
+  align-self: center;
+  height: 22px;
+  background: var(--dg-line);
+}
+
+/* botoes redondos sobre o carro (camera e raio-X) */
+html body .hv-cam-fab-btn {
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--dg-line);
+  background: var(--dg-surface);
+  color: var(--dg-text);
+  box-shadow: var(--dg-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+html body .hv-cam-fab-btn.act {
+  background: var(--dg-on-bg);
+  border-color: var(--dg-on-bg);
+  color: var(--dg-on-fg);
+}
+html body .hv-cam-fab-btn svg,
+html body .hv-cam-fab-btn .hv-xray-icon { width: 20px; height: 20px; }
+
+/* ---------- a folha ---------- */
+html body .hv-config-dock {
+  position: absolute;
+  z-index: 22;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  pointer-events: auto;
+  color: var(--dg-text);
+  transition: opacity .12s ease;
+}
+/* "espiar": com o dedo num slider a folha some quase toda e o carro aparece */
+html.dg-cfg-peek body .hv-config-dock { opacity: .35; }
+
+@keyframes dgSheetIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dgSecIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+html body .hv-config-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: inherit;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 22px;
+  border: 1px solid var(--dg-line);
+  background: var(--dg-sheet);
+  color: var(--dg-text);
+  box-shadow: var(--dg-shadow);
+  font-size: 13px;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  animation: dgSheetIn .16s ease-out both;
+}
+html body .hv-config-panel button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+
+/* cabecalho */
+html body .hv-config-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 10px 6px 18px;
+  flex: 0 0 auto;
+}
+html body .hv-config-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--dg-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+html body .hv-config-save {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dg-text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-config-save::before { content: ''; position: absolute; left: 0; right: 0; top: -6px; bottom: -6px; }
+html body .hv-config-save svg { width: 15px; height: 15px; flex: 0 0 auto; }
+html body .hv-config-save.is-dirty {
+  min-height: 44px;
+  padding: 0 16px;
+  background: var(--dg-on-bg);
+  color: var(--dg-on-fg);
+  font-weight: 600;
+}
+html body .hv-config-save.is-dirty svg { display: none; }
+html body .hv-config-save.is-saved svg { color: #5ecb8b; }
+html body .hv-config-save:active { transform: scale(.96); }
+html body .hv-config-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  cursor: pointer;
+  transition: transform .12s ease, background-color .16s ease;
+}
+html body .hv-config-close svg { width: 20px; height: 20px; }
+html body .hv-config-close:active { transform: scale(.94); background: var(--dg-surface-3); }
+
+/* trilho de secoes */
+html body .hv-config-rail {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2px;
+  padding: 4px 8px 8px;
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--dg-line);
+}
+html body .hv-config-rail button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  height: 56px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--dg-text-dim);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-config-rail button svg { width: 22px; height: 22px; flex: 0 0 auto; }
+html body .hv-config-rail button:active { transform: scale(.95); }
+html body .hv-config-rail button.on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+
+/* corpo */
+html body .hv-config-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 4px 18px 18px;
+}
+html body .hv-config-body.hv-sec-a { animation: dgSecIn .16s ease-out both; }
+html body .hv-config-body.hv-sec-b { animation: dgSecIn .16s ease-out .001s both; }
+html body .hv-config-body > *:first-child { margin-top: 12px; }
+
+/* rotulos e textos */
+html body .hv-cfg-label {
+  margin: 18px 0 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--dg-text-dim);
+}
+html body .hv-cfg-label b { margin-left: 6px; font-weight: 500; color: var(--dg-text); }
+html body .hv-cfg-sub { margin: 16px 0 4px; font-size: 13px; font-weight: 600; color: var(--dg-text); }
+html body .hv-cfg-hint { margin: 8px 0 4px; font-size: 12px; line-height: 1.45; color: var(--dg-text-faint); }
+
+/* cores */
+html body .hv-paint-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px 0;
+  justify-items: center;
+  margin: 0 0 4px;
+}
+html body .hv-swatch {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--dg-line);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+  transition: box-shadow .16s ease, transform .12s ease;
+}
+html body .hv-swatch:active { transform: scale(.94); }
+html body .hv-swatch.on {
+  box-shadow: 0 0 0 3px var(--dg-sheet), 0 0 0 5px var(--dg-text);
+}
+html body .hv-swatch-custom {
+  background: conic-gradient(#e5544b, #f0b24a, #5ecb8b, #4fa9e8, #8d7be8, #e5544b);
+  overflow: hidden;
+}
+html body .hv-swatch-custom::after {
+  content: '';
+  position: absolute;
+  inset: 11px;
+  border-radius: 50%;
+  background: var(--dg-sheet);
+  pointer-events: none;
+}
+html body .hv-swatch-custom input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+html body .hv-cfg-colorrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 6px 0 10px;
+}
+html body .hv-cfg-colorrow > span { font-size: 13px; color: var(--dg-text-dim); }
+html body .hv-cfg-colorrow > .hv-config-row { flex: 1; margin: 0; min-width: 0; }
+html body .hv-cfg-colorpair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 6px 0 10px;
+}
+html body .hv-cfg-colorpair label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  font-size: 13px;
+  color: var(--dg-text-dim);
+  cursor: pointer;
+}
+
+/* acabamento da pintura */
+html body .hv-fin-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+html body .hv-fin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 80px;
+  padding: 8px 2px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text-dim);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-fin:active { transform: scale(.96); }
+html body .hv-fin-ball {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .18), 0 2px 6px rgba(0, 0, 0, .25);
+}
+html body .hv-fin.on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+
+/* segmentados e chips */
+html body .hv-seg {
+  display: grid;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 16px;
+  background: var(--dg-surface-2);
+}
+html body .hv-seg-3 { grid-template-columns: repeat(3, 1fr); }
+html body .hv-seg-4 { grid-template-columns: repeat(4, 1fr); }
+html body .hv-seg-sub { margin: 4px 0 12px; }
+html body .hv-seg button {
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--dg-text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-seg button:active { transform: scale(.96); }
+html body .hv-seg button.on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+
+html body .hv-chipgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+html body .hv-chipgrid-3 { grid-template-columns: repeat(3, 1fr); }
+html body .hv-chipgrid button,
+html body .hv-cfg-wide,
+html body .hv-cam-save-row > button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-chipgrid button:active,
+html body .hv-cfg-wide:active,
+html body .hv-cam-save-row > button:active { transform: scale(.97); }
+html body .hv-chipgrid button.on,
+html body .hv-cam-save-row > button.on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+html body .hv-cfg-wide { display: block; width: 100%; margin-top: 10px; }
+
+/* cenarios */
+html body .hv-scene-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  max-height: none;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+html body .hv-scene-list button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .16s ease, color .16s ease, transform .12s ease;
+}
+html body .hv-scene-list button:active { transform: scale(.97); }
+html body .hv-scene-list button.on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+html body .hv-scene-swatch {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .35);
+}
+
+/* interruptores */
+html body .hv-cfg-switchrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+  font-size: 14px;
+  color: var(--dg-text);
+}
+html body .hv-cfg-switches { display: flex; flex-direction: column; }
+html body .hv-sw {
+  position: relative;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-3);
+  cursor: pointer;
+  transition: background-color .16s ease;
+}
+html body .hv-sw::before { content: ''; position: absolute; left: -4px; right: -4px; top: -8px; bottom: -8px; }
+html body .hv-sw i {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--dg-text-dim);
+  transition: transform .16s ease, background-color .16s ease;
+}
+html body .hv-sw.on { background: var(--dg-on-bg); }
+html body .hv-sw.on i { background: var(--dg-on-fg); transform: translateX(18px); }
+html body .hv-cfg-pill {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* "Mais ajustes" e "Restaurar" */
+html body .hv-cfg-more {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 14px;
+  padding: 0 2px;
+  border: 0;
+  border-top: 1px solid var(--dg-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--dg-text-dim);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+html body .hv-cfg-more svg { width: 18px; height: 18px; transition: transform .16s ease; }
+html body .hv-cfg-more.open svg { transform: rotate(180deg); }
+html body .hv-cfg-more-body { padding-top: 4px; }
+html body .hv-cfg-restore {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid var(--dg-line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--dg-text-faint);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+html body .hv-cfg-restore:active { color: var(--dg-text); }
+
+/* sliders */
+html body .hv-config-row { margin: 4px 0 12px; }
+html body .hv-config-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+}
+html body .hv-config-row-head span:first-child {
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0;
+  opacity: 1;
+  color: var(--dg-text-dim);
+}
+html body .hv-config-val {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dg-text);
+  font-variant-numeric: tabular-nums;
+}
+html body .hv-config-panel input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  background: transparent;
+  touch-action: pan-x;
+}
+html body .hv-config-panel input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--dg-track);
+}
+html body .hv-config-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  margin-top: -9px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--dg-thumb);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
+}
+html body .hv-config-panel input[type="range"]:disabled { opacity: .35; }
+html body .hv-range-row { display: flex; align-items: center; gap: 8px; margin: 0; }
+html body .hv-range-nudge {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+html body .hv-range { position: relative; flex: 1; height: 44px; touch-action: none; -webkit-user-select: none; user-select: none; }
+html body .hv-range-track {
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--dg-track);
+  pointer-events: none;
+}
+html body .hv-range-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; border-radius: 2px; background: var(--dg-text-dim); }
+html body .hv-range-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: var(--dg-thumb);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
+  pointer-events: none;
+}
+
+/* catalogo de rodas */
+html body .hv-wheel-catalog {
+  display: grid;
+  gap: 6px;
+  max-height: 236px;
+  margin: 0 0 4px;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+html body .hv-config-dock .hv-wheel-catalog { flex: none; min-height: 0; max-height: 236px; }
+html body .hv-wheel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 4px 6px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text-dim);
+  cursor: pointer;
+  transition: background-color .16s ease, transform .12s ease;
+}
+html body .hv-wheel-card:active { transform: scale(.97); }
+html body .hv-wheel-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: transparent; }
+html body .hv-wheel-card span {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.15;
+  text-align: center;
+  word-break: break-word;
+}
+html body .hv-wheel-card.on { background: var(--dg-surface-3); box-shadow: inset 0 0 0 2px var(--dg-text); color: var(--dg-text); }
+html body .hv-wheel-thumb { position: relative; display: block; width: 100%; line-height: 0; }
+html body .hv-wheel-thumb-spin {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid var(--dg-line);
+  border-top-color: var(--dg-text);
+  border-radius: 50%;
+  animation: vp-spin .9s linear infinite;
+}
+
+/* camera */
+html body .hv-cam-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 0 0 6px; }
+html body .hv-cam-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-height: 44px;
+  padding: 3px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--dg-surface-2);
+  color: var(--dg-text);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+html body .hv-cam-tile.is-on { background: var(--dg-on-bg); color: var(--dg-on-fg); }
+html body .hv-cam-ico { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; opacity: .85; }
+html body .hv-cam-ico-shot { border-radius: 8px; background: none; }
+html body .hv-cam-tile.is-on .hv-cam-ico-shot { opacity: 1; background: rgba(120, 124, 132, .45); }
+html body .hv-cam-cap { font-size: 12px; font-weight: 600; color: var(--dg-text-dim); pointer-events: none; }
+html body .hv-cam-tile.is-on .hv-cam-cap { color: var(--dg-on-fg); }
+html body .hv-cam-tile.is-pick .hv-cam-ico-shot { opacity: .3; }
+html body .hv-cam-plus { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 400; line-height: 1; color: var(--dg-text-dim); pointer-events: none; }
+html body .hv-cam-tile.is-on .hv-cam-plus { color: var(--dg-on-fg); }
+html body .hv-cam-tile.is-pick .hv-cam-plus { color: var(--dg-text); }
+html body .hv-cam-tile.is-flash { box-shadow: inset 0 0 0 2px var(--dg-text) !important; background: var(--dg-surface-3) !important; }
+html body .hv-cam-tile.is-delete { background: rgba(239, 106, 95, .22) !important; box-shadow: inset 0 0 0 2px var(--dg-danger); }
+html body .hv-cam-tile.is-delete .hv-cam-ico-shot { opacity: .22; }
+html body .hv-cam-del { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--dg-danger); pointer-events: none; }
+html body .hv-cam-save-row { display: flex; gap: 6px; margin-top: 6px; }
+html body .hv-cam-save-row > button { flex: 1; }
+html body .hv-cam-save-row > button.is-danger { color: var(--dg-danger); }
+
+/* movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  html body .hv-config-panel,
+  html body .hv-config-body { animation: none !important; transition: none !important; }
+}

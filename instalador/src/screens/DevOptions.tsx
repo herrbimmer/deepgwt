@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import {
@@ -55,7 +56,7 @@ export const DevOptions = () => {
           Opções de Desenvolvedor
         </h1>
         <p className="text-text-tertiary mb-6 text-center text-sm leading-relaxed">
-          Mirror de tela, transferência de arquivos e backup do carro. Requer o OPEN GW aberto
+          Mirror de tela, transferência de arquivos e backup do carro. Requer o DeepGWT aberto
           no carro e este computador no Wi-Fi do carro (hotspot da central, 192.168.33.x).
         </p>
 
@@ -90,7 +91,7 @@ export const DevOptions = () => {
             </button>
             {testResult === 'ok' && (
               <span className="flex items-center gap-1 text-success text-xs">
-                <CheckCircle2Icon size={14} /> OPEN GW respondeu
+                <CheckCircle2Icon size={14} /> DeepGWT respondeu
               </span>
             )}
             {testResult === 'fail' && (
@@ -138,3 +139,4 @@ export const DevOptions = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // De onde saem as opções que a aba Coding oferece para uma chave.
 //
 // A REGRA QUE ESTE ARQUIVO NÃO QUEBRA: nenhuma opção é inventada. Não existe em lugar nenhum —
@@ -115,3 +116,4 @@ export function buildKeyTree(keys: string[], depth = 2): TreeNode {
   }
   return root
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

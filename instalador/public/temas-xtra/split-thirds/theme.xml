@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Split Thirds</name>
     <description>Três painéis verticais separados por fios de 1px: clima à esquerda (temperatura do motorista, escada de 7 níveis do ventilador, AUTO, recirculação e ionizador), condução no centro (velocidade, marcha, níveis de combustível e bateria, hodômetro, hora) e mídia + telefone à direita, com capa do álbum quando o carro manda uma e o nome de quem está ligando.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

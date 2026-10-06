@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O inspetor do modo Básico: estilo, cores e o que mostrar, sem chave nenhuma à vista.
 //
 // Duas telas. Sem elemento escolhido: a aparência do tema inteiro (destaque, claro ou escuro,
@@ -224,3 +225,4 @@ export function PainelBasicoDoElemento({ spec, element, onChange, onAvancado }: 
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

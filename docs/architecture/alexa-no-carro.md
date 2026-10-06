@@ -1,18 +1,19 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Alexa no carro (Alpha 9.0) — SUBSTITUÍDA na Alpha 9.1
 
 > **Histórico.** Tudo abaixo foi removido na Alpha 9.1 e trocado pelo assistente de voz próprio
 > (`assistente-de-voz.md`). Motivos: a central **não tem Play Store nem serviços do Google**
 > (confirmado pelo dono do carro em 28/09/2026; o `40_pkgs.txt` citado abaixo listava
 > `com.android.vending`/`com.google.android.gms` em `/data/app`, instalados à parte, não de
-> fábrica), e o pedido passou a ser algo integrado ao OPEN GW, sem app de terceiro. A Alexa
+> fábrica), e o pedido passou a ser algo integrado ao DeepGWT, sem app de terceiro. A Alexa
 > embutida (AVS) não é opção: a Amazon fechou as ferramentas da AVS para novos produtos.
 
 
-A Alexa da Amazon na central pelo **app oficial** (`com.amazon.dee.app`). O OPEN GW não embute a
+A Alexa da Amazon na central pelo **app oficial** (`com.amazon.dee.app`). O DeepGWT não embute a
 Alexa, não fala com a Amazon e não guarda senha: deixa o app a um toque e tira do caminho o que
 atrapalha numa central de carro. Nada liga a Alexa ao carro (vidros, ar etc.).
 
-Por que o app oficial e não o Alexa Voice Service dentro do OPEN GW: o AVS exige produto registrado
+Por que o app oficial e não o Alexa Voice Service dentro do DeepGWT: o AVS exige produto registrado
 na Amazon e certificação para distribuir; o app oficial já existe, é atualizado pela loja, e a
 central tem Play Store + GMS (`knowledge/session_2026-09-15/raw_telnet/40_pkgs.txt`, Android 9).
 
@@ -27,7 +28,7 @@ central tem Play Store + GMS (`knowledge/session_2026-09-15/raw_telnet/40_pkgs.t
 | Tela | `ui/screens/AlexaScreen.kt` | Recursos → Alexa: 4 passos (instalar, preparar, conta Amazon, botão) + microfone. |
 | Coringa | `carro/AcoesDoCoringa.kt` | `AcaoDoCoringa.ALEXA` (`id = "alexa"`). |
 | Gaveta | `ui/components/BottomBarUI.kt` (`DrawerMenuContent`) | Seção "Assistente" só com a Alexa instalada e atalhos ligados. |
-| Launcher 3D | `assets/www/openGwClient.js` (`installAlexaShortcut`) | Pílula `#opengw-alexa`, ordem 2 no trilho. |
+| Launcher 3D | `assets/www/deepGwtClient.js` (`installAlexaShortcut`) | Pílula `#deepgwt-alexa`, ordem 2 no trilho. |
 | Página do celular | `assets/assistente/teclado.html` | Servida pelo GwLink em `/teclado`. |
 
 ## Chamar a Alexa
@@ -41,7 +42,7 @@ central tem Play Store + GMS (`knowledge/session_2026-09-15/raw_telnet/40_pkgs.t
    `ACTION_VOICE_COMMAND` → tela inicial do app. `FLAG_ACTIVITY_NEW_TASK`.
 
 Origens: `"volante"` (coringa, na `FilaDoCarro`), `"launcher"` (`POST /quick/alexa`), `"gaveta"` e
-`"tela do OPEN GW"` (`falarEmSegundoPlano`, que mostra o motivo no cartão da barra se falhar).
+`"tela do DeepGWT"` (`falarEmSegundoPlano`, que mostra o motivo no cartão da barra se falhar).
 
 ## Preparar (Shizuku)
 
@@ -75,7 +76,7 @@ Play Store vê a pílula sem recarregar). Sem laço de perguntas.
   tempo constante. Quem está no Wi-Fi mas não vê a tela não digita.
 - O texto não vai para o log: `ShizukuUtils.runCommandAndGetOutput(comando, rotuloNoLog)` registra o
   rótulo no lugar do comando em falha. Não vai para preferência; a tela mostra só a contagem.
-- ASCII: `sh -c 'input "$@" && echo OPENGW_INPUT_OK' opengw text <pedaço>` — o texto é argumento,
+- ASCII: `sh -c 'input "$@" && echo DEEPGWT_INPUT_OK' deepgwt text <pedaço>` — o texto é argumento,
   o shell não o interpreta; a marca só sai com código 0 (é assim que a rota sabe se digitou).
   Pedaços cortados entre `%` e `s` (o `input text` lê `%s` como espaço).
 - Com acento: área de transferência + `KEYCODE_PASTE` (279); limpa em 3 s se ainda for o nosso.
@@ -83,7 +84,7 @@ Play Store vê a pílula sem recarregar). Sem laço de perguntas.
 
 ## Gancho de teste
 
-`BuildConfig.DEBUG` + `setprop debug.opengw.alexa_pacote <pacote>` troca a Alexa por outro app (o
+`BuildConfig.DEBUG` + `setprop debug.deepgwt.alexa_pacote <pacote>` troca a Alexa por outro app (o
 emulador não tem Alexa). No GW_Car_Sim: `com.google.android.carassistant` (não atende `ASSIST`, então
 exercita o caminho "tela inicial", que lá já é a tela de escuta). Ignorado no APK de produção.
 
@@ -98,3 +99,4 @@ exercita o caminho "tela inicial", que lá já é a tela de escuta). Ignorado no
 - Digitar pelo Shizuku do carro (no emulador o Shizuku não autoriza o user 10; o comando idêntico foi
   validado direto por `adb shell`).
 - Áudio da Alexa com o foco de áudio da central.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

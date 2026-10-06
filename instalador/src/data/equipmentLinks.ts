@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Liga cada ajuste do catálogo à flag de fábrica que diz se o carro TEM aquele hardware.
 //
 // O problema que isto resolve é concreto e foi encontrado no veículo. O catálogo oferece
@@ -70,3 +71,4 @@ export type EquipmentVerdict = {
   value: string
   factoryFlag: string
 } | null
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

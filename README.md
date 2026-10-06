@@ -1,6 +1,6 @@
-# OPEN GW
+# DeepGWT
 
-**OPEN GW** is an Android app for the Haval H6 GT (GWM) multimedia system — instrument-cluster themes, HUD, projection circle, bottom bar, 3D launcher, macros, driver profiles and tiered licensing — plus a companion desktop installer (Tauri/React) for managing the car from a Mac/Windows/Linux machine.
+**DeepGWT** is an Android app for the Haval H6 GT (GWM) multimedia system — instrument-cluster themes, HUD, projection circle, bottom bar, 3D launcher, macros, driver profiles and tiered licensing — plus a companion desktop installer (Tauri/React) for managing the car from a Mac/Windows/Linux machine.
 
 It includes a custom instrument-cluster theme engine, driver profiles, ambient-light BLE control, DVR management, a mobile-data/hotspot router and an experimental physical USB Stream Deck integration.
 
@@ -29,13 +29,13 @@ This project is an unofficial, educational reverse-engineering initiative. It is
 
 ### Licensing
 
-**OPEN GW is proprietary, closed-source software.** It is licensed to users under the terms in [LICENSE](LICENSE); all rights not expressly granted there are reserved by the copyright holder. Unauthorized reproduction or redistribution is not permitted.
+**DeepGWT is free for personal use under the [Vespermann Accessible Software License (VASL) 1.0](LICENSE).** Source code may be read and modified for private, non-commercial use; public forks, redistribution, commercial use and modified builds require the author's written authorization. No activation code or VIN lock is required in this version. Copyright © 2026 Miguel Vespermann Araújo.
 
 **It incorporates third-party components, and each of those stays under its own license** (Apache-2.0 libraries from AOSP/Google/Apache/JetBrains, MIT libraries from Rikka, fonts under the SIL Open Font License 1.1, among others — see the documents below). Those licenses grant rights this product's license does not, and nothing here overrides or revokes them.
 
 | Document | Contents |
 |---|---|
-| [LICENSE](LICENSE) | The proprietary license covering our own code |
+| [LICENSE](LICENSE) | VASL 1.0 — the license covering our own code |
 | [NOTICE](NOTICE) | Third-party notices that ship with every copy |
 | [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) | Full third-party inventory and license texts |
 | [COPYRIGHT.md](COPYRIGHT.md) | Ownership breakdown — ours vs. third parties |
@@ -54,7 +54,7 @@ The product runs locally on the car's head unit and on your own computer. It req
 
 Vehicle data read by the app — speed, temperatures, diagnostic values, coding keys — is processed on the device and is not transmitted, except where it appears in a problem report you choose to send.
 
-*(PT) O OPEN GW é software **proprietário e de código fechado** — veja [LICENSE](LICENSE). Ele incorpora componentes de terceiros, cada um sob a sua própria licença (veja [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) e [NOTICE](NOTICE)). **Não é afiliado, endossado ou conectado à Haval, à Great Wall Motors (GWM) ou a qualquer entidade relacionada.** Privacidade: o produto roda localmente, não exige conta e não coleta telemetria em segundo plano; dados só saem do aparelho em relatórios de problema enviados por você (logs + identificadores de sessão/instalação), na checagem de atualização, e em funções online que você mesmo aciona. Dados do veículo são processados no próprio aparelho.*
+*(PT) O DeepGWT é **gratuito para uso pessoal** sob a licença VASL 1.0 — veja [LICENSE](LICENSE); forks públicos, redistribuição e uso comercial exigem autorização escrita do autor. Ele incorpora componentes de terceiros, cada um sob a sua própria licença (veja [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) e [NOTICE](NOTICE)). **Não é afiliado, endossado ou conectado à Haval, à Great Wall Motors (GWM) ou a qualquer entidade relacionada.** Privacidade: o produto roda localmente, não exige conta e não coleta telemetria em segundo plano; dados só saem do aparelho em relatórios de problema enviados por você (logs + identificadores de sessão/instalação), na checagem de atualização, e em funções online que você mesmo aciona. Dados do veículo são processados no próprio aparelho.*
 
 ## Legal disclaimer / limitation of liability
 

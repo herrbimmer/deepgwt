@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { FlaskConicalIcon, LoaderIcon, WifiIcon, WifiOffIcon, ZapIcon } from 'lucide-react'
 import { useVehicleSession } from '../state/VehicleSession'
@@ -38,3 +39,4 @@ export function ConnectionPill() {
     </Link>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

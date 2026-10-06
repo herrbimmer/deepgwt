@@ -1,0 +1,98 @@
+/* DeepGWT 10.3 - bandeja (dock) de apps do launcher 3D.
+   A fileira de icones e nativa (Kotlin); o vidro atras dela e desenhado aqui para desfocar a cena 3D.
+   O Kotlin manda o retangulo e o estilo (index.html: setDockPlate): flat | lion | bar.
+   O desfoque leva !important porque deepGwtClient.js tira todo backdrop-filter no Android
+   (html.deepgwt-vidro-leve); a opcao "Vidro dos cartoes" = Desligado devolve a tinta firme. */
+
+html body .dg-dock-plate {
+  position: absolute;
+  z-index: 19;
+  display: none;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+html body .dg-dock-plate > i { position: absolute; display: block; }
+
+/* ---------- Liquid Glass (flat): vidro translucido com borda luminosa e reflexos, como na Apple ---------- */
+html body .dg-dock-plate[data-style="flat"] .dg-dp-glass {
+  inset: 0;
+  border-radius: 34px;
+  overflow: hidden;
+  background:
+    linear-gradient(158deg, rgba(255, 255, 255, .20) 0%, rgba(255, 255, 255, .05) 34%, rgba(255, 255, 255, .02) 62%, rgba(255, 255, 255, .13) 100%),
+    rgba(26, 28, 34, .24);
+  border: 1px solid rgba(255, 255, 255, .30);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, .62),
+    inset 0 -1px 0 rgba(255, 255, 255, .22),
+    inset 1.5px 0 0 rgba(255, 255, 255, .16),
+    inset -1.5px 0 0 rgba(255, 255, 255, .10),
+    inset 0 0 28px rgba(255, 255, 255, .09),
+    0 20px 46px rgba(0, 0, 0, .34),
+    0 2px 8px rgba(0, 0, 0, .22);
+  -webkit-backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+  backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+}
+/* o brilho especular: uma luz no canto de cima e outra, mais fraca, embaixo a direita */
+html body .dg-dock-plate .dg-dp-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 130% at 10% -22%, rgba(255, 255, 255, .46), rgba(255, 255, 255, 0) 46%),
+    radial-gradient(80% 110% at 94% 128%, rgba(255, 255, 255, .24), rgba(255, 255, 255, 0) 56%);
+}
+
+/* ---------- barra: Liquid Glass de ponta a ponta ---------- */
+html body .dg-dock-plate[data-style="bar"] .dg-dp-glass {
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .18) 0%, rgba(255, 255, 255, .04) 40%, rgba(255, 255, 255, .08) 100%),
+    rgba(24, 26, 32, .26);
+  border-top: 1px solid rgba(255, 255, 255, .34);
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, .55), inset 0 0 26px rgba(255, 255, 255, .08), 0 -12px 34px rgba(0, 0, 0, .26);
+  -webkit-backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+  backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+}
+
+/* ---------- 3D: prateleira de Liquid Glass em perspectiva (estilo Lion) ---------- */
+html body .dg-dock-plate[data-style="lion"] .dg-dp-glass {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200%;
+  transform-origin: 50% 100%;
+  transform: perspective(520px) rotateX(60deg);
+  border-radius: 12px 12px 4px 4px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .08) 0%, rgba(214, 228, 248, .22) 46%, rgba(255, 255, 255, .36) 100%);
+  border: 1px solid rgba(255, 255, 255, .46);
+  border-bottom-color: rgba(255, 255, 255, .75);
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, .6), inset 0 0 36px rgba(255, 255, 255, .16), 0 0 24px rgba(0, 0, 0, .36);
+  -webkit-backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+  backdrop-filter: blur(12px) saturate(2) brightness(1.1) !important;
+}
+html body .dg-dock-plate[data-style="lion"] .dg-dp-lip {
+  left: -1px;
+  right: -1px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(190, 205, 225, .6));
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .45);
+}
+html body .dg-dock-plate:not([data-style="lion"]) .dg-dp-lip { display: none; }
+
+/* Tema claro: a bandeja continua fume. Os rotulos dos icones sao brancos nos dois temas
+   (CoresDoCromo.ROTULO_DO_ITEM); sobre vidro claro eles sumiriam. */
+
+/* ---------- vidro desligado: sem desfoque, so uma tinta mais firme ---------- */
+html[data-dg-glass="off"] body .dg-dock-plate .dg-dp-glass {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html[data-dg-glass="off"] body .dg-dock-plate[data-style="flat"] .dg-dp-glass { background: rgba(30, 31, 35, .84); }
+html[data-dg-glass="off"] body .dg-dock-plate .dg-dp-glass::before { opacity: .35; }
+html[data-dg-glass="off"] body .dg-dock-plate[data-style="bar"] .dg-dp-glass { background: rgba(22, 23, 26, .88); }

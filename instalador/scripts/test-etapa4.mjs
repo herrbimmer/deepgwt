@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes da camada PROFESSIONAL: varredura, odômetro e relatório.
 //
 // Sem dependência de teste: o Node 22 remove os tipos do TypeScript sozinho, e
@@ -180,6 +181,7 @@ const baseInput = {
   technician: '',
   now: NOW,
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 {
   const m = buildReport(baseInput)
   eq(m.generatedAt, NOW, 'a data do relatório é injetável')
@@ -275,7 +277,7 @@ const baseInput = {
       shizukuBinderReceived: 68335,
     },
     lastBootstrapStartOutcome: 'SERVER_ALIVE_NO_BINDER',
-    lastBootstrapApkArg: '/data/app/~~a==/br.com.opengw.shizuku-b==/base.apk',
+    lastBootstrapApkArg: '/data/app/~~a==/br.com.deepgwt.shizuku-b==/base.apk',
     lastBootstrapServerLog: 'algo saiu no shizuku_auto.log',
   }))
   eq(campo.boot.bootReceiver, 20572, 'o BOOT_COMPLETED sai do relatório em ms desde o boot')
@@ -321,3 +323,4 @@ const baseInput = {
 
 console.log(`\n${total} verificações. ${falhas === 0 ? 'Todas passaram.' : `${falhas} falharam.`}`)
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

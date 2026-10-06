@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Bacia</name>
     <description>Uma rede de drenagem gerada por recursão, com semente fixa para ser sempre a mesma: o tronco se divide até a sexta ordem e a espessura cai a cada bifurcação. Até que ordem os galhos acendem é a velocidade; a cor da água vem do giro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

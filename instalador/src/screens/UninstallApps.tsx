@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useMemo, useState } from 'react'
 import { Trash2Icon, SearchIcon, ShieldAlertIcon, RefreshCwIcon } from 'lucide-react'
 import { invoke } from '@tauri-apps/api/core'
@@ -209,3 +210,4 @@ export const UninstallApps = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

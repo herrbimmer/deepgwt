@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useMemo, useState } from 'react'
 import { FactoryIcon, RefreshCwIcon, SearchIcon } from 'lucide-react'
 import { BackButton, Banner, Button, Card, ConfidenceChip, ListPanel, ListRow, TextInput } from '../../ui'
@@ -40,7 +41,7 @@ export const ProFactoryConfiguration = () => {
   const relerDoCarro = useCallback(async () => {
     if (!hasTauri()) {
       setErroLeitura(
-        'Esta tela precisa do aplicativo instalado (a janela do OPEN GW), não do navegador: a leitura passa pelo processo nativo, que o Vite sozinho não tem.',
+        'Esta tela precisa do aplicativo instalado (a janela do DeepGWT), não do navegador: a leitura passa pelo processo nativo, que o Vite sozinho não tem.',
       )
       return
     }
@@ -341,3 +342,4 @@ export const ProFactoryConfiguration = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

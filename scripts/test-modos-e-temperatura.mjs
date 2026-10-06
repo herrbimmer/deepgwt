@@ -1,11 +1,12 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A rodada que mexeu na barra inferior: temperatura unificada, Painel Esportivo fora da barra e
 // modo de condução por pressão longa no SPORT+.
 //
 // Roda com `node scripts/test-modos-e-temperatura.mjs`.
 //
-// Desde a troca 3.7 a barra é a de br.com.opengw.barra (sala limpa). As guardas de TEXTO sobre o
+// Desde a troca 3.7 a barra é a de br.com.deepgwt.barra (sala limpa). As guardas de TEXTO sobre o
 // arquivo antigo da barra (coluna de modos na janela de menus, guarda do arrasto, `-1` inicial)
-// saíram com ele: esse comportamento está nos testes JVM de app/src/test/java/br/com/opengw/barra/
+// saíram com ele: esse comportamento está nos testes JVM de app/src/test/java/br/com/deepgwt/barra/
 // (RegrasDaInterfaceTest, ContasDaBarraTest) e na especificação barra-inferior-interface.md. Aqui
 // fica o que mora FORA da barra (Configurações, SPORT+, launcher 3D, servidor, projeção) e o formato
 // gravado da temperatura.
@@ -15,7 +16,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const java = path.join(raiz, 'app/src/main/java/br/com/opengw')
+const java = path.join(raiz, 'app/src/main/java/br/com/deepgwt')
 
 let falhas = 0
 const eq = (nome, got, want) => {
@@ -43,7 +44,7 @@ function corpo(src, assinatura) {
   return null
 }
 
-const lerBarra = (arquivo) => lerRaiz(path.join('app/src/main/java/br/com/opengw/barra', arquivo))
+const lerBarra = (arquivo) => lerRaiz(path.join('app/src/main/java/br/com/deepgwt/barra', arquivo))
 const tipos = lerBarra('TiposDaBarra.kt')
 const contas = semComentarios(lerBarra('ContasDaBarra.kt'))
 const preferenciasDaBarra = semComentarios(lerBarra('PreferenciasDaBarra.kt'))
@@ -53,7 +54,7 @@ const ajustes = ler('ui/screens/AbaDeConfiguracoes.kt')
 const sportPlus = ler('managers/SportPlusController.kt')
 const gwlink = ler('managers/GwLinkServer.kt')
 const projecao = ler('projection/ScreenProjectionController.kt')
-const launcherJs = lerRaiz('app/src/main/assets/www/openGwClient.js')
+const launcherJs = lerRaiz('app/src/main/assets/www/deepGwtClient.js')
 
 // ══ 1. Temperatura: uma escolha, não dois interruptores ═══════════════════════════════════
 
@@ -91,7 +92,7 @@ const atalho = corpo(launcherJs, 'function installSportsDisplayShortcut')
 eq('o atalho NÃO fica perguntando ao carro', /setInterval|setTimeout/.test(atalho), false)
 eq('ele ouve a chave empurrada', /carTelemetry\.onUpdate/.test(atalho), true)
 eq('e pergunta uma única vez, na instalação',
-   (atalho.match(/OpenGW\.get\(/g) || []).length, 1)
+   (atalho.match(/DeepGWT\.get\(/g) || []).length, 1)
 eq('a rota que abre a tela existe', /request\.path == "\/quick\/sportsdisplay"/.test(gwlink), true)
 eq('e o estado inicial vem junto do resto', /\.put\("sportPlusActive", SportPlusController\.isActive\)/.test(gwlink), true)
 
@@ -106,3 +107,4 @@ eq('painelPronto continua sendo o que o botão lê', /val painelPronto: Boolean/
 
 console.log(falhas === 0 ? '\nTODOS OS TESTES PASSARAM' : `\n${falhas} FALHA(S)`)
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

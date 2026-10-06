@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { GaugeIcon, SearchIcon, RefreshCwIcon, StethoscopeIcon } from 'lucide-react'
 import { invoke } from '@tauri-apps/api/core'
@@ -147,3 +148,4 @@ export const GWLink = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

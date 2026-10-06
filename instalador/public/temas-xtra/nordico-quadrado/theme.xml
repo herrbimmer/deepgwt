@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Nórdico Quadrado</name>
     <description>Moldura retangular de cantos vivos com três mostradores dentro: relógio a esquerda, velocidade no meio com agulha chata de 240 km/h, tanque a direita entre E e F. É a arquitetura do sedan quadrado sueco que ficou vinte anos em linha sem mudar de forma -- hierarquia declarada pelo tamanho do circulo, sem uma única sombra.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Criador de temas — proposta de atualização e reformulação
 
 Estado avaliado: instalador 6.4.0 (editor do painel `screens/ThemeEditor.tsx` + `theme-editor/`,
@@ -29,7 +30,7 @@ editor do HUD `hud-editor/`).
 |---|---|---|
 | 1 | Propriedades do elemento ficam **embaixo** da lista de camadas (11 itens) | Numa janela de 780 px o que se quer editar está fora da tela; sobra espaço vazio sob o canvas |
 | 2 | Sobreposição vermelha das **zonas do carro ligada por padrão** | Polui a prévia o tempo todo; só importa durante o arraste |
-| 3 | Nome do tema do HUD **cortado** ("Padrão OPEN GW (cópi…") | Pequeno, mas passa descuido |
+| 3 | Nome do tema do HUD **cortado** ("Padrão DeepGWT (cópi…") | Pequeno, mas passa descuido |
 | 4 | Prévia do painel com **dados aleatórios** (dente de serra a cada 320 ms) | Não dá para ver "o painel parado à noite com a porta aberta" nem congelar num valor para ajustar |
 | 5 | **Dois editores com gramáticas diferentes** (painel × HUD) | O que se aprende num não vale no outro |
 | 6 | Criar do zero exige conhecer **chave do barramento, mapeamento e marcações** | Quem só quer "meu painel azul com consumo grande" não passa da primeira tela |
@@ -154,17 +155,17 @@ variações de cada preset.
 - **Limites** no envio: um tema "pesado" pede confirmação e diz o que tirar.
 - **Aviso de chave sem dado neste carro**, usando a lista de chaves que o próprio carro informa.
 
-### 4.7 Integração com os Ajustes do OPEN GW (6.4)
+### 4.7 Integração com os Ajustes do DeepGWT (6.4)
 
 O catálogo de ajustes desta versão deixou de fora o **tema do painel** porque a aplicação dele
 mora dentro da tela Telas (procura a imagem de fundo do tema na hora). Extrair esse trecho para uma
 função (`aplicarTemaDoPainel(nome)`) resolve duas coisas de uma vez: o tema entra no catálogo
-(trocável em Ajustes do OPEN GW, com a lista de temas instalados como opções) e o "Ver no carro"
+(trocável em Ajustes do DeepGWT, com a lista de temas instalados como opções) e o "Ver no carro"
 de 4.5 ganha a rota de que precisa.
 
 ### 4.8 Compartilhar
 
-- Pacote `.opengw-tema` (spec + imagens + miniatura), importável por arrastar para a janela.
+- Pacote `.deepgwt-tema` (spec + imagens + miniatura), importável por arrastar para a janela.
 - Miniatura gerada da prévia no cenário "Cidade" para a lista de temas.
 - Histórico de versões por tema (as últimas 20 gravações), com "voltar para esta".
 
@@ -207,3 +208,4 @@ mexer no APK; as outras são só do instalador.
   carro" usa rotas do GwLinkServer, não a ponte do tema. Página por condição usa as regras de
   visibilidade que já existem.
 - **Dois editores → um:** unificar o HUD mexe em código que funciona; fazer por último.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

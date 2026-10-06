@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Energy Flow</name>
     <description>Painel para híbrido/elétrico: anel grande de bateria com tensão e corrente reais, medidor de fluxo com zero fixo no meio (verde para regeneração à esquerda, azul para tração à direita), consumo instantâneo em kWh/100km, autonomia elétrica e a combustível em cartões, nível de recuperação em três pastilhas e os selos HEV/EVP/EV e 1 pedal.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

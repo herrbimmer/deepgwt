@@ -1,10 +1,11 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 //! Sessão telnet com a multimídia (busybox telnetd, porta 23).
 //!
 //! O soquete único fica em `EstadoDaConexao::sessao`. Este módulo reúne o que o abre, o fecha, o
 //! consulta e escreve nele, mais as duas leituras por linha que os fluxos de instalação usam para
 //! esperar o marcador de resultado.
 //!
-//! Estrutura e texto próprios do OPEN GW.
+//! Estrutura e texto próprios do DeepGWT.
 
 use std::time::Duration;
 
@@ -186,3 +187,4 @@ mod testes {
         assert_eq!(EVENTO_DE_SAIDA, "telnet-output");
     }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

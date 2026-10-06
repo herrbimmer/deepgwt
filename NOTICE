@@ -1,7 +1,8 @@
-OPEN GW
-Copyright (c) 2026 Miguel Araujo. All rights reserved.
+DeepGWT
+Copyright © 2026 Miguel Vespermann Araújo. All rights reserved.
 
-This product is proprietary software (see LICENSE). It includes third-party
+This product is licensed under the Vespermann Accessible Software License
+(VASL) 1.0 (see LICENSE). It includes third-party
 material that remains under its own license terms. The notices below must be
 reproduced with every copy of the product, in source or binary form.
 
@@ -42,12 +43,12 @@ The desktop installer also carries, as resources, the Shizuku manager applicatio
     Source: https://github.com/RikkaApps/Shizuku
 
 The manager application was recompiled from the official source (commit b844bc4) with a
-different application id (br.com.opengw.shizuku instead of moe.shizuku.privileged.api), so
-that the head unit's package manager accepts it, and rebranded as "OPEN GW Acesso" (name
+different application id (br.com.deepgwt.shizuku instead of moe.shizuku.privileged.api), so
+that the head unit's package manager accepts it, and rebranded as "DeepGWT Acesso" (name
 and icons replaced, as the project's README asks of forks). The patch against the official
-source, the build instructions and the licence texts are in third_party/open-gw-acesso/.
+source, the build instructions and the licence texts are in third_party/deepgwt-acesso/.
 It still declares the permission moe.shizuku.manager.permission.API_V23, which is the
-contract with the Shizuku client library; see third_party/open-gw-acesso/AVISO-OPEN-GW-ACESSO.md.
+contract with the Shizuku client library; see third_party/deepgwt-acesso/AVISO-DEEPGWT-ACESSO.md.
 The full Apache License 2.0 text is in THIRD_PARTY_LICENSES.md §7.4.
 
 ===============================================================================

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Temas de referência (fora do APK)
 
 ## `stuttgart-ntg55/`
@@ -13,3 +14,4 @@ continuam iguais aos deste `app.html` (que tem à mão o vão da projeção que 
 gera), e `scripts/test-temas-fluidez.mjs` passa as regras de fluidez nele.
 
 Não é copiada para lugar nenhum e não viaja em build nenhum.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

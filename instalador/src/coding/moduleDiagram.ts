@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O que o diagrama de módulos do Coding desenha, sem nada de desenho.
 //
 // Fica separado de `CodingModuleTree.tsx` porque é a única parte com regra de verdade: como as
@@ -97,3 +98,4 @@ export function montarDominios(
     // equilibrado, do mesmo jeito que os barramentos grandes abrem o diagrama do ISTA.
     .sort((a, b) => b.modulos.length - a.modulos.length || a.nome.localeCompare(b.nome))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

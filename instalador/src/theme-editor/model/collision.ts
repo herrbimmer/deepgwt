@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Colisão contra o que o veículo desenha por cima do tema.
 //
 // Testar a caixa do elemento seria o caminho óbvio e está errado. As três zonas OEM caem DENTRO
@@ -172,6 +173,7 @@ function annulusHitsRect(a: Extract<Region, { kind: 'annulus' }>, r: Rect): bool
   }
   return false
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 const regionHitsRect = (region: Region, r: Rect): boolean =>
   region.kind === 'rect' ? rectsOverlap(region, r) : annulusHitsRect(region, r)
@@ -258,3 +260,4 @@ export function firstLegalSlot(spec: ThemeSpec, el: Element): { x: number; y: nu
   }
   return null
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

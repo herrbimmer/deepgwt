@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { ChevronRightIcon } from 'lucide-react'
 import { useRouteNode } from './routeMeta'
@@ -28,3 +29,4 @@ export function Breadcrumb() {
     </nav>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

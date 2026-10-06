@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Série</name>
     <description>Três painéis empilhados, um por grandeza, com área preenchida e linha por cima cobrindo os últimos 90 segundos. Cada painel carrega o valor corrente alinhado à direita e o máximo da janela logo abaixo, para a leitura não depender de contar quadrados.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Contas de cor do assistente e do modo Básico: uma cor de destaque vira a paleta inteira.
 //
 // A regra que manda aqui é a do contraste. O painel é lido de relance, a 70 cm, muitas vezes com
@@ -151,3 +152,4 @@ export function fundoDoTom(tom: Tom, destaque: string, atual: BackgroundConfig):
     passthrough: null,
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

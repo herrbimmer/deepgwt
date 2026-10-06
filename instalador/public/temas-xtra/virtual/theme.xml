@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Virtual</name>
     <description>A ideia do painel virtual não é ter mostrador bonito, é o mostrador sair da frente: quando a navegação fala, os dois anéis encolhem para sessenta e dois por cento e correm para as bordas, e o mapa ocupa exatamente o vão que eles abriram. Saindo a rota, eles voltam. Toda a coreografia é transform e opacidade, sem recalcular geometria, e a cidade do mapa é gerada uma vez com semente fixa para não piscar entre quadros.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

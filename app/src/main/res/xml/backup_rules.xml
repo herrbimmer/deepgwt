@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <!-- Backup automático (Android 11 e anterior). A licença (licenca.xml) nunca vai junto: restaurá-la
      em outro aparelho, ou voltar uma cópia antiga, não pode devolver horas já gastas. -->
 <full-backup-content>
     <exclude domain="sharedpref" path="licenca.xml"/>
     <exclude domain="device_sharedpref" path="licenca.xml"/>
 </full-backup-content>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

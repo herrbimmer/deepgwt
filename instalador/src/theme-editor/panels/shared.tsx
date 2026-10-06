@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Peças compartilhadas pelos painéis do editor.
 //
 // Duas delas carregam decisão de verdade e não são só enfeite:
@@ -204,6 +205,7 @@ export function PaintField({
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // --- tipografia -----------------------------------------------------------------------------
 
@@ -263,3 +265,4 @@ export function TextStyleEditor({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

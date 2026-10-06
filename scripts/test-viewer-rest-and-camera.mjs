@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /**
  * Trava o que foi feito no launcher 3D nesta rodada:
  *
- *  - Modo Descanso (openGwRest.js): tela preta, relógio analógico, saída por toque.
+ *  - Modo Descanso (deepGwtRest.js): tela preta, relógio analógico, saída por toque.
  *  - A câmera não volta para o ângulo padrão no meio de uma animação do modelo.
  *
  * Por que é teste de FONTE e não de comportamento: o launcher é um APK de terceiro de 1,9 MB de
@@ -45,25 +46,25 @@ if (!existsSync(WWW)) {
 }
 
 const index = readFileSync(join(WWW, 'index.html'), 'utf8')
-const restPath = join(WWW, 'openGwRest.js')
+const restPath = join(WWW, 'deepGwtRest.js')
 const rest = existsSync(restPath) ? readFileSync(restPath, 'utf8') : ''
-const painel = readFileSync(join(WWW, 'openGwPanel.js'), 'utf8')
+const painel = readFileSync(join(WWW, 'deepGwtPanel.js'), 'utf8')
 
 console.log('\nModo Descanso\n')
 
-ok('openGwRest.js existe', rest.length > 0)
+ok('deepGwtRest.js existe', rest.length > 0)
 ok(
-  'index.html carrega o openGwRest.js antes do openGwClient.js',
-  /<script src="\.\/openGwRest\.js"><\/script>[\s\S]*<script src="\.\/openGwClient\.js"><\/script>/.test(index)
+  'index.html carrega o deepGwtRest.js antes do deepGwtClient.js',
+  /<script src="\.\/deepGwtRest\.js"><\/script>[\s\S]*<script src="\.\/deepGwtClient\.js"><\/script>/.test(index)
 )
 ok(
   'o fundo é preto sólido, não uma transparência',
-  /\.opengw-rest\{[^}]*background:#000/.test(rest),
+  /\.deepgwt-rest\{[^}]*background:#000/.test(rest),
   'um véu translúcido deixaria o launcher aparecer por baixo — o pedido era 100% preto'
 )
 ok(
   'a camada cobre a tela inteira por position:fixed',
-  /\.opengw-rest\{position:fixed;top:0;right:0;bottom:0;left:0/.test(rest)
+  /\.deepgwt-rest\{position:fixed;top:0;right:0;bottom:0;left:0/.test(rest)
 )
 ok(
   'sai da frente de tudo que o launcher desenha',
@@ -71,7 +72,7 @@ ok(
 )
 ok(
   'o nome está na lista de exceções da página em branco do launcher',
-  index.includes(':not(.opengw-rest)'),
+  index.includes(':not(.deepgwt-rest)'),
   'sem isso a regra #hv-root.hv-blank-page > *:not(...) esconderia a camada'
 )
 ok(
@@ -96,7 +97,7 @@ ok(
 // Estas três verificações exigiam `setInterval(drawNow, 1000)` e o alinhamento do primeiro tique
 // com a virada do segundo. Era a forma certa enquanto o ponteiro andava de degrau em degrau; o
 // pedido agora é varredura, e o laço passou a ser `requestAnimationFrame` — que nesta página já
-// está limitado a 24 quadros por segundo pelo orçamento de openGwClient.js.
+// está limitado a 24 quadros por segundo pelo orçamento de deepGwtClient.js.
 //
 // O que aquelas verificações protegiam de verdade continua protegido, e melhor: quem prova a
 // cadência agora é `scripts/test-relogio-descanso.mjs`, que EXECUTA o arquivo num DOM de mentira,
@@ -139,8 +140,8 @@ ok(
   'engolir todo clique tiraria a configuração do relógio do usuário'
 )
 ok(
-  'o painel OPEN GW oferece o Modo Descanso',
-  painel.includes('Modo Descanso') && painel.includes('window.OpenGwRest'),
+  'o painel DeepGWT oferece o Modo Descanso',
+  painel.includes('Modo Descanso') && painel.includes('window.DeepGwtRest'),
 )
 ok(
   'a deriva anti-retenção usa dois períodos diferentes',
@@ -192,3 +193,4 @@ if (falhas > 0) {
   process.exit(1)
 }
 console.log(`${total} verificações, todas passaram.`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

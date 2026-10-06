@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Le Mans</name>
     <description>Painel de resistência: régua de 26 luzes de troca de marcha atravessando o topo (verde, âmbar, vermelho, piscando na zona vermelha), conta-giros central de 0 a 8.000 com o giro em números no miolo, velocidade em coluna à esquerda, consumo/hodômetro/temperaturas e marcha à direita, barra de combustível e estado real do motor na base.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

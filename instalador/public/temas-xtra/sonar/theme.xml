@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Sonar</name>
     <description>Cada lançamento vira uma coluna de eco: a profundidade é a velocidade e a cor vai do azul-fundo ao azul-claro conforme o valor sobe. A linha de superfície liga os topos e uma régua âmbar marca o nível de agora, atravessando o gráfico inteiro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

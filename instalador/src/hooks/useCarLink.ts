@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Descobrir o carro na rede e testar a conexão.
 //
 // Este bloco existia duas vezes, copiado literalmente entre `ThemeEditor` e `ImportHtmlTheme`:
@@ -15,7 +16,7 @@ export function useCarLink() {
   const [status, setStatus] = useState<CarTestStatus>('idle')
   const [manualIp, setManualIp] = useState(false)
 
-  /** `remote_list_displays` é a chamada mais barata que prova que o OPEN GW está de pé. */
+  /** `remote_list_displays` é a chamada mais barata que prova que o DeepGWT está de pé. */
   const testar = useCallback(async (ip: string) => {
     if (!ip) {
       setStatus('fail')
@@ -57,3 +58,4 @@ export function useCarLink() {
 
   return { carIp, setCarIp, status, manualIp, setManualIp, testar, detectarGateway, preparar }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

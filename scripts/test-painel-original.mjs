@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Teste sem interface da página do painel original (projetores-pagina-original.md, 8.1).
 // Uso: node scripts/test-painel-original.mjs [caminho do index.html]
 // Capturas (antes, modoA, modoA-placa, modoB) vão para a pasta temporária do sistema.
@@ -159,6 +160,7 @@ async function principal() {
   writeFileSync('antes.png', Buffer.from(tela0.data, 'base64'));
 
   await avaliar(FIM_DA_CARGA);
+  await avaliar(`window.INTERVALO_TEMPERATURA_MS = 0`);
   await avaliar(`onDataChanged('car.basic.outside_temp','27.5')`);
   await esperar(300);
   m = await avaliar(MEDIR);
@@ -166,22 +168,51 @@ async function principal() {
   // 1.
   confere('8.1.1 único texto 27.5°C + Temp.', JSON.stringify(m.visiveis) === JSON.stringify(['27.5°C', 'Temp.']), m.visiveis);
   confere('8.1.1 centro x=240±2', Math.abs(m.numero.centroDoTexto - 240) <= 2, m.numero.centroDoTexto);
-  confere('8.1.1 topo y=14±1', Math.abs(m.numero.topo - 14) <= 1, m.numero.topo);
+  confere('8.1.1 topo y=62±1', Math.abs(m.numero.topo - 62) <= 1, m.numero.topo);
   confere('8.1.1 número 44px', m.numero.fonte === 44, m.numero.fonte);
   confere('8.1.1 número branco', m.numero.cor === 'rgb(255, 255, 255)', m.numero.cor);
   confere('8.1.1 rótulo 21px', m.rotulo.fonte === 21, m.rotulo.fonte);
-  confere('8.1.1 rótulo logo abaixo (y 58)', Math.abs(m.rotulo.topo - 58) <= 1, m.rotulo.topo);
+  confere('8.1.1 rótulo logo abaixo (y 106)', Math.abs(m.rotulo.topo - 106) <= 1, m.rotulo.topo);
   confere('8.1.1 rótulo centrado', Math.abs(m.rotulo.centroDoTexto - 240) <= 2, m.rotulo.centroDoTexto);
   confere('8.1.1 rótulo (163,174,208)', m.rotulo.cor === 'rgb(163, 174, 208)', m.rotulo.cor);
   const tela1 = await enviar('Page.captureScreenshot', { format: 'png' });
   writeFileSync('modoA.png', Buffer.from(tela1.data, 'base64'));
+
+  // Tambor do hodômetro: escondido sem valor, seis rolos com o valor, abaixo do mostrador.
+  const tambor = (id) => avaliar(`(function(){var t=document.getElementById('tambor');var r=t.getBoundingClientRect();return {d:getComputedStyle(t).display,txt:Array.prototype.map.call(document.querySelectorAll('#rolos .rolo'),function(n){return n.textContent}).join(''),esq:r.left,topo:r.top,base:r.bottom};})()`);
+  let tb = await tambor();
+  confere('tambor escondido sem hodômetro', tb.d === 'none', tb);
+  await avaliar(`onDataChanged('car.basic.total_odometer','12345.6')`);
+  tb = await tambor();
+  confere('tambor 012346 km, em 176,650', tb.d !== 'none' && tb.txt === '012346' && Math.abs(tb.esq - 176) <= 1 && Math.abs(tb.topo - 650) <= 6 && tb.base <= 700, tb);
+  const telaT = await enviar('Page.captureScreenshot', { format: 'png' });
+  writeFileSync('modoA-tambor.png', Buffer.from(telaT.data, 'base64'));
+  await avaliar(`onDataChanged('car.basic.total_odometer','123456')`);
+  tb = await tambor();
+  confere('tambor 123456 (>100 mil km) com 6 rolos', tb.txt === '123456' && tb.base <= 700, tb);
+  await avaliar(`onDataChanged('car.basic.total_odometer','999999.4')`);
+  tb = await tambor();
+  confere('tambor 999999', tb.txt === '999999', tb);
+  // Temperatura: atualiza no máximo 1x por minuto (primeiro valor entra na hora).
+  await avaliar(`window.INTERVALO_TEMPERATURA_MS = 60000; `);
+  await avaliar(`onDataChanged('car.basic.total_odometer','abc')`);
+  tb = await tambor();
+  confere('tambor some com valor inválido', tb.d === 'none', tb);
+  // Throttle: 1o valor já exibido (27.5); novo valor em <60s não aparece; ao zerar o intervalo e reenviar, aparece.
+  await avaliar(`onDataChanged('car.basic.outside_temp','10.0')`);
+  m = await avaliar(MEDIR);
+  confere('temperatura throttle: 10.0 não aparece antes de 1 min', m.numero.texto === '27.5°C', m.numero.texto);
+  await avaliar(`window.INTERVALO_TEMPERATURA_MS = 0; onDataChanged('car.basic.outside_temp','10.0')`);
+  m = await avaliar(MEDIR);
+  confere('temperatura throttle: intervalo vencido mostra 10.0', m.numero.texto === '10.0°C', m.numero.texto);
+  await avaliar(`onDataChanged('car.basic.outside_temp','27.5')`);
 
   // 2. Escala.
   for (const [escala, num, rot] of [['2', 88, 42], ['0.65', 28.6, 13.65], ['1.0', 44, 21]]) {
     await avaliar(`document.documentElement.style.setProperty('--orig-temp-scale','${escala}')`);
     m = await avaliar(MEDIR);
     confere(`8.1.2 escala ${escala}: ${num}/${rot}`, Math.abs(m.numero.fonte - num) < 0.01 && Math.abs(m.rotulo.fonte - rot) < 0.01, [m.numero.fonte, m.rotulo.fonte]);
-    confere(`8.1.2 escala ${escala}: centro e topo`, Math.abs(m.numero.centroDoTexto - 240) <= 2 && Math.abs(m.numero.topo - 14) <= 1, [m.numero.centroDoTexto, m.numero.topo]);
+    confere(`8.1.2 escala ${escala}: centro e topo`, Math.abs(m.numero.centroDoTexto - 240) <= 2 && Math.abs(m.numero.topo - 62) <= 1, [m.numero.centroDoTexto, m.numero.topo]);
   }
 
   // 3. Tabela de 5.2.
@@ -241,9 +272,9 @@ async function principal() {
   const nomes = chamadas.map((c) => c.nome);
   const subs = chamadas.filter((c) => c.nome === 'subscribe');
   confere('8.1.7 um subscribe', subs.length === 1, nomes);
-  confere('8.1.7 subscribe com as 4 chaves (+ inside_temp do modo B)', subs.length === 1 &&
+  confere('8.1.7 subscribe com as chaves (+ inside_temp do modo B e hodômetro do tambor)', subs.length === 1 &&
     JSON.stringify(JSON.parse(subs[0].args[0])) === JSON.stringify(['car.basic.outside_temp', 'car.configure.default_temp_unit',
-      'car.map.tsr.nav_speed_limit', 'car.map.tsr.nav_speed_limit_sign_status', 'car.basic.inside_temp']), subs[0] && subs[0].args);
+      'car.map.tsr.nav_speed_limit', 'car.map.tsr.nav_speed_limit_sign_status', 'car.basic.inside_temp', 'car.basic.total_odometer']), subs[0] && subs[0].args);
   const dims = chamadas.filter((c) => c.nome === 'setAppDefaultDimensions');
   confere('8.1.7 um setAppDefaultDimensions(0,62,1920,596)', dims.length === 1 && JSON.stringify(dims[0].args) === '[0,62,1920,596]', dims);
   confere('8.1.7 nenhuma outra chamada', nomes.every((n) => n === 'subscribe' || n === 'setAppDefaultDimensions'), nomes);
@@ -288,3 +319,4 @@ async function principal() {
 }
 
 principal().catch((e) => { console.log('ERRO ' + (e.stack || JSON.stringify(e))); }).finally(() => { try { ws.close(); } catch (e) {} chrome.kill(); });
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

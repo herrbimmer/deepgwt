@@ -1,9 +1,10 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Tema TEA 3.0 (assets/PreinstalledThemes/tea30), Alpha 9.5.
 //
 // Inspirado no painel de fábrica da foto de referência do dono (30/09/2026): velocímetro redondo à
 // esquerda (0 a 260, com 200-230-260 no fim), medidor de potência à direita (-100 a 100, carga em
-// verde e potência em azul, "0 %" e "Potência" no meio), a estrada com o carro visto de trás no
-// centro, temperatura, marcha e hora em cima, autonomias elétrica e a combustão embaixo à esquerda
+// verde e potência em azul, "0 %" e "Potência" no meio), o centro livre para a projeção da central,
+// temperatura, marcha e hora em cima, autonomias elétrica e a combustão embaixo à esquerda
 // e modo de condução, modo de energia e hodômetro embaixo à direita.
 //
 // O QUE MUDA EM RELAÇÃO À FOTO, E POR QUÊ
@@ -13,8 +14,8 @@
 //    com os números por dentro, o 60 e o 20 cairiam embaixo deles. Por fora, a 292 px do centro, eles
 //    passam entre a diagonal de luzes e o aro.
 //  • Sem READY, placa ou luz nenhuma desenhada pelo tema: são do carro (memória "luzes só do carro").
-//  • Sem os outros carros da foto: o tema não recebe o que o ADAS detecta, e um carro inventado na
-//    frente leria como detecção. Fica a estrada e o próprio carro.
+//  • Sem estrada, sem carro e sem os outros carros da foto (9.9): o centro fica vazio, só o fundo
+//    escuro, e a projeção da central ocupa o vão (o dono não quer essa visualização).
 //
 // Os centros (426, 440) e (1494, 440) são o lugar dos mostradores de fábrica (o mesmo do SENSUS 9.3).
 //
@@ -93,58 +94,6 @@ function mostrador(cx, id) {
   </g>`
 }
 
-// A estrada: ponto de fuga em (960, 172), pé em y = 640. Quatro linhas (três faixas); as de dentro
-// tracejadas em perspectiva (os traços crescem para perto).
-const FUGA = [960, 172]
-const PE = 640
-const PES_X = [630, 850, 1070, 1290]
-function naLinha(xPe, t) { return [r1(FUGA[0] + (xPe - FUGA[0]) * t), r1(FUGA[1] + (PE - FUGA[1]) * t)] }
-function estrada() {
-  let s = ''
-  // Superfície e grade.
-  s += `<polygon points="${FUGA[0] - 6},${FUGA[1]} ${FUGA[0] + 6},${FUGA[1]} ${PES_X[3] + 40},${PE} ${PES_X[0] - 40},${PE}" fill="url(#gAsfalto)"/>`
-  for (let k = 1; k <= 9; k++) {
-    const t = Math.pow(k / 9, 1.9)
-    const [xa, y] = naLinha(PES_X[0] - 40, t)
-    const [xb] = naLinha(PES_X[3] + 40, t)
-    s += `<line x1="${xa}" y1="${y}" x2="${xb}" y2="${y}" stroke="rgba(160,190,230,${r1(0.03 + 0.05 * t * 10) / 10})" stroke-width="1"/>`
-  }
-  // Bordas: faixa cheia que engrossa para perto.
-  for (const xPe of [PES_X[0], PES_X[3]]) {
-    const [xa, ya] = naLinha(xPe, 0.04)
-    const larg = 5
-    s += `<polygon points="${xa - 0.5},${ya} ${xa + 0.5},${ya} ${xPe + larg},${PE} ${xPe - larg},${PE}" fill="url(#gFaixa)"/>`
-  }
-  // Tracejadas.
-  for (const xPe of [PES_X[1], PES_X[2]]) {
-    const passo = 0.12
-    for (let t = 0.06; t < 1; t += passo * (0.55 + t)) {
-      const t2 = Math.min(1, t + passo * (0.55 + t) * 0.5)
-      const [xa, ya] = naLinha(xPe, t)
-      const [xb, yb] = naLinha(xPe, t2)
-      const la = 0.4 + 3.2 * t, lb = 0.4 + 3.2 * t2
-      s += `<polygon points="${r1(xa - la)},${ya} ${r1(xa + la)},${ya} ${r1(xb + lb)},${yb} ${r1(xb - lb)},${yb}" fill="rgba(235,242,250,${r1(0.18 + 0.5 * t)})"/>`
-    }
-  }
-  return s
-}
-
-// O carro visto de trás (SUV branco), centro em x = 960, pé em y = 588.
-const CARRO = `<g id="carro">
-  <ellipse cx="960" cy="590" rx="104" ry="15" fill="rgba(0,0,0,0.75)"/>
-  <ellipse cx="960" cy="592" rx="140" ry="24" fill="url(#gSombra)"/>
-  <path d="M884 578 L882 548 Q880 520 896 506 L912 470 Q918 458 934 456 L986 456 Q1002 458 1008 470 L1024 506 Q1040 520 1038 548 L1036 578 Q1036 586 1026 586 L894 586 Q884 586 884 578 Z" fill="url(#gCarro)"/>
-  <path d="M918 474 Q922 466 934 465 L986 465 Q998 466 1002 474 L1012 500 L908 500 Z" fill="url(#gVidro)"/>
-  <path d="M894 520 L1026 520 L1030 532 L890 532 Z" fill="rgba(20,24,30,0.28)"/>
-  <rect x="889" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
-  <rect x="995" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
-  <rect x="925" y="527" width="70" height="3" rx="1.5" fill="rgba(255,70,70,0.75)"/>
-  <rect x="944" y="548" width="32" height="12" rx="2" fill="#e6e9ec" stroke="rgba(0,0,0,0.25)"/>
-  <rect x="888" y="572" width="22" height="16" rx="3" fill="#15181c"/>
-  <rect x="1010" y="572" width="22" height="16" rx="3" fill="#15181c"/>
-  <path d="M900 510 L1020 510" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
-</g>`
-
 const DEFS = `<defs>
   <radialGradient id="gFace" cx="0.5" cy="0.45" r="0.55">
     <stop offset="0" stop-color="#121821"/><stop offset="0.8" stop-color="#090c11"/><stop offset="1" stop-color="#05070a"/>
@@ -158,30 +107,6 @@ const DEFS = `<defs>
   <linearGradient id="gPot" gradientUnits="userSpaceOnUse" x1="${CD - 260}" y1="0" x2="${CD + 260}" y2="0">
     <stop offset="0" stop-color="#2a6dff"/><stop offset="1" stop-color="#7cc7ff"/>
   </linearGradient>
-  <linearGradient id="gAsfalto" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#2a3a52" stop-opacity="0"/><stop offset="0.55" stop-color="#23324a" stop-opacity="0.35"/><stop offset="1" stop-color="#1b2638" stop-opacity="0.65"/>
-  </linearGradient>
-  <linearGradient id="gFaixa" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#dfe9f5" stop-opacity="0.05"/><stop offset="1" stop-color="#eef4fb" stop-opacity="0.8"/>
-  </linearGradient>
-  <radialGradient id="gHorizonte" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#4f8fe0" stop-opacity="0.32"/><stop offset="1" stop-color="#4f8fe0" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="gCarro" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#e3e8ee"/><stop offset="1" stop-color="#a9b2bc"/>
-  </linearGradient>
-  <linearGradient id="gVidro" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#3a4452"/><stop offset="1" stop-color="#11161d"/>
-  </linearGradient>
-  <radialGradient id="gSombra" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#6aa7ff" stop-opacity="0.22"/><stop offset="1" stop-color="#6aa7ff" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="gMascaraX" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#000"/><stop offset="0.13" stop-color="#fff"/><stop offset="0.87" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
-  </linearGradient>
-  <mask id="mCena" maskUnits="userSpaceOnUse" x="600" y="100" width="720" height="560">
-    <rect x="600" y="100" width="720" height="560" fill="url(#gMascaraX)"/>
-  </mask>
 </defs>`
 
 // Arcos vivos em fatias de FATIA graus (o mesmo princípio do SENSUS): o JS só troca a visibilidade
@@ -221,11 +146,6 @@ const [cargaX, cargaY] = pt(CD, CY, 200, 238)
 
 const SVG = `<svg id="arte" viewBox="0 0 1920 720" preserveAspectRatio="none" aria-hidden="true">
 ${DEFS}
-<g id="cena" mask="url(#mCena)">
-  <ellipse cx="960" cy="176" rx="430" ry="70" fill="url(#gHorizonte)"/>
-  ${estrada()}
-  ${CARRO}
-</g>
 ${mostrador(CE, 'E')}
 ${mostrador(CD, 'D')}
 <text class="carga" x="${cargaX}" y="${cargaY}">CARGA</text>
@@ -243,7 +163,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=1920, height=720, initial-scale=1" />
 <title>TEA 3.0</title>
 <!--
-  TEA 3.0 (OPEN GW, Alpha 9.5). Gerado por scripts/gerar-tea-30.mjs — edite lá e rode de novo.
+  TEA 3.0 (DeepGWT, Alpha 9.5). Gerado por scripts/gerar-tea-30.mjs — edite lá e rode de novo.
   Contrato v1.0: só assina chaves de ThemeBridgeImpl.getAvailableKeys(); não desenha luz nenhuma
   (as do carro ficam por cima); declara o vão da projeção (setProjectionBox) e o abre no #bg.
 -->
@@ -265,7 +185,7 @@ const html = `<!doctype html>
     background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.7) 100%);
   }
   body.projetando #projscrim { display: block; }
-  body.projetando #cena, body.projetando #midia { display: none; }
+  body.projetando #midia { display: none; }
   /* Enquanto projeta: um anel fumê em volta de cada mostrador (onde ficam os números, por fora do
      aro) e contorno escuro nos números — a imagem passa por baixo e a escala continua legível. */
   #projfumo {
@@ -614,7 +534,7 @@ const html = `<!doctype html>
 
   // ----- Vão da projeção da central -----
   // De um centro de mostrador ao outro, como no NTG 5.5 (coffe3): as bordas caem embaixo das faces
-  // (opacas), e a imagem ocupa o lugar da estrada, que sai da frente enquanto projeta.
+  // (opacas), e a imagem ocupa o vão.
   const PROJ_BOX = { x: 426, y: 118, w: 1068, h: 522 };
   const PROJ_PENA_X = 96;
   const PROJ_PENA_Y = 56;
@@ -801,3 +721,4 @@ if (process.argv.includes('--verificar')) {
   fs.writeFileSync(arquivo, html)
   console.log('gravado', path.relative(raiz, arquivo), (html.length / 1024).toFixed(1) + ' KB')
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Auditoria da Alpha 8.4 e queixas de donos do H6 (2023–2025): análise
 
 Data: 2026-09-27 · Base: Alpha 8.4 270920260007 · Nada foi alterado no código · Nada foi testado
@@ -21,7 +22,7 @@ ControlService, 546 flags de codificação, VHAL).
 
 ### Alta
 
-**B1. Upload grande derruba o OPEN GW inteiro.**
+**B1. Upload grande derruba o DeepGWT inteiro.**
 - **Onde:** `GwLinkServer.kt:137-147`. A requisição é lida inteira para a memória
   (`ByteArray(contentLength)`), sem limite.
 - **Por que o app cai:**
@@ -78,7 +79,7 @@ ControlService, 546 flags de codificação, VHAL).
 **B5. Reinício da central pela rede com o carro andando.**
 - **Onde:** `GwLinkServer.kt:397` → `RemoteControlOps.rebootHeadUnit` (linha 289). Nenhuma
   trava de velocidade ou de marcha.
-- **Efeito:** central reiniciando em movimento. O painel projetado pelo OPEN GW, o CarPlay e as
+- **Efeito:** central reiniciando em movimento. O painel projetado pelo DeepGWT, o CarPlay e as
   câmeras somem. O cluster é um display do Android (`docs/avm-hypervisor-architecture-notes.md`);
   o que o QNX mantém no painel durante o reboot está **A confirmar**.
 - **Correção:** recusar com velocidade maior que 0 ou fora de P. É a mesma regra do resto do
@@ -122,7 +123,7 @@ ControlService, 546 flags de codificação, VHAL).
 
 ---
 
-## 2. Queixas dos donos → o que o OPEN GW já resolve e o que pode resolver
+## 2. Queixas dos donos → o que o DeepGWT já resolve e o que pode resolver
 
 Fontes na seção 4. Os modelos do Brasil (HEV, PHEV19/34, GT PHEV) repetem, em volume, as mesmas
 queixas dos fóruns australianos.
@@ -139,7 +140,7 @@ queixas dos fóruns australianos.
 | 7a | Monitor de fadiga/distração apitando; donos colam fita na câmera | Desliga só a **distração** | Incluir **fadiga** (`car.frs_setting.fatigue_monitoring_enable`) no mesmo interruptor ou num vizinho | usadas/mapeadas | Segurança (opt-in) |
 | 8 | Poucos botões físicos: A/C e comandos simples exigem menus | Barra com temperatura, macros, gestos, volante, Stream Deck | Atalhos **prontos** no volante: desembaçar, recircular, ventilação do banco; entram no tour | já existem | Nenhum |
 | 9 | Som fraco ("pouco grave") | EQ de fábrica (grave/médio/agudo, DTS), reverb | Presets prontos ("Mais grave", "Voz clara") e loudness que acompanha o volume | já existem | Nenhum |
-| 10 | Painel claro demais à noite; temperatura do motor sem número | O brilho automático já escreve o brilho do painel (`AutoBrightnessManager.kt:246`); temperatura em Informações extras | "Noite profunda": escurece abaixo do mínimo do painel, só nos temas projetados pelo OPEN GW | já existem | Nenhum |
+| 10 | Painel claro demais à noite; temperatura do motor sem número | O brilho automático já escreve o brilho do painel (`AutoBrightnessManager.kt:246`); temperatura em Informações extras | "Noite profunda": escurece abaixo do mínimo do painel, só nos temas projetados pelo DeepGWT | já existem | Nenhum |
 | 11 | Consumo por tanque; computador de bordo | O launcher 3D já registra abastecimentos (`TripStore.java:750`) | Tela **Abastecimentos** no app e no HUD: km/l real por tanque e custo/km (preço digitado) | `avg_fuel_consumption`, tanque % | Nenhum |
 | 12 | Câmera 360° não abre quando precisa | Desligar a 360° parado | **360° pela seta**: seta ligada a ≤ 15 km/h abre a vista do lado | `turn_light`, `sys.avm.preview_control_action` / `dvr.setAVM` (já usados) | Médio (tela da câmera com o carro andando devagar) |
 | 13 | TPMS sensível; revisão configurada a cada 5.000 km | Pressões e temperaturas no painel/HUD; aviso de revisão próprio | Limiar de alerta do TPMS não é alterável por software | — | — |
@@ -195,3 +196,4 @@ personaliza fica nos pagos.
   - [ProductReview H6 (avaliações)](https://www.productreview.com.au/listings/haval-h6)
   - [ProductReview H6 3ª geração (perguntas)](https://www.productreview.com.au/listings/haval-h6-third-generation/q-and-a?page=2)
   - [pcauto: problemas do H6 HEV](https://www.pcauto.com/my/news/haval-h6-hev-usually-experiences-which-issues-must-check-before-purchasing-18101)
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

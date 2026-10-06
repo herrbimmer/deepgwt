@@ -1,6 +1,7 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 # Roteiro do primeiro carro
 
-O OPEN GW (`br.com.opengw`) é um app novo e **não conversa com nenhuma versão anterior**: não lê as
+O DeepGWT (`br.com.deepgwt`) é um app novo e **não conversa com nenhuma versão anterior**: não lê as
 configurações dela, não a desativa, não a remove. O que só o carro confirma está na seção 3.
 
 ## 0. Antes
@@ -8,9 +9,9 @@ configurações dela, não a desativa, não a remove. O que só o carro confirma
 1. Se o carro tem uma versão anterior instalada, **remover antes**, pelo instalador dela. Duas
    versões não coexistem: os dois Shizuku declaram a mesma permissão e o segundo não instala
    (o instalador mostra `INSTALL_FAILED_DUPLICATE_PERMISSION` e avisa).
-2. Compilar o APK e o instalador (`./sincronizar-apk.sh` gera o `opengw.apk` e o instalador o leva
+2. Compilar o APK e o instalador (`./sincronizar-apk.sh` gera o `deepgwt.apk` e o instalador o leva
    embutido; `shizuku.apk` e `shizuku-starter` estão em `instalador/src-tauri/resources/`, fonte e
-   licença em `third_party/open-gw-acesso/`).
+   licença em `third_party/deepgwt-acesso/`).
 3. Um carro só, de preferência o do dono. Anotar a versão do carro (Informações → versão).
 4. Wi-Fi do carro (o instalador só fala com `192.168.33.x`).
 
@@ -18,8 +19,8 @@ configurações dela, não a desativa, não a remove. O que só o carro confirma
 
 | Passo | O que acontece | Conferir |
 |---|---|---|
-| Shizuku | instala `br.com.opengw.shizuku` ("OPEN GW Acesso") e sobe o servidor pelo telnet de root | `pidof shizuku_server` existe; o app "OPEN GW Acesso" abre e diz "em execução" |
-| App | instala `br.com.opengw` | ícone "OPEN GW" na tela inicial |
+| Shizuku | instala `br.com.deepgwt.shizuku` ("DeepGWT Acesso") e sobe o servidor pelo telnet de root | `pidof shizuku_server` existe; o app "DeepGWT Acesso" abre e diz "em execução" |
+| App | instala `br.com.deepgwt` | ícone "DeepGWT" na tela inicial |
 | Primeira partida | concede a permissão do Shizuku, o acesso a notificações, a acessibilidade e a sobreposição | tudo ligado sem pedir nada à mão |
 
 O app começa limpo: tema do painel, barra, brilho, luz, perfis e atalhos se configuram do zero.
@@ -48,3 +49,4 @@ fábrica, remove o app e o Shizuku.
 ## 4. Depois de tudo conferido
 
 Anotar o que passou; o que falhar volta para a lista de defeitos, com o log.
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

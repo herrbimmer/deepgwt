@@ -30,17 +30,20 @@
 }
 
 # ---------------------------------------------------------------------------------------------
-# Tela inicial 3D (pacote com.havalh6.viewer, dentro deste APK)
-# Mantemos o pacote inteiro porque ele é cheio de reflexão sobre API oculta do Android
-# (`resizeTask`, `setTaskAlwaysOnTop`, `setHiddenApiExemptions` e outras): o R8 não vê esses usos,
-# renomearia ou removeria os membros e a tela inicial quebraria só em release, a pior forma de
-# quebrar. Pelo mesmo motivo ficam os métodos `@JavascriptInterface`, que só o JavaScript chama.
+# Tela inicial 3D nova (pacote br.com.deepgwt.tela3d, dentro deste APK)
+# Mesmas razões do bloco antigo abaixo: reflexão sobre API oculta do Android (janelas) e os métodos
+# `@JavascriptInterface` das quatro pontes, que só o JavaScript da página chama. As Activities e os
+# serviços chegam pelo manifesto, mas o pacote inteiro fica de fora do R8: o custo é pequeno e quebrar
+# só em release é a pior forma de quebrar.
 # ---------------------------------------------------------------------------------------------
--keep class com.havalh6.viewer.** {
+-keep class br.com.deepgwt.tela3d.** {
     <init>(...);
     <fields>;
     <methods>;
 }
--keepclassmembers class com.havalh6.viewer.** {
+-keepclassmembers class br.com.deepgwt.tela3d.** {
     @android.webkit.JavascriptInterface <methods>;
 }
+
+# Cascas de nome dos dois serviços da tela 3D (acesso concedido no carro é por componente).
+-keep class com.havalh6.viewer.** { <init>(...); }

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Catálogo XTRA: 275 temas prontos, em grupos, que o instalador leva embutidos. Escolha um tema, um
 // grupo inteiro ou vários e envie para o carro, onde eles aparecem na seção "Temas XTRA" de Telas.
 
@@ -22,7 +23,7 @@ import {
 type Filtro = 'todos' | 'ausentes' | 'no-carro'
 type Aba = 'grupos' | 'pesquisa'
 
-const ABA_SALVA = 'opengw_xtra_aba'
+const ABA_SALVA = 'deepgwt_xtra_aba'
 const ID_DA_BUSCA = 'xtra-busca'
 
 const TIPOS: { id: TipoDeGrupo; rotulo: string }[] = [
@@ -775,3 +776,4 @@ export const CatalogoXtra = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

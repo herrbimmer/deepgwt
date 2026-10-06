@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { AwardIcon, LockIcon } from 'lucide-react'
 import { useNivel } from './NivelProvider'
@@ -29,7 +30,7 @@ export function NivelNoCabecalho() {
     origem === 'carro'
       ? licenca?.aviso && cobranca
         ? licenca.aviso.texto
-        : `Nível do OPEN GW neste carro: ${titulo}`
+        : `Nível do DeepGWT neste carro: ${titulo}`
       : origem === 'demo'
         ? 'Demonstração: tudo liberado'
         : origem === 'antigo'
@@ -48,3 +49,4 @@ export function NivelNoCabecalho() {
     </Link>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

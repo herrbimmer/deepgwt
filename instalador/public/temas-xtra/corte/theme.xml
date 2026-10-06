@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Corte</name>
     <description>Corte AA pelos sistemas do veículo: quatro faixas seccionadas cuja extensão é a grandeza e cuja hachura diz de que material são feitas -- 45 graus, contra-hachura vermelha e verticais azuis, as convenções de corte do desenho técnico. O traço do corte é grosso, o resto é fino.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

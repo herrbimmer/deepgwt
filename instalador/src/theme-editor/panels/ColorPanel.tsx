@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A paleta do tema: um token por papel, três estados de cor cada.
 //
 // Por que três e não dois: `night` é escolha manual do motorista nos ajustes do tema, e
@@ -75,3 +76,4 @@ export function ColorPanel({ palette, onChange }: ColorPanelProps) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

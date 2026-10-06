@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Reserva</name>
     <description>Reserva de potência no lugar do conta-giros, a tese do sedã inglês de capô longo: o motorista não quer saber quanto o motor está girando, quer saber quanto ainda sobra. O mostrador nasce em cem à esquerda e desce até zero à direita, com faixa vermelha nos últimos vinte por cento. A reserva é calculada a partir do giro contra o corte e da saída de energia, e o rodapé diz com todas as letras que é conta, não medida.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Nível</name>
     <description>Três tubos de nível deitados: o longo é a velocidade, os curtos são giro e tanque. A bolha não tenta imitar vidro nem líquido -- é um disco verde-limão correndo sobre a graduação gravada no fundo do tubo, que é um degradê repetido e não um nó por marca.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

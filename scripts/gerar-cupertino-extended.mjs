@@ -1,7 +1,8 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Tema Cupertino Extended (assets/PreinstalledThemes/cupertinoextended). Alpha 9.5; refeito na 9.6.
 //
 // Pedido do dono: um painel na linguagem visual da Apple, par do estilo "Cupertino" da interface do
-// OPEN GW na central. A 9.5 foi reprovada ("ridículo"). O que estava errado nela:
+// DeepGWT na central. A 9.5 foi reprovada ("ridículo"). O que estava errado nela:
 //  • fundo em malha de azul, roxo, verde-água e rosa — papel de parede de celular, não instrumento;
 //  • discos de "vidro" com brilho radial, que liam como bolas de boliche;
 //  • arco grosso com um botão de controle deslizante no fim — gesto de tela de toque num medidor;
@@ -171,7 +172,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=1920, height=720, initial-scale=1" />
 <title>Cupertino Extended</title>
 <!--
-  Cupertino Extended (OPEN GW, Alpha 9.6). Gerado por scripts/gerar-cupertino-extended.mjs — edite
+  Cupertino Extended (DeepGWT, Alpha 9.6). Gerado por scripts/gerar-cupertino-extended.mjs — edite
   lá e rode de novo. Contrato v1.0: só chaves de ThemeBridgeImpl.getAvailableKeys(); nenhuma luz
   desenhada (as do carro ficam por cima); declara o vão da projeção e o abre no #bg.
 -->
@@ -758,3 +759,4 @@ if (process.argv.includes('--verificar')) {
   fs.writeFileSync(arquivo, html)
   console.log('gravado', path.relative(raiz, arquivo), (html.length / 1024).toFixed(1) + ' KB')
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronDownIcon, DownloadIcon, FileUpIcon, PackageIcon } from 'lucide-react'
@@ -21,7 +22,7 @@ export const Instalacao = () => {
         </header>
 
         <div className="space-y-3">
-          <Button as={Link} to="/install/opengw" variant="success" size="lg" icon={PackageIcon}>
+          <Button as={Link} to="/install/deepgwt" variant="success" size="lg" icon={PackageIcon}>
             Instalar no Carro
           </Button>
 
@@ -41,10 +42,11 @@ export const Instalacao = () => {
           )}
 
           <div className="pt-2">
-            <BackButton to="/opengw" />
+            <BackButton to="/deepgwt" />
           </div>
         </div>
       </Card>
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

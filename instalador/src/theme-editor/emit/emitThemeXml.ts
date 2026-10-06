@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // `ThemeSpec` -> `theme.xml`.
 //
 // O parser do app casa nomes de tag DE FORMA GLOBAL, sem olhar o pai: um `<name>` aninhado em
@@ -95,3 +96,4 @@ ${fundo ? `    <background>${escapeXml(fundo)}</background>\n` : ''}    <AppDefa
 ${masks.length ? `    <nativeMasks>\n${masks.join('\n')}\n    </nativeMasks>\n` : ''}${configuracoes}</theme>
 `
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

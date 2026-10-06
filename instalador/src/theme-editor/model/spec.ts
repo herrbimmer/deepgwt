@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O modelo de um tema de cluster. Substitui `theme-editor/types.ts`.
 //
 // Uma regra orienta tudo aqui: o que o editor grava tem que ser suficiente para o motor montar o
@@ -159,6 +160,7 @@ export type TextStyle = {
    */
   shared?: string
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export type SizeToken = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
@@ -341,6 +343,7 @@ export type ColorRule = {
   color: Color
   when: VisibilityRule
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 type Base = {
   id: string
@@ -509,6 +512,7 @@ export type MaskSpec = {
   height: number
   opacity: number
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export type MaskId = 'fuel' | 'battery' | 'speed' | 'info' | 'topCenter'
 
@@ -585,3 +589,4 @@ export type ThemeSpec = {
 
 export const CANVAS_WIDTH = 1920
 export const CANVAS_HEIGHT = 720
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

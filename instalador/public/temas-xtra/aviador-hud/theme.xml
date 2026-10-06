@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Aviador HUD</name>
     <description>A projeção no para-brisa que a escola sueca trouxe do caça para o carro de rua: verde de fósforo sobre preto, traço fino de 2,4 px e quase nada escrito -- porque o que interessa está atrás do vidro, não no painel. Velocidade em 176 px, barra de referência, placa de limite, próxima manobra e mais nada.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

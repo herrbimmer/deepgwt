@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Altímetro</name>
     <description>Três ponteiros sobre a mesma escala de 0 a 10, como num altímetro de três ponteiros: o curto conta centenas, o longo dezenas e o fino laranja as unidades de km/h. A janela retângular repete o valor em algarismos, que é exatamente o que o instrumento original faz.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

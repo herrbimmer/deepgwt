@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>UTM</name>
     <description>Quadrícula de referência com numeração alfanumérica nas bordas, como numa carta topográfica: a velocidade é a coordenada leste, o giro é a norte, e a célula ocupada acende em vermelho com a referência escrita ao lado. Um rastro azul guarda as últimas quarenta posições.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

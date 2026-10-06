@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Régua Dupla</name>
     <description>Duas réguas verticais encostadas nas bordas -- velocidade à esquerda, giro à direita -- com coluna preenchida, graduação própria e um cursor branco atravessando a régua na altura do valor. Todo o meio da tela fica livre para a velocidade em corpo 236 e a marcha.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

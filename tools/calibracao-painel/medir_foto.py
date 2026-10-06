@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 """Mede, em px do painel (1920x720), o que o carro desenha por cima da grade de calibração.
 
 Entrada: foto (ou quadro de vídeo) do painel com a grade da Calibração do painel (Alpha 8.8) e as
@@ -162,3 +163,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

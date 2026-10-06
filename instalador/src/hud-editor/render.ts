@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A prévia do HUD: o desenho da `HudOverlayView` (Kotlin) portado para o canvas do navegador.
 //
 // UMA SEGUNDA IMPLEMENTAÇÃO, E POR QUE ELA É ACEITÁVEL AQUI
@@ -217,6 +218,7 @@ export function milhar(valor: number): string {
   }
   return valor < 0 ? `-${saida}` : saida
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export const decimal = (v: number, casas = 1) => v.toFixed(casas).replace('.', ',')
 export const kmPorLitro = (v: number) => (v >= 99.95 ? String(Math.round(v)) : decimal(v))
@@ -395,6 +397,7 @@ function bloco(
   }
   valorEUnidade(e, cx, yValor, valor, unidade, tamanho, larguraUtil, corValor)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function linhaB(e: Estado, cx: number, largura: number, rotulo: string, valor: string, unidade: string, cor: string) {
   bloco(e, cx, largura, e.h * GRADE.LINHA_B_ROTULO, e.h * GRADE.LINHA_B_VALOR, rotulo, valor, unidade, e.h * GRADE.TAM_B, cor)
@@ -560,6 +563,7 @@ function paginaMidia(e: Estado, c: CenarioHud) {
   fonte(e, e.peso, e.h * 0.1 * e.escala)
   centralizado(e, 'Nada tocando', e.w / 2, e.h * 0.57)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /** A capa sintética da prévia: degradê com um disco, o mesmo desenho do harness do carro. */
 function desenharCapa(ctx: CanvasRenderingContext2D, x: number, y: number, lado: number) {
@@ -734,6 +738,7 @@ function linhasDoTitulo(e: Estado, texto: string, maximo: number, minimo: number
     tam = Math.max(minimo, tam * 0.92)
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * `desenharIcone` da view, número a número: silhuetas sólidas numa caixa de 100 x 100, recortes
@@ -951,6 +956,7 @@ function desenharIcone(ctx: CanvasRenderingContext2D, icone: Icone, cx: number, 
   ctx.lineCap = 'butt'
   ctx.lineJoin = 'miter'
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /** `desenharSobreposicaoDeAlerta` da view (Alpha 9.4), parada no pico do pulso. */
 function desenharAlerta(e: Estado, c: CenarioHud) {
@@ -1096,3 +1102,4 @@ export function garantirFontesHud(): Promise<void> {
     .catch(() => undefined)
   return carregando
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

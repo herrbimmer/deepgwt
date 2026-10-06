@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { BackgroundConfig } from './model/spec'
 import { BACKGROUND_PRESETS, presetImageUrl } from './backgroundPresets'
 
@@ -87,3 +88,4 @@ export function canvasToPngBytes(canvas: HTMLCanvasElement): Promise<Uint8Array>
     }, 'image/png')
   })
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

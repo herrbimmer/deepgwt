@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Bávaro Elétrico</name>
     <description>O elétrico de carroceria de fibra da casa bávara: dois blocos retangulares flutuando, sem anel, sem moldura e sem conta-giros -- porque não há giro a mostrar, e o painel não finge que há. À esquerda velocidade e carga; à direita o fluxo de energia, o nível de recuperação e o consumo em kWh. Tudo publicado, nada estimado.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O que o editor mostra sobre cada chave que um tema pode ler.
 //
 // A LISTA em si não está aqui: ela é gerada de `ThemeBridgeImpl.kt` para
@@ -195,3 +196,4 @@ export const DISPLAYABLE_SOURCES = DATA_SOURCES.filter((s) => s.channel !== 'wri
 export const GROUP_ORDER: SourceGroup[] = [
   'Condução', 'Energia', 'Clima', 'Mídia', 'Telefone', 'Aplicativos', 'Estado do painel',
 ]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

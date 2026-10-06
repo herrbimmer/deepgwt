@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O editor de temas do painel.
 //
 // A tela é a moldura de três colunas (`theme-editor/editor/EditorShell`): páginas e camadas à
@@ -546,7 +547,7 @@ export const ThemeEditor = () => {
         }}>
           Histórico
         </Button>
-        <Button variant="ghost" size="sm" icon={DownloadIcon} fullWidth={false} title="Pacote .opengw-tema, com imagens e miniatura, para compartilhar" onClick={() => void exportar('pacote')}>
+        <Button variant="ghost" size="sm" icon={DownloadIcon} fullWidth={false} title="Pacote .deepgwt-tema, com imagens e miniatura, para compartilhar" onClick={() => void exportar('pacote')}>
           Exportar
         </Button>
         <Button variant="secondary" size="sm" icon={CheckIcon} fullWidth={false} title="Salvar (Ctrl/Cmd + S)" onClick={handleSalvar}>
@@ -791,7 +792,7 @@ export const ThemeEditor = () => {
             quando você desligar ou sair do editor.
           </p>
           <p className="text-xs text-text-tertiary mb-4">
-            Precisa do OPEN GW Alpha 6.5 ou mais novo no carro, e do tema customizado do painel ligado.
+            Precisa do DeepGWT Alpha 6.5 ou mais novo no carro, e do tema customizado do painel ligado.
           </p>
           <CarLinkPanel link={link} />
           <div className="flex gap-3">
@@ -861,7 +862,7 @@ export const ThemeEditor = () => {
         <Modal onClose={() => (sendStatus === 'busy' ? undefined : setShowSend(false))}>
           <h2 className="text-lg font-semibold text-text mb-2">Enviar para o carro</h2>
           <p className="text-sm text-text-secondary mb-4">
-            Empurra este tema direto para "Meus Temas" no OPEN GW do carro, pela mesma rede Wi-Fi do carro.
+            Empurra este tema direto para "Meus Temas" no DeepGWT do carro, pela mesma rede Wi-Fi do carro.
             Depois de enviar, escolha o tema em Temas no carro (aqui ou no próprio carro).
           </p>
 
@@ -908,3 +909,4 @@ export const ThemeEditor = () => {
     </>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

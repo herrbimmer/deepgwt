@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Decodificador de VIN — ISO 3779 (estrutura) + ISO 3780 (faixas regionais).
 //
 // O QUE ESTE MÓDULO SABE E O QUE NÃO SABE
@@ -165,6 +166,7 @@ const COUNTRY_RANGES: Array<{ test: (wmi: string) => boolean; label: string }> =
 export function normalizeVin(input: string): string {
   return input.toUpperCase().replace(/[\s\-_.]/g, '')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /** Dígito verificador da posição 9, pelo algoritmo da norma. `null` se houver caractere inválido. */
 export function computeCheckDigit(vin: string): string | null {
@@ -437,3 +439,4 @@ export function decodeVin(input: string, overrides: WmiOverrides = {}): VinDecod
 
   return { input, normalized, wellFormed, problems, fields, parts }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Anunciador</name>
     <description>Painel anunciador de cabine: doze caixas de legenda que só significam alguma coisa quando acendem -- apagado é o estado normal, e é isso que se lê de relance. Verde para o que está certo, âmbar para atenção, vermelho para o que pede reação e azul para modo.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Alpha 9.4: só o Wi-Fi do carro (lib/redeDoCarro.ts, espelho da trava em lib.rs) e a tela de
 // falha da instalação (lib/resultadoDaInstalacao.ts). As frases casadas aqui são as que o
 // backend escreve em lib.rs — se uma mudar lá, este teste avisa antes da tela cair no genérico.
@@ -36,8 +37,9 @@ ok(explicarFalha(naoRespondeu).rede, 'central não respondeu -> passo de rede')
 ok(explicarFalha('Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE]').passos.some((p) => p.includes('Remova o app do carro')), 'chave diferente -> remover e instalar do zero')
 ok(explicarFalha('O sistema fez rollback da instalação logo depois de aplicá-la').causa.includes('desfez'), 'rollback')
 ok(explicarFalha(undefined).passos.length > 0, 'sem mensagem -> genérico')
-ok(rotaDeOrigem('update') === '/update/opengw' && rotaDeOrigem('local') === '/install/local', 'tentar de novo volta à origem')
+ok(rotaDeOrigem('update') === '/update/deepgwt' && rotaDeOrigem('local') === '/install/local', 'tentar de novo volta à origem')
 ok(nomeDaOperacao('update') === 'atualização' && nomeDaOperacao('install') === 'instalação', 'nome da operação')
 
 console.log(falhas === 0 ? `rede e resultado: ${total} verificações, tudo certo` : `rede e resultado: ${falhas} falha(s) em ${total}`)
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

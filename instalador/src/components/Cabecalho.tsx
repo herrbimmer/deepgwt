@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { NivelNoCabecalho } from '../tiers/SeloDoNivel'
 import { ConnectionPill } from './ConnectionPill'
@@ -23,7 +24,7 @@ export const Cabecalho = () => {
             style={{ backgroundImage: `url(/header-art.jpg)` }}
           />
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-text leading-tight tracking-tight">OPEN GW</div>
+            <div className="text-sm font-semibold text-text leading-tight tracking-tight">DeepGWT</div>
             <div className="text-[10px] font-mono text-text-tertiary leading-tight">{APP_VERSION}</div>
           </div>
         </Link>
@@ -51,10 +52,11 @@ export const Cabecalho = () => {
           <NivelNoCabecalho />
         </div>
         <Link to="/" className="absolute bottom-2 left-4" title="Início">
-          <div className="text-sm font-semibold text-white tracking-tight leading-tight">OPEN GW</div>
+          <div className="text-sm font-semibold text-white tracking-tight leading-tight">DeepGWT</div>
           <div className="text-[10px] font-mono text-white/55 leading-tight">{APP_VERSION}</div>
         </Link>
       </div>
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Salvar e abrir arquivos do app (histórico, pontos de restauração, relatórios).
 //
 // Duas camadas, porque o app roda em dois contextos diferentes e isso não pode virar uma mentira
@@ -112,3 +113,4 @@ export const SAVE_MESSAGE: Record<'file' | 'download' | 'clipboard', (path: stri
   download: (p) => `Baixado como ${p} pelo navegador (sem runtime Tauri nesta janela).`,
   clipboard: () => 'Copiado para a área de transferência — nenhum arquivo foi gravado em disco.',
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

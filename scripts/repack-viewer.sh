@@ -1,7 +1,8 @@
 #!/bin/bash
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 # OBSOLETO desde a Alpha 3.5 (17/09/2026): o launcher 3D não é mais um APK separado.
 #
-# Ele foi fundido no APK do OPEN GW. O `assets/www` que vai para o carro agora é
+# Ele foi fundido no APK do DeepGWT. O `assets/www` que vai para o carro agora é
 # `app/src/main/assets/www` deste repositório, e quem o empacota é o Gradle
 # (`./gradlew :app:assembleDebug`). Editar a pasta descompactada em ~/Downloads e rodar este
 # script produz um APK que ninguém instala — e pior, faz parecer que a mudança foi aplicada.
@@ -45,3 +46,4 @@ PY
   --v1-signing-enabled true --v2-signing-enabled true --out "$OUT" "$TMP/aligned.apk"
 rm -rf "$TMP"
 echo "APK: $OUT"
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

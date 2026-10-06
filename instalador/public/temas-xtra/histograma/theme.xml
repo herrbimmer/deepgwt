@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Histograma</name>
     <description>A distribuição da velocidade em doze faixas de 20 km/h, contando quanto tempo o carro passou em cada uma desde que o painel abriu. A barra da faixa atual fica branca, as mais visitadas ficam azuis, e a contagem aparece no topo de cada coluna.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

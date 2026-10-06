@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Guardas da organização do instalador (6.3.1; níveis na 8.0): árvore de menus, níveis e cadeados,
 // confirmação de risco, aviso de conexão, migração das preferências e o número de versão.
 //
@@ -100,8 +101,8 @@ for (const p of listaveis) ok(todos.has(p), `os menus alcançam ${p} (nada some 
 
 // Desfazer é sempre livre: instalar, atualizar, reparar, remover, restaurar e o que é informação.
 for (const p of [
-  '/', '/monitor', '/veiculo', '/ajustes-open-gw', '/config-avancadas', '/config-avancadas/ajustes', '/alteracoes',
-  '/opengw', '/install', '/install/opengw', '/install/local', '/update/opengw',
+  '/', '/monitor', '/veiculo', '/ajustes-deepgwt', '/config-avancadas', '/config-avancadas/ajustes', '/alteracoes',
+  '/deepgwt', '/install', '/install/deepgwt', '/install/local', '/update/deepgwt',
   '/restart-shizuku', '/reset-stealth-mode', '/uninstall', '/conectar', '/privacidade', '/sobre', '/licenca',
 ]) {
   eq(nivelDe(p), 'drive', `${p} é do Drive`)
@@ -157,7 +158,7 @@ ok(sectionItems('carro').length + sectionItems('personalizar').length + sectionI
 
 // Instalar é UM clique a partir do Início (Instalar e manter -> Instalar no carro), e não o 5º
 // item de uma lista de dez.
-eq(childrenOf('/opengw')[0]?.path, '/install', 'instalar é o primeiro item de "Instalar e manter"')
+eq(childrenOf('/deepgwt')[0]?.path, '/install', 'instalar é o primeiro item de "Instalar e manter"')
 
 // A casca é quem tranca: uma tela nova não esquece o cadeado nem a confirmação.
 const casca = ler('src/navigation/TierShell.tsx')
@@ -169,6 +170,7 @@ console.log('3. nomes')
 for (const r of ALL_ROUTES) {
   ok(!/\b(USER|PRO|EXPERT)\b/.test(r.title), `${r.path}: sem rótulo de nível em inglês`)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 const header = ler('src/components/Cabecalho.tsx')
 ok(!header.includes('TierSwitcher') && header.includes('NivelNoCabecalho'), 'cabeçalho mostra o nível do carro, sem seletor de modo')
 eq(niveis.TABELA_PADRAO.niveis.map((n) => n.titulo), ['Essencial', 'Plus', 'Pro', 'Max'], 'os quatro níveis, na ordem')
@@ -267,10 +269,10 @@ const pkg = JSON.parse(ler('package.json'))
 const cargo = ler('src-tauri/Cargo.toml').match(/^version = "([^"]+)"/m)?.[1]
 eq([tauri.version, cargo], [pkg.version, pkg.version], 'package.json, tauri.conf.json e Cargo.toml com a mesma versão')
 const gradle = readFileSync(fileURLToPath(new URL('../../gradle.properties', import.meta.url)), 'utf8')
-const apk = gradle.match(/^appVersionName=Alpha (\d+\.\d+) (\d{12})$/m)
-ok(apk !== null, 'gradle.properties tem appVersionName no formato "Alpha N.N DDMMAAAAHHMM"')
+const apk = gradle.match(/^appVersionName=Alpha (\d+\.\d+\.\d+) (\d{12})$/m)
+ok(apk !== null, 'gradle.properties tem appVersionName no formato "Alpha N.N.N DDMMAAAAHHMM"')
 if (apk) {
-  eq(pkg.version.split('.').slice(0, 2).join('.'), apk[1], 'o major.minor do instalador é o número do APK')
+  eq(pkg.version, apk[1], 'a versão (major.minor.patch) do instalador é a do APK')
   const stamp = ler('src/lib/version.ts').match(/const BUILD_STAMP = '(\d{12})'/)?.[1]
   eq(stamp, apk[2], 'o BUILD_STAMP do instalador é o carimbo do APK')
 }
@@ -282,3 +284,4 @@ else {
   console.error(`${falhas} de ${total} verificações falharam.`)
   process.exitCode = 1
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Fundo (escuro/claro) e cor de destaque de um tema, tirados da miniatura. Alimentam os filtros do
 // Catálogo XTRA. Sem dependência: decodifica o PNG direto (8 bits, RGB ou RGBA, sem entrelaçamento,
 // que é o que o Chrome grava nas miniaturas do pacote).
@@ -91,3 +92,4 @@ export function perfilDeCor(buf) {
   const total = MATIZES.reduce((n, c) => n + peso[c], 0)
   return { fundo, cor: peso[cor] / total < 0.5 ? 'colorido' : cor }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

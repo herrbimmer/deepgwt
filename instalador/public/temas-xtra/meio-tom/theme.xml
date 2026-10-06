@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Meio-tom</name>
     <description>O fundo inteiro é o mostrador: o cinza clareia conforme a velocidade sobe, de quase preto a quase branco, e o algarismo troca sozinho entre claro e escuro na hora em que o fundo passa do meio -- para nunca ficar ilegível. Nenhuma forma desenhada na tela.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

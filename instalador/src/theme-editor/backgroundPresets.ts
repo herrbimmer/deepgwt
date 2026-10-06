@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Fundos prontos, sem depender de arquivo nenhum além do papel de parede que o app já instala.
 //
 // Os três predefinidos antigos apontavam para `public/themes/{nordic,coffe3,horizon}/car-bg.png`,
@@ -32,3 +33,4 @@ export function presetImageUrl(presetId: string): string | null {
   const preset = PRESET_BY_ID.get(presetId)
   return preset && preset.preview.startsWith('/') ? preset.preview : null
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

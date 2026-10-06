@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Orbital</name>
     <description>Dois anéis concêntricos: o externo é a velocidade, com um ponto que percorre a órbita, e o interno é o giro do motor em rosa. No miolo a velocidade domina, com marcha e modo de condução abaixo; seis satélites nas laterais trazem giro, combustível, bateria, hodômetro, temperatura e o modo da direção, e três lâmpadas na base acendem para ESP, faróis e combustível igual ou abaixo de 15%.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

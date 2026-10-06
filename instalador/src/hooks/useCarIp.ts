@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useVehicleSession } from '../state/VehicleSession'
 
 /** Endereço simbólico do modo demonstração — nunca é usado em uma requisição real. */
@@ -17,3 +18,4 @@ export const useCarIp = () => {
   // elas. Nenhuma requisição é feita: a sessão intercepta leitura e escrita antes do `invoke`.
   return { carIp: source === 'demo' ? DEMO_CAR_IP : carIp, setCarIp }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -56,7 +56,7 @@
     "serie": 1002
   },
   "whatsapp": {
-    "texto": "Olá, José!\n\nSua licença do OPEN GW Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o OPEN GW conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: OPEN GW → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o OPEN GW ativo.",
+    "texto": "Olá, José!\n\nSua licença do DeepGWT Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o DeepGWT conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: DeepGWT → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o DeepGWT ativo.",
     "serie": 1002,
     "codigo": "8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-MS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W"
   },
@@ -114,7 +114,7 @@
     },
     {
       "caso": "mensagem com o código errado na linha 2",
-      "codigo": "Olá, José!\n\nSua licença do OPEN GW Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-SS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o OPEN GW conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: OPEN GW → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o OPEN GW ativo.",
+      "codigo": "Olá, José!\n\nSua licença do DeepGWT Pro (100 h de uso) para o carro de VIN LGW•••••••••00001:\n\n8400Z-A0CGT-NEWSD-GQHE5\nBX9XF-SS4HP-KZ7F9-DDFW9\nBT4K9-96G0J-HPH2Z-VAY7W\n\nPara ativar, com o carro ligado:\n• No computador (o mais fácil): abra o DeepGWT conectado ao carro, clique em \"Ativar licença\" e cole esta mensagem inteira.\n• No celular: conecte no Wi-Fi do carro, abra o endereço que aparece no carro em Informações → Nível e licença → Pelo celular, e cole esta mensagem.\n• No próprio carro: DeepGWT → Informações → Nível e licença → Inserir licença.\n\nAs horas só contam com o carro ligado (READY) e o DeepGWT ativo.",
       "vin": "LGWEF6A5XSH000001",
       "motivo": "conferencia",
       "linha": 2

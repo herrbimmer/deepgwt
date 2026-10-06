@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { BeakerIcon, CheckCircle2Icon, CircleDashedIcon } from 'lucide-react'
 import { VALIDATION_LABEL, validationOf, type CapabilityId, type ValidationStatus } from '../validation/status'
 
@@ -25,3 +26,4 @@ export function ValidationBadge({ capability, status, className = '' }: Validati
     </span>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

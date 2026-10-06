@@ -1,4 +1,5 @@
-// Temas de HUD prontos. "Padrão OPEN GW" é o HUD de fábrica, valor a valor; os outros mostram o
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+// Temas de HUD prontos. "Padrão DeepGWT" é o HUD de fábrica, valor a valor; os outros mostram o
 // que o criador alcança — paleta, letra, o que cada página mostra e quais páginas entram.
 //
 // As cores ficam na paleta clara e fria mais o âmbar (ver CORES_DE_VALOR): o HUD projeta luz, e o
@@ -8,7 +9,7 @@
 // quatro tinham a velocidade no tamanho de fábrica (30%), que no para-brisa lê pequena, e rótulos
 // quase da cor do valor. Agora a velocidade cresce onde o tema é sobre ela, os rótulos ficam um
 // degrau abaixo do valor em cor e em peso, e cada página ativa tem um motivo para estar no rodízio.
-// Nenhum campo novo: tudo aqui é o mesmo formato `opengw-hud-tema` v1 que o carro já lê.
+// Nenhum campo novo: tudo aqui é o mesmo formato `deepgwt-hud-tema` v1 que o carro já lê.
 
 import { type HudTema, temaHudPadrao } from './model'
 
@@ -19,9 +20,9 @@ const base = (nome: string): HudTema => temaHudPadrao(nome)
 export const HUD_PRESETS: HudPreset[] = [
   {
     id: 'padrao',
-    nome: 'Padrão OPEN GW',
+    nome: 'Padrão DeepGWT',
     resumo: 'O HUD de fábrica: branco, Roboto negrito, as cinco páginas.',
-    tema: base('Padrão OPEN GW'),
+    tema: base('Padrão DeepGWT'),
   },
   {
     id: 'cristal',
@@ -132,3 +133,4 @@ export const HUD_PRESETS: HudPreset[] = [
     },
   },
 ]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

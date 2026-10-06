@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Hidráulico Digital</name>
     <description>O painel digital que a escola francesa lançou nos anos 80, quando quase ninguém ousava: verde de fósforo sobre preto, barra de giro em trinta segmentos inclinados e velocidade em dígitos de 180 px. O desenho envelheceu muito melhor do que parecia na época -- e aqui a barra acende segmento a segmento, sem interpolação.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

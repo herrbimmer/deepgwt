@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O fim de uma instalação ou atualização: o que as telas de fluxo mandam para a tela de resultado.
 //
 // Até a Alpha 9.3 só existia a tela de sucesso (`/install/success`). Uma falha deixava a pessoa na
@@ -27,11 +28,11 @@ export function nomeDaOperacao(modo: ModoDaInstalacao | undefined): string {
 export function rotaDeOrigem(modo: ModoDaInstalacao | undefined): string {
   switch (modo) {
     case 'update':
-      return '/update/opengw'
+      return '/update/deepgwt'
     case 'local':
       return '/install/local'
     default:
-      return '/install/opengw'
+      return '/install/deepgwt'
   }
 }
 
@@ -120,3 +121,4 @@ export function explicarFalha(erro: string | undefined): Explicacao {
     rede: false,
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

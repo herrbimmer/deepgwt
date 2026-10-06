@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import {
@@ -139,7 +140,7 @@ export const ConnectToVehicle = () => {
             state={headUnitState}
           />
           <StateRow
-            title="App OPEN GW no carro"
+            title="App DeepGWT no carro"
             hint="Usado para ler e ajustar o carro. Também só pelo Wi-Fi do carro."
             state={appState}
           />
@@ -171,7 +172,7 @@ export const ConnectToVehicle = () => {
         {!demo && (
           <div className="mb-5 space-y-2">
             <label htmlFor="car-ip" className="text-xs text-text-tertiary block">
-              IP do app OPEN GW no carro
+              IP do app DeepGWT no carro
             </label>
             <div className="flex gap-2">
               <TextInput
@@ -294,3 +295,4 @@ function StateRow({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

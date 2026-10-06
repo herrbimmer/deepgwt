@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Licença no instalador (Alpha 8.1; código curto na 8.2): a conferência do código contra os vetores
 // do licenciador e a leitura do bloco `licenca` de `GET /licenca`. O instalador só confere o FORMATO
 // (a linha com erro de digitação) e acha o código no meio da mensagem; assinatura, VIN e série
@@ -6,6 +7,7 @@
 
 import { readFileSync } from 'node:fs'
 import { conferirCodigo, tamanhoDoCodigo } from '../src/tiers/codigoDeLicenca.ts'
+import { ehErroDeRede } from '../src/tiers/erroDeRede.ts'
 import { duracao, lerAvaliacao, lerLicenca, lerRespostaDaLicenca, TABELA_PADRAO, tituloDoNivel } from '../src/tiers/niveis.ts'
 
 let falhas = 0
@@ -90,11 +92,25 @@ eq(resposta.emAvaliacao, false, 'licença não é teste')
 eq(lerAvaliacao({ situacao: 'usada', totalSeg: 600, restanteSeg: 0, nivel: 'signature', motivo: 'O teste grátis já foi usado neste carro.' })?.motivo, 'O teste grátis já foi usado neste carro.', 'usado, com o motivo')
 eq(lerAvaliacao({ situacao: 'estranha' }), null, 'situação desconhecida = sem teste')
 eq(lerAvaliacao({ situacao: 'disponivel' })?.totalSeg, 600, 'sem total: 10 min')
+// 10.1: até desligar o carro, 2 grátis por instalação, depois com aviso.
+const nova = lerAvaliacao({ situacao: 'esgotada', nivel: 'signature', ateDesligar: true, usos: 2, limite: 2, gratisRestantes: 0, comAviso: false, contagem: 'x', motivo: null })
+eq([nova?.situacao, nova?.ateDesligar, nova?.usos, nova?.limite, nova?.gratisRestantes], ['esgotada', true, 2, 2, 0], 'resposta 10.1: grátis esgotados')
+const comAviso = lerAvaliacao({ situacao: 'ativa', nivel: 'signature', ateDesligar: true, usos: 3, limite: 2, comAviso: true, textoDoAviso: 'pague', motivo: null })
+eq([comAviso?.comAviso, comAviso?.textoDoAviso], [true, 'pague'], 'resposta 10.1: teste com aviso')
+eq([lerAvaliacao({ situacao: 'ativa', totalSeg: 600, restanteSeg: 60 })?.ateDesligar, lerAvaliacao({ situacao: 'disponivel' })?.limite], [false, 2], 'carro 8.4: por tempo; limite padrão 2')
 
 console.log('4. duração')
 eq(duracao(45 * 60), '45 min', 'minutos')
 eq(duracao(90 * 60), '1 h 30 min', 'hora e minutos')
 eq(duracao(12 * 3600 + 1200), '12 h', 'acima de 10 h, só horas')
 
+console.log('5. erro de rede x recusa do carro (a licença pendente só some na recusa)')
+ok(ehErroDeRede('Falha na operação: timeout'), 'carro mudo é rede')
+ok(ehErroDeRede('Este computador não está no Wi-Fi do carro. Ligue o hotspot'), 'fora do Wi-Fi do carro é rede')
+ok(ehErroDeRede('O endereço 10.0.0.5 não é da rede do carro. Com o computador'), 'IP fora da faixa é rede')
+ok(!ehErroDeRede('assinatura inválida'), 'recusa de assinatura não é rede')
+ok(!ehErroDeRede('série repetida'), 'série repetida não é rede')
+
 console.log(falhas === 0 ? `licença: ${total} verificações, tudo certo` : `licença: ${falhas} de ${total} falharam`)
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

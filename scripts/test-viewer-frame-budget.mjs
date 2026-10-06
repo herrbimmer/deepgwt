@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Orçamento de desempenho do launcher 3D: teto de 24 fps e render a 90% da resolução.
 //
 // Roda com `node scripts/test-viewer-frame-budget.mjs`. A pasta do launcher é a mesma que
@@ -18,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 // estas verificações deixaram de ser opcionais. VIEWER_SRC continua valendo para apontar para
 // uma pasta descompactada de fora, e o "PULADO" segue existindo para esse caso.
 const viewerSrc = process.env.VIEWER_SRC || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app', 'src', 'main')
-const clientPath = path.join(viewerSrc, 'assets', 'www', 'openGwClient.js')
+const clientPath = path.join(viewerSrc, 'assets', 'www', 'deepGwtClient.js')
 if (!fs.existsSync(clientPath)) {
   console.log(`PULADO: launcher 3D não encontrado em ${viewerSrc}`)
   process.exit(0)
@@ -129,3 +130,4 @@ eq('resolução a 90%', Math.round(window.devicePixelRatio * 1000) / 1000, 0.9)
 
 console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTodas passaram')
 process.exit(falhas ? 1 : 0)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

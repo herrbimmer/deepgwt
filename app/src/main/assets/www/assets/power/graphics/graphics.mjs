@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /** Pure SVG graphics adapter. No timers, DOM access, vehicle bus, or production wiring. */
 export const TOKENS=Object.freeze({steel:'#858e96',steelEdge:'#b4bdc5',empty:'#35404a',
   charge:'#39ce91',drive:'#22c9ff',regen:'#53ed91',engine:'#ffb65c',
@@ -75,3 +76,4 @@ export function overlaySVG(v,state={},options={}){
   if(options.showSocLabel!==false)content+=`<g data-layer="soc-label" id="${prefix}-soc-label"><rect x="${b.x+b.width/2-43}" y="${ly-18}" width="86" height="32" rx="8" fill="#15232e" fill-opacity="0.94"/><text x="${b.x+b.width/2}" y="${ly+5}" text-anchor="middle" fill="#f5faff" font-family="sans-serif" font-size="${small?22:27}" font-weight="600">${label}</text></g>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" role="img" aria-labelledby="${prefix}-title" style="overflow:visible"><title id="${prefix}-title">${esc(v.key.toUpperCase())} battery ${s.soc===null?'unavailable':Math.round(s.soc)+' percent'}; front ${s.front===1?'drive':s.front===-1?'regeneration':'inactive'}; rear ${!v.awd?'not driven':s.rear===1?'drive':s.rear===-1?'regeneration':'inactive'}</title><defs>${defs}</defs>${content}</svg>`;
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

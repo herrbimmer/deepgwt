@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>VU</name>
     <description>Três medidores de VU com face creme, escala preta até o zero e vermelha depois dele, ponteiro leve e lâmpada de pico no canto que acende acima de 84%. É o instrumento analógico de áudio aplicado à telemetria, com o amortecimento lento que o VU original tem por norma.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Bávaro Chevron</name>
     <description>Painel de dois chevrons de face texturizada e aro prateado, velocidade de 0 a 220 km/h à esquerda e potência à direita, com a zona de recarga em azul abaixo do zero. O enchimento sobe com o valor, claro no alto e no tom do painel embaixo. No centro, a música que está tocando (capa, faixa, artista e álbum) ou o modo de condução com consumo e hodômetro; a projeção da central aparece ali. Marca do limite da via na escala, placa no rodapé, bateria, hora, temperatura externa e autonomia. Tom do painel escolhível (ou seguindo o modo de condução) e modo dia/noite.</description>
@@ -49,3 +50,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O único CSS que muda de um tema para outro: tokens de cor, fontes e fundo.
 //
 // Tudo o mais vem de `ENGINE_CSS`, byte a byte igual em todo tema. É essa separação que torna o
@@ -69,3 +70,4 @@ ${modeBlock(spec.palette, 'headlight')}
 body { background: ${opts.backgroundCss}; }
 `
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

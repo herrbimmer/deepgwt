@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Calibração do painel</name>
     <description>Grade de coordenadas 1920×720 para mapear onde o carro desenha luzes e avisos por cima do tema. Não é um tema de uso: entra e sai pelo Diagnóstico (Calibração do painel), só com o carro parado, e volta sozinho ao tema de antes se o carro andar.</description>
@@ -20,3 +21,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

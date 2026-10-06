@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useState } from 'react'
 import { UnlockIcon, PlayIcon } from 'lucide-react'
 import { invoke } from '@tauri-apps/api/core'
@@ -39,7 +40,7 @@ export const ResetStealthMode = () => {
   const handleReset = async () => {
     setIsRunning(true)
     setIsDone(false)
-    setOutput(['🔓 Recuperando o OPEN GW do Modo Sorrateiro...'])
+    setOutput(['🔓 Recuperando o DeepGWT do Modo Sorrateiro...'])
     try {
       await invoke('reset_stealth_mode')
       setIsDone(true)
@@ -99,8 +100,9 @@ export const ResetStealthMode = () => {
           </Banner>
         )}
 
-        <BackButton to="/opengw" />
+        <BackButton to="/deepgwt" />
       </Card>
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

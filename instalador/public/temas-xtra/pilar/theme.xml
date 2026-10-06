@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Pilar</name>
     <description>O trio de manômetros que se prende à coluna do para-brisa, inclinado nove graus para o motorista, do lado esquerdo e sozinho -- o kit de instrumentos extras dos carros preparados. O barramento do carro não publica pressão de turbo nem temperatura de óleo, então as três cápsulas carregam o que ele publica mesmo: tensão do pack, corrente e consumo instantâneo, com o rótulo dizendo qual é qual.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

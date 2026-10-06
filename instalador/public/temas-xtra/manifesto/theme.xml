@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Manifesto</name>
     <description>Seis frases curtas coladas umas nas outras, em pesos e corpos diferentes e sem grade nenhuma. Os valores entram dentro do texto -- em laranja -- em vez de virarem campos, e a última linha é a regra que o próprio tema cumpre: quando o carro avisa, a tela se esvazia.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

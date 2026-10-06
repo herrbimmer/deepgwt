@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { TerminalIcon } from 'lucide-react'
 import { Squircle } from '../ui'
 
@@ -38,3 +39,4 @@ export const LogView = ({ title, lines, busy = false }: LogViewProps) => (
     </Squircle>
   </>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

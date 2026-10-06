@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Fio</name>
     <description>Nada nesta tela passa de 1px: sem preenchimento, sem sombra, sem degradê. O mostrador tem uma marca por km/h -- 241 traços em um único path para não encher o DOM -- e a hierarquia vem só do comprimento das marcas. O giro é um arco fino por fora.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

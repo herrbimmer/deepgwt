@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { Transition } from 'motion/react'
 
 /**
@@ -15,3 +16,4 @@ export const springs: Record<'press' | 'reposition' | 'sheet' | 'momentum', Tran
   /** Levemente subamortecido — assentamento ao soltar um arrasto com momentum. */
   momentum: { type: 'spring', bounce: 0.15, duration: 0.4 }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

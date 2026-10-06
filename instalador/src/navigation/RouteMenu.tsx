@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CircleDotIcon, WifiOffIcon } from 'lucide-react'
@@ -79,7 +80,7 @@ type MenuPageProps = {
 }
 
 /**
- * Página de menu genérica. "OPEN GW no carro", "Ajustes do carro" e "Ferramentas" eram três
+ * Página de menu genérica. "DeepGWT no carro", "Ajustes do carro" e "Ferramentas" eram três
  * telas com os itens escritos à mão — e por isso o filtro de modo não valia nelas, os títulos
  * divergiam da trilha (o botão dizia uma coisa e o breadcrumb outra) e mover
  * uma tela de lugar exigia editar a tela antiga. Agora o menu é a árvore.
@@ -110,3 +111,4 @@ export function MenuPage({ path, intro, footer }: MenuPageProps) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

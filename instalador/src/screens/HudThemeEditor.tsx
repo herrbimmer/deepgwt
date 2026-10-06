@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
@@ -431,7 +432,7 @@ export const HudThemeEditor = () => {
   ]
 
   // A mesma barra do editor do painel: nome à esquerda com largura flexível (o nome longo não
-  // corta mais em "Padrão OPEN GW (cópi…"), ações do tema à direita, prévia embaixo.
+  // corta mais em "Padrão DeepGWT (cópi…"), ações do tema à direita, prévia embaixo.
   const barra = (
     <div className="space-y-2">
       <div className="flex items-center gap-2 flex-wrap">
@@ -690,3 +691,4 @@ export const HudThemeEditor = () => {
     </>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

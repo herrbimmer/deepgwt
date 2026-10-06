@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
 // Formato do dispositivo, derivado do formato da JANELA, não de user-agent. O mesmo binário roda
@@ -74,3 +75,4 @@ export function FormFactorProvider({ children }: { children: ReactNode }) {
 export function useFormFactor(): FormFactorState {
   return useContext(FormFactorContext)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

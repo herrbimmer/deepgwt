@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Cota</name>
     <description>Nada de desenho: só a cotagem. Linha de cota, linhas de chamada, setas cheias e o número no meio -- o objeto que elas mediriam fica implícito, marcado apenas por um retângulo tracejado. Fundo branco de papel sulfite, que inverte inteiro no modo noturno.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

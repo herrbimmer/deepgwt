@@ -1,7 +1,8 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Pontos de restauração — cópias datadas e nomeadas das configurações lidas do carro.
 //
 // O QUE ISTO SUBSTITUI: o Coding guardava UM ponto de restauração, sem nome e sem data, na chave
-// `opengw_coding_baseline`. Ele era gravado na primeira leitura e nunca mais atualizado, o que
+// `deepgwt_coding_baseline`. Ele era gravado na primeira leitura e nunca mais atualizado, o que
 // produzia três problemas concretos:
 //   1. não dava para ter um ponto "antes de mexer no ADAS" e outro "antes de mexer na luz";
 //   2. limpar o `localStorage` apagava o único ponto existente sem aviso nenhum, e a pessoa só
@@ -21,7 +22,7 @@ import { STORAGE_KEYS, readRaw, writeRaw } from './storageKeys'
 export type SnapshotKind =
   /** Criado pelo usuário, com nome. */
   | 'manual'
-  /** Convertido do antigo `opengw_coding_baseline`, que não tinha nome nem data. */
+  /** Convertido do antigo `deepgwt_coding_baseline`, que não tinha nome nem data. */
   | 'migrated-baseline'
 
 export type Snapshot = {
@@ -134,7 +135,7 @@ export function renameSnapshot(id: string, name: string): void {
 }
 
 /**
- * Converte o ponto de restauração antigo (`opengw_coding_baseline`) em um ponto nomeado.
+ * Converte o ponto de restauração antigo (`deepgwt_coding_baseline`) em um ponto nomeado.
  *
  * Roda uma vez: se já existe um ponto migrado, não faz nada. A chave antiga NÃO é apagada — uma
  * build anterior instalada em paralelo ainda a procura onde sempre esteve.
@@ -168,6 +169,7 @@ export function migrateLegacyBaseline(vin: string | null, carIp: string): Snapsh
   persist([...existing, snap])
   return snap
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export type SnapshotDiff = {
   /** Chave existe nos dois lados e o valor mudou. */
@@ -231,3 +233,4 @@ export function subscribeSnapshots(fn: Listener): () => void {
 function notify() {
   for (const fn of listeners) fn()
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

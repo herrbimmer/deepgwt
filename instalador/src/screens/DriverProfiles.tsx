@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { UserIcon, Trash2Icon, PlusIcon, RefreshCwIcon } from 'lucide-react'
@@ -13,7 +14,7 @@ import { useCarIp } from '../hooks/useCarIp'
 //
 // Agora esta tela é um cliente: lista, aplica, cria e apaga os perfis do próprio carro, pelas
 // mesmas rotas que o launcher 3D e a tela do app usam. O retrato é sempre tirado no carro, porque
-// é lá que está o que um perfil guarda de verdade — as ~150 preferências do OPEN GW mais as
+// é lá que está o que um perfil guarda de verdade — as ~150 preferências do DeepGWT mais as
 // configurações do barramento. Nada disso é visível daqui.
 
 type PerfilDoCarro = {
@@ -139,7 +140,7 @@ export const DriverProfiles = () => {
 
   const descrever = (perfil: PerfilDoCarro) => {
     const partes: string[] = []
-    if (perfil.ajustes) partes.push(`${perfil.ajustes} ajustes do OPEN GW`)
+    if (perfil.ajustes) partes.push(`${perfil.ajustes} ajustes do DeepGWT`)
     if (perfil.veiculo) partes.push(`${perfil.veiculo} do carro`)
     if (perfil.banco !== null && perfil.banco !== undefined) partes.push(`banco ${perfil.banco}`)
     if (!partes.length) partes.push('vazio')
@@ -177,7 +178,7 @@ export const DriverProfiles = () => {
         </div>
         <p className="text-text-tertiary mb-6 text-sm leading-relaxed">
           Os perfis ficam no carro, não neste computador. Cada um guarda tudo o que foi configurado
-          no OPEN GW — tema do painel, HUD, som do motor, barra inferior, launcher, atalhos — mais
+          no DeepGWT — tema do painel, HUD, som do motor, barra inferior, launcher, atalhos — mais
           as configurações do próprio veículo e a memória de posição do banco. Criar um perfil tira
           um retrato do carro como ele está neste instante.
         </p>
@@ -214,7 +215,7 @@ export const DriverProfiles = () => {
                   {perfil.legado && (
                     <div className="text-text-tertiary text-xs mt-0.5 opacity-70">
                       Perfil antigo: guarda só configurações do carro. Salve por cima, com o mesmo
-                      nome, para ele passar a guardar o OPEN GW também.
+                      nome, para ele passar a guardar o DeepGWT também.
                     </div>
                   )}
                 </div>
@@ -282,3 +283,4 @@ export const DriverProfiles = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

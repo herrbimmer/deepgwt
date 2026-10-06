@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>HSI</name>
     <description>Indicador de situação horizontal: rosa graduada de 360 graus girando, seta de curso em verde e a barra de desvio deslocada pela diferença entre a velocidade e o limite da via -- centrada quando se está no limite, âmbar quando sai da faixa. Os seis campos à direita completam a leitura.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

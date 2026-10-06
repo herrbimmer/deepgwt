@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 # Compila o app do carro e copia o APK para dentro do instalador, que o embute como recurso
 # estático. Sem isso o instalador continua entregando o build antigo que já estava lá: rode este
 # script depois de QUALQUER mudança no código do app, antes de reinstalar no veículo.
@@ -12,7 +13,7 @@ JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradle
 
 SRC="$ROOT/app/build/outputs/apk/debug/app-debug.apk"
 DESTS=(
-  "$ROOT/instalador/src-tauri/resources/opengw.apk"
+  "$ROOT/instalador/src-tauri/resources/deepgwt.apk"
 )
 
 if [ ! -f "$SRC" ]; then
@@ -29,16 +30,21 @@ fi
 JBR="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 SDK_DIR="$(grep '^sdk.dir=' "$ROOT/local.properties" | cut -d= -f2-)"
 APKSIGNER="$(ls -d "$SDK_DIR"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -1)"
-BUILDCONFIG="$ROOT/app/build/generated/source/buildConfig/debug/br/com/opengw/BuildConfig.java"
+BUILDCONFIG="$ROOT/app/build/generated/source/buildConfig/debug/br/com/deepgwt/BuildConfig.java"
 if [ -z "$APKSIGNER" ] || ! command -v node >/dev/null; then
   echo "AVISO: sem apksigner ou node — não deu para conferir o certificado do APK." >&2
 else
   CERT_REAL="$(JAVA_HOME="$JBR" PATH="$JBR/bin:$PATH" "$APKSIGNER" verify --print-certs "$SRC" | awk '/Signer #1 certificate SHA-256 digest/ {print $NF}')"
+  # A máscara usa o applicationId REAL (lido do próprio BuildConfig, não um literal fixo
+  # aqui) — já causou um descasamento silencioso quando applicationId != namespace e este
+  # script ainda tinha "br.com.deepgwt" hardcoded enquanto o Gradle já usava outro valor.
   CERT_GRAVADO="$(node -e '
     const fs = require("fs"), crypto = require("crypto")
-    const m = /LICENCA_CERTIFICADO = "([0-9a-f]*)"/.exec(fs.readFileSync(process.argv[1], "utf8"))
-    if (!m || m[1].length !== 64) process.exit(0)
-    const mascara = crypto.createHash("sha256").update("OPENGW-CERT|br.com.opengw").digest()
+    const texto = fs.readFileSync(process.argv[1], "utf8")
+    const mApp = /APPLICATION_ID = "([^"]*)"/.exec(texto)
+    const m = /LICENCA_CERTIFICADO = "([0-9a-f]*)"/.exec(texto)
+    if (!mApp || !m || m[1].length !== 64) process.exit(0)
+    const mascara = crypto.createHash("sha256").update("DEEPGWT-CERT|" + mApp[1]).digest()
     const b = Buffer.from(m[1], "hex")
     for (let i = 0; i < 32; i++) b[i] ^= mascara[i]
     console.log(b.toString("hex"))
@@ -73,3 +79,4 @@ done
 
 echo "==> Pronto. Agora rode 'npm run tauri build' (ou 'npm run tauri dev') dentro de instalador"
 echo "    para embutir este APK no instalador antes de instalar no carro."
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

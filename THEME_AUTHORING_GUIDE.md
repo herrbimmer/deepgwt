@@ -1,4 +1,5 @@
-# Guia completo de autoria de temas — OPEN GW / Painel Virtual (Instrument Cluster)
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
+# Guia completo de autoria de temas — DeepGWT / Painel Virtual (Instrument Cluster)
 
 > Alvo deste documento: gerar um novo tema de **cluster de instrumentos** (velocímetro/
 > conta-giros/etc, Display 3 do carro) no formato usado pelos temas embutidos hoje —
@@ -589,3 +590,4 @@ E o `theme.xml` correspondente:
 - [ ] Compila: `export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"`
       seguido de `./gradlew :app:compileDebugKotlin -q` (sanity check rápido) e depois
       `./sincronizar-apk.sh` (build completo + cópia do APK pro instalador Mac).
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Geometria do tema Sweede SENSUS (assets/PreinstalledThemes/sweedesensus).
 //
 // Os dois mostradores redondos (aro, face, brilho do ponteiro, traços, rótulos, cubo), os
@@ -165,6 +166,7 @@ function interp(tab, x) {
   }
   return tab[tab.length - 1][1]
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 const lumDe = (tab) => tab.map(([d, c]) => [d, lum(hex(c))])
 const anguloDe = (tab, v) => interp(tab, v)
 
@@ -325,6 +327,7 @@ function blocoVivo() {
   }
   return s.join('\n')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ── Arte parada de cima (#frente): traços, rótulos, marcadores, cubos ─────────────────────────
 function tracosE() {
@@ -517,6 +520,7 @@ function blocoCss() {
     return '  ' + x.sel + ' { ' + d.join('; ') + '; }'
   }).join('\n')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ── Tabelas do JS ────────────────────────────────────────────────────────────────────────────
 function blocoJs() {
@@ -579,3 +583,4 @@ if (process.argv.includes('--verificar')) {
   fs.writeFileSync(arquivo, novo)
   console.log('geometria gravada em ' + path.relative(raiz, arquivo))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

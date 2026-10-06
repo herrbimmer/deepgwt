@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { MemoryStickIcon } from 'lucide-react'
 import { Banner, ScaffoldScreen } from '../../ui'
@@ -22,7 +23,7 @@ export const ExpertEcuInformation = () => (
       },
       {
         what: 'Não há enumeração de módulos por nenhuma interface atual',
-        why: 'Nem o telnet nem a API do app OPEN GW listam ECUs. O que existe é o dicionário de chaves da multimídia.',
+        why: 'Nem o telnet nem a API do app DeepGWT listam ECUs. O que existe é o dicionário de chaves da multimídia.',
       },
       {
         what: 'Os prefixos de sinal do catálogo VHAL não são um inventário',
@@ -57,3 +58,4 @@ export const ExpertEcuInformation = () => (
     </Banner>
   </ScaffoldScreen>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

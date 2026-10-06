@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { CircleDashedIcon, ListChecksIcon, LockIcon } from 'lucide-react'
@@ -111,3 +112,4 @@ export function ScaffoldScreen({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Esquemático</name>
     <description>Cada grandeza vira um componente num ramo do circuito: resistor em zigue-zague para a velocidade, capacitor de duas placas para o giro, bateria de barras alternadas para o tanque. Os valores são a designação do componente e os barramentos verticais fecham o desenho, como num esquemático de verdade.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

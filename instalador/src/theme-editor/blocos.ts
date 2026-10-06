@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Blocos reutilizáveis e a área de transferência do editor.
 //
 // Um bloco é um punhado de elementos que se montam juntos — "velocímetro com a velocidade embaixo",
@@ -45,7 +46,7 @@ function blocosProntos(): Bloco[] {
   return saida
 }
 
-const CHAVE_BLOCOS = 'opengw_theme_blocks_v1'
+const CHAVE_BLOCOS = 'deepgwt_theme_blocks_v1'
 
 function lerDoUsuario(): Bloco[] {
   try {
@@ -146,7 +147,7 @@ function soltarEstilosDesconhecidos(spec: ThemeSpec, el: Element): Element {
 // No armazenamento local e não na área de transferência do sistema: copiar de um tema e colar em
 // outro precisa sobreviver a trocar de tela, e o conteúdo é um objeto do editor, não texto.
 
-const CHAVE_COPIA = 'opengw.themeEditor.copia'
+const CHAVE_COPIA = 'deepgwt.themeEditor.copia'
 
 export type Copia = { temaId: string; paginaId: string; elementos: Element[] }
 
@@ -166,3 +167,4 @@ export function lerCopia(): Copia | null {
     return null
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

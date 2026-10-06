@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes do histórico de alterações, dos pontos de restauração e do modelo de chaves.
 //
 // Sem dependência de teste nenhuma: o Node 22 remove os tipos do TypeScript sozinho, então os
@@ -176,6 +177,7 @@ store.clear()
 for (let i = 0; i < snapshots.MAX_SNAPSHOTS + 5; i += 1) {
   snapshots.createSnapshot({ name: `p${i}`, vin: null, carIp: '', source: 'live', values: { 'car.a': String(i) } })
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 eq(snapshots.loadSnapshots().length, snapshots.MAX_SNAPSHOTS, 'o teto de pontos é respeitado')
 
 // ---- exportar / importar
@@ -221,3 +223,4 @@ else {
   console.error(`${falhas} de ${total} verificações falharam.`)
   process.exitCode = 1
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

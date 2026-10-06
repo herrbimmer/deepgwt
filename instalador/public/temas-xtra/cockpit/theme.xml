@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Cockpit</name>
     <description>Painel de voo: fitas verticais rolantes de velocidade à esquerda e de giro à direita, com janela de leitura e marcador cor-de-rosa do limite da via na própria fita. No centro, um horizonte artificial cujo balanço é o fluxo de energia — sobe tracionando, desce regenerando —, com escada de atitude e símbolo fixo do avião. Barra de anunciadores no topo e linha de dados em fonte de cabine na base.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

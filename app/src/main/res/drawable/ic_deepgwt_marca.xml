@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
+<!--
+    Marca própria do DeepGWT: monograma "DG" geométrico, só branco (o app tinge quando precisa).
+    Traço de 6,5 e altura de letra 40, centrado em (48,48). O D é uma haste com a barriga em
+    semicírculo; o G é um anel aberto à direita com a haste horizontal entrando até o centro.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- D: contorno externo e miolo vazado (evenOdd). -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M8,28 H24 A20,20 0 0 1 24,68 H8 Z M14.5,34.5 V61.5 H24 A13.5,13.5 0 0 0 24,34.5 Z" />
+
+    <!-- G: anel, do terminal superior direito, pela esquerda, até a base da haste. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M84.38,36.53 A20,20 0 1 0 87.73,51.25 L81.1,51.25 A13.5,13.5 0 1 1 79.06,40.26 Z" />
+
+    <!-- Haste do G. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M68,44.75 H87.73 V51.25 H68 Z" />
+</vector>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

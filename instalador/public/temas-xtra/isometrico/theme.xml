@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Isométrico</name>
     <description>Quatro prismas em axonometria isométrica de 30 graus crescendo sobre uma malha isométrica. As três faces de cada prisma saem do mesmo par de vetores, então o volume fecha por geometria e não por imagem -- e o tom de cada face já dá a iluminação.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

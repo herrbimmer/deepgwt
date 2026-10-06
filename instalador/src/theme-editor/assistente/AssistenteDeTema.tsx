@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O assistente de três passos do modo Básico: estilo, cores, o que mostrar.
 //
 // A prévia à direita é o tema gerado de verdade, no mesmo iframe do editor, tocando o cenário
@@ -208,3 +209,4 @@ export function AssistenteDeTema({ onCriar, onFechar }: { onCriar: (spec: ThemeS
     </Modal>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Satélite</name>
     <description>O mostrador central fica parado e o resto orbita em modulos proprios, ligados por um fio fino que sai da elipse central -- o arranjo dos sedas franceses em que cada funcao ganha o seu satelite em vez de se enfileirar. Quatro capsulas nos cantos levam tanque, bateria, giro e autonomia, cada uma com barra propria, e o numero grande no meio nao divide espaco com ninguem.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

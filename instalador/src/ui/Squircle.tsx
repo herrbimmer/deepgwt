@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { forwardRef, useLayoutEffect, useRef, useState, type ElementType, type ReactNode } from 'react'
 import { squirclePathD } from './squirclePath'
 
@@ -92,3 +93,4 @@ export const Squircle = forwardRef<HTMLElement, SquircleProps>(function Squircle
     </Tag>
   )
 })
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

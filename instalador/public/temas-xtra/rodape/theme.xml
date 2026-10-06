@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Rodapé</name>
     <description>Toda a informação cabe numa faixa de 108px no pé da tela, com uma única barra de 2px marcando a velocidade acima dela. Os 612px restantes ficam pretos de propósito: num painel atrás do volante, é a parte de cima que o aro da direção corta.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

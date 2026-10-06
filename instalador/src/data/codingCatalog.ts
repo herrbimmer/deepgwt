@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 export type CodingRisk = 'baixo' | 'medio' | 'alto'
 
 export type CodingCatalogEntry = {
@@ -96,3 +97,4 @@ export const CODING_CATALOG_BY_KEY: ReadonlyMap<string, CodingCatalogEntry> = ne
 )
 
 export const CODING_CATEGORIES: readonly string[] = [...new Set(CODING_CATALOG.map((entry) => entry.category))]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Stuttgart NTG 5.5, recriado como `ThemeSpec` editável.
 //
 // Geometria lida de `app/src/main/assets/PreinstalledThemes/coffe3/app.html`. Três coisas
@@ -530,3 +531,4 @@ export const STUTTGART_NTG55: ThemeSpec = {
     },
   ],
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

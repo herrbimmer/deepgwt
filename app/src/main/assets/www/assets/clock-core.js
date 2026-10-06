@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 (function (root) {
   'use strict';
 
@@ -238,3 +239,4 @@
     clearFormatterCache: function () { formatters = {}; }
   };
 })(typeof window !== 'undefined' ? window : this);
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

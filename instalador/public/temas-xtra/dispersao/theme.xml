@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Dispersão</name>
     <description>Cada amostra vira um ponto no plano giro × velocidade, com as 80 últimas formando um rastro que desbota para trás. A reta tracejada é a relação de transmissão esperada: quando a nuvem sai dela, a marcha mudou ou o motor está patinando.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Aviador Checagem</name>
     <description>A checagem de bordo antes da decolagem virada painel: dez sistemas em fila, conferidos de cima para baixo, cada um com o estado que o carro publica e um visto verde ou uma exclamação âmbar na margem. O contador no topo diz quantos passaram. Nenhum item é decorativo: todos saem do barramento.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

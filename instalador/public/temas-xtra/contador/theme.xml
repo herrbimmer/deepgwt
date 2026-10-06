@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Contador</name>
     <description>Frente de contador de frequência de bancada: mostrador verde de fósforo com os algarismos apagados visíveis por trás, coluna de anunciadores de acoplamento e disparo, e cinco botões de faixa que acendem conforme o estado do carro. Tudo desenhado, nenhuma imagem.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

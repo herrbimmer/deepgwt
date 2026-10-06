@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Sweede Redondo</name>
     <description>Painel de dois mostradores redondos de aro metálico. À esquerda a velocidade, de 0 a 260 km/h; à direita a potência híbrida, com OFF, READY, zona de carga e os marcadores de combustível e bateria embaixo. O ponteiro leva uma luz junto: o enchimento atrás dele e a face iluminada à frente. O mostrador esquerdo fica no lugar do de fábrica: o READY e a placa da via do carro aparecem na face dele, entre os números. No centro, a música que está tocando (capa, faixa, artista e álbum) ou o modo de condução; a projeção da central aparece ali. Marcha no cubo da direita com o modo de energia, marca do limite da via na escala, hodômetro e trecho, autonomias elétrica e a combustão, consumo, temperatura externa e hora. Tom do painel escolhível (ou seguindo o modo de condução) e modo dia/noite.</description>
@@ -49,3 +50,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

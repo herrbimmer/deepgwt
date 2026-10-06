@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes da reformulação do criador de temas (Alpha 6.5): cenários da prévia, seleção múltipla,
 // estilos compartilhados, custo, assistente, blocos, pacote e o que o payload leva dos elementos
 // novos.
@@ -196,6 +197,7 @@ const pos = (el, x, y, size = 'md') => ({ ...el, place: { ...el.place, at: { x, 
   ok(/function avaliarPaginasAutomaticas/.test(html) && /if \(vale === a\.valia\) continue/.test(html), 'página automática troca na borda da condição')
   ok(/if \(!THEME \|\| !THEME\.welcomeSweep \|\| RM/.test(html), 'a varredura respeita reduzir movimento')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ------------------------------------------------------------------ custo no painel
 {
@@ -266,7 +268,7 @@ const pos = (el, x, y, size = 'md') => ({ ...el, place: { ...el.place, at: { x, 
   eq(blocos.lerCopia().elementos.length, potencia.elementos.length, 'copiar e colar sobrevive a trocar de tema')
 }
 
-// ------------------------------------------------------------------ pacote .opengw-tema
+// ------------------------------------------------------------------ pacote .deepgwt-tema
 {
   const t = createTheme('Compartilhado')
   t.pages[0].elements = [pos(createElement({ kind: 'image' }), 1500, 200)]
@@ -282,3 +284,4 @@ const pos = (el, x, y, size = 'md') => ({ ...el, place: { ...el.place, at: { x, 
 
 console.log(`\nCriador de temas: ${falhas ? `${falhas} de ${total} falharam` : `${total}/${total} ok`}`)
 if (falhas) process.exitCode = 1
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

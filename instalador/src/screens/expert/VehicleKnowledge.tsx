@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { BookOpenIcon, FolderOpenIcon } from 'lucide-react'
 import { BackButton, Banner, Card, ConfidenceChip } from '../../ui'
@@ -206,3 +207,4 @@ function Linha({ rotulo, valor }: { rotulo: string; valor: string }) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

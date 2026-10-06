@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Respiro</name>
     <description>Espaço em branco como material: papel cru, serifa, a velocidade em 208px apoiada numa régua de 1px no canto de baixo à esquerda, um fio vertical dividindo a tela e três dados soltos à direita. No alto, um círculo aberto que nunca fecha — sobram sempre 26° de respiro — desenha o nível de combustível. À noite, o papel vira tinta.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O que o app sabe dizer sobre uma chave de configuração do carro, num lugar só.
 //
 // Antes disto esta lógica morava dentro de `screens/Coding.tsx`: três expressões regulares, a
@@ -96,3 +97,4 @@ export const showValue = (v: string | null | undefined) => (v === null || v === 
  * editor de texto livre, porque não temos como saber o domínio aceito.
  */
 export const looksBoolean = (value: string | undefined) => value === '0' || value === '1'
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

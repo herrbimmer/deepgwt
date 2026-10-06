@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Preparador Números</name>
     <description>Só números, alinhados pela direita como na folha de especificação que aquela oficina publicava em cada folheto: oito linhas, rótulo em versalete à esquerda, valor em 60 px à direita, unidade depois e um fio separando cada par. Nenhum mostrador, nenhum arco -- aqui a tabela é o mostrador.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

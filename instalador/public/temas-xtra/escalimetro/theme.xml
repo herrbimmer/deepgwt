@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Escalímetro</name>
     <description>Um corpo de escalímetro deitado na tela com três faces, cada uma com sua unidade gravada na canaleta -- km/h, rpm e por cento de tanque -- e um cursor vermelho correndo em cada face. O fundo é de papel técnico e vira grafite no modo noturno.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

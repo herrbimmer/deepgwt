@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Italiano Rali</name>
     <description>O carro de rali de motor central, com o conta-giros enorme sob um capuz fundo no meio da tela e a velocidade rebaixada a uma linha na coluna lateral -- que naquele carro era o espaço do navegador. A coluna traz o que este carro publica: modo de tração, estabilidade, trecho, temperatura externa e autonomia. Corte em verde a partir de 6600.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

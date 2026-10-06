@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Consistência de odômetro.
 //
 // ANTES DE QUALQUER COISA, o que esta análise NÃO faz: ela não detecta fraude, e não tem como
@@ -183,3 +184,4 @@ export const FINDING_TEXT: Record<OdometerFinding, { title: string; body: string
       'não existe comparação, e um resultado vazio é preferível a um resultado inventado.',
   },
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

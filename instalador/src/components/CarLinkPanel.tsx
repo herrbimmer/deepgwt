@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O bloco "onde está o carro" das telas de tema. Um só, usado pelas duas.
 
 import { Banner, Button, TextInput } from '../ui'
@@ -62,3 +63,4 @@ export function CarLinkPanel({ link, ocupado = false, className = 'mb-4' }: CarL
     </Banner>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

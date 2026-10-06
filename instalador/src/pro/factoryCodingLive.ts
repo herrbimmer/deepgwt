@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Leitura ao vivo da codificação de fábrica, pelo shell do carro.
 //
 // A base de conhecimento guarda a captura de 2026-09-15. Isto lê de novo, agora, e compara. As
@@ -84,3 +85,4 @@ export async function readFactoryCodingLive(): Promise<LiveFactoryCoding> {
     readAt: Date.now(),
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

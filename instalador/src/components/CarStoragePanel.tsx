@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { HardDriveIcon, RefreshCwIcon } from 'lucide-react'
@@ -59,7 +60,7 @@ function VolumeBar({ volume }: { volume: CarVolume }) {
   )
 }
 
-// Armazenamento da central, lido pela rota `/storage` do OPEN GW no carro.
+// Armazenamento da central, lido pela rota `/storage` do DeepGWT no carro.
 //
 // Os números são os mesmos que o app mostra no carro — vêm do mesmo `StorageInfo`, não de um
 // cálculo próprio deste lado. Do lado do carro é `StatFs`, sem Shizuku, então isto funciona mesmo
@@ -124,7 +125,7 @@ export function CarStoragePanel() {
         <Banner tone="error">
           Não foi possível ler o armazenamento: {error}
           <span className="block text-[11px] mt-1 opacity-80">
-            Esta leitura exige o OPEN GW aberto no carro e uma versão que já tenha a rota
+            Esta leitura exige o DeepGWT aberto no carro e uma versão que já tenha a rota
             /storage.
           </span>
         </Banner>
@@ -156,3 +157,4 @@ export function CarStoragePanel() {
     </section>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

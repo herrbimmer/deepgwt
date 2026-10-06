@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Rodoviário</name>
     <description>Painel de caminhão: quatro manômetros redondos na régua do para-brisa, faixa verde de economia entre mil e cem e mil e oitocentas rotações no conta-giros de escala curta, e a marcha grande no alto. No meio fica o disco do tacógrafo, velocidade em função do tempo em coordenada polar, traçado de verdade a partir do histórico das últimas leituras -- anéis de trinta em trinta e raios de hora em hora, como no disco de papel.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

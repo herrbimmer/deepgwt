@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Geometria do Bavarian ID7 (Alpha 6.9): aro, faixa vermelha, marcações, números, guias dos
 // ponteiros, tabelas valor->fração e mini-mostradores. Tudo sai daqui e é escrito no app.html,
 // entre os marcadores GERADO. Mexeu num número abaixo, rode de novo:
@@ -167,6 +168,7 @@ function indiceNaBase(x) { // primeiro ponto da linha de base com esse x (a base
   }
   return melhor
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 const i0 = indiceNaBase(ZERO_X)
 const iRegen = indiceNaBase(REGEN_X)
 const iFim = aro.length - 1
@@ -327,6 +329,7 @@ ${rotulos.map((t) => '      ' + t).join('\n')}
 ${icone}
     </g>`
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 const svg = `    <!-- Gerado por scripts/gerar-bavarian-id7.mjs: não edite à mão, mude o gerador e rode de novo. -->
 ${dialSvg('speed-dial', vel, guiaVelC.d, 'needleSpeedRot', 'needleSpeed',
@@ -383,3 +386,4 @@ if (args.includes('--verificar')) {
   fs.writeFileSync(ARQUIVO, novo)
   console.log('app.html do Bavarian ID7 reescrito')
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

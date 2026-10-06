@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Tolerância</name>
     <description>Seis quadros de controle de característica, a notação de tolerância geométrica do desenho mecânico: símbolo, valor medido e referência. Cada grandeza tem uma faixa declarada e o quadro inteiro fica vermelho quando o valor sai dela -- o painel vira um relatório de inspeção.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

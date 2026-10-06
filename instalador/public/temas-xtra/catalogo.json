@@ -465,7 +465,7 @@
    "nome": "Agulha",
    "versao": "1.2.0",
    "descricao": "Minimalismo de ponteiro: um arco de 1,4px, uma agulha de 2,4px e mais nada. A velocidade aparece em peso 200 no eixo, quatro números marcam a escala e os quatro cantos guardam marcha, hora, combustível e autonomia em letras pequenas. Sem caixa, sem sombra, sem brilho.",
-   "bytes": 39515,
+   "bytes": 39520,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -473,7 +473,7 @@
    "nome": "Altímetro",
    "versao": "1.2.0",
    "descricao": "Três ponteiros sobre a mesma escala de 0 a 10, como num altímetro de três ponteiros: o curto conta centenas, o longo dezenas e o fino laranja as unidades de km/h. A janela retângular repete o valor em algarismos, que é exatamente o que o instrumento original faz.",
-   "bytes": 54108,
+   "bytes": 54113,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -481,7 +481,7 @@
    "nome": "Âmbar",
    "versao": "1.2.0",
    "descricao": "Cristal líquido âmbar com a marca registrada do LCD de verdade: os segmentos apagados continuam visíveis, um tom acima do fundo, em vez de sumirem. Os sete segmentos são polígonos com as pontas cortadas em quarenta e cinco graus, que é o corte real da máscara -- não é fonte. A barra de giro são trapézios inclinados e o tanque e a bateria viram blocos de dez, como nos cupês japoneses de farol escamoteável.",
-   "bytes": 46673,
+   "bytes": 46678,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -489,7 +489,7 @@
    "nome": "Anel Único",
    "versao": "1.2.0",
    "descricao": "Um anel fino, noventa marcas de cem em cem e uma agulha de fio com constante de tempo de quarenta e cinco milissegundos -- quase sem inércia, que é exatamente o motivo pelo qual o mostrador do motor de dez cilindros teve de virar tela: nenhum ponteiro mecânico acompanhava a subida. A velocidade fica em dígitos finos no centro e o resto some. Precisão no lugar de peso.",
-   "bytes": 50085,
+   "bytes": 50090,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -497,7 +497,7 @@
    "nome": "Anunciador",
    "versao": "1.2.0",
    "descricao": "Painel anunciador de cabine: doze caixas de legenda que só significam alguma coisa quando acendem -- apagado é o estado normal, e é isso que se lê de relance. Verde para o que está certo, âmbar para atenção, vermelho para o que pede reação e azul para modo.",
-   "bytes": 49142,
+   "bytes": 49147,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -505,7 +505,7 @@
    "nome": "Arco Digital",
    "versao": "1.2.0",
    "descricao": "O conta-giros deixa de ser ponteiro e vira um arco de trinta e quatro lâminas radiais que acendem da esquerda, passando de laranja a amarelo e a vermelho nas últimas quatro. A velocidade fica em dígitos enormes no miolo do arco e as barras de tanque, bateria, autonomia e consumo ficam nas laterais, como nos cupês americanos de farol escamoteável quando o digital ainda queria parecer nave.",
-   "bytes": 78400,
+   "bytes": 78405,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -513,7 +513,7 @@
    "nome": "Assistido",
    "versao": "1.2.0",
    "descricao": "O painel dos sedãs escandinavos de obsessão por segurança: o centro não é um mostrador, é a cena. O carro visto de cima, as faixas da pista correndo e o veículo adiante, cuja distância é desenhada a partir de um tempo de seguimento de um vírgula oito segundo na velocidade atual. As faixas andam com um único keyframes de translate, que é custo de compositor e nada por quadro, e param inteiras quando o sistema pede movimento reduzido.",
-   "bytes": 63271,
+   "bytes": 63276,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -521,7 +521,7 @@
    "nome": "Aviador Checagem",
    "versao": "1.2.0",
    "descricao": "A checagem de bordo antes da decolagem virada painel: dez sistemas em fila, conferidos de cima para baixo, cada um com o estado que o carro publica e um visto verde ou uma exclamação âmbar na margem. O contador no topo diz quantos passaram. Nenhum item é decorativo: todos saem do barramento.",
-   "bytes": 51204,
+   "bytes": 51209,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -529,7 +529,7 @@
    "nome": "Aviador Cockpit",
    "versao": "1.2.0",
    "descricao": "A cabine de avião levada ao painel inteiro: fita rolante de velocidade à esquerda, fita de giro à direita, as duas com janela de seleção verde no meio, e um indicador de atitude no centro com céu, solo e horizonte. A arfagem sai de dv/dt porque este carro não publica giroscópio, e o mostrador escreve isso embaixo em vez de fingir que mede.",
-   "bytes": 48085,
+   "bytes": 48090,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -537,7 +537,7 @@
    "nome": "Aviador Grande",
    "versao": "1.2.0",
    "descricao": "O executivo grande sueco dos anos 90 não tinha relógio nenhum: três janelas retangulares de cantos arredondados, cada uma com rótulo em versalete, número alinhado à esquerda e uma régua de escala embaixo. A quarta janela, em faixa, reúne autonomia, consumo, temperatura e marcha. Leitura de instrumento de bordo, não de mostrador.",
-   "bytes": 47670,
+   "bytes": 47675,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -545,7 +545,7 @@
    "nome": "Aviador HUD",
    "versao": "1.2.0",
    "descricao": "A projeção no para-brisa que a escola sueca trouxe do caça para o carro de rua: verde de fósforo sobre preto, traço fino de 2,4 px e quase nada escrito -- porque o que interessa está atrás do vidro, não no painel. Velocidade em 176 px, barra de referência, placa de limite, próxima manobra e mais nada.",
-   "bytes": 55735,
+   "bytes": 55740,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -553,7 +553,7 @@
    "nome": "Aviador Inclinado",
    "versao": "1.2.0",
    "descricao": "O console inteiro girado sete graus na direção do motorista -- a obsessão ergonômica da casa que também levou a ignição para entre os bancos. Moldura, divisórias e mostradores são um grupo só, rotacionado de uma vez; fora dele fica apenas o estado do motor, no lugar onde a chave ficaria.",
-   "bytes": 52220,
+   "bytes": 52225,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -561,7 +561,7 @@
    "nome": "Aviador Noite",
    "versao": "1.2.0",
    "descricao": "Painel noturno da escola sueca que veio da aviação: à noite o motorista só precisa da velocidade, e todo o resto apaga para 5% de opacidade. Giro, tanque, temperatura externa e autonomia voltam sozinhos, um a um, quando o próprio valor cruza o limiar -- acima de 4200 rpm, abaixo de 20% de tanque, 3 graus lá fora, 90 km de autonomia. Um mostrador sozinho no escuro.",
-   "bytes": 49149,
+   "bytes": 49154,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -569,7 +569,7 @@
    "nome": "Aviador Pressão",
    "versao": "1.2.0",
    "descricao": "A casa sueca que pôs manômetro de turbo em carro de família não o deixava num relógio à parte: a faixa de pressão abraça o velocímetro por fora, em três cores, com um traço branco correndo nela. Aqui a faixa mede a saída de energia -- pressão de admissão não é publicada por este carro, e a legenda diz isso em vez de inventar.",
-   "bytes": 52837,
+   "bytes": 52842,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -577,7 +577,7 @@
    "nome": "Aviador Setenta",
    "versao": "1.2.0",
    "descricao": "O cupê sueco do começo dos anos 70: dois relógios fundos sob um capuz único e, embaixo, a fileira de oito interruptores basculantes quadrados que aquela geração usava para tudo. Cada interruptor acende em âmbar quando o estado que ele mostra está ativo -- farol, estabilidade, motor, tanque, ar, ventilação, recirculação e ionizador, todos publicados pelo carro.",
-   "bytes": 57964,
+   "bytes": 57969,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -585,7 +585,7 @@
    "nome": "Aviador Linha",
    "versao": "1.2.0",
    "descricao": "O display de uma linha só que a casa sueca pôs no alto do console: verde de fósforo em fonte de máquina, uma informação de cada vez, trocando sozinha a cada 3,4 segundos, com seis pontinhos marcando em que página está. Embaixo, a velocidade em 232 px e absolutamente mais nada.",
-   "bytes": 40954,
+   "bytes": 40959,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -593,7 +593,7 @@
    "nome": "Aviador Turbina",
    "versao": "1.2.0",
    "descricao": "A turbina que dá nome ao carro, desenhada: doze pás numa roda que acelera conforme a saída de energia sobe, com as pás esquentando de cinza para cobre uma a uma. A rotação é animação de compositor com duração amarrada ao valor -- nada é redesenhado quadro a quadro -- e para sozinha em prefers-reduced-motion.",
-   "bytes": 55881,
+   "bytes": 55886,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -601,7 +601,7 @@
    "nome": "Bacia",
    "versao": "1.2.0",
    "descricao": "Uma rede de drenagem gerada por recursão, com semente fixa para ser sempre a mesma: o tronco se divide até a sexta ordem e a espessura cai a cada bifurcação. Até que ordem os galhos acendem é a velocidade; a cor da água vem do giro.",
-   "bytes": 47545,
+   "bytes": 47550,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -609,7 +609,7 @@
    "nome": "Bancada",
    "versao": "1.2.0",
    "descricao": "Rack de 19 polegadas com três módulos empilhados: mostrador de fósforo verde, coluna de estado, fileira de cinco lâmpadas que acendem por faixa e um botão giratório cujo traço acompanha o valor. As orelhas de fixação e o brilho da chapa são CSS, não imagem.",
-   "bytes": 50837,
+   "bytes": 50842,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -617,7 +617,7 @@
    "nome": "Barra Única",
    "versao": "1.2.0",
    "descricao": "Uma barra de 1600 por 10 pixels com um cursor vermelho, e mais nada de gráfico: todo o resto é texto alinhado à grade. Se a barra sumisse, o painel continuaria funcionando -- é esse o teste que o tema se impõe.",
-   "bytes": 37929,
+   "bytes": 37934,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -625,7 +625,7 @@
    "nome": "Bauhaus",
    "versao": "1.2.0",
    "descricao": "Composição geométrica plana em papel cru: círculo vermelho do velocímetro com arco preto, quadrado amarelo da marcha, quadrado azul do modo de condução, quarto de arco para combustível e coluna azul de bateria, ambos com legenda. Sem sombra, sem gradiente, sem brilho. No modo noturno o papel vira tinta e as três cores primárias continuam.",
-   "bytes": 65274,
+   "bytes": 65279,
    "fundo": "claro",
    "cor": "vermelho"
   },
@@ -633,7 +633,7 @@
    "nome": "Bávaro Bordo",
    "versao": "1.2.0",
    "descricao": "O computador de bordo em LED vermelho que os sedãs grandes de Munique traziam no alto do console, com os segmentos apagados sempre à mostra atrás do número e a fileira de seis botões embaixo -- uma função de cada vez, e o botão da função vigente aceso. Consumo, alcance, tanque, externa, hora e trecho rodam a cada três segundos.",
-   "bytes": 43537,
+   "bytes": 43542,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -641,7 +641,7 @@
    "nome": "Bávaro Dois",
    "versao": "1.2.0",
    "descricao": "O cupê pequeno de Munique dos anos 60 só tinha dois mostradores, e os dois do mesmo tamanho: velocidade e relógio, 248 px cada, com um fio âmbar de retroiluminação na borda. A hierarquia vem da ausência -- não há terceiro mostrador competindo, e tudo o mais desceu para o rodapé.",
-   "bytes": 55368,
+   "bytes": 55373,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -649,7 +649,7 @@
    "nome": "Bávaro Elétrico",
    "versao": "1.2.0",
    "descricao": "O elétrico de carroceria de fibra da casa bávara: dois blocos retangulares flutuando, sem anel, sem moldura e sem conta-giros -- porque não há giro a mostrar, e o painel não finge que há. À esquerda velocidade e carga; à direita o fluxo de energia, o nível de recuperação e o consumo em kWh. Tudo publicado, nada estimado.",
-   "bytes": 52458,
+   "bytes": 52463,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -657,7 +657,7 @@
    "nome": "Bávaro Frascos",
    "versao": "1.2.0",
    "descricao": "A geração atual da casa: dois hexágonos inclinados para fora, com o arco correndo por dentro da aresta e o numeral no meio de cada um. O vão central fica livre de propósito -- é dele que a rota toma conta, com a próxima manobra, a placa de limite e a autonomia. Nenhuma agulha na tela inteira.",
-   "bytes": 54876,
+   "bytes": 54881,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -665,7 +665,7 @@
    "nome": "Bávaro Laranja",
    "versao": "1.2.0",
    "descricao": "A retroiluminação laranja que virou assinatura dos sedãs de Munique nos anos 90: face preta, toda a marcação e os numerais em laranja queimado, agulha branca sem ponta colorida. Entre os dois relógios de 252 px fica a janelinha do computador de bordo com autonomia, consumo e temperatura -- três linhas, nada mais.",
-   "bytes": 57381,
+   "bytes": 57386,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -673,7 +673,7 @@
    "nome": "Bávaro Aquecimento",
    "versao": "1.2.0",
    "descricao": "O cupê de Munique com zona vermelha móvel: com o motor frio ela começa em 4000 rpm e vai subindo até 7000 conforme o propulsor aquece, exatamente como no carro que inventou a ideia. Como temperatura de óleo não é publicada por este barramento, o aquecimento é estimado pelo tempo de motor em marcha -- 180 segundos até quente -- e o mostrador escreve isso embaixo.",
-   "bytes": 52818,
+   "bytes": 52823,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -681,7 +681,7 @@
    "nome": "Bávaro Preto",
    "versao": "1.2.0",
    "descricao": "Painel preto: sem face, sem moldura, sem um único número de escala. Dois arcos de 7 px no vazio, dois valores em 150 px e a marcha no meio. É o extremo oposto dos quatro relógios da mesma casa -- trinta anos depois, quando a tela substituiu o vidro e sobrou o essencial.",
-   "bytes": 47368,
+   "bytes": 47373,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -689,7 +689,7 @@
    "nome": "Bávaro Quatro",
    "versao": "1.2.0",
    "descricao": "Quatro relógios em linha, como nos sedãs de Munique dos anos 80: economímetro, velocidade, giro com zona vermelha a partir de 6200 e tanque entre E e F. O economímetro é o detalhe da casa -- a agulha que mostrava quanto se gastava naquele instante -- e aqui ele sai do consumo instantâneo publicado pelo carro, sem estimativa nenhuma.",
-   "bytes": 63368,
+   "bytes": 63373,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -697,7 +697,7 @@
    "nome": "Bávaro Serviço",
    "versao": "1.2.0",
    "descricao": "A placa de intervalo de serviço que os sedãs de Munique traziam entre os dois relógios: cinco lâmpadas que apagavam uma a uma conforme os quilômetros passavam, verdes primeiro, depois âmbar, depois vermelha. Como o carro não publica intervalo de revisão, a fileira conta um ciclo de 10.000 km sobre o hodômetro -- e escreve embaixo, com todas as letras, que é conta e não leitura.",
-   "bytes": 54425,
+   "bytes": 54430,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -705,7 +705,7 @@
    "nome": "Bávaro Supercarro",
    "versao": "1.2.0",
    "descricao": "O esportivo de motor central de Munique, dos anos 70: fila larga sobre placa de alumínio escovado, com o conta-giros no meio e maior que o velocímetro -- porque naquele carro o assunto era rotação, não velocidade. Numerais em laranja queimado, agulhas laranja inteiras, zona vermelha em 6600. O terceiro mostrador diz sem rodeio que pressão de óleo não é publicada.",
-   "bytes": 54430,
+   "bytes": 54435,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -713,7 +713,7 @@
    "nome": "Besouro",
    "versao": "1.2.0",
    "descricao": "Um mostrador redondo e nada mais, como nos sedas populares de motor traseiro refrigerado a ar: velocidade em fundo marfim, combustivel embutido num arco pequeno no alto e quatro luzes-piloto na barriga do mostrador. Nao ha conta-giros, porque o painel original nao tinha -- o giro aparece so no rodape, em texto, sem disputar o centro.",
-   "bytes": 87298,
+   "bytes": 87303,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -721,7 +721,7 @@
    "nome": "Binóculo",
    "versao": "1.2.0",
    "descricao": "Dois cilindros fundos e encapuzados, giro a esquerda e velocidade a direita, como nos cupes italianos de carburador duplo. O capuz nasce do painel e joga sombra na metade de cima de cada mostrador, entao os ponteiros laranja so ganham contraste na faixa util. Entre os dois cilindros fica a coluna estreita de marcha, hodometro e relogio.",
-   "bytes": 71879,
+   "bytes": 71884,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -729,7 +729,7 @@
    "nome": "Britânico Campo",
    "versao": "1.2.0",
    "descricao": "O utilitário inglês de chapa dobrada: dois mostradores pretos numa moldura de metal pintado de verde militar, parafusos à mostra nos quatro cantos e nenhum enfeite. Escala de 160, porque era o que o bicho fazia. É o painel que se limpa com pano molhado e continua funcionando.",
-   "bytes": 48231,
+   "bytes": 48236,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -737,7 +737,7 @@
    "nome": "Britânico Central",
    "versao": "1.2.0",
    "descricao": "O compacto inglês de teto contrastante manteve por décadas a excentricidade de pôr o velocímetro no meio do tabelier, e não na frente do motorista. Aqui isso vira um anel de 292 px no centro exato da tela, com a graduação por dentro e o número em 150 px -- giro e tanque ficam de fora, pequenos, nas laterais.",
-   "bytes": 51441,
+   "bytes": 51446,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -745,7 +745,7 @@
    "nome": "Britânico Conversível",
    "versao": "1.2.0",
    "descricao": "O conversível esportivo inglês de hoje: dois mostradores fundos de aro escuro, com o arco de velocidade em creme e o de giro em vermelho-tijolo, e entre eles uma caixa baixa com marcha, modo e tanque. Vermelho só onde precisa -- é a única cor no painel inteiro.",
-   "bytes": 55451,
+   "bytes": 55456,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -753,7 +753,7 @@
    "nome": "Britânico Elétrico",
    "versao": "1.2.0",
    "descricao": "O elétrico da casa inglesa: dois cartões, duas colunas de texto e uma barra de carga de 748 px -- nenhuma agulha, nenhuma madeira, nenhum aro cromado. A marca que passou décadas desenhando nogueira entregou o painel mais liso da coleção, e o contraste com os outros nove desta família é justamente o assunto.",
-   "bytes": 46248,
+   "bytes": 46253,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -761,7 +761,7 @@
    "nome": "Britânico Fazenda",
    "versao": "1.2.0",
    "descricao": "O utilitário inglês que virou carro de luxo sem trocar a mecânica: os mesmos três mostradores do irmão de campo, agora com face creme, aro cromado, agulha verde-inglês e uma moldura de couro costurado em volta. Mesma função, outra roupa -- que é literalmente a história daquele carro.",
-   "bytes": 54507,
+   "bytes": 54512,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -769,7 +769,7 @@
    "nome": "Britânico Interruptores",
    "versao": "1.2.0",
    "descricao": "O cupê inglês de 1961: dois mostradores grandes na frente do motorista e, no meio do painel, a fileira de seis interruptores basculantes idênticos -- sem forma, cor ou tamanho que diga qual faz o quê, exatamente como no carro original. Aqui cada um acende em verde-escuro quando o estado que representa está ativo.",
-   "bytes": 55044,
+   "bytes": 55049,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -777,7 +777,7 @@
    "nome": "Britânico Nogueira",
    "versao": "1.2.0",
    "descricao": "O sedã inglês de 1968 embutia uma régua de mostradores pequenos numa prancha de nogueira que atravessava o painel inteiro. Aqui a madeira é um degradê de sete paradas, com veio irregular, e os seis mostradores de face creme e agulha cor de vinho ficam em fila -- o velocímetro maior à esquerda, na frente do motorista, como era.",
-   "bytes": 76525,
+   "bytes": 76530,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -785,7 +785,7 @@
    "nome": "Britânico Pod",
    "versao": "1.2.0",
    "descricao": "O sedã inglês de 1976 trocou os mostradores redondos por um pod retangular com fitas horizontais -- e não sobrou um único círculo no painel. A leitura passa a ser da esquerda para a direita, como quem lê uma frase, com o número ao final de cada fita, em serifa.",
-   "bytes": 39181,
+   "bytes": 39186,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -793,7 +793,7 @@
    "nome": "Britânico Supercarro",
    "versao": "1.2.0",
    "descricao": "O supercarro inglês dos anos 90, aquele de motor V6 turbo e porta em tesoura: conta-giros central de 286 px, velocidade em dígitos de um lado, saída de energia do outro, e nada mais. Fundo de fibra trançada desenhada em padrão, aro cromado fino e corte marcado em 7000.",
-   "bytes": 61470,
+   "bytes": 61475,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -801,7 +801,7 @@
    "nome": "Britânico Táxi",
    "versao": "1.2.0",
    "descricao": "O táxi preto de Londres: painel alto e reto, um único mostrador em fonte de máquina e, do lado, a coluna de contas alinhada à direita como num taxímetro -- trecho, total, consumo, tanque, autonomia e temperatura. Nada ali é bonito e tudo é legível, que era exatamente o objetivo do projeto.",
-   "bytes": 43587,
+   "bytes": 43592,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -809,7 +809,7 @@
    "nome": "Bula",
    "versao": "1.2.0",
    "descricao": "Composta como a bula de um remédio: três colunas justificadas em corpo 13, títulos numerados em caixa alta, fio de coluna e um quadro de advertência no pé. Os valores entram dentro das frases, em negrito, em vez de virarem campos -- a densidade é o efeito.",
-   "bytes": 62933,
+   "bytes": 62938,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -817,7 +817,7 @@
    "nome": "Caixa",
    "versao": "1.2.0",
    "descricao": "Caixa e bigodes de verdade: quartis, mediana em vermelho e bigodes nos percentis 5 e 95, calculados sobre as 120 últimas amostras de cada grandeza. O ponto azul é o valor de agora -- dá para ver na hora se o momento é típico ou fora da curva da viagem.",
-   "bytes": 46592,
+   "bytes": 46597,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -825,7 +825,7 @@
    "nome": "Caixa Alta",
    "versao": "1.2.0",
    "descricao": "Uma regra só: nenhum número pode ser maior que a palavra que o nomeia. A hierarquia vem do peso e do espaço entre linhas, nunca do corpo do algarismo, e tudo está em caixa alta sobre filetes que dividem a página em oito faixas.",
-   "bytes": 50411,
+   "bytes": 50416,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -833,7 +833,7 @@
    "nome": "Calor",
    "versao": "1.2.0",
    "descricao": "Mapa de calor de 16 por 8 células contando quanto tempo o carro passou em cada par de giro e velocidade. A rampa de cor vai do azul-noite ao vermelho, a célula de agora ganha moldura branca, e a mancha que se forma é a assinatura da transmissão.",
-   "bytes": 50977,
+   "bytes": 50982,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -841,7 +841,7 @@
    "nome": "Camada Zero",
    "versao": "1.2.0",
    "descricao": "Camada zero: nada de menu, nada de janela por cima de janela. Tudo o que o carro tem para dizer fica num plano único, em cartões da mesma família, e a hierarquia vem do tamanho do cartão em vez de vir de navegação -- a velocidade ocupa metade da grade e o resto se acomoda em volta. É o arranjo das telas alemãs de uma peça de vidro só, traduzido para seiscentos e quarenta por trezentos.",
-   "bytes": 79049,
+   "bytes": 79054,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -849,7 +849,7 @@
    "nome": "Canto",
    "versao": "1.2.0",
    "descricao": "Todo o painel ocupa um único canto da folha, alinhado à esquerda e ao topo, e o resto fica em branco. Duas diagonais de 1px atravessam o vazio para dar a entender que a página continua -- sem ocupá-la com dado nenhum.",
-   "bytes": 40381,
+   "bytes": 40386,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -857,7 +857,7 @@
    "nome": "Capa",
    "versao": "1.2.0",
    "descricao": "Capa de livro em verde-garrafa: moldura dupla, título serifado centralizado, ornamento tipográfico, o número em corpo 208 no lugar do subtítulo e a lombada sugerida por uma faixa escura na borda esquerda, com o texto girado.",
-   "bytes": 43210,
+   "bytes": 41929,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -865,7 +865,7 @@
    "nome": "Carretel",
    "versao": "1.2.0",
    "descricao": "Três tambores verticais, um por algarismo, que rolam para o seu dígito como um hodômetro mecânico: o número vizinho aparece pela metade nas bordas da janela e a centena apaga sozinha abaixo de 100 km/h. A engrenagem é só aritmética, sem imagem de tambor.",
-   "bytes": 50764,
+   "bytes": 50769,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -873,7 +873,7 @@
    "nome": "Cartaz",
    "versao": "1.2.0",
    "descricao": "Cartaz suíço: título pesado alinhado à esquerda em dois andares, um único campo de cor vermelho ocupando o quadrante superior direito, fio grosso separando o pé e nada centralizado. A velocidade aparece em branco sobre o vermelho, em corpo 300.",
-   "bytes": 57758,
+   "bytes": 57199,
    "fundo": "claro",
    "cor": "vermelho"
   },
@@ -881,7 +881,7 @@
    "nome": "Catódico",
    "versao": "1.2.0",
    "descricao": "Tubo de raios catódicos monocromático, com a varredura horizontal visível, o fósforo sangrando para fora da letra e vinheta nos cantos porque a tela é curva -- o computador de bordo dos sedãs em cunha de alumínio. O traçado de velocidade dos últimos dois minutos corre num gráfico à direita sobre retícula verde, e doze leituras ficam listadas embaixo em quatro colunas pontilhadas.",
-   "bytes": 71959,
+   "bytes": 71964,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -889,7 +889,7 @@
    "nome": "Celeste",
    "versao": "1.2.0",
    "descricao": "Carta celeste com 170 estrelas fixas -- sempre o mesmo céu, para o painel não cintilar sozinho -- e cinco estrelas nomeadas ligadas por uma linha de constelação. O diâmetro e o brilho de cada uma são a sua grandeza, então a constelação inteira respira com o carro.",
-   "bytes": 84981,
+   "bytes": 84986,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -897,7 +897,7 @@
    "nome": "Chapa",
    "versao": "1.2.0",
    "descricao": "Planificação de chapa dobrada: quatro abas em sequência, contorno de corte cheio, linha de dobra tracejada em vermelho com o ângulo anotado. A largura de cada aba é a grandeza, então o desenvolvimento total da peça muda com o carro -- e aparece somado no rodapé.",
-   "bytes": 43215,
+   "bytes": 43220,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -905,7 +905,7 @@
    "nome": "Cinco Mostradores",
    "versao": "1.2.0",
    "descricao": "Cinco mostradores sobrepostos como num esportivo clássico: conta-giros grande no centro, velocímetro à esquerda, mostrador combinado de combustível e bateria à direita com dois ponteiros concêntricos, e dois pequenos nas pontas para temperatura externa e consumo. Faces pretas com numeração marfim, aros cromados duplos e ponteiros de ponta laranja; embaixo, as pastilhas P R N D e uma janela com velocidade, hodômetro e hora.",
-   "bytes": 111451,
+   "bytes": 111456,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -913,7 +913,7 @@
    "nome": "Círculos",
    "versao": "1.2.0",
    "descricao": "Quatro círculos concêntricos de raio fixo em que a espessura do traço é o valor: nenhum arco parcial, nenhum ponteiro, nenhuma abertura. Quando tudo está cheio os anéis quase se tocam; quando tudo está baixo sobram quatro linhas finas.",
-   "bytes": 68699,
+   "bytes": 68704,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -921,7 +921,7 @@
    "nome": "Cockpit",
    "versao": "1.2.0",
    "descricao": "Painel de voo: fitas verticais rolantes de velocidade à esquerda e de giro à direita, com janela de leitura e marcador cor-de-rosa do limite da via na própria fita. No centro, um horizonte artificial cujo balanço é o fluxo de energia — sobe tracionando, desce regenerando —, com escada de atitude e símbolo fixo do avião. Barra de anunciadores no topo e linha de dados em fonte de cabine na base.",
-   "bytes": 53302,
+   "bytes": 53307,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -929,15 +929,15 @@
    "nome": "Coluna",
    "versao": "1.2.0",
    "descricao": "Oito grandezas viram oito colunas de altura proporcional sobre uma linha de base, com o valor flutuando no topo de cada barra e três linhas de referência tracejadas atrás. É um gráfico de barras honesto: nada de mostrador, nada de ponteiro.",
-   "bytes": 44950,
+   "bytes": 44955,
    "fundo": "claro",
    "cor": "colorido"
   },
   "comando": {
    "nome": "Centro de Comando",
-   "versao": "1.2.0",
+   "versao": "1.2.1",
    "descricao": "Sala de controle: cinco painéis emoldurados em fonte mono. À esquerda, a velocidade com gráfico do último minuto de verdade — o tema guarda o histórico e desenha a linha; no meio, o giro em colunas que ficam vermelhas depois de 6.000; à direita, dois tubos de reserva com tensão, corrente e nível de recuperação. Embaixo, doze lâmpadas de sistema e uma tabela de telemetria com dez leituras.",
-   "bytes": 69443,
+   "bytes": 69449,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -945,7 +945,7 @@
    "nome": "Concreto",
    "versao": "1.2.0",
    "descricao": "Arte concreta aplicada: um único módulo -- um quarto de arco -- repetido 96 vezes, e a única coisa que muda de célula para célula é o ângulo. É a progressão do ângulo que carrega a velocidade, e a fração de células azuis carrega o tanque.",
-   "bytes": 66535,
+   "bytes": 66540,
    "fundo": "claro",
    "cor": "azul"
   },
@@ -953,7 +953,7 @@
    "nome": "Condensada",
    "versao": "1.2.0",
    "descricao": "Tudo em caixa alta ultracondensada, com a condensação feita por escala horizontal em vez de uma fonte estreita que pode não existir no carro -- o desenho não depende do que está instalado. Coluna esquerda gigante, coluna direita em pesos altos, filete grosso no rodapé.",
-   "bytes": 49806,
+   "bytes": 49811,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -961,7 +961,7 @@
    "nome": "Contador",
    "versao": "1.2.0",
    "descricao": "Frente de contador de frequência de bancada: mostrador verde de fósforo com os algarismos apagados visíveis por trás, coluna de anunciadores de acoplamento e disparo, e cinco botões de faixa que acendem conforme o estado do carro. Tudo desenhado, nenhuma imagem.",
-   "bytes": 55849,
+   "bytes": 55854,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -969,7 +969,7 @@
    "nome": "Contorno",
    "versao": "1.2.0",
    "descricao": "O algarismo começa vazado, só contorno, e vai sendo preenchido de baixo para cima conforme a velocidade sobe: a própria letra é a barra de progresso. O giro repete o truque em corpo menor, com um segundo nível subindo dentro da caixa da letra.",
-   "bytes": 43774,
+   "bytes": 43779,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -977,7 +977,7 @@
    "nome": "Contragiro",
    "versao": "1.2.0",
    "descricao": "Duas escalas no mesmo eixo girando em sentidos opostos: velocidade no anel de fora, horário, e giro no de dentro, anti-horário. Os dois ponteiros abrem em V quando as grandezas sobem juntas e se fecham quando só uma sobe, o que dá uma leitura de carga do motor sem número nenhum.",
-   "bytes": 53000,
+   "bytes": 53005,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -985,7 +985,7 @@
    "nome": "Corte",
    "versao": "1.2.0",
    "descricao": "Corte AA pelos sistemas do veículo: quatro faixas seccionadas cuja extensão é a grandeza e cuja hachura diz de que material são feitas -- 45 graus, contra-hachura vermelha e verticais azuis, as convenções de corte do desenho técnico. O traço do corte é grosso, o resto é fino.",
-   "bytes": 59503,
+   "bytes": 59508,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -993,7 +993,7 @@
    "nome": "Cota",
    "versao": "1.2.0",
    "descricao": "Nada de desenho: só a cotagem. Linha de cota, linhas de chamada, setas cheias e o número no meio -- o objeto que elas mediriam fica implícito, marcado apenas por um retângulo tracejado. Fundo branco de papel sulfite, que inverte inteiro no modo noturno.",
-   "bytes": 41825,
+   "bytes": 41830,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1001,7 +1001,7 @@
    "nome": "Cromo",
    "versao": "1.2.0",
    "descricao": "Fita horizontal de velocidade dentro de uma moldura cromada, como nos sedãs americanos de para-brisa panorâmico: a barra cresce da esquerda e troca de cor a cada faixa -- cidade, econômica, estrada, acima. A moldura é um gradiente de sete paradas porque metal escovado não tem transição suave, tem degraus, e o nome da faixa aparece por extenso à direita.",
-   "bytes": 56834,
+   "bytes": 56839,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1009,7 +1009,7 @@
    "nome": "Cupê 70",
    "versao": "1.2.0",
    "descricao": "Quatro mostradores redondos numa moldura retangular de madeira com iluminação âmbar, o painel do cupê grande de seis cilindros em linha. Os dois centrais são maiores porque velocidade e giro mandam; tanque e bateria ficam nas pontas, menores, com escala curta de quatro marcas. O aro cromado é um anel branco com dois arcos de brilho por cima, que é como metal polido reflete de fato.",
-   "bytes": 120479,
+   "bytes": 120484,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1017,7 +1017,7 @@
    "nome": "Deck",
    "versao": "1.2.0",
    "descricao": "HUD de ficção científica levado a sério: anéis concêntricos, um tracejado, uma régua de 40 marcas, dois arcos de progresso (velocidade em ciano, giro em âmbar), um ponto que corre a órbita externa e colchetes nos quatro cantos. À direita, três blocos — propulsão, reservas e navegação — com barras finas, e uma fileira de lâmpadas na base. Todo enfeite mostra um número real.",
-   "bytes": 109871,
+   "bytes": 109876,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1025,7 +1025,7 @@
    "nome": "Diagonal",
    "versao": "1.2.0",
    "descricao": "Quatro faixas a 45 graus atravessando a moldura inteira, cada uma com a largura da sua grandeza. Elas nunca se cruzam porque correm em paralelo, e o rótulo de cada uma acompanha a inclinação da faixa em que está escrito.",
-   "bytes": 59811,
+   "bytes": 59816,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1033,7 +1033,7 @@
    "nome": "Dispersão",
    "versao": "1.2.0",
    "descricao": "Cada amostra vira um ponto no plano giro × velocidade, com as 80 últimas formando um rastro que desbota para trás. A reta tracejada é a relação de transmissão esperada: quando a nuvem sai dela, a marcha mudou ou o motor está patinando.",
-   "bytes": 50640,
+   "bytes": 50645,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1041,7 +1041,7 @@
    "nome": "Dois",
    "versao": "1.2.0",
    "descricao": "Exatamente dois elementos na tela: o algarismo e uma linha que cresce. A linha não tem escala, marca nem rótulo -- compará-la consigo mesma, um instante antes, já basta para saber se o carro acelera ou desacelera. Papel claro de dia, tinta de noite.",
-   "bytes": 32526,
+   "bytes": 32531,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1049,7 +1049,7 @@
    "nome": "Duotom",
    "versao": "1.2.0",
    "descricao": "Duas tintas só -- azul-noite e salmão -- e nada entre elas. Sessenta faixas horizontais recebem uma cor ou a outra conforme um limiar que sobe com a velocidade e ondula com o giro, então a fronteira entre as tintas é a leitura, sem nenhum meio-tom.",
-   "bytes": 43299,
+   "bytes": 43304,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1057,7 +1057,7 @@
    "nome": "Eco Medidor",
    "versao": "1.2.0",
    "descricao": "No híbrido o conta-giros não serve para nada, porque o motor liga e desliga sozinho -- o que importa é para que lado a energia está indo. O arco vai de CARGA, à esquerda, passando por ECO, até FORÇA, e a posição da agulha sai de duas grandezas que o carro publica de verdade: corrente negativa vira recuperação, saída de energia vira força. Autonomia elétrica e de combustão aparecem separadas, como devem.",
-   "bytes": 61114,
+   "bytes": 61119,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1065,7 +1065,7 @@
    "nome": "EICAS",
    "versao": "1.2.0",
    "descricao": "Indicação de motor e alerta da tripulação: três arcos com risco vermelho de limite, quatro barras horizontais de sistema e uma coluna de mensagens que só lista o que foge do normal -- verde para informativo, âmbar para atenção. Quando nada foge, ela diz que não há mensagens.",
-   "bytes": 57389,
+   "bytes": 57394,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1073,7 +1073,7 @@
    "nome": "Eixo Longo",
    "versao": "1.2.0",
    "descricao": "Volta inteira: a escala dá 360 graus, zero em cima e fundo de escala de volta em cima, com o ponteiro atravessando o centro e mostrando contrapeso do outro lado. O giro vira um anel tracejado por fora do mostrador. Quatro cantos de dado e nada mais.",
-   "bytes": 52146,
+   "bytes": 52151,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1081,7 +1081,7 @@
    "nome": "Empilhadas",
    "versao": "1.2.0",
    "descricao": "Quatro barras de 100% mostrando composição em vez de magnitude: de onde vem a energia, como o giro se reparte entre ocioso e carga, para que lado o clima está puxando e em que faixa a velocidade cai. Cada fatia só escreve o próprio nome quando tem altura para isso.",
-   "bytes": 50750,
+   "bytes": 50755,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1089,7 +1089,7 @@
    "nome": "Energy Flow",
    "versao": "1.2.0",
    "descricao": "Painel para híbrido/elétrico: anel grande de bateria com tensão e corrente reais, medidor de fluxo com zero fixo no meio (verde para regeneração à esquerda, azul para tração à direita), consumo instantâneo em kWh/100km, autonomia elétrica e a combustível em cartões, nível de recuperação em três pastilhas e os selos HEV/EVP/EV e 1 pedal.",
-   "bytes": 92601,
+   "bytes": 92606,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1097,7 +1097,7 @@
    "nome": "Envelope",
    "versao": "1.2.0",
    "descricao": "O envelope de quatro trechos de um sintetizador, com cada trecho amarrado a uma grandeza real: o ataque vem da resposta do motor, o pico do giro, a sustentação do nível de velocidade e a solta do nível de recuperação de energia. A régua âmbar marca onde a velocidade está no eixo.",
-   "bytes": 48232,
+   "bytes": 48237,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1105,7 +1105,7 @@
    "nome": "Escala Móvel",
    "versao": "1.2.0",
    "descricao": "Inverte o mostrador comum: o índice vermelho fica parado no topo e o disco graduado gira por baixo dele até encostar o valor corrente. São dois discos concêntricos girando em tempos diferentes, velocidade por fora e giro por dentro, com a marcha imóvel no miolo.",
-   "bytes": 55767,
+   "bytes": 55772,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1113,7 +1113,7 @@
    "nome": "Escalímetro",
    "versao": "1.2.0",
    "descricao": "Um corpo de escalímetro deitado na tela com três faces, cada uma com sua unidade gravada na canaleta -- km/h, rpm e por cento de tanque -- e um cursor vermelho correndo em cada face. O fundo é de papel técnico e vira grafite no modo noturno.",
-   "bytes": 45998,
+   "bytes": 46003,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1121,7 +1121,7 @@
    "nome": "Espectro",
    "versao": "1.2.0",
    "descricao": "Analisador de 32 bandas com retencão de pico: os graves seguem o giro, os médios a velocidade e os agudos o consumo, e cada banda mistura os três com um peso próprio. Verde até 60%, âmbar acima, vermelho no topo -- e o traço branco do pico desce devagar.",
-   "bytes": 45727,
+   "bytes": 45732,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1129,7 +1129,7 @@
    "nome": "Esquemático",
    "versao": "1.2.0",
    "descricao": "Cada grandeza vira um componente num ramo do circuito: resistor em zigue-zague para a velocidade, capacitor de duas placas para o giro, bateria de barras alternadas para o tanque. Os valores são a designação do componente e os barramentos verticais fecham o desenho, como num esquemático de verdade.",
-   "bytes": 41834,
+   "bytes": 41839,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1137,7 +1137,7 @@
    "nome": "Explodido",
    "versao": "1.2.0",
    "descricao": "Vista explodida de montagem: quatro anéis afastados ao longo de um eixo tracejado de centro, cada um visto de esgueira em axonometria, com o arco aceso marcando o valor. As chamadas numeradas com balão levam à legenda do rodapé, como numa prancha de conjunto.",
-   "bytes": 50908,
+   "bytes": 50913,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1145,7 +1145,7 @@
    "nome": "Faixa Alta",
    "versao": "1.2.0",
    "descricao": "Painel em faixa, montado no alto e no centro do console, como nos compactos japoneses de motor transversal: o olho sai da estrada por menos tempo porque o número está quase na linha do para-brisa. Velocidade no meio, duas asas de leituras separadas por filete, e uma régua fina de giro logo abaixo. O resto da tela fica vazio de propósito -- é a distância entre a faixa e o nada que faz a leitura ser rápida.",
-   "bytes": 43320,
+   "bytes": 43325,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1153,7 +1153,7 @@
    "nome": "Faixa de Voo",
    "versao": "1.2.0",
    "descricao": "Cinco tiras de progresso, como as fichas de papel que a torre de controle empilha no console: cada tira reúne quatro campos de um mesmo assunto, com título pequeno e valor grande. A tira de velocidade muda a cor da lombada para vermelho quando se passa do limite.",
-   "bytes": 54773,
+   "bytes": 54778,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1161,7 +1161,7 @@
    "nome": "Faixas",
    "versao": "1.2.0",
    "descricao": "Seis campos de cor empilhados que somam sempre a tela inteira: a altura de cada um é a sua grandeza, normalizada contra as outras. Não é preciso ler número nenhum para ver qual está dominando, e um piso de 6% garante que nenhuma faixa desapareça de vez.",
-   "bytes": 39195,
+   "bytes": 39200,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1169,7 +1169,7 @@
    "nome": "Ficha",
    "versao": "1.2.0",
    "descricao": "Uma ficha de catalogação dentro da gaveta: cartão pautado com margem vermelha, segunda ficha aparecendo atrás, furo da haste na borda inferior e os campos datilografados com condutor de pontos. A velocidade fica em corpo 132 no canto direito.",
-   "bytes": 49482,
+   "bytes": 49487,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1177,7 +1177,7 @@
    "nome": "Figura e Fundo",
    "versao": "1.2.0",
    "descricao": "A tela é dividida em dois campos e a divisa entre eles é a velocidade. O algarismo atravessa a divisa e troca de cor exatamente onde ela passa -- é o mesmo número desenhado duas vezes, com o de cima recortado no ponto do corte.",
-   "bytes": 39927,
+   "bytes": 39932,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1185,7 +1185,7 @@
    "nome": "Fio",
    "versao": "1.2.0",
    "descricao": "Nada nesta tela passa de 1px: sem preenchimento, sem sombra, sem degradê. O mostrador tem uma marca por km/h -- 241 traços em um único path para não encher o DOM -- e a hierarquia vem só do comprimento das marcas. O giro é um arco fino por fora.",
-   "bytes": 41955,
+   "bytes": 41960,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1193,7 +1193,7 @@
    "nome": "Fita Central",
    "versao": "1.2.0",
    "descricao": "A escala inteira -- de -20 a 260 km/h -- é desenhada uma vez e depois só desliza por baixo de uma retícula vermelha fixa no centro, sem criar um único nó de DOM durante a viagem. As bordas da fita desbotam no fundo, o giro vira uma barra fina embaixo.",
-   "bytes": 46480,
+   "bytes": 46485,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1201,7 +1201,7 @@
    "nome": "Fita de Proa",
    "versao": "1.2.0",
    "descricao": "A fita de proa de uma aeronave, reaproveitada para a velocidade: a escala inteira desliza sob uma linha de fé vermelha no centro, com esmaecimento nas duas pontas. Quando a câmera confirma uma placa, um marcador âmbar aparece na fita exatamente sobre o limite da via.",
-   "bytes": 47650,
+   "bytes": 47655,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1209,7 +1209,7 @@
    "nome": "Fluxo",
    "versao": "1.2.0",
    "descricao": "Diagrama de blocos da energia até a roda: fonte, motor, transmissão, roda. Cada trecho de seta acende só quando existe fluxo ali, então dá para ver onde a corrente para -- em P ou N a cadeia se rompe na transmissão -- sem precisar ler nenhum número.",
-   "bytes": 43429,
+   "bytes": 43434,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1217,7 +1217,7 @@
    "nome": "Formulário",
    "versao": "1.2.0",
    "descricao": "Um formulário preenchido: rótulo impresso à esquerda, valor datilografado sobre a linha pontilhada, cinco caixas de marcação que se marcam sozinhas e um carimbo vermelho girado que alterna entre EM CURSO e PARADO. Linha de assinatura no pé.",
-   "bytes": 50646,
+   "bytes": 50651,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1225,7 +1225,7 @@
    "nome": "Fósforo",
    "versao": "1.2.0",
    "descricao": "Mostrador fluorescente a vácuo, verde de fósforo sobre preto absoluto: o segmento apagado não some, ele só perde o brilho, e o aceso espalha halo. A barra de giro atravessa a tela inteira em quarenta segmentos inclinados que viram âmbar na zona vermelha, e quatro colunas verticais à direita fazem tanque, bateria, tensão e temperatura -- o arranjo dos cupês americanos de carroceria em fibra do começo dos anos 80.",
-   "bytes": 67673,
+   "bytes": 67678,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1233,7 +1233,7 @@
    "nome": "Giro Rei",
    "versao": "1.2.0",
    "descricao": "Nos cupês japoneses de motor de giro alto a velocidade virou dígito e o anel de rotação tomou a tela inteira, porque quem troca marcha no limite lê giro e não quilômetro por hora. O anel de trinta e quatro pixels de espessura muda de branco para âmbar e para vermelho conforme sobe, dezesseis luzes de troca acendem num arco por fora e um fio azul por dentro carrega a velocidade sem competir.",
-   "bytes": 90391,
+   "bytes": 90396,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1241,7 +1241,7 @@
    "nome": "Grafite",
    "versao": "1.2.0",
    "descricao": "Desenho a lápis: o valor é hachura. Cinco caixas recebem traços a 45 graus cujo passo cai de 30 para 5 pixels conforme a grandeza sobe, e a pressão do lápis -- espessura e opacidade -- sobe junto. É como se sombreia um croqui.",
-   "bytes": 91257,
+   "bytes": 91262,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1249,7 +1249,7 @@
    "nome": "Granulado",
    "versao": "1.2.0",
    "descricao": "Grão de filme gerado por ruído fractal uma única vez e deixado parado -- o grão é parte do papel, não um efeito animado, então não custa um quadro sequer depois de pronto. Vinheta fechando as bordas e um fio de 3px como única marcação de escala.",
-   "bytes": 98343,
+   "bytes": 98348,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1257,7 +1257,7 @@
    "nome": "Haste",
    "versao": "1.2.0",
    "descricao": "Um fio de 3px sobe do rodapé e o número cavalga a ponta: quanto mais alto, mais rápido, e o vazio que sobra acima é exatamente a folga que ainda há até o fundo de escala. Uma calha cinza de 1px atrás mostra onde a haste pode chegar.",
-   "bytes": 32450,
+   "bytes": 32455,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1265,7 +1265,7 @@
    "nome": "Hexes",
    "versao": "1.2.0",
    "descricao": "Malha hexagonal em coordenadas cúbicas, com 91 células em seis anéis. Os anéis acendem de dentro para fora conforme a velocidade sobe, e a temperatura da cor vem do giro -- a malha muda de cor sem mudar de forma.",
-   "bytes": 60540,
+   "bytes": 60545,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1273,7 +1273,7 @@
    "nome": "Hidráulico Digital",
    "versao": "1.2.0",
    "descricao": "O painel digital que a escola francesa lançou nos anos 80, quando quase ninguém ousava: verde de fósforo sobre preto, barra de giro em trinta segmentos inclinados e velocidade em dígitos de 180 px. O desenho envelheceu muito melhor do que parecia na época -- e aqui a barra acende segmento a segmento, sem interpolação.",
-   "bytes": 47771,
+   "bytes": 47776,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1281,7 +1281,7 @@
    "nome": "Hidráulico Lata",
    "versao": "1.2.0",
    "descricao": "O utilitário francês de lona e dois cilindros: um mostrador só, de face creme, parafusado numa chapa pintada de verde militar, com quatro parafusos à mostra. Escala até 120, que era a verdade daquele motor. Não há conta-giros porque o carro nunca teve, e o painel não inventa um.",
-   "bytes": 42305,
+   "bytes": 42310,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1289,7 +1289,7 @@
    "nome": "Hidráulico Lupa",
    "versao": "1.2.0",
    "descricao": "O tambor rolante sob uma lente: os números correm na horizontal atrás de um vidro e só o do meio aparece, ampliado dentro da lupa. Não há agulha, não há arco e não há mostrador redondo -- que era exatamente a proposta daquele sedã francês de suspensão hidráulica, o carro que resolveu não ter nada parecido com os outros.",
-   "bytes": 51759,
+   "bytes": 51764,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1297,7 +1297,7 @@
    "nome": "Hidráulico Nave",
    "versao": "1.2.0",
    "descricao": "O sedã francês de 1955 que parecia uma nave: painel claro de baquelite, dois mostradores ovais deitados e o volante de um raio só, desenhado aqui como uma curva que sai de baixo do painel. Não há um único canto vivo na tela inteira -- tudo é elipse, arco ou barra de ponta arredondada, em marfim e tijolo.",
-   "bytes": 48912,
+   "bytes": 48917,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1305,7 +1305,7 @@
    "nome": "Hidráulico Satélites",
    "versao": "1.2.0",
    "descricao": "Os satélites daquela casa francesa: em vez de alavancas, dois blocos pendurados ao lado do volante, ao alcance dos dedos sem tirar a mão do aro. Aqui eles viram duas colunas de estado -- farol, estabilidade, ventilação e recirculação de um lado; rádio, mídia, tanque e autonomia do outro -- com o mostrador de velocidade no meio.",
-   "bytes": 56290,
+   "bytes": 56295,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1313,7 +1313,7 @@
    "nome": "Hidráulico Sete",
    "versao": "1.2.0",
    "descricao": "O cupê francês de motor italiano punha sete mostradores pequenos em fila, todos do mesmo diâmetro, como numa bancada de laboratório. Igualdade radical: velocidade, giro, tanque, saída, tensão, consumo e temperatura externa com o mesmo peso visual, o mesmo aro e a mesma agulha -- nenhum deles manda nos outros.",
-   "bytes": 52214,
+   "bytes": 52219,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1321,7 +1321,7 @@
    "nome": "Hidráulico Simples",
    "versao": "1.2.0",
    "descricao": "O compacto moderno daquela casa reduziu o painel a uma tira: três campos de dígitos numa caixa de 1600 px e mais nada -- sem anel, sem barra, sem ícone, sem sombra. É o painel que aceita não ser o assunto, e a única linha de rodapé junta tanque, giro e temperatura externa.",
-   "bytes": 37502,
+   "bytes": 37507,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1329,7 +1329,7 @@
    "nome": "Hidráulico Suspensão",
    "versao": "1.2.0",
    "descricao": "A alavanca de altura da suspensão hidropneumática, com as quatro posições que aquele carro oferecia -- e a carroceria subindo de verdade no desenho, com meio segundo de transição, conforme a posição muda. Como altura de carroceria não é publicada por este barramento, as posições seguem o modo de condução, e a legenda explica a troca em vez de escondê-la.",
-   "bytes": 44566,
+   "bytes": 44571,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1337,7 +1337,7 @@
    "nome": "Hidráulico Urbano",
    "versao": "1.2.0",
    "descricao": "O quadriciclo elétrico de cidade daquela casa francesa: velocidade, carga e mais nada, em duas barras grossas de cor chapada e dígitos de 210 px. A escala de velocidade vai só até 45, que é o que o bicho faz -- e o painel diz isso na legenda em vez de desenhar uma escala de 200 que nunca seria usada.",
-   "bytes": 44264,
+   "bytes": 44269,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1345,7 +1345,7 @@
    "nome": "Hidráulico Visor",
    "versao": "1.2.0",
    "descricao": "O sedã de luxo francês que estreou a projeção no para-brisa: aqui a faixa projetada fica no alto, em laranja translúcido, com velocidade, limite e marcha -- e o painel completo continua embaixo, com dois arcos e a rota no meio. Os dois ao mesmo tempo, que era justamente a aposta daquele carro.",
-   "bytes": 51320,
+   "bytes": 51325,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1353,7 +1353,7 @@
    "nome": "Histograma",
    "versao": "1.2.0",
    "descricao": "A distribuição da velocidade em doze faixas de 20 km/h, contando quanto tempo o carro passou em cada uma desde que o painel abriu. A barra da faixa atual fica branca, as mais visitadas ficam azuis, e a contagem aparece no topo de cada coluna.",
-   "bytes": 41717,
+   "bytes": 41722,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1361,7 +1361,7 @@
    "nome": "HSI",
    "versao": "1.2.0",
    "descricao": "Indicador de situação horizontal: rosa graduada de 360 graus girando, seta de curso em verde e a barra de desvio deslocada pela diferença entre a velocidade e o limite da via -- centrada quando se está no limite, âmbar quando sai da faixa. Os seis campos à direita completam a leitura.",
-   "bytes": 56650,
+   "bytes": 56655,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1369,7 +1369,7 @@
    "nome": "HUD Minimal",
    "versao": "1.2.0",
    "descricao": "Projeção limpa: velocidade em peso fino no centro, marcha acima, linha de horizonte e uma faixa discreta de combustível, autonomia e temperatura na base. A placa da via aparece quando a câmera confirma a leitura, o aviso de excesso só acende 3 km/h acima do limite (para não piscar sozinho) e as setas de ponto cego surgem apenas quando o carro avisa, pelo canal control().",
-   "bytes": 69733,
+   "bytes": 69738,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -1377,7 +1377,7 @@
    "nome": "Índice",
    "versao": "1.2.0",
    "descricao": "Uma página de índice: cada grandeza é uma entrada ligada ao seu valor por condutor pontilhado, sem coluna e sem tabela. A velocidade é a entrada de primeiro nível, em corpo 62 e peso alto; as outras sete ficam em corpo 40.",
-   "bytes": 51280,
+   "bytes": 51285,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1385,7 +1385,7 @@
    "nome": "Intervalo",
    "versao": "1.2.0",
    "descricao": "Um campo de cada vez: a velocidade fica sempre e o resto se reveza no mesmo lugar a cada quatro segundos, contando pelo relógio em vez de por um laço próprio. A tela nunca tem mais de duas informações, e cinco pontinhos dizem em que ponto do rodízio ela está.",
-   "bytes": 35530,
+   "bytes": 35535,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1393,7 +1393,7 @@
    "nome": "Inverso",
    "versao": "1.2.0",
    "descricao": "Negativo fotográfico: a chapa inteira inverte de polaridade quando a velocidade passa de 120 km/h -- nada muda de posição, só de cor. É a leitura periférica mais forte que dá para fazer sem piscar nada: o painel todo vira o aviso.",
-   "bytes": 43026,
+   "bytes": 43031,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1401,7 +1401,7 @@
    "nome": "Isolinhas",
    "versao": "1.2.0",
    "descricao": "Treze curvas de nível polares, com uma linha mestra a cada cinco. Cada grandeza entra como uma harmônica diferente na deformação do contorno -- a velocidade em três lóbulos, o giro em cinco, o tanque em dois -- então o relevo muda de forma, e não só de tamanho.",
-   "bytes": 68606,
+   "bytes": 68611,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1409,7 +1409,7 @@
    "nome": "Isométrico",
    "versao": "1.2.0",
    "descricao": "Quatro prismas em axonometria isométrica de 30 graus crescendo sobre uma malha isométrica. As três faces de cada prisma saem do mesmo par de vetores, então o volume fecha por geometria e não por imagem -- e o tom de cada face já dá a iluminação.",
-   "bytes": 83503,
+   "bytes": 83508,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1417,7 +1417,7 @@
    "nome": "Italiano Berlineta",
    "versao": "1.2.0",
    "descricao": "A berlineta de estrada, feita para atravessar a Europa em um dia: mostradores de face clara com aro cromado, numeral serifado e agulha cor de vinho. Dois relógios grandes de 228 px e, no meio, um relógio de verdade -- o único mostrador claro desta família, e o único com serifa.",
-   "bytes": 58697,
+   "bytes": 58702,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1425,7 +1425,7 @@
    "nome": "Italiano Capuz",
    "versao": "1.2.0",
    "descricao": "Dois capuzes fundos virados para o motorista, com o mostrador lá no fundo do túnel e uma sombra radial caindo por dentro -- a solução italiana contra o reflexo do sol no para-brisa deitado, e a razão de aqueles painéis parecerem um binóculo. Zona de corte em verde, agulha vermelha, numeral estreito.",
-   "bytes": 60105,
+   "bytes": 60110,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1433,7 +1433,7 @@
    "nome": "Italiano Corsa",
    "versao": "1.2.0",
    "descricao": "O sedã de competição italiano dos anos 90: dois arcos rasos e concêntricos no lugar dos mostradores -- um branco para a velocidade, um vermelho para o giro -- com o número em 232 px no meio do par. Painel feito para ser lido a duzentos por hora, não para ser admirado com o carro parado.",
-   "bytes": 53886,
+   "bytes": 53891,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -1441,7 +1441,7 @@
    "nome": "Italiano Cunha",
    "versao": "1.2.0",
    "descricao": "O sedã em cunha dos anos 80, famoso por ter o painel mais esquisito da época: três mostradores trapezoidais, cada um inclinado no mesmo ângulo da lateral do carro, com os rótulos rodados junto e os números encostados no canto de cima. Estranho de propósito -- e ninguém mais teve coragem de repetir.",
-   "bytes": 46667,
+   "bytes": 46672,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1449,7 +1449,7 @@
    "nome": "Italiano Fibra",
    "versao": "1.2.0",
    "descricao": "O esportivo pequeno de casulo de fibra de carbono reduziu o painel a um retângulo só: uma barra de giro no topo, a velocidade em 184 px e três campos pequenos embaixo. Digital puro, sem anel e sem agulha -- naquele carro cada grama contava, inclusive os gramas de vidro de mostrador.",
-   "bytes": 39445,
+   "bytes": 39450,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -1457,7 +1457,7 @@
    "nome": "Italiano Integral",
    "versao": "1.2.0",
    "descricao": "O hatch de quatro faróis que ganhou tudo no rali: painel retangular de canto vivo, três caixas iguais e uma barra de giro em vinte segmentos verdes que viram vermelhos a partir de 6500. O terceiro quadro, que no carro original era o manômetro de turbo, aqui mede a saída de energia -- e avisa embaixo que pressão de admissão não é publicada.",
-   "bytes": 46895,
+   "bytes": 46900,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1465,7 +1465,7 @@
    "nome": "Italiano Oito",
    "versao": "1.2.0",
    "descricao": "O cupê italiano de motor V8 e tomadas de ar nas laterais, de 1970: dois mostradores grandes em cima e uma régua de quatro auxiliares embaixo, que no carro original eram óleo, água, amperímetro e combustível. Como óleo e água não são publicados aqui, a régua traz tanque, saída, tensão e consumo -- e diz isso embaixo.",
-   "bytes": 57038,
+   "bytes": 57043,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1473,7 +1473,7 @@
    "nome": "Italiano Rali",
    "versao": "1.2.0",
    "descricao": "O carro de rali de motor central, com o conta-giros enorme sob um capuz fundo no meio da tela e a velocidade rebaixada a uma linha na coluna lateral -- que naquele carro era o espaço do navegador. A coluna traz o que este carro publica: modo de tração, estabilidade, trecho, temperatura externa e autonomia. Corte em verde a partir de 6600.",
-   "bytes": 53750,
+   "bytes": 53755,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1481,7 +1481,7 @@
    "nome": "Italiano Sprint",
    "versao": "1.2.0",
    "descricao": "O cupê leve de subida de montanha: dois mostradores médios e, por cima deles, uma régua de catorze luzes de troca que sobe do verde ao âmbar e ao vermelho conforme o giro passa de 2000. Nada mais na tela -- naquele carro, trocar na hora certa era o assunto inteiro.",
-   "bytes": 55412,
+   "bytes": 55417,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1489,7 +1489,7 @@
    "nome": "Italiano Trevo",
    "versao": "1.2.0",
    "descricao": "O sedã esportivo atual da casa põe o conta-giros no meio, com 272 px de raio, e rebaixa velocidade e tanque a dois arcos menores nas bordas. A hierarquia é declarada sem meio-termo: rotação manda e o resto acompanha. O verde de trevo aparece só no arco do tanque, como única cor além do vermelho da agulha.",
-   "bytes": 55585,
+   "bytes": 55590,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1497,7 +1497,7 @@
    "nome": "Jornal",
    "versao": "1.2.0",
    "descricao": "Primeira página: mastro &#x27;O PAINEL&#x27; entre filetes, linha de data com hora e temperatura, manchete com a velocidade escrita por extenso em 118px, olho em itálico e quatro colunas separadas por fio — combustível, eletricidade, motor e cabine. Um boxe de filete duplo traz a quilometragem, e o rodapé é a coluna social: o que está tocando e a velocidade soletrada.",
-   "bytes": 87960,
+   "bytes": 87965,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1505,7 +1505,7 @@
    "nome": "Le Mans",
    "versao": "1.2.0",
    "descricao": "Painel de resistência: régua de 26 luzes de troca de marcha atravessando o topo (verde, âmbar, vermelho, piscando na zona vermelha), conta-giros central de 0 a 8.000 com o giro em números no miolo, velocidade em coluna à esquerda, consumo/hodômetro/temperaturas e marcha à direita, barra de combustível e estado real do motor na base.",
-   "bytes": 68856,
+   "bytes": 68861,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1513,7 +1513,7 @@
    "nome": "LED",
    "versao": "1.2.0",
    "descricao": "Oito colunas de vinte segmentos, verde até dois terços, âmbar depois e vermelho no topo, com o pico retido em branco descendo devagar -- o comportamento de um medidor de estúdio. Cada segmento acende inteiro, então a leitura é discreta e não depende de ler o número.",
-   "bytes": 51118,
+   "bytes": 51123,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1521,7 +1521,7 @@
    "nome": "Legenda",
    "versao": "1.2.0",
    "descricao": "Enquadramento de cinema com tarjas pretas em cima e embaixo, vinheta na imagem e a informação secundária composta como legenda de filme -- tipo com contorno preto, rúbrica entre colchetes em amarelo. Código de tempo com quadros no canto superior direito.",
-   "bytes": 74528,
+   "bytes": 74533,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1529,7 +1529,7 @@
    "nome": "Linha",
    "versao": "1.2.0",
    "descricao": "Uma linha reta de 1600px é o velocímetro inteiro: preenche da esquerda para a direita e o número de 124px cavalga a ponta, preso às bordas para nunca sair da tela. Abaixo, quatro marcas de escala; mais abaixo, duas linhas finas de combustível e bateria; no topo, marcha, modo e hora; no rodapé, autonomia, giro, temperatura e hodômetro.",
-   "bytes": 38852,
+   "bytes": 38857,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1537,7 +1537,7 @@
    "nome": "Lissajous",
    "versao": "1.2.0",
    "descricao": "Uma figura de Lissajous fechada, com a razão entre as frequências tirada da velocidade e do giro: a forma muda de desenho quando a marcha troca, a amplitude cresce com a velocidade e a defasagem vem do nível do tanque. Um ponto âmbar percorre a curva.",
-   "bytes": 54393,
+   "bytes": 54398,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1545,7 +1545,7 @@
    "nome": "Malha",
    "versao": "1.2.0",
    "descricao": "Papel milimetrado de verdade -- linha fina a cada 20px, grossa a cada 100 -- com três séries traçadas por cima: velocidade, giro e tanque, uma amostra por segundo, 34 amostras na tela. O histórico já nasce semeado para o gráfico nunca aparecer vazio.",
-   "bytes": 91187,
+   "bytes": 91192,
    "fundo": "claro",
    "cor": "colorido"
   },
@@ -1553,7 +1553,7 @@
    "nome": "Manchete",
    "versao": "1.2.0",
    "descricao": "Uma palavra ocupa a tela inteira e qual palavra depende do estado: estacionado, ré, parado, cidade, seguindo, estrada, acima do limite, combustível. O número vira subtítulo. Vermelho e âmbar entram só nos dois casos que pedem reação.",
-   "bytes": 46830,
+   "bytes": 46835,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1561,7 +1561,7 @@
    "nome": "Manifesto",
    "versao": "1.2.0",
    "descricao": "Seis frases curtas coladas umas nas outras, em pesos e corpos diferentes e sem grade nenhuma. Os valores entram dentro do texto -- em laranja -- em vez de virarem campos, e a última linha é a regra que o próprio tema cumpre: quando o carro avisa, a tela se esvazia.",
-   "bytes": 75158,
+   "bytes": 75163,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1569,7 +1569,7 @@
    "nome": "Mapa Cheio",
    "versao": "1.2.0",
    "descricao": "O oposto do painel virtual: aqui o mapa não pede licença, toma a tela inteira e os instrumentos viram fichas de vidro fosco flutuando nos cantos. A cidade é gerada no carregamento com semente fixa -- rio em diagonal, um parque, quarteirões de tamanho variável e três larguras de rua -- e a rota passa por cima em azul com contorno escuro, que é o truque para a linha não sumir na malha.",
-   "bytes": 68461,
+   "bytes": 68466,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1577,7 +1577,7 @@
    "nome": "Marcador",
    "versao": "1.2.0",
    "descricao": "Seis cartões de indicador com valor grande, barra de proporção e -- o que importa -- a variação contra a média móvel da própria viagem, em verde ou vermelho. É o painel como relatório: não diz só quanto, diz se está acima ou abaixo do normal de hoje.",
-   "bytes": 48415,
+   "bytes": 48420,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1585,7 +1585,7 @@
    "nome": "Margem",
    "versao": "1.2.0",
    "descricao": "Seis campos empurrados para as bordas da moldura, dois filetes de 1px fechando as faixas, e o centro deliberadamente vazio -- porque é exatamente ali que o para-brisa importa. A velocidade fica no topo, no meio, em corpo 112.",
-   "bytes": 38388,
+   "bytes": 38393,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1593,7 +1593,7 @@
    "nome": "Matriz",
    "versao": "1.2.0",
    "descricao": "Matriz de pontos de verdade: uma fonte 5 por 7 desenhada célula a célula e emitida como um único path por grupo, do jeito que um letreiro de ônibus faz. Os pontos apagados ficam no lugar, fracos, porque é isso que dá a textura de matriz -- sem eles o número flutua no vazio. Velocidade em três dígitos grandes, marcha num glifo próprio e três réguas de quarenta pontos para giro, tanque e bateria.",
-   "bytes": 67526,
+   "bytes": 67531,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1601,7 +1601,7 @@
    "nome": "Meia-Lua",
    "versao": "1.2.0",
    "descricao": "O eixo do mostrador fica abaixo da moldura: só a meia-lua superior entra na tela, com raio de 722px, o que dá uma graduação larga e fácil de ler de relance. Arco vivo em ciano por cima da escala, arco de combustível logo abaixo e a velocidade em número fino no meio do vazio.",
-   "bytes": 59208,
+   "bytes": 59213,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1609,7 +1609,7 @@
    "nome": "Meio-tom",
    "versao": "1.2.0",
    "descricao": "O fundo inteiro é o mostrador: o cinza clareia conforme a velocidade sobe, de quase preto a quase branco, e o algarismo troca sozinho entre claro e escuro na hora em que o fundo passa do meio -- para nunca ficar ilegível. Nenhuma forma desenhada na tela.",
-   "bytes": 33871,
+   "bytes": 33876,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1617,7 +1617,7 @@
    "nome": "Modo Pista",
    "versao": "1.2.0",
    "descricao": "Numa volta rápida o que interessa é marcha, luz de troca e tempo -- velocidade e giro descem para a periferia. Dezoito luzes atravessam o topo em verde, âmbar e vermelho, a marcha ocupa o meio em trezentos e quarenta pixels e o cronômetro corre desde a abertura do tema. A aceleração longitudinal em g é derivada de dv/dt, porque o barramento não publica acelerômetro, e o rodapé diz isso com todas as letras.",
-   "bytes": 53164,
+   "bytes": 53169,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1625,7 +1625,7 @@
    "nome": "Módulo",
    "versao": "1.2.0",
    "descricao": "Grade modular de 8 por 4 em que a velocidade ocupa seis células e as outras dezessete ocupam uma ou duas. A grade nunca se mexe -- só o que está dentro dela -- e cada célula tem um fio de proporção no pé que fica laranja quando o valor passa de 80%.",
-   "bytes": 46998,
+   "bytes": 47003,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1633,7 +1633,7 @@
    "nome": "Moiré",
    "versao": "1.2.0",
    "descricao": "Duas grades de linhas de 1,4px sobrepostas: a segunda gira conforme a velocidade sobe e muda de passo com o giro, e é a interferência entre elas -- as franjas de moiré -- que dá a leitura. São dois gradientes repetidos, sem um nó por linha e sem quadro de JS.",
-   "bytes": 170795,
+   "bytes": 170800,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1641,7 +1641,7 @@
    "nome": "Monoespaço",
    "versao": "1.2.0",
    "descricao": "Espécime de monoespaçada: a grade é o próprio avanço da fonte, então as dez linhas alinham em coluna sem uma única regra de layout -- só preenchimento com espaços. Cada família de dado tem sua cor e a velocidade se repete em corpo 220 à direita.",
-   "bytes": 48327,
+   "bytes": 48332,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1649,7 +1649,7 @@
    "nome": "Mostrador Branco",
    "versao": "1.2.0",
    "descricao": "O kit de mostrador branco que todo mundo instalava nos anos 90: fundo claro, numeral preto de peso alto, ponteiro vermelho e aro cromado duplo. O contraste é o inverso do de fábrica, então de dia a leitura é mais rápida. Quatro dials em fila com os dois grandes no meio, faixa vermelha do giro a partir das seis mil e o número repetido em dígitos no ventre de cada mostrador grande.",
-   "bytes": 83250,
+   "bytes": 83255,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -1657,7 +1657,7 @@
    "nome": "Nanquim",
    "versao": "1.2.0",
    "descricao": "Uma pincelada de nanquim é o velocímetro: o arco nasce fino, engrossa no meio e afina na saída, com respingos secos na ponta, sobre papel claro. A velocidade vem em serifa pesada de 244px, três dados em coluna à direita e a marcha dentro de um selo vermelho carimbado torto no canto.",
-   "bytes": 95689,
+   "bytes": 95694,
    "fundo": "claro",
    "cor": "vermelho"
   },
@@ -1665,7 +1665,7 @@
    "nome": "Nipo Alumínio",
    "versao": "1.2.0",
    "descricao": "O supercarro japonês de alumínio com cabine inspirada em caça: painel baixo, largo e raso -- uma faixa de 200 px de altura com três blocos de leitura e uma barra de giro de vinte e seis divisões no meio. O capô era baixo e o painel tinha de sumir do campo de visão; aqui ele some do mesmo jeito.",
-   "bytes": 40870,
+   "bytes": 40875,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1673,7 +1673,7 @@
    "nome": "Nipo Barra",
    "versao": "1.2.0",
    "descricao": "O roadster japonês de motor que girava a nove mil trocou a agulha por uma régua: quarenta e quatro divisões que crescem da esquerda para a direita, azul-gelo até 8000 e laranja depois. Assim o olho mede distância em vez de ângulo -- e a velocidade fica em 200 px logo acima da barra.",
-   "bytes": 42339,
+   "bytes": 42344,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1681,7 +1681,7 @@
    "nome": "Nipo Dois Mil",
    "versao": "1.2.0",
    "descricao": "O cupê japonês de 1967 que provou que aquela indústria sabia fazer GT: dois mostradores grandes em cima e cinco pequenos em fila embaixo, todos no mesmo plano, com aro fino, numeral miúdo e agulha cor de brasa. Corte em 7000, escala de 220 -- os números verdadeiros daquele motor de seis cilindros.",
-   "bytes": 59598,
+   "bytes": 59603,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1689,7 +1689,7 @@
    "nome": "Nipo GT",
    "versao": "1.2.0",
    "descricao": "O GT japonês atual teve o painel desenhado pelo mesmo estúdio que fazia o jogo de corrida -- e isso aparece: arco de giro largo de 30 px com a zona de corte acendendo inteira, marcha em 176 px no meio, e duas colunas de dados alinhadas nas bordas da tela. Informação densa com hierarquia clara.",
-   "bytes": 52256,
+   "bytes": 52261,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1697,7 +1697,7 @@
    "nome": "Nipo Híbrido",
    "versao": "1.2.0",
    "descricao": "O híbrido japonês que pôs o mostrador no meio do tabelier e deixou a frente do motorista vazia -- estranho no primeiro dia, natural no segundo. Aqui a tela declara esse vazio com todas as letras em vez de disfarçar: duas linhas finas marcam a faixa central, e é só nela que há informação.",
-   "bytes": 44192,
+   "bytes": 44197,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1705,7 +1705,7 @@
    "nome": "Nipo Mínimo",
    "versao": "1.2.0",
    "descricao": "O carro de classe mínima japonesa, de 660 cilindradas: quatro blocos grandes, dígitos de 128 px e nenhuma tentativa de parecer maior do que é. A escala não existe porque o número basta, o tanque tem uma régua de 700 px que fica laranja abaixo de 20%, e o painel inteiro é legível de relance.",
-   "bytes": 43434,
+   "bytes": 43439,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1713,7 +1713,7 @@
    "nome": "Nipo Leve",
    "versao": "1.2.0",
    "descricao": "O cupê leve de tração traseira dos anos 80, o carro barato que virou lenda justamente por não ter nada sobrando: dois mostradores de 152 px numa placa, zona vermelha a partir de 7500, escala de 180 e três linhas de texto. O painel inteiro cabe num retângulo de 1080 px.",
-   "bytes": 47518,
+   "bytes": 47523,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1721,7 +1721,7 @@
    "nome": "Nipo Multifunção",
    "versao": "1.2.0",
    "descricao": "O painel multifunção do GT japonês dos anos 90 deixava o motorista escolher uma leitura por vez numa tela pequena. Aqui as seis aparecem ao mesmo tempo, em grade de três por duas, cada uma com seu arco azul-gelo e seu número: velocidade, giro, saída, tensão, consumo e tanque -- todas publicadas, nenhuma estimada.",
-   "bytes": 55358,
+   "bytes": 55363,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1729,7 +1729,7 @@
    "nome": "Nipo Três Poços",
    "versao": "1.2.0",
    "descricao": "O cupê Z japonês punha dois mostradores fundos na frente do motorista e três poços pequenos inclinados no alto do painel, virados para ele -- a assinatura do carro e o motivo de a cabine parecer um cockpit. Aqui os três trazem o que o carro publica: saída de energia, tensão do pacote e consumo, cada um com sua própria agulha.",
-   "bytes": 59509,
+   "bytes": 59514,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1737,7 +1737,7 @@
    "nome": "Nipo Turbo",
    "versao": "1.2.0",
    "descricao": "O cupê turbo japonês dos anos 90, o de seis cilindros em linha que virou pôster: dois mostradores de 248 px com escala esticada e, entre eles, o arco que naquele carro era o manômetro de pressão. Aqui ele mede a saída de energia publicada, em azul-gelo, e escreve embaixo que pressão de turbo não existe neste barramento.",
-   "bytes": 60677,
+   "bytes": 60682,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1745,7 +1745,7 @@
    "nome": "Nível",
    "versao": "1.2.0",
    "descricao": "Três tubos de nível deitados: o longo é a velocidade, os curtos são giro e tanque. A bolha não tenta imitar vidro nem líquido -- é um disco verde-limão correndo sobre a graduação gravada no fundo do tubo, que é um degradê repetido e não um nó por marca.",
-   "bytes": 43338,
+   "bytes": 43343,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1753,7 +1753,7 @@
    "nome": "Noir",
    "versao": "1.2.0",
    "descricao": "Preto e branco de filme: facho de luz vindo de cima à esquerda, granulação de três tramas cruzadas, vinheta pesada e tarjas pretas em cima e embaixo, como projeção em tela larga. A velocidade em 330px condensada com sombra dura deslocada, e à direita uma lista de créditos com fio de 1px trazendo giro, combustível, bateria, autonomia, temperatura e hodômetro.",
-   "bytes": 63120,
+   "bytes": 63125,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1761,7 +1761,7 @@
    "nome": "Nordic Frost",
    "versao": "1.2.0",
    "descricao": "Painel claro e silencioso: velocidade enorme em peso fino à esquerda, pastilhas P R N D que acendem com a marcha, três medidores de fio de 4px à direita (combustível, bateria de tração e autonomia dupla elétrica/combustível) e rodapé com hora, temperatura na unidade configurada no carro, hodômetro e faróis. No modo noturno o painel inverte inteiro em vez de só escurecer.",
-   "bytes": 58203,
+   "bytes": 58208,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1769,7 +1769,7 @@
    "nome": "Nórdico Âmbar",
    "versao": "1.2.0",
    "descricao": "A retroiluminacao âmbar do hatch compacto sueco do meio dos anos 2000, com o anel quente sozinho de um lado e a coluna de console do outro -- que e onde aquela geracao pôs o radio, numa placa fina e flutuante. Anel de 252 px acionado por stroke-dasharray, número de 150 px no meio e quatro linhas de console a direita.",
-   "bytes": 51592,
+   "bytes": 51597,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -1777,7 +1777,7 @@
    "nome": "Nórdico Azul",
    "versao": "1.2.0",
    "descricao": "Dois relógios iguais de fundo azul-cobalto, números brancos e agulha laranja: o mostrador das versões esportivas suecas dos anos 90, quando a marca das peruas resolveu correr. Sem hierarquia entre velocidade e giro -- os dois tem 234 px de raio e o mesmo peso de agulha. Zona vermelha a partir de 6200.",
-   "bytes": 67727,
+   "bytes": 67732,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1785,7 +1785,7 @@
    "nome": "Nórdico Elétrico",
    "versao": "1.2.0",
    "descricao": "O painel do elétrico da casa sueca: velocidade em 264 px, uma barra de carga dividida em cinco, autonomia, e o vazio deliberado em volta. Marcha e modo de tração ficam nas bordas, em cinza. Não há giro porque não há motor a explosao -- e o painel não finge que há.",
-   "bytes": 40545,
+   "bytes": 40550,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1793,7 +1793,7 @@
    "nome": "Nórdico Fita",
    "versao": "1.2.0",
    "descricao": "Velocímetro de fita: a escala vira uma régua de 1620 px atravessada por um dedo cor de tijolo, e o trecho já percorrido fica verde atrás dele. Arquitetura dos cupês suecos do começo dos anos 60, quando a leitura de painel imitava régua de cálculo em vez de relógio. Número grande embaixo para quem quer o valor exato, e os cinco dados de rodape em versalete.",
-   "bytes": 39984,
+   "bytes": 39989,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1801,7 +1801,7 @@
    "nome": "Nórdico Inverno",
    "versao": "1.2.0",
    "descricao": "Painel de inverno: luminância baixa, azul frio e a temperatura externa promovida ao centro em 190 px, com floco e alerta de gelo acendendo a 3 graus ou menos -- o limiar que a escola sueca adotou. Velocidade e tanque ficam em dois arcos discretos nas bordas. Feito para a hora em que o assunto não é a velocidade.",
-   "bytes": 51157,
+   "bytes": 51162,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1809,7 +1809,7 @@
    "nome": "Nórdico Quadrado",
    "versao": "1.2.0",
    "descricao": "Moldura retangular de cantos vivos com três mostradores dentro: relógio a esquerda, velocidade no meio com agulha chata de 240 km/h, tanque a direita entre E e F. É a arquitetura do sedan quadrado sueco que ficou vinte anos em linha sem mudar de forma -- hierarquia declarada pelo tamanho do circulo, sem uma única sombra.",
-   "bytes": 50119,
+   "bytes": 50124,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1817,7 +1817,7 @@
    "nome": "Nórdico Segurança",
    "versao": "1.2.0",
    "descricao": "A obsessão da casa sueca virada em arquitetura de painel: o que protege manda na tela. A faixa central lista sete assistências com o estado que o carro publica de verdade -- estabilidade, farol, assistente de direção, leitura de placa, motor e os dois pontos cegos -- e a velocidade aceita ficar menor, ao lado da placa de limite. O lugar da tarja de aviso e reservado, não sobreposto.",
-   "bytes": 47345,
+   "bytes": 47350,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1825,7 +1825,7 @@
    "nome": "Nórdico Único",
    "versao": "1.2.0",
    "descricao": "A tela única que aposentou os relógios no SUV sueco: dois meios-anéis abracam as bordas e o vão do meio -- que é o assunto -- fica com a placa de limite da via, a próxima manobra e a autonomia. Velocidade e giro aparecem em dígitos dentro dos proprios anéis, sem agulha nenhuma.",
-   "bytes": 51046,
+   "bytes": 51051,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1833,7 +1833,7 @@
    "nome": "Nórdico Turbo",
    "versao": "1.2.0",
    "descricao": "O painel de turbo sueco punha o manômetro de pressão no centro, maior que tudo. Aqui o centro é o mesmo mostrador de três setores -- econômica, normal, alta -- mas medindo a saída de energia, que é o que este carro publica: pressão de admissão não existe no barramento, e o próprio mostrador diz isso em letra pequena. Velocidade e giro ficam nos flancos, em dígitos.",
-   "bytes": 51066,
+   "bytes": 51071,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -1841,7 +1841,7 @@
    "nome": "Nórdico Viagem",
    "versao": "1.2.0",
    "descricao": "O computador de bordo que a escola sueca colocou no painel antes de quase todo mundo, com a hierarquia invertida de propósito: consumo instantâneo em 118 px com barra de escala, autonomia e tanque em caixas do lado, e a velocidade rebaixada a nota de rodape. Para quem dirige olhando o gasto, não a agulha.",
-   "bytes": 45721,
+   "bytes": 45726,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1849,7 +1849,7 @@
    "nome": "Numeral",
    "versao": "1.2.0",
    "descricao": "O algarismo é maior que a moldura e as bordas cortam a letra de propósito: o painel vira um fragmento de tipo em vez de um número centrado. O corpo muda sozinho conforme a velocidade ganha um dígito, e as legendas correm na vertical pelas laterais.",
-   "bytes": 46540,
+   "bytes": 46545,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1857,7 +1857,7 @@
    "nome": "Orbital",
    "versao": "1.2.0",
    "descricao": "Dois anéis concêntricos: o externo é a velocidade, com um ponto que percorre a órbita, e o interno é o giro do motor em rosa. No miolo a velocidade domina, com marcha e modo de condução abaixo; seis satélites nas laterais trazem giro, combustível, bateria, hodômetro, temperatura e o modo da direção, e três lâmpadas na base acendem para ESP, faróis e combustível igual ou abaixo de 15%.",
-   "bytes": 92826,
+   "bytes": 92831,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1865,7 +1865,7 @@
    "nome": "Osciloscópio",
    "versao": "1.2.0",
    "descricao": "Dois canais sobre reticulado de 10 por 8 divisões, com as subdivisões marcadas nos eixos centrais e uma linha de disparo tracejada em 50%. Canal 1 em verde é a velocidade, canal 2 em âmbar é o giro, e o painel lateral repete os valores como as leituras automáticas de um osciloscópio de bancada.",
-   "bytes": 62417,
+   "bytes": 62422,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1873,7 +1873,7 @@
    "nome": "Painel Noturno",
    "versao": "1.2.0",
    "descricao": "De noite, na estrada, tudo apaga menos a velocidade. Os seis blocos secundários ficam em seis por cento de opacidade e só acendem, em âmbar, quando o próprio valor cruza o limiar -- tanque abaixo de vinte, bateria abaixo de vinte e cinco, giro acima de cinco mil e quinhentos, externa em três graus ou menos, consumo acima de doze, autonomia abaixo de oitenta. Com tudo em ordem a tela tem um número e mais nada.",
-   "bytes": 41972,
+   "bytes": 41977,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1881,7 +1881,7 @@
    "nome": "Passo",
    "versao": "1.2.0",
    "descricao": "Uma escada de 24 degraus, um para cada 10 km/h, que acendem inteiros: não há interpolação nem meio degrau, então a leitura é discreta de propósito. Os quatro últimos degraus são âmbar e vermelho. A velocidade exata fica em corpo 300 no canto.",
-   "bytes": 40927,
+   "bytes": 40932,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -1889,7 +1889,7 @@
    "nome": "Pauta",
    "versao": "1.2.0",
    "descricao": "Cinco linhas horizontais como uma pauta de música e uma cabeça de nota por grandeza, deslizando na sua linha conforme o valor sobe. As barras de compasso dividem a escala em décimos e o valor exato fica alinhado à direita, em serifada.",
-   "bytes": 45034,
+   "bytes": 45039,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1897,7 +1897,7 @@
    "nome": "Perfil",
    "versao": "1.2.0",
    "descricao": "Quatro perfis estruturais em corte -- I, U, L e I -- crescendo a partir de uma linha de base. A altura da alma é a grandeza: perfil baixo aguenta pouco, e a leitura sai antes do número. Os contornos são gerados por caminho, não por imagem.",
-   "bytes": 43094,
+   "bytes": 43099,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1905,7 +1905,7 @@
    "nome": "Peso",
    "versao": "1.2.0",
    "descricao": "O peso da letra é o dado: cada palavra engorda de 100 a 900 conforme a sua grandeza sobe, em nove passos discretos porque a rampa contínua não seria percebida. De longe dá para ver a mudança antes de conseguir ler o número.",
-   "bytes": 54737,
+   "bytes": 54742,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1913,7 +1913,7 @@
    "nome": "PFD",
    "versao": "1.2.0",
    "descricao": "O mostrador primário de voo aplicado ao carro: o horizonte artificial arfa com a aceleração e inclina com a carga do motor, a fita esquerda é a velocidade, a direita é o giro e a régua de baixo faz as vezes de proa. O símbolo da aeronave em amarelo fica fixo no centro.",
-   "bytes": 48577,
+   "bytes": 48582,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1921,7 +1921,7 @@
    "nome": "Pictograma",
    "versao": "1.2.0",
    "descricao": "Cristal líquido gráfico monocromático: sem cor e sem meio-tom, só ligado e desligado, então tudo que dá para dizer com desenho é dito com desenho. A bomba de combustível enche de blocos, o termômetro tem mercúrio de verdade que sobe pelo tubo e a silhueta do carro vista de cima acende farol, ESP e motor nos quatro cantos. O texto só aparece onde o ícone não resolve.",
-   "bytes": 48575,
+   "bytes": 48580,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -1929,7 +1929,7 @@
    "nome": "Pilar",
    "versao": "1.2.0",
    "descricao": "O trio de manômetros que se prende à coluna do para-brisa, inclinado nove graus para o motorista, do lado esquerdo e sozinho -- o kit de instrumentos extras dos carros preparados. O barramento do carro não publica pressão de turbo nem temperatura de óleo, então as três cápsulas carregam o que ele publica mesmo: tensão do pack, corrente e consumo instantâneo, com o rótulo dizendo qual é qual.",
-   "bytes": 55968,
+   "bytes": 55973,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1937,7 +1937,7 @@
    "nome": "Planta",
    "versao": "1.2.0",
    "descricao": "Prancha técnica: papel azul com grade fina e grade mestra, vista superior do veículo em linha de contorno, cotas com setas e a velocidade escrita como medida, hachura a 45° para o nível de combustível e lista de notas numeradas. No canto inferior direito, o carimbo da prancha com peça, escala, marcha, condução, hodômetro, hora, resolução e revisão.",
-   "bytes": 120527,
+   "bytes": 120532,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1945,7 +1945,7 @@
    "nome": "Ponto",
    "versao": "1.2.0",
    "descricao": "Um ponto, e nada mais: a posição horizontal é a velocidade e a vertical é o giro. Não há eixo graduado nem escala -- as quatro palavras nos cantos já orientam a leitura, e os dois números seguem o ponto de perto. Duas chaves assinadas; nada mais é pedido ao carro.",
-   "bytes": 33267,
+   "bytes": 33272,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1953,7 +1953,7 @@
    "nome": "Preparador Azul",
    "versao": "1.2.0",
    "descricao": "O mostrador que a oficina alemã trocava antes de mexer no motor: fundo azul-cobalto, agulha de fio de 3 px, filete verde correndo na borda e escala esticada até 300 km/h -- trinta a mais do que a fábrica ousava imprimir. Dois relógios iguais, sem hierarquia, e a assinatura em itálico no lugar onde ficava a marca.",
-   "bytes": 61512,
+   "bytes": 61517,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -1961,7 +1961,7 @@
    "nome": "Preparador Cronômetro",
    "versao": "1.2.0",
    "descricao": "O cronógrafo que aquela oficina encaixava no mostrador grande: dois sub-relógios de segundos e minutos mordendo a borda do velocímetro, com agulhas verdes de fio. O tempo corre desde que o painel abriu -- é relógio de tela, não telemetria do carro, e a legenda diz isso sem meias palavras.",
-   "bytes": 56020,
+   "bytes": 56025,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1969,7 +1969,7 @@
    "nome": "Preparador Executivo",
    "versao": "1.2.0",
    "descricao": "O sedã executivo da oficina, sem um único mostrador: uma coluna tipográfica alinhada à esquerda, velocidade em 220 px, um fio horizontal por baixo e a assinatura em itálico serifado -- o painel tratado como página de catálogo, que era exatamente a estética daquelas publicações. Do outro lado do fio vertical, oito campos em fila.",
-   "bytes": 46932,
+   "bytes": 46937,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1977,7 +1977,7 @@
    "nome": "Preparador Listras",
    "versao": "1.2.0",
    "descricao": "As duas listras da casa -- a azul larga e a verde fina -- deixam de ser adesivo de lateral e viram a estrutura do painel: atravessam a tela inclinadas em 6 graus e os cinco dados viajam em cima delas, em versalete claro. Embaixo, no espaço que sobrou, a velocidade em 204 px. Decoração convertida em grade de leitura.",
-   "bytes": 47706,
+   "bytes": 47711,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -1985,7 +1985,7 @@
    "nome": "Preparador Números",
    "versao": "1.2.0",
    "descricao": "Só números, alinhados pela direita como na folha de especificação que aquela oficina publicava em cada folheto: oito linhas, rótulo em versalete à esquerda, valor em 60 px à direita, unidade depois e um fio separando cada par. Nenhum mostrador, nenhum arco -- aqui a tabela é o mostrador.",
-   "bytes": 46990,
+   "bytes": 46995,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -1993,7 +1993,7 @@
    "nome": "Preparador Perua",
    "versao": "1.2.0",
    "descricao": "A perua da oficina levava o mesmo motor do sedã, mas o painel dela fala de estrada longa: autonomia restante e consumo do momento ocupam a coluna inteira da esquerda, o tanque ganha uma régua de 732 px, e a velocidade aceita ficar em corpo 52 num canto. Quem viaja com a família atrás não olha o conta-giros -- e aqui ele nem existe.",
-   "bytes": 44965,
+   "bytes": 44970,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2001,7 +2001,7 @@
    "nome": "Preparador Placa",
    "versao": "1.2.0",
    "descricao": "A placa de série entre os dois relógios, que era a assinatura daquela oficina: número da unidade em itálico serifado, sobre chapa azul escovada. Aqui a placa é ornamento declarado -- o carro não publica número de chassi, e a legenda escreve isso embaixo em vez de inventar um dado que ninguém poderia conferir.",
-   "bytes": 57303,
+   "bytes": 57308,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2009,7 +2009,7 @@
    "nome": "Preparador Roadster",
    "versao": "1.2.0",
    "descricao": "O conversível de série curta daquela oficina: dois mostradores de 150 px baixos, na altura do capô, e o resto da tela deixado vazio de propósito -- no carro aberto quem ocupa o campo de visão é o mundo, não o painel. Uma linha de horizonte fina atravessa a tela e as temperaturas de fora e da cabine ficam logo abaixo da assinatura.",
-   "bytes": 48479,
+   "bytes": 48484,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2017,7 +2017,7 @@
    "nome": "Preparador Torque",
    "versao": "1.2.0",
    "descricao": "A versão a diesel daquela oficina, que virou lenda por andar mais que os esportivos a gasolina: faixa de giro curta, de 800 a 4500, porque o assunto era torque e não rotação, com a faixa cheia marcada em verde entre 1600 e 3200 rpm. O arco externo de força usa a saída de energia publicada -- binário em newton-metro não existe neste barramento, e está escrito.",
-   "bytes": 57055,
+   "bytes": 57060,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2025,7 +2025,7 @@
    "nome": "Preparador Trezentos",
    "versao": "1.2.0",
    "descricao": "A escala inteira, de zero a trezentos, aberta num arco só de 330 px de raio, sem dobra e sem segundo mostrador. O terço de cima é desenhado mais apagado de propósito: ele existe, mas quase nunca é usado, e o painel prefere admitir isso a fingir que o carro vive lá em cima. Passando de 200, a legenda muda.",
-   "bytes": 51387,
+   "bytes": 51392,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2033,7 +2033,7 @@
    "nome": "Programa",
    "versao": "1.2.0",
    "descricao": "Programa de concerto: seis movimentos numerados em romano, cada um uma grandeza, com o andamento em itálico tirado do próprio valor -- Largo em repouso, Presto no fundo de escala -- e a duração alinhada à direita em algarismo tabular.",
-   "bytes": 48271,
+   "bytes": 48276,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2041,7 +2041,7 @@
    "nome": "Projeção",
    "versao": "1.2.0",
    "descricao": "Reticulado de uma projeção cilíndrica conforme calculada de verdade -- os paralelos se afastam conforme a latitude sobe, como numa carta de Mercator. A derrota traçada por cima tira a longitude da velocidade e a latitude do giro, com um marcador na posição de agora.",
-   "bytes": 50169,
+   "bytes": 50174,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2049,7 +2049,7 @@
    "nome": "Quadrantes",
    "versao": "1.2.0",
    "descricao": "Quatro eixos, um em cada canto da moldura: cada quarto de mostrador cresce para dentro e leva uma grandeza, com cor própria. O centro fica vazio de propósito, só com a marcha em corpo 190, o modo e a hora. Fundo de papel cru que vira tinta no modo noturno.",
-   "bytes": 49770,
+   "bytes": 49775,
    "fundo": "claro",
    "cor": "colorido"
   },
@@ -2057,7 +2057,7 @@
    "nome": "Radar",
    "versao": "1.2.0",
    "descricao": "Quatro alvos num plano de radar: o ângulo de cada um é fixo e a distância ao centro é o valor, então dá para ver de relance qual grandeza está no limite -- aí o alvo fica âmbar. A varredura é uma animação do compositor, sem um único quadro de JS, e para com prefers-reduced-motion.",
-   "bytes": 59848,
+   "bytes": 59853,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2065,7 +2065,7 @@
    "nome": "Rally 74",
    "versao": "1.2.0",
    "descricao": "Painel de rali dos anos 70: dois mostradores grandes de face creme com aro cromado duplo sobre chapa verde, ponteiros vermelhos e numeração em serifa, dois mostradores pequenos para combustível e temperatura externa, perfil de alumínio rebitado em cima e embaixo e uma placa aparafusada com o hodômetro em seis tambores mecânicos. Na base, as lâmpadas de ESP, faróis, combustível e motor.",
-   "bytes": 113324,
+   "bytes": 113329,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2073,7 +2073,7 @@
    "nome": "Recibo",
    "versao": "1.2.0",
    "descricao": "Uma tira de papel térmico no centro da tela, com serrilha nas duas pontas e código de barras no pé: tudo o que o carro publica vira item de cupom, com a velocidade em destaque no topo e repetida como TOTAL. O código de barras é determinístico e só desenho.",
-   "bytes": 51249,
+   "bytes": 51254,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2081,7 +2081,7 @@
    "nome": "Recorte",
    "versao": "1.2.0",
    "descricao": "Quatro folhas de papel recortadas e empilhadas, cada uma projetando sombra na de baixo: a profundidade é real e a ordem de leitura é a ordem da pilha. A folha vermelha é o próprio velocímetro -- ela cresce para a direita conforme a velocidade sobe.",
-   "bytes": 41582,
+   "bytes": 41587,
    "fundo": "claro",
    "cor": "vermelho"
   },
@@ -2089,7 +2089,7 @@
    "nome": "Registro",
    "versao": "1.2.0",
    "descricao": "Diário de bordo: cada mudança relevante vira uma linha com hora, grandeza e valor -- velocidade a cada 10 km/h, giro a cada 500 rpm, marcha e modo a cada troca. O painel conta o que aconteceu, e não só o que está acontecendo, com o estado corrente numa coluna à direita.",
-   "bytes": 55055,
+   "bytes": 55060,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2097,7 +2097,7 @@
    "nome": "Régua Dupla",
    "versao": "1.2.0",
    "descricao": "Duas réguas verticais encostadas nas bordas -- velocidade à esquerda, giro à direita -- com coluna preenchida, graduação própria e um cursor branco atravessando a régua na altura do valor. Todo o meio da tela fica livre para a velocidade em corpo 236 e a marcha.",
-   "bytes": 45127,
+   "bytes": 45132,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2105,7 +2105,7 @@
    "nome": "Relevo",
    "versao": "1.2.0",
    "descricao": "Impressão em relevo seco: nada tem cor própria -- o tipo é exatamente da cor do papel e só se lê pela luz rasante, sombra em cima e brilho embaixo. A moldura também é afundada. No modo noturno a luz inverte e o papel vira cartão escuro.",
-   "bytes": 39195,
+   "bytes": 37476,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2113,7 +2113,7 @@
    "nome": "Relógios",
    "versao": "1.2.0",
    "descricao": "Seis mostradores idênticos em fila, todos do mesmo tamanho e com o mesmo aro -- o banco de relógios dos GT de motor central, em que a hierarquia vem da posição e não da escala. Velocidade, giro, tanque, bateria, temperatura externa e consumo dividem exatamente a mesma importância visual, cada um com ponteiro, escala numerada e o valor repetido em dígitos no centro.",
-   "bytes": 75242,
+   "bytes": 75247,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2121,7 +2121,7 @@
    "nome": "Reserva",
    "versao": "1.2.0",
    "descricao": "Reserva de potência no lugar do conta-giros, a tese do sedã inglês de capô longo: o motorista não quer saber quanto o motor está girando, quer saber quanto ainda sobra. O mostrador nasce em cem à esquerda e desce até zero à direita, com faixa vermelha nos últimos vinte por cento. A reserva é calculada a partir do giro contra o corte e da saída de energia, e o rodapé diz com todas as letras que é conta, não medida.",
-   "bytes": 93100,
+   "bytes": 93105,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2129,7 +2129,7 @@
    "nome": "Respiro",
    "versao": "1.2.0",
    "descricao": "Espaço em branco como material: papel cru, serifa, a velocidade em 208px apoiada numa régua de 1px no canto de baixo à esquerda, um fio vertical dividindo a tela e três dados soltos à direita. No alto, um círculo aberto que nunca fecha — sobram sempre 26° de respiro — desenha o nível de combustível. À noite, o papel vira tinta.",
-   "bytes": 43350,
+   "bytes": 43355,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2137,7 +2137,7 @@
    "nome": "Retângulos",
    "versao": "1.2.0",
    "descricao": "Composição neoplástica: só retângulos, só filetes pretos de 14px e só as três primárias. O tamanho de cada campo é o dado -- o vermelho cresce com a velocidade, o azul com o giro, o amarelo com o tanque -- e os filetes se movem junto, refazendo a composição o tempo todo.",
-   "bytes": 39017,
+   "bytes": 39022,
    "fundo": "claro",
    "cor": "colorido"
   },
@@ -2145,7 +2145,7 @@
    "nome": "Retícula",
    "versao": "1.2.0",
    "descricao": "Meio-tom de verdade: uma malha de 2100 pontos em que o diâmetro de cada um é a densidade local. Dois núcleos governam a folha -- um puxado pela velocidade, outro pelo giro -- e o tanque levanta o piso da página inteira. O algarismo entra em mistura por diferença.",
-   "bytes": 111990,
+   "bytes": 111995,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2153,7 +2153,7 @@
    "nome": "Retro 70",
    "versao": "1.2.0",
    "descricao": "Dois mostradores analógicos com aro cromado e ponteiro âmbar sobre painel escovado: velocímetro à esquerda com leitura digital no centro e sub-arco de combustível, conta-giros à direita com zona vermelha a partir de 6.000. No meio, estação de rádio do sistema, pastilhas P R N D e hodômetro de seis tambores mecânicos.",
-   "bytes": 108998,
+   "bytes": 109003,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2161,7 +2161,7 @@
    "nome": "Revista",
    "versao": "1.2.0",
    "descricao": "Página dupla de revista: cartola, fólio, título serifado de dois andares, linha fina, olho de texto e um quadro de destaque com fio grosso onde a velocidade aparece em corpo 200. Os dados secundários viram seis colunas com fio no pé da página.",
-   "bytes": 65035,
+   "bytes": 65040,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2169,7 +2169,7 @@
    "nome": "Risografia",
    "versao": "1.2.0",
    "descricao": "Duas tintas impressas fora de registro, rosa e azul, multiplicadas uma sobre a outra: onde se cruzam a cor escurece, onde não, ficam as duas fantasmas. O desregistro cresce com o giro -- a impressora treme mais quando o motor sobe -- e uma retícula de pontos cobre a folha.",
-   "bytes": 45132,
+   "bytes": 45137,
    "fundo": "claro",
    "cor": "azul"
   },
@@ -2177,7 +2177,7 @@
    "nome": "Rodapé",
    "versao": "1.2.0",
    "descricao": "Toda a informação cabe numa faixa de 108px no pé da tela, com uma única barra de 2px marcando a velocidade acima dela. Os 612px restantes ficam pretos de propósito: num painel atrás do volante, é a parte de cima que o aro da direção corta.",
-   "bytes": 36151,
+   "bytes": 36156,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2185,7 +2185,7 @@
    "nome": "Rodoviário",
    "versao": "1.2.0",
    "descricao": "Painel de caminhão: quatro manômetros redondos na régua do para-brisa, faixa verde de economia entre mil e cem e mil e oitocentas rotações no conta-giros de escala curta, e a marcha grande no alto. No meio fica o disco do tacógrafo, velocidade em função do tempo em coordenada polar, traçado de verdade a partir do histórico das últimas leituras -- anéis de trinta em trinta e raios de hora em hora, como no disco de papel.",
-   "bytes": 83480,
+   "bytes": 83485,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2193,7 +2193,7 @@
    "nome": "Rosa",
    "versao": "1.2.0",
    "descricao": "Não é uma bússola: é um histograma em coordenadas polares. Cada uma das doze pétalas conta quanto tempo o carro passou naquela faixa de 20 km/h, a pétala da faixa atual fica branca e os anéis de referência marcam um terço, dois terços e o máximo.",
-   "bytes": 60237,
+   "bytes": 60242,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2201,7 +2201,7 @@
    "nome": "Rota",
    "versao": "1.2.0",
    "descricao": "Uma estrada desenhada em curva de Bézier atravessa a tela e o trecho já percorrido é o combustível gasto: tanque cheio é o começo da rota, tanque vazio é o fim. O marcador do carro segue o traçado usando o comprimento real do caminho e gira para a tangente.",
-   "bytes": 47356,
+   "bytes": 47361,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -2209,7 +2209,7 @@
    "nome": "Rótulo",
    "versao": "1.2.0",
    "descricao": "Cada campo é um rótulo ligado por linha de chamada de desenho técnico ao ponto a que se refere, com bolinha vermelha na ponta. A velocidade fica no centro e os oito rótulos a cercam, como a legenda de uma prancha anotada.",
-   "bytes": 47389,
+   "bytes": 47394,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2217,7 +2217,7 @@
    "nome": "Satélite",
    "versao": "1.2.0",
    "descricao": "O mostrador central fica parado e o resto orbita em modulos proprios, ligados por um fio fino que sai da elipse central -- o arranjo dos sedas franceses em que cada funcao ganha o seu satelite em vez de se enfileirar. Quatro capsulas nos cantos levam tanque, bateria, giro e autonomia, cada uma com barra propria, e o numero grande no meio nao divide espaco com ninguem.",
-   "bytes": 81364,
+   "bytes": 81369,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2225,7 +2225,7 @@
    "nome": "Seção",
    "versao": "1.2.0",
    "descricao": "Perfil de terreno em corte com três camadas empilhadas: a superfície é o histórico de velocidade, a camada do meio é modulada pelo giro e a de baixo pelo tanque. Como as três nascem do mesmo perfil, elas acompanham o mesmo relevo com espessuras diferentes.",
-   "bytes": 50568,
+   "bytes": 50573,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2233,7 +2233,7 @@
    "nome": "Sem Painel",
    "versao": "1.2.0",
    "descricao": "Não há painel. O sedã elétrico de pilar B em vidro tirou o mostrador da frente do motorista e deixou só uma coluna estreita na borda de uma tela única -- aqui a mesma tese é levada ao painel inteiro: uma coluna à esquerda com marcha, velocidade e autonomia, uma linha de prumo, e mil e quatrocentos pixels de nada. Ler pouco não é falta de informação, é o recurso.",
-   "bytes": 39271,
+   "bytes": 39276,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2241,7 +2241,7 @@
    "nome": "Série",
    "versao": "1.2.0",
    "descricao": "Três painéis empilhados, um por grandeza, com área preenchida e linha por cima cobrindo os últimos 90 segundos. Cada painel carrega o valor corrente alinhado à direita e o máximo da janela logo abaixo, para a leitura não depender de contar quadrados.",
-   "bytes": 53207,
+   "bytes": 53212,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -2249,7 +2249,7 @@
    "nome": "Serra",
    "versao": "1.2.0",
    "descricao": "Duas serras opostas: a de cima é a velocidade, 24 dentes crescentes; a de baixo é o giro, 16 dentes descendo. O número de dentes acesos já é a leitura e a altura do último aceso confirma -- duas informações redundantes na mesma forma, como numa régua de marcenação.",
-   "bytes": 53115,
+   "bytes": 53120,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2257,7 +2257,7 @@
    "nome": "Sete Segmentos",
    "versao": "1.2.0",
    "descricao": "Painel digital dos anos 80: a velocidade é desenhada com sete polígonos por dígito, e o segmento apagado continua visível em brasa fria, como num mostrador de verdade. O giro vira uma régua de 32 divisas que ficam vermelhas no fim, a marcha acende em verde e combustível e bateria viram blocos grossos.",
-   "bytes": 52710,
+   "bytes": 52715,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2265,7 +2265,7 @@
    "nome": "Setores",
    "versao": "1.2.0",
    "descricao": "Quatro anéis de proporção lado a lado, cada um fechando em 100% da sua escala, com o valor no miolo e o nome embaixo. O arco é feito com tracejado sobre um círculo único -- nenhum caminho é recalculado a cada quadro, só o comprimento do traço.",
-   "bytes": 55471,
+   "bytes": 55476,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -2273,7 +2273,7 @@
    "nome": "Simetria",
    "versao": "1.2.0",
    "descricao": "Tudo é espelhado no eixo central: nove barras para cada lado, com o comprimento modulado por uma envoltória que afina nas pontas. A metade esquerda é a velocidade e a direita é o giro, então a assimetria entre as duas metades vira uma leitura por si só.",
-   "bytes": 37923,
+   "bytes": 37928,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2281,7 +2281,7 @@
    "nome": "Sobreposto",
    "versao": "1.2.0",
    "descricao": "O mostrador de giro passa por cima da velocidade em mistura por diferença: onde o arco cruza o algarismo de 468px, a cor inverte, e é esse cruzamento que informa a carga do motor. Sem transparência, sem sombra -- só duas camadas que se anulam onde se tocam.",
-   "bytes": 46060,
+   "bytes": 46065,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2289,7 +2289,7 @@
    "nome": "Sombra",
    "versao": "1.2.0",
    "descricao": "O algarismo não tem cor própria -- é da mesma cor do fundo e só existe pela sombra que projeta no papel, dura primeiro e difusa depois. No modo noturno a luz inverte de direção e a sombra passa a subir, o que muda a leitura sem mudar uma letra.",
-   "bytes": 37971,
+   "bytes": 37976,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2297,7 +2297,7 @@
    "nome": "Sonar",
    "versao": "1.2.0",
    "descricao": "Cada lançamento vira uma coluna de eco: a profundidade é a velocidade e a cor vai do azul-fundo ao azul-claro conforme o valor sobe. A linha de superfície liga os topos e uma régua âmbar marca o nível de agora, atravessando o gráfico inteiro.",
-   "bytes": 52605,
+   "bytes": 52610,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2305,7 +2305,7 @@
    "nome": "Split Thirds",
    "versao": "1.2.0",
    "descricao": "Três painéis verticais separados por fios de 1px: clima à esquerda (temperatura do motorista, escada de 7 níveis do ventilador, AUTO, recirculação e ionizador), condução no centro (velocidade, marcha, níveis de combustível e bateria, hodômetro, hora) e mídia + telefone à direita, com capa do álbum quando o carro manda uma e o nome de quem está ligando.",
-   "bytes": 55521,
+   "bytes": 55526,
    "fundo": "escuro",
    "cor": "ciano"
   },
@@ -2313,7 +2313,7 @@
    "nome": "Suábio Preto",
    "versao": "1.2.0",
    "descricao": "A divisão de competição da casa suábia mantinha a geometria do sedã e trocava o resto: face quase preta, agulha vermelha, escala de 300 e zona de corte em 7000. No meio, onde o sedã civil punha relógio, fica o dígito da marcha em 210 px -- que é o que se olha numa troca rápida -- com o arco de saída de energia por baixo.",
-   "bytes": 60340,
+   "bytes": 60345,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2321,7 +2321,7 @@
    "nome": "Suábio Cofre",
    "versao": "1.2.0",
    "descricao": "A limusine de doze cilindros: dois mostradores de 228 px bem afastados um do outro e, nas bordas da tela, duas colunas verticais de escala que enchem de baixo para cima como termômetros -- tanque de um lado, bateria do outro. Silêncio visual é o assunto: nada pisca, nada corre, e sobra espaço entre as coisas.",
-   "bytes": 56019,
+   "bytes": 56024,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2329,7 +2329,7 @@
    "nome": "Suábio Conforto",
    "versao": "1.2.0",
    "descricao": "O painel que fala de cabine antes de falar de estrada, como convinha à casa que vendia silêncio e ar tratado: temperatura pedida em 120 px, sete blocos de ventilação, e a coluna da direita com climatização automática, ar, recirculação e ionizador -- todos estados publicados pelo carro, nenhum inventado. A velocidade divide o cartão do meio com a marcha.",
-   "bytes": 49489,
+   "bytes": 49494,
    "fundo": "escuro",
    "cor": "ambar"
   },
@@ -2337,7 +2337,7 @@
    "nome": "Suábio Dezesseis",
    "versao": "1.2.0",
    "descricao": "A versão de dezesseis válvulas daquele sedã compacto trazia três mostradores extras empilhados no console. Pressão e temperatura de óleo não existem neste barramento, então os dois que existem de verdade -- tensão e corrente do pacote -- ficam com dois deles, e o terceiro assume o consumo. A legenda embaixo explica a troca em vez de deixar um mostrador fingindo medir.",
-   "bytes": 63139,
+   "bytes": 63144,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2345,7 +2345,7 @@
    "nome": "Suábio Duas Telas",
    "versao": "1.2.0",
    "descricao": "Duas telas retangulares sob um vidro só, como no sedã grande atual da casa: a da esquerda é painel -- dois arcos e dois números --, a da direita é o carro falando, com mídia, rota, clima da cabine e autonomia. O vinco entre elas é desenhado de propósito: são duas superfícies, não uma, e a arquitetura toda depende disso.",
-   "bytes": 56508,
+   "bytes": 56513,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2353,7 +2353,7 @@
    "nome": "Suábio Faixa",
    "versao": "1.2.0",
    "descricao": "A faixa única de vidro que atravessa o carro de ponta a ponta: uma só superfície levemente curvada, com três zonas separadas por nada além de espaço -- giro à esquerda, velocidade em 172 px no meio, tanque e autonomia à direita. Sem moldura, sem caixa, sem vinco: é o oposto exato das duas telas da mesma casa.",
-   "bytes": 53818,
+   "bytes": 53823,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2361,7 +2361,7 @@
    "nome": "Suábio Quadrado",
    "versao": "1.2.0",
    "descricao": "O utilitário militar de carroceria reta que a casa nunca deixou de fabricar: três poços redondos numa prancha quadrada com parafusos à mostra, e no poço do meio um inclinômetro com a silhueta do carro girando sobre a linha do horizonte. A arfagem sai de dv/dt porque não há giroscópio publicado -- e está escrito embaixo, em letra pequena.",
-   "bytes": 53829,
+   "bytes": 53834,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2369,7 +2369,7 @@
    "nome": "Suábio Roadster",
    "versao": "1.2.0",
    "descricao": "O conversível de capota rígida dos anos 90: dois mostradores redondos de 216 px e, entre eles, uma caixa baixa com relógio e temperatura -- o que se olha de relance. Nada sobe acima da linha dos mostradores, e a faixa larga embaixo junta marcha, tanque, autonomia e cabine numa fila só.",
-   "bytes": 57268,
+   "bytes": 57273,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2377,7 +2377,7 @@
    "nome": "Suábio Táxi",
    "versao": "1.2.0",
    "descricao": "O diesel de Stuttgart que rodava um milhão de quilômetros e virou táxi no mundo inteiro: aqui o hodômetro é o mostrador principal, em sete tambores de rolo com o último dígito em cor de tijolo, e a velocidade só aparece depois dele. Painel de quem conta distância, não rotação.",
-   "bytes": 43086,
+   "bytes": 43091,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2385,7 +2385,7 @@
    "nome": "Suábio Três",
    "versao": "1.2.0",
    "descricao": "Três poços fundos sob um capuz único, o do meio maior: tanque à esquerda entre E e F, velocidade no centro com 216 px de raio, relógio de ponteiros à direita. É a arquitetura do sedã de Stuttgart que definiu o que era painel de carro grande por vinte anos -- anel cromado fino, numeral marfim de traço largo, agulha cor de tijolo.",
-   "bytes": 57130,
+   "bytes": 57135,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2393,7 +2393,7 @@
    "nome": "Tabela",
    "versao": "1.2.0",
    "descricao": "Sem gráfico nenhum: uma tabela bem composta já é um painel. Regras finas, zebra discreta, valores alinhados pela direita em algarismo tabular, coluna de unidade separada e uma última coluna com a barra de proporção -- a única concessão a desenho.",
-   "bytes": 49226,
+   "bytes": 49231,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2401,7 +2401,7 @@
    "nome": "Tambor",
    "versao": "1.2.0",
    "descricao": "Velocímetro de rolo: um cilindro impresso gira atrás de uma janela e o número sobe em vez de saltar, como nos utilitários franceses de suspensão hidráulica. A curvatura do tambor é feita com sombra nas bordas da janela e um brilho na linha do índice. A fita inteira, de 0 a 240, é montada uma vez no carregamento -- pintar um quadro custa apenas uma translação.",
-   "bytes": 58828,
+   "bytes": 58833,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2409,7 +2409,7 @@
    "nome": "Terminal",
    "versao": "1.2.0",
    "descricao": "Console de fósforo verde com linhas de varredura: velocidade em mono gigante com cursor piscando, barras ASCII de combustível/bateria/giro, log ao vivo das últimas chaves recebidas e uma tabela que mostra a CHAVE CRUA do contrato ao lado de cada valor (engine_speed, power_battery_voltage, instant_fuel_consumption...). A tarja da base lista os avisos ativos do carro. Serve de painel e de prova de onde cada número veio; chave sem dado aparece como &#x27;-- (sem dado)&#x27; em vez de zero.",
-   "bytes": 96797,
+   "bytes": 96802,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2417,7 +2417,7 @@
    "nome": "Tokyo Neon",
    "versao": "1.2.0",
    "descricao": "Painel synthwave: grade em perspectiva no horizonte, fita de 40 segmentos de RPM no topo que vira magenta na zona alta, velocidade gigante em néon no centro, colunas de combustível e bateria nas laterais, placa TSR e cartão de mídia. Escurece sozinho com o farol aceso.",
-   "bytes": 107717,
+   "bytes": 107722,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -2425,7 +2425,7 @@
    "nome": "Tolerância",
    "versao": "1.2.0",
    "descricao": "Seis quadros de controle de característica, a notação de tolerância geométrica do desenho mecânico: símbolo, valor medido e referência. Cada grandeza tem uma faixa declarada e o quadro inteiro fica vermelho quando o valor sai dela -- o painel vira um relatório de inspeção.",
-   "bytes": 48286,
+   "bytes": 48291,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2433,7 +2433,7 @@
    "nome": "Topografia",
    "versao": "1.2.0",
    "descricao": "Carta topográfica: doze curvas de nível irregulares, uma a cada 20 km/h, com curva mestra reforçada a cada 100. As curvas já vencidas pela velocidade acendem em terracota, o pico é um ponto no centro e a cota atual aparece na legenda. Seis fichas de campo trazem giro, combustível, bateria, autonomia, marcha e temperatura sobre papel de mapa.",
-   "bytes": 71339,
+   "bytes": 71344,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2441,7 +2441,7 @@
    "nome": "Torre",
    "versao": "1.2.0",
    "descricao": "Coluna de três instrumentos auxiliares encostada na borda esquerda -- giro, tanque e temperatura externa, cada um com ponteiro próprio -- e a velocidade ocupando sozinha todo o resto da tela, em corpo 380 alinhado à direita. Tabela de seis campos no rodapé.",
-   "bytes": 51077,
+   "bytes": 51082,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2449,7 +2449,7 @@
    "nome": "Traço",
    "versao": "1.2.0",
    "descricao": "Registrador de papel com três penas: a folha é impressa com pauta fina e reforço a cada cinco divisões, e cada pena risca sua grandeza por cima. As pontas das penas ficam paradas na borda direita, com o valor escrito ao lado na cor da tinta -- o papel é que anda.",
-   "bytes": 66882,
+   "bytes": 66887,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2457,7 +2457,7 @@
    "nome": "Três Setores",
    "versao": "1.2.0",
    "descricao": "Um mostrador só, dividido em três setores de 120 graus: velocidade à esquerda, giro em cima, tanque à direita. Os três ponteiros saem do mesmo eixo mas cada um só anda no seu setor, então nunca se confundem. Coluna digital à direita e rodapé com marcha, modo e hodômetro.",
-   "bytes": 55130,
+   "bytes": 55135,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2465,7 +2465,7 @@
    "nome": "Triângulos",
    "versao": "1.2.0",
    "descricao": "Uma fita de 40 triângulos alternados, ponta para cima e ponta para baixo, sem vazio entre eles. Quantos acendem é a velocidade -- com a cor virando de azul para laranja ao longo da fita -- e a altura de toda a fita é o giro do motor.",
-   "bytes": 45989,
+   "bytes": 45994,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2473,7 +2473,7 @@
    "nome": "Trilha",
    "versao": "1.2.0",
    "descricao": "Fora do asfalto o que manda é a tração, e essa o carro publica de verdade: Neve, Areia, Lama e AWD saem do barramento e ocupam o canto superior esquerdo em cento e dezesseis pixels. O centro é um chassi visto de trás que inclina junto com a arfagem, e a arfagem é derivada de dv/dt porque não há acelerômetro publicado -- o instrumento diz isso no próprio rótulo em vez de fingir um inclinômetro. Embaixo, uma bolha de nível com a mesma origem.",
-   "bytes": 62066,
+   "bytes": 62071,
    "fundo": "escuro",
    "cor": "verde"
   },
@@ -2481,7 +2481,7 @@
    "nome": "Utilitário",
    "versao": "1.2.0",
    "descricao": "Chapa pintada, instrumento retangular e parafuso à vista: nos utilitários de chassi sobre longarinas o painel é uma peça dobrada, então o mostrador não ganha aro redondo e o ponteiro faz um curso curto de cem graus. Três caixas iguais em fila -- velocidade, giro, tanque -- cada uma com o número repetido em dígitos no canto, porque no barulho e na poeira o ponteiro sozinho não resolve.",
-   "bytes": 68923,
+   "bytes": 68928,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2489,7 +2489,7 @@
    "nome": "UTM",
    "versao": "1.2.0",
    "descricao": "Quadrícula de referência com numeração alfanumérica nas bordas, como numa carta topográfica: a velocidade é a coordenada leste, o giro é a norte, e a célula ocupada acende em vermelho com a referência escrita ao lado. Um rastro azul guarda as últimas quarenta posições.",
-   "bytes": 47782,
+   "bytes": 47787,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2497,7 +2497,7 @@
    "nome": "Variômetro",
    "versao": "1.2.0",
    "descricao": "O instrumento que a maioria dos painéis não tem: a taxa de variação da velocidade, de -6 a +6 km/h por segundo, derivada no próprio tema a partir do relógio. Arco verde de um lado, vermelho do outro, zero exatamente no topo -- constante é ponteiro em pé.",
-   "bytes": 58201,
+   "bytes": 58206,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2505,7 +2505,7 @@
    "nome": "Vazio",
    "versao": "1.2.0",
    "descricao": "Sem unidade, sem legenda, sem moldura, sem segunda grandeza: um algarismo de 340px no meio do preto. Se o motorista não souber o que é o número grande no centro do painel, nenhuma legenda vai resolver. Uma chave assinada, a única que o tema precisa.",
-   "bytes": 32710,
+   "bytes": 32715,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2513,7 +2513,7 @@
    "nome": "Vegetal",
    "versao": "1.2.0",
    "descricao": "Seis folhas de papel vegetal jogadas sobre a mesa, cada uma com um campo e uma leve inclição própria. Como são translúcidas, o que está embaixo continua legível e as áreas de sobreposição escurecem -- a hierarquia vem da pilha, não do corpo do tipo.",
-   "bytes": 53843,
+   "bytes": 53848,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2521,7 +2521,7 @@
    "nome": "Verniz",
    "versao": "1.2.0",
    "descricao": "Verniz localizado sobre preto fosco: as áreas envernizadas têm quase a mesma cor do fundo e só se distinguem pelo brilho -- um reflexo diagonal atravessa cada bloco, com aresta clara em cima e escura embaixo. A forma aparece pela luz, não pelo contraste.",
-   "bytes": 62014,
+   "bytes": 62019,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2529,7 +2529,7 @@
    "nome": "Versalete",
    "versao": "1.2.0",
    "descricao": "Tipografia de livro: serifada clássica, algarismos de estilo antigo que sobem e descem na linha, versaletes em todas as legendas e dois filetes finos abrindo e fechando o bloco central. O painel parece uma página de miolo, não uma tela.",
-   "bytes": 41936,
+   "bytes": 41941,
    "fundo": "claro",
    "cor": "mono"
   },
@@ -2537,7 +2537,7 @@
    "nome": "Dupla Face",
    "versao": "1.2.0",
    "descricao": "Dois mostradores de raio 278 que se cruzam no meio da tela. A lente onde eles se sobrepõem é recortada em claro e guarda a marcha -- o dado mais consultado fica no único ponto que pertence aos dois instrumentos ao mesmo tempo.",
-   "bytes": 53583,
+   "bytes": 53588,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2545,7 +2545,7 @@
    "nome": "Virtual",
    "versao": "1.2.0",
    "descricao": "A ideia do painel virtual não é ter mostrador bonito, é o mostrador sair da frente: quando a navegação fala, os dois anéis encolhem para sessenta e dois por cento e correm para as bordas, e o mapa ocupa exatamente o vão que eles abriram. Saindo a rota, eles voltam. Toda a coreografia é transform e opacidade, sem recalcular geometria, e a cidade do mapa é gerada uma vez com semente fixa para não piscar entre quadros.",
-   "bytes": 63308,
+   "bytes": 63313,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2553,7 +2553,7 @@
    "nome": "Vitais",
    "versao": "1.2.0",
    "descricao": "Monitor de sinais vitais com três derivações: cada traçado é uma sequência de pulsos gerada por código, não uma curva gravada, com a amplitude proporcional à grandeza e a frequência própria de cada canal. Os números grandes ficam na coluna da direita, na cor do seu traçado.",
-   "bytes": 55783,
+   "bytes": 55788,
    "fundo": "escuro",
    "cor": "colorido"
   },
@@ -2561,7 +2561,7 @@
    "nome": "Voronoi",
    "versao": "1.2.0",
    "descricao": "Diagrama de Voronoi calculado de verdade no carregamento: cada célula é o retângulo recortado pelas mediatrizes em relação a todos os outros sítios, por Sutherland-Hodgman. As 44 células acendem em sequência com a velocidade e mudam de temperatura com o giro.",
-   "bytes": 58913,
+   "bytes": 58918,
    "fundo": "escuro",
    "cor": "azul"
   },
@@ -2569,7 +2569,7 @@
    "nome": "VU",
    "versao": "1.2.0",
    "descricao": "Três medidores de VU com face creme, escala preta até o zero e vermelha depois dele, ponteiro leve e lâmpada de pico no canto que acende acima de 84%. É o instrumento analógico de áudio aplicado à telemetria, com o amortecimento lento que o VU original tem por norma.",
-   "bytes": 49643,
+   "bytes": 49648,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2577,7 +2577,7 @@
    "nome": "Zero",
    "versao": "1.2.0",
    "descricao": "Só o que importa: a velocidade em 400px de peso 100 sobre preto absoluto, e mais nada. A marcha aparece apenas quando não é D, o combustível aparece apenas abaixo de 15%, e a placa da via aparece apenas quando o carro está acima do limite. Enquanto estiver tudo bem, a tela é um número.",
-   "bytes": 33949,
+   "bytes": 33954,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2585,7 +2585,7 @@
    "nome": "Zuffenhausen Água",
    "versao": "1.2.0",
    "descricao": "A geração refrigerada a água juntou os cinco mostradores em três corpos colados dentro de um só oval de 1480 px, mantendo o conta-giros maior no meio. Menos vidro, menos aro, mesma leitura -- e o terceiro mostrador acumula tanque e saída de energia, que é o que este carro publica.",
-   "bytes": 57426,
+   "bytes": 57431,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2593,7 +2593,7 @@
    "nome": "Zuffenhausen Cinco",
    "versao": "1.2.0",
    "descricao": "Cinco mostradores redondos encavalados numa fileira curva, com o conta-giros no meio e maior que todos -- a arquitetura que o cupê de motor traseiro manteve por cinquenta anos, porque naquele carro quem manda é a rotação. Tanque, velocidade, giro, saída de energia e relógio, todos com aro de alumínio e agulha fina.",
-   "bytes": 63524,
+   "bytes": 63529,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2601,7 +2601,7 @@
    "nome": "Zuffenhausen Coluna",
    "versao": "1.2.0",
    "descricao": "O cupê grande dos anos 80 prendia o pod de instrumentos à coluna de direção: regulando o volante, o painel inteiro subia junto e o aro nunca cobria os mostradores. Aqui o pod se move de verdade -- a altura dele segue o modo de direção publicado pelo carro, em quatro posições, com transição de meio segundo.",
-   "bytes": 51741,
+   "bytes": 51746,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2609,7 +2609,7 @@
    "nome": "Zuffenhausen Curvo",
    "versao": "1.2.0",
    "descricao": "O painel de vidro curvo e sem moldura do elétrico da casa: a superfície descola do tabelier, flutua e deixa os extremos caírem. Quatro zonas dentro dela -- giro, velocidade em 168 px, bateria e saída de energia -- sem uma única caixa, um único aro ou uma única agulha.",
-   "bytes": 68767,
+   "bytes": 68772,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2617,7 +2617,7 @@
    "nome": "Zuffenhausen Ladeado",
    "versao": "1.2.0",
    "descricao": "A solução da geração atual daquela casa: o conta-giros continua sendo vidro e agulha no meio, com 232 px de raio, e os quatro mostradores em volta viraram telas redondas. O vidro no centro e o pixel nas bordas -- exatamente o contrário do caminho que todo mundo seguiu.",
-   "bytes": 55462,
+   "bytes": 55467,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2625,7 +2625,7 @@
    "nome": "Zuffenhausen Híbrido",
    "versao": "1.2.0",
    "descricao": "O híbrido de três regimes daquela casa: recarregando, tração elétrica ou força combinada. A agulha atravessa um arco de três setores construído a partir de duas grandezas publicadas -- corrente do pacote e saída de energia -- e o texto abaixo do número diz em qual regime o carro está naquele instante, sem inventar um quarto.",
-   "bytes": 52064,
+   "bytes": 52069,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2633,7 +2633,7 @@
    "nome": "Zuffenhausen Marfim",
    "versao": "1.2.0",
    "descricao": "O cupê pequeno dos anos 50, antes de o mostrador preto virar regra na casa: face marfim, numeral preto de traço largo, agulha fina cor de aço e cubo claro. É o único painel de fundo claro desta família, e a escala vai só até 180 -- que era a verdade daquele motor de quatro cilindros refrigerado a ar.",
-   "bytes": 53570,
+   "bytes": 53575,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2641,7 +2641,7 @@
    "nome": "Zuffenhausen Pista",
    "versao": "1.2.0",
    "descricao": "Modo de pista: o conta-giros deixa de ser arco e vira uma barra reta de quarenta divisões no alto da tela -- mais fácil de ler de canto de olho numa curva -- com as oito últimas em vermelho. No meio, a marcha em 300 px. Velocidade e rotação ficam nas laterais, e todo o resto saiu.",
-   "bytes": 45380,
+   "bytes": 45385,
    "fundo": "escuro",
    "cor": "mono"
   },
@@ -2649,7 +2649,7 @@
    "nome": "Zuffenhausen Tração",
    "versao": "1.2.0",
    "descricao": "O supercarro de tração integral daquela casa trazia um diagrama do carro visto de cima com o estado da transmissão. Aqui as quatro rodas acendem conforme o modo publicado pelo carro -- integral, neve, areia e lama acendem as quatro; nos demais, só o eixo traseiro. A distribuição de torque entre eixos não é publicada, e o mostrador diz isso em vez de desenhar porcentagens inventadas.",
-   "bytes": 45586,
+   "bytes": 45591,
    "fundo": "escuro",
    "cor": "vermelho"
   },
@@ -2657,7 +2657,7 @@
    "nome": "Zuffenhausen Turbo",
    "versao": "1.2.0",
    "descricao": "O cupê de turbo dos anos 80 encaixava o manômetro dentro da face do conta-giros -- um mostrador dentro do outro, sem pedir mais espaço no painel. Aqui o sub-mostrador de 104 px marca a saída de energia, porque pressão de admissão não é publicada, e a legenda ao lado diz isso com todas as letras.",
-   "bytes": 58268,
+   "bytes": 58273,
    "fundo": "escuro",
    "cor": "mono"
   }

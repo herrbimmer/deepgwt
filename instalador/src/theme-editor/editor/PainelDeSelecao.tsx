@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O inspetor quando há vários elementos escolhidos: alinhar, distribuir, agrupar, guardar como
 // bloco, apagar. Propriedades individuais continuam no elemento — com três tipos diferentes na
 // seleção não existe "a" cor ou "o" tamanho comum.
@@ -123,3 +124,4 @@ export function PainelDeSelecao(p: PainelDeSelecaoProps) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

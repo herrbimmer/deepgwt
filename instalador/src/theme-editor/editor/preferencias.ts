@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Preferências do EDITOR, não do tema: ficam neste computador e nunca entram no `ThemeSpec`.
 //
 // Mesma regra do modo livre (`model/freeMode.ts`): um tema desenhado no modo Básico, com as zonas
@@ -18,7 +19,7 @@ export type PreferenciasDoEditor = {
   esquerdaRecolhida: boolean
 }
 
-const CHAVE = 'opengw.themeEditor.prefs'
+const CHAVE = 'deepgwt.themeEditor.prefs'
 const PADRAO: PreferenciasDoEditor = { modo: null, mostrarZonas: false, zoom: 'ajustar', esquerdaRecolhida: false }
 
 function ler(): PreferenciasDoEditor {
@@ -55,3 +56,4 @@ export function usePreferenciasDoEditor(): [PreferenciasDoEditor, (p: Partial<Pr
   const definir = useCallback((p: Partial<PreferenciasDoEditor>) => definirPreferencias(p), [])
   return [prefs, definir]
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

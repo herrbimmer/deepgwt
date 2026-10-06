@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { save } from '@tauri-apps/plugin-dialog'
@@ -9,7 +10,7 @@ import { useCarIp } from '../hooks/useCarIp'
 import { useCarSettingsSync } from '../hooks/useCarSettingsSync'
 
 const KEY_DVR_REMOTE_SWITCH = 'sys.dvr.remote_switch'
-const STORAGE_PATH_KEY = 'opengw_dvr_storage_path'
+const STORAGE_PATH_KEY = 'deepgwt_dvr_storage_path'
 
 // Mesma lista de candidatos tentada pelo `DvrManager.detectStoragePath()` no lado do carro —
 // mantidas em sincronia manualmente (arquivo espelho, não compartilhado entre Kotlin/TS).
@@ -264,3 +265,4 @@ export const Dvr = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

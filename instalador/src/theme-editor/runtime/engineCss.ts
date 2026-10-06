@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O CSS do motor. Idêntico byte a byte em todo tema gerado — o que muda de um tema para outro
 // vive no segundo bloco `<style>', montado por 'emit/themeCss.ts'.
 //
@@ -159,6 +160,7 @@ body.yield-to-car #app { opacity: 0; }
   background: rgba(255,255,255,.06); color: var(--t-inkFaint, rgba(255,255,255,.3));
   display: flex; align-items: center; justify-content: center;
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 .media-art.has-src ~ .media-art-ph { display: none; }
 /* O ícone é dimensionado aqui e não por padding no pai: padding em porcentagem resolve contra
    a LARGURA DO BLOCO CONTENDOR, não contra o próprio elemento, e engolia a caixa inteira. */
@@ -233,3 +235,4 @@ body.yield-to-car #app { opacity: 0; }
   .tick-label, .bar-fill, .needle, .arc, .media, #app, .readout.gear span { transition-duration: .01ms !important; }
 }
 `
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

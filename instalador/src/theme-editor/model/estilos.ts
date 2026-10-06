@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Estilos de texto compartilhados: "Número grande" aplicado a quatro leituras, e mudar o estilo
 // muda as quatro.
 //
@@ -148,3 +149,4 @@ export function usosDosEstilos(spec: ThemeSpec): Record<string, number> {
   }
   return n
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

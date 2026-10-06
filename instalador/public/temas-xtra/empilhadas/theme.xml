@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Empilhadas</name>
     <description>Quatro barras de 100% mostrando composição em vez de magnitude: de onde vem a energia, como o giro se reparte entre ocioso e carga, para que lado o clima está puxando e em que faixa a velocidade cai. Cada fatia só escreve o próprio nome quando tem altura para isso.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

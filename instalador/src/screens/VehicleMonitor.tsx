@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo, useState, type ReactNode } from 'react'
 import {
   ActivityIcon, CarFrontIcon, CircleDashedIcon, FileSearchIcon, FuelIcon, GaugeIcon, LeafIcon,
@@ -351,6 +352,7 @@ export const VehicleMonitor = () => {
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ── Peças da tela ────────────────────────────────────────────────────────────────────────────
 
@@ -538,3 +540,4 @@ function Lampada({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <!-- RiseMode RM MC 01 W / MiraBox StreamDock 293S clone: VID 0x0A00 (2560), PID 0x1001 (4097). -->
 <resources>
     <usb-device vendor-id="2560" product-id="4097" />
 </resources>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

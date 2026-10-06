@@ -1,22 +1,22 @@
 [package]
-name = "opengw-instalador"
-version = "9.7.0"
-description = "Instalador do OPEN GW para macOS"
-authors = ["OPEN GW"]
+name = "deepgwt-instalador"
+version = "10.7.0"
+description = "Instalador do DeepGWT para macOS"
+authors = ["DeepGWT"]
 edition = "2021"
 publish = false
 
 [lib]
-# Nome diferente do binário (`opengw-instalador`): com os dois iguais o cargo confunde os artefatos.
+# Nome diferente do binário (`deepgwt-instalador`): com os dois iguais o cargo confunde os artefatos.
 # Só rlib: o instalador roda em desktop e o binário liga a biblioteca estaticamente.
-name = "opengw_instalador_lib"
+name = "deepgwt_instalador_lib"
 crate-type = ["rlib"]
 
 [build-dependencies]
-tauri-build = "2"
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = "2"
+tauri = { version = "2", features = [] }
 tauri-plugin-dialog = "2"
 tauri-plugin-log = "2.6"
 tauri-plugin-opener = "2.4"

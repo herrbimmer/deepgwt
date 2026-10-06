@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Nórdico Inverno</name>
     <description>Painel de inverno: luminância baixa, azul frio e a temperatura externa promovida ao centro em 190 px, com floco e alerta de gelo acendendo a 3 graus ou menos -- o limiar que a escola sueca adotou. Velocidade e tanque ficam em dois arcos discretos nas bordas. Feito para a hora em que o assunto não é a velocidade.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Nordic Frost</name>
     <description>Painel claro e silencioso: velocidade enorme em peso fino à esquerda, pastilhas P R N D que acendem com a marcha, três medidores de fio de 4px à direita (combustível, bateria de tração e autonomia dupla elétrica/combustível) e rodapé com hora, temperatura na unidade configurada no carro, hodômetro e faróis. No modo noturno o painel inverte inteiro em vez de só escurecer.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

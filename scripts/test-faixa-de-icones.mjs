@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /**
  * A faixa nativa de ícones não aparece nas duas telas que pedem a central limpa.
  *
@@ -6,12 +7,15 @@
  * A faixa de ícones do launcher é uma View desenhada FORA da WebView. Nenhum z-index de dentro da
  * página alcança ela, e enquanto o launcher era um APK separado o dex não expunha método nenhum
  * para escondê-la — os dois arquivos da página chegaram a documentar isso como teto conhecido. O
- * resultado: em CONFIGURAÇÕES OPEN GW e no Modo Descanso (uma tela preta com um relógio) a
+ * resultado: em CONFIGURAÇÕES DeepGWT e no Modo Descanso (uma tela preta com um relógio) a
  * fileira de ícones de app continuava acesa por cima.
  *
  * O QUE MUDOU
  * Com os dois apps fundidos num APK só, o código nativo é o mesmo projeto: a ponte ganhou
- * `AppLauncherBridge.setLauncherHidden(bool)` e as duas telas passaram a pedir.
+ * `AppLauncherBridge.setLauncherHidden(bool)` e as duas telas passaram a pedir. Desde a tela 3D
+ * nova (`br.com.deepgwt.tela3d`) o lado nativo está em Kotlin: ponte (`PonteDoLancador`), Activity
+ * (`TelaInicial3dActivity`), adaptador da faixa (`integracao/AdaptadoresDaFaixa.kt`) e a faixa em si
+ * (`FaixaDeBaixoImpl`, `RegrasDaFaixa`).
  *
  * POR QUE O PEDIDO PASSA POR UM ÁRBITRO
  * As duas telas se sobrepõem — dá para entrar no Modo Descanso estando na página de
@@ -34,7 +38,7 @@ import { createContext, runInContext } from 'node:vm'
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const WWW = join(RAIZ, 'app', 'src', 'main', 'assets', 'www')
-const JAVA = join(RAIZ, 'app', 'src', 'main', 'java', 'com', 'havalh6', 'viewer')
+const TELA3D = join(RAIZ, 'app', 'src', 'main', 'java', 'br', 'com', 'deepgwt', 'tela3d')
 
 let falhas = 0
 let total = 0
@@ -68,45 +72,76 @@ function semComentarios(fonte) {
 const painelCodigo = () => semComentarios(painel)
 const descansoCodigo = () => semComentarios(descanso)
 
-const main = ler(join(JAVA, 'MainActivity.java'))
+const ponte = semComentarios(ler(join(TELA3D, 'ponte', 'PonteDoLancador.kt')))
+const atividade = semComentarios(ler(join(TELA3D, 'ponte', 'TelaInicial3dActivity.kt')))
+const adaptador = semComentarios(ler(join(TELA3D, 'integracao', 'AdaptadoresDaFaixa.kt')))
+const faixa = semComentarios(ler(join(TELA3D, 'faixa', 'FaixaDeBaixoImpl.kt')))
+const regras = semComentarios(ler(join(TELA3D, 'faixa', 'RegrasDaFaixa.kt')))
 const cliente = ler(join(WWW, 'appLauncherClient.js'))
-const painel = ler(join(WWW, 'openGwPanel.js'))
-const descanso = ler(join(WWW, 'openGwRest.js'))
+const painel = ler(join(WWW, 'deepGwtPanel.js'))
+const descanso = ler(join(WWW, 'deepGwtRest.js'))
 
-if (!main || !cliente || !painel || !descanso) {
-  console.log('Fontes do launcher não encontradas — o APK ainda está separado?')
+if (!ponte || !atividade || !adaptador || !faixa || !regras || !cliente || !painel || !descanso) {
+  console.log('Fontes da tela 3D não encontradas (br.com.deepgwt.tela3d, assets/www)')
   process.exit(1)
 }
 
-console.log('\nLado nativo (MainActivity.java)\n')
+/** O corpo de uma função Kotlin: do `fun nome(` até a chave que fecha (conta chaves). */
+function corpoDe(fonte, assinatura) {
+  const i = fonte.indexOf(assinatura)
+  if (i < 0) return ''
+  let j = fonte.indexOf('{', i)
+  const igual = fonte.indexOf('=', i)
+  // função de expressão (`= ...`): o corpo é a linha
+  if (j < 0 || (igual >= 0 && igual < j)) return fonte.slice(i, fonte.indexOf('\n', i))
+  let nivel = 0
+  for (let k = j; k < fonte.length; k++) {
+    if (fonte[k] === '{') nivel++
+    else if (fonte[k] === '}' && --nivel === 0) return fonte.slice(i, k + 1)
+  }
+  return fonte.slice(i)
+}
+
+console.log('\nLado nativo (ponte, Activity, adaptador e faixa em Kotlin)\n')
 
 ok(
   'a ponte expõe setLauncherHidden ao JavaScript',
-  /@JavascriptInterface\s*\n\s*public void setLauncherHidden\(boolean /.test(main),
+  /@JavascriptInterface\s*\n\s*fun setLauncherHidden\(escondida: Boolean\)/.test(ponte),
   'sem @JavascriptInterface o método existe no dex e mesmo assim não é chamável da página'
 )
 ok(
   'o pedido é entregue na thread principal',
-  /public void setLauncherHidden\(boolean z\) \{\s*\n\s*MainActivity\.this\.mainHandler\.post\(/.test(main),
+  /fun setLauncherHidden\(escondida: Boolean\) =\s*naUi\("setLauncherHidden"\) \{ acoes\.definirFaixaEscondidaPelaPagina\(escondida\) \}/.test(ponte),
   'a ponte roda na thread do JavaScript; mexer em View a partir dela é crash na hora certa errada'
 )
 ok(
+  'a Activity repassa o pedido à faixa',
+  /override fun definirFaixaEscondidaPelaPagina\(escondida: Boolean\) \{[\s\S]{0,300}dependencias\.faixa\.definirEscondidaPelaPagina\(escondida\)/.test(atividade),
+  'o intermediário entre a ponte e a faixa; sem ele o pedido some'
+)
+ok(
+  'o adaptador entrega o pedido à faixa',
+  /override fun definirEscondidaPelaPagina\(escondida: Boolean\) = faixa\.pedirEscondida\(escondida\)/.test(adaptador)
+)
+ok(
   'o pedido entra na condição de visibilidade da faixa',
-  /stripContainer\.setVisibility\(\(!this\.launcherRevealed \|\| this\.launcherHiddenByPage \|\| "appsOnly"/.test(main),
-  'updateLauncherStripVisibility é o único ponto que decide a faixa — fora dele o pedido é ignorado'
+  /escondidaPelaPagina -> EstadoDaFaixa\.GONE/.test(regras) &&
+    /RegrasDaFaixa\.estadoDaFaixa\(revelada, escondidaPelaPagina, modoDaCasca\)/.test(faixa),
+  'RegrasDaFaixa.estadoDaFaixa é o único ponto que decide a faixa — fora dele o pedido é ignorado'
 )
 ok(
   'aplicar o pedido repinta a faixa',
-  /private void applyLauncherHidden\(boolean z\) \{[\s\S]{0,400}updateLauncherStripVisibility\(\);/.test(main)
+  /override fun pedirEscondida\(escondida: Boolean\) \{[\s\S]{0,300}aplicarVisibilidade\(\)/.test(faixa)
 )
 ok(
   'nada devolve a faixa sozinha depois de um tempo',
-  !/private void applyLauncherHidden\(boolean z\) \{[\s\S]{0,400}postDelayed/.test(main),
+  !/postDelayed|postAtTime|Timer/.test(corpoDe(faixa, 'override fun pedirEscondida(')) &&
+    !/postDelayed/.test(corpoDe(atividade, 'override fun definirFaixaEscondidaPelaPagina(')),
   'o Modo Descanso fica ligado por horas; um teto de tempo acenderia os ícones no meio da noite'
 )
 ok(
   'recarregar a página zera o pedido',
-  /public void onPageFinished\(WebView webView, String str\) \{[\s\S]{0,400}applyLauncherHidden\(false\);/.test(main),
+  /override fun aoTerminarDeCarregar\(url: String\?\) \{[\s\S]{0,500}faixaEscondidaPelaPagina = false[\s\S]{0,120}definirEscondidaPelaPagina\(false\)/.test(atividade),
   'é a única saída se a página pedir escondido e morrer antes de devolver'
 )
 
@@ -153,6 +188,7 @@ function montarArbitro(comPonte) {
   runInContext(cliente, ctx)
   return { pedir: ctx.requestLauncherHidden, chamadas }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 console.log('\nComportamento do árbitro (executado)\n')
 
@@ -201,7 +237,7 @@ console.log('\nComportamento do árbitro (executado)\n')
   )
 }
 
-console.log('\nCONFIGURAÇÕES OPEN GW (openGwPanel.js)\n')
+console.log('\nCONFIGURAÇÕES DeepGWT (deepGwtPanel.js)\n')
 
 ok(
   'a página pede a faixa escondida ao entrar e devolve ao sair',
@@ -218,7 +254,7 @@ ok(
   !/is-clear/.test(painel) &&
     /bottom:max\(var\(--hv-launcher-bottom, 0px\), var\(--hv-safe-bottom, 0px\)\)/.test(painel),
   'o espaço embaixo do cartão é por onde se arrasta para sair desta página: medido no emulador, ' +
-    'descer o cartão até a barra do OPEN GW deixa ~30px de canvas no lugar de ~180px, e as ' +
+    'descer o cartão até a barra do DeepGWT deixa ~30px de canvas no lugar de ~180px, e as ' +
     'bordas de arrasto laterais não completam a troca sozinhas. Esta tela já prendeu alguém uma vez.'
 )
 ok(
@@ -227,7 +263,7 @@ ok(
   'documentação velha manda a próxima pessoa desistir de um problema que já está resolvido'
 )
 
-console.log('\nModo Descanso (openGwRest.js)\n')
+console.log('\nModo Descanso (deepGwtRest.js)\n')
 
 ok(
   'pede a faixa escondida ao entrar',
@@ -259,3 +295,4 @@ if (falhas > 0) {
   process.exit(1)
 }
 console.log(`${total} verificações, todas passaram.`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

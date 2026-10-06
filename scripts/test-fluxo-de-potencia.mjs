@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /**
  * O raio-X do conjunto (ícone de capô) recebe dados de verdade.
  *
@@ -33,7 +34,7 @@ import { createContext, runInContext } from 'node:vm'
 
 const RAIZ = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const WWW = join(RAIZ, 'app', 'src', 'main', 'assets', 'www')
-const KT = join(RAIZ, 'app', 'src', 'main', 'java', 'br', 'com', 'opengw')
+const KT = join(RAIZ, 'app', 'src', 'main', 'java', 'br', 'com', 'deepgwt')
 
 let falhas = 0
 let total = 0
@@ -53,7 +54,7 @@ function ler(caminho) {
 
 const bundle = ler(join(WWW, 'index.html'))
 const mapper = ler(join(KT, 'managers', 'PowerFlowMapper.kt'))
-const servico = ler(join(KT, 'managers', 'ServiceManager.java'))
+const servico = ler(join(KT, 'services', 'LigacoesDoMotor.kt'))
 const receptor = ler(join(KT, 'broadcastReceivers', 'ViewerBridgeReceiver.kt'))
 
 if (!bundle || !mapper || !servico || !receptor) {
@@ -178,8 +179,9 @@ ok(
 
 ok(
   'toda chave que o carro publica passa pelo mapeador',
-  /PowerFlowMapper\.onSignal\(key, value\);/.test(servico),
-  'o gancho tem de estar em dispatchTelemetryOnly, que é o funil por onde tudo passa'
+  /Veiculo\.Ouvinte \{ chave, valor -> PowerFlowMapper\.onSignal\(chave, valor\) \}/.test(servico) &&
+    /ouvintesFixos = listOf\(MapeadorDeFluxo\)/.test(servico),
+  'o gancho é um ouvinte do motor registrado em LigacoesDoMotor (o antigo funil dispatchTelemetryOnly foi substituído)'
 )
 ok(
   'o retrato pedido pelo launcher inclui a chave derivada',
@@ -220,3 +222,4 @@ if (falhas > 0) {
   process.exit(1)
 }
 console.log(`${total} verificações, todas passaram.`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

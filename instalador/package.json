@@ -1,6 +1,6 @@
 {
-  "name": "opengw-instalador",
-  "version": "9.7.0",
+  "name": "deepgwt-instalador",
+  "version": "10.7.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "tauri": "tauri",
-    "test": "npm run test:vin && npm run test:state && npm run test:pro && npm run test:expert && npm run test:theme && npm run test:editor && npm run test:hud && npm run test:nav && npm run test:ajustes && npm run test:xtra && npm run test:licenca && npm run test:rede",
+    "test": "npm run test:vin && npm run test:state && npm run test:pro && npm run test:expert && npm run test:theme && npm run test:editor && npm run test:hud && npm run test:nav && npm run test:ajustes && npm run test:xtra && npm run test:licenca && npm run test:rede && npm run test:servico",
     "test:vin": "node scripts/test-vin.mjs",
     "test:state": "node --import ./scripts/ts-resolve-register.mjs scripts/test-etapa3.mjs",
     "test:pro": "node --import ./scripts/ts-resolve-register.mjs scripts/test-etapa4.mjs",
@@ -20,7 +20,8 @@
     "test:ajustes": "node --import ./scripts/ts-resolve-register.mjs scripts/test-ajustes.mjs",
     "test:xtra": "node --import ./scripts/ts-resolve-register.mjs scripts/test-temas-xtra.mjs",
     "test:rede": "node --import ./scripts/ts-resolve-register.mjs scripts/test-rede-e-resultado.mjs",
-    "test:licenca": "node --import ./scripts/ts-resolve-register.mjs scripts/test-licenca.mjs"
+    "test:licenca": "node --import ./scripts/ts-resolve-register.mjs scripts/test-licenca.mjs",
+    "test:servico": "node --import ./scripts/ts-resolve-register.mjs scripts/test-servico.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.8.0",

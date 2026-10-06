@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Modo livre: o editor deixa de RECUSAR e passa a AVISAR.
 //
 // O editor nasceu bloqueando: um elemento cuja tinta encostasse numa das três zonas que o veículo
@@ -21,7 +22,7 @@
 // `theme.xml` nem no payload. Um tema desenhado em modo livre é um tema como outro qualquer — o
 // carro não tem como saber, e não precisa.
 
-const CHAVE = 'opengw.themeEditor.modoLivre'
+const CHAVE = 'deepgwt.themeEditor.modoLivre'
 
 function ler(): boolean {
   try {
@@ -57,3 +58,4 @@ export function assinarModoLivre(ouvinte: () => void): () => void {
     ouvintes.delete(ouvinte)
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Triângulos</name>
     <description>Uma fita de 40 triângulos alternados, ponta para cima e ponta para baixo, sem vazio entre eles. Quantos acendem é a velocidade -- com a cor virando de azul para laranja ao longo da fita -- e a altura de toda a fita é o giro do motor.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

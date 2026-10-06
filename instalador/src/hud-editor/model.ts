@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O tema do HUD, do lado do instalador.
 //
 // ESTE ARQUIVO É O ESPELHO DE `hud/HudTema.kt`
@@ -14,7 +15,7 @@
 // escolheu ver), a placa de limite (é placa de trânsito) e o que é do carro — camada ligada, tela
 // do HUD, controle pelo volante.
 
-export const HUD_FORMATO = 'opengw-hud-tema'
+export const HUD_FORMATO = 'deepgwt-hud-tema'
 export const HUD_VERSAO = 1
 
 export type HudPaginaId = 'VELOCIDADE' | 'MIDIA' | 'CONSUMO' | 'POWERTRAIN' | 'VEICULO'
@@ -122,7 +123,7 @@ export type HudTemaSalvo = HudTema & {
   origem?: string
 }
 
-export function temaHudPadrao(nome = 'Padrão OPEN GW'): HudTema {
+export function temaHudPadrao(nome = 'Padrão DeepGWT'): HudTema {
   return {
     formato: HUD_FORMATO,
     versao: HUD_VERSAO,
@@ -161,6 +162,7 @@ export function nomeDoPeso(peso: number): string {
     default: return 'Preta'
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /** `#RRGGBB` maiúsculo de `#rgb`/`#rrggbb`; null se não for cor. Mesma regra do `HudTema.cor`. */
 export function normalizarCor(texto: unknown): string | null {
@@ -195,7 +197,7 @@ const mesmoLayout = (x: HudLayout, y: HudLayout) =>
 export function normalizarTemaHud(bruto: unknown): HudTema {
   const raiz = objeto(bruto)
   if (!raiz) throw new Error('O arquivo não é um JSON válido.')
-  if (raiz.formato !== HUD_FORMATO) throw new Error('Não é um tema de HUD do OPEN GW.')
+  if (raiz.formato !== HUD_FORMATO) throw new Error('Não é um tema de HUD do DeepGWT.')
   const base = temaHudPadrao('')
   const estilo = objeto(raiz.estilo) ?? {}
   const velocidade = objeto(raiz.velocidade) ?? {}
@@ -337,3 +339,4 @@ export function luminancia(hex: string): number {
   }
   return 0.2126 * canal(1) + 0.7152 * canal(3) + 0.0722 * canal(5)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

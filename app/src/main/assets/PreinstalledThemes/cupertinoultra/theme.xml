@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Cupertino Ultra</name>
     <description>Painel digital minimalista: velocímetro à esquerda e medidor de potência e regeneração à direita, mostrador verde com arco de progresso e ponteiro flutuante sobre moldura preta, potência em % com marcha + modo de condução no centro do medidor, autonomia a combustível dentro do velocímetro, card "agora tocando" (capa + título + artista) no centro, farolete + odômetro na base. Suporta modo dia e noturno.</description>
@@ -49,3 +50,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

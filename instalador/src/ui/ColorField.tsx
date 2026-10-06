@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Um campo de cor que aceita transparência.
 //
 // `<input type="color">` só entende `#rrggbb`: ligado direto a um token de tema ele apagaria o
@@ -94,3 +95,4 @@ export function ColorField({ label, value, onChange, alpha = true }: ColorFieldP
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

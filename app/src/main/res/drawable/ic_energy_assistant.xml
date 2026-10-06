@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <vector android:height="96.0dp" android:width="96.0dp" android:viewportWidth="96.0" android:viewportHeight="96.0"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#1a4fd6e8" android:pathData="M 48,12 C 67.88,12 84,28.12 84,48 C 84,67.88 67.88,84 48,84 C 28.12,84 12,67.88 12,48 C 12,28.12 28.12,12 48,12 Z" android:strokeColor="#4fd6e8" android:strokeWidth="3.0" />
@@ -6,3 +7,4 @@
     <path android:fillColor="#ffffffff" android:pathData="M 53,24 L 32,50 L 46,50 L 41,72 L 64,44 L 50,44 Z" />
     <path android:fillColor="#4fd6e8" android:pathData="M 51,28 L 36,48 L 47,48 L 43,66 L 59,46 L 48,46 Z" />
 </vector>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

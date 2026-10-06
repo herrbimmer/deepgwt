@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Quanto o tema pesa para o painel do carro.
 //
 // O cluster é um WebView numa central fraca, e um tema pesado só se descobre no carro — ponteiro
@@ -131,3 +132,4 @@ export function estimarCusto(spec: ThemeSpec): Custo {
 
 /** Fração da barra do medidor, 0 a 1, para a interface. */
 export const fracaoDoCusto = (c: Custo) => Math.min(1, c.pontos / (LIMITE_PESADO * 1.3))
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

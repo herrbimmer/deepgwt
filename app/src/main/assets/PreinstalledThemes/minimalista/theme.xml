@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Minimalist</name>
     <description>Painel sem mostradores: velocidade em número grande e fino à esquerda, barra bipolar de potência e regeneração abaixo dela, marcha e modo de energia no topo, card de mídia à direita e faixa de autonomia, modo de condução e carga na base. Os números ficam vermelhos acima do limite da via lido pela câmera.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

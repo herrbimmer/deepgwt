@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { ControlServiceKey, VhalProperty } from '../data/knowledgeTypes'
 
 // Busca e recorte dos dois catálogos da Knowledge Base.
@@ -88,3 +89,4 @@ export function facetsOf<T>(items: readonly T[], pick: (item: T) => string | nul
 export function page<T>(items: readonly T[], size = PAGE_SIZE): { shown: T[]; total: number; truncated: boolean } {
   return { shown: items.slice(0, size), total: items.length, truncated: items.length > size }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

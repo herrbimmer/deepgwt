@@ -1,7 +1,8 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Centro de Comando</name>
     <description>Sala de controle: cinco painéis emoldurados em fonte mono. À esquerda, a velocidade com gráfico do último minuto de verdade — o tema guarda o histórico e desenha a linha; no meio, o giro em colunas que ficam vermelhas depois de 6.000; à direita, dois tubos de reserva com tensão, corrente e nível de recuperação. Embaixo, doze lâmpadas de sistema e uma tabela de telemetria com dez leituras.</description>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <minBridgeVersion>1.0.0</minBridgeVersion>
     <contractVersion>v1.0</contractVersion>
     <thumbnail>thumbnail.png</thumbnail>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

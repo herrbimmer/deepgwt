@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Um cenário tocando em laço, sem linha do tempo na tela: a prévia do assistente e das
 // miniaturas não precisam de controle, só de movimento plausível.
 
@@ -19,3 +20,4 @@ export function usePreviaTocando(cenarioId = 'cidade', modo: PaletteMode = 'day'
   }, [canal, cenario, modo])
   return canal
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

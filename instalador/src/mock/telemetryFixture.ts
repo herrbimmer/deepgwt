@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Snapshot sintético de telemetria, para a UI inteira ser navegável e testável sem carro.
 //
 // O conjunto de chaves NÃO é escrito à mão: é derivado em tempo de execução das listas de chaves
@@ -148,3 +149,4 @@ export function demoKeySources(): { list: string; count: number }[] {
     { list: 'chaves avulsas (Ajustes rápidos, DVR)', count: LOOSE_KEYS.length },
   ]
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

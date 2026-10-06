@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Traço</name>
     <description>Registrador de papel com três penas: a folha é impressa com pauta fina e reforço a cada cinco divisões, e cada pena risca sua grandeza por cima. As pontas das penas ficam paradas na borda direita, com o valor escrito ao lado na cor da tinta -- o papel é que anda.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

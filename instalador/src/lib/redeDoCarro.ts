@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A rede do carro.
 //
 // Alpha 9.4: o instalador só fala com o carro pelo Wi-Fi do próprio carro — o hotspot da central
@@ -20,3 +21,4 @@ export function ehIpDoCarro(ip: string | null | undefined): boolean {
 
 export const AVISO_IP_FORA_DO_CARRO =
   'Esse endereço não é da rede do carro. No Wi-Fi do carro a central fica em 192.168.33.x — use "Detectar automaticamente".'
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

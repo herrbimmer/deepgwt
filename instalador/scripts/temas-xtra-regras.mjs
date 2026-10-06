@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Regras do catálogo XTRA, usadas pelo importador (antes de gravar) e pelo teste (depois).
 //
 // O WebView do painel no carro é Chrome 84: tudo abaixo quebra em silêncio lá e funciona no Chrome
@@ -11,7 +12,7 @@ export const ARQUIVOS_DO_TEMA = ['app.html', 'thumbnail.png', 'theme.xml']
 export const PASTA_VALIDA = /^[a-z0-9][a-z0-9-]{0,63}$/
 
 /** Pastas que o carro já usa para outra coisa. */
-export const PASTAS_RESERVADAS = ['default', 'opengw-rascunho']
+export const PASTAS_RESERVADAS = ['default', 'deepgwt-rascunho']
 
 export const PROIBIDOS_NO_CHROME_84 = [
   [/(^|[;{\s])inset\s*:/m, 'inset: (Chrome 87)'],
@@ -75,3 +76,4 @@ export const bytesDaPasta = (dir) => ARQUIVOS_DO_TEMA.reduce((n, f) => n + statS
 
 export const pastasDe = (dir) =>
   readdirSync(dir, { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.startsWith('.')).map((e) => e.name).sort()
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

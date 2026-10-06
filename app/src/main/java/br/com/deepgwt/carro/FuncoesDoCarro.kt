@@ -1,0 +1,19 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+package br.com.deepgwt.carro
+
+import android.util.Log
+
+/**
+ * Ponto de partida do pacote `carro` (Alpha 8.5), chamado pelo ServiceManager depois que os
+ * serviços do carro sobem. Cada função se inicia sozinha e uma falha não impede as outras.
+ */
+object FuncoesDoCarro {
+    private const val TAG = "FuncoesDoCarro"
+
+    fun iniciar() {
+        runCatching { MemoriaDosAssistentes.iniciar() }.onFailure { Log.e(TAG, "Memória dos assistentes", it) }
+        runCatching { ConectorDeRecarga.iniciar() }.onFailure { Log.e(TAG, "Conector de recarga", it) }
+        runCatching { CoringasDoVolante.iniciar() }.onFailure { Log.e(TAG, "Coringas do volante", it) }
+    }
+}
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Simplifica SÓ as malhas de roda do haval-h6-gt-lite.glb (aros "Circle.*" e pneus "hub_lb.*").
 // Nós, nomes, materiais, hierarquia e texturas KTX2 ficam como estão.
 // Uso (Alpha 8.9, o que gerou o haval-h6-gt-lite.glb ?rev=3):
@@ -57,3 +58,4 @@ draco.setRequired(true).setEncoderOptions({
 })
 await io.write(saida, doc)
 console.log(`rodas: ${antes} -> ${depois} triângulos por instância de malha`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

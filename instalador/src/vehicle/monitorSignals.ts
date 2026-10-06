@@ -1,8 +1,9 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O que a tela "Monitorar Veículo" sabe dizer sobre cada leitura do carro.
 //
 // ── POR QUE ESTE ARQUIVO EXISTE ──────────────────────────────────────────────────────────────
 //
-// O OPEN GW devolve 817 pares chave/valor em texto puro. `car.basic.gear_status: "3"` e
+// O DeepGWT devolve 817 pares chave/valor em texto puro. `car.basic.gear_status: "3"` e
 // `car.basic.head_light_status: ""` são a matéria-prima de tudo que o instalador mostra. Uma tela
 // de monitoramento é, inteira, o trabalho de transformar isso em "P" e em "o carro não respondeu
 // esta chave" — e esse trabalho é onde um app de diagnóstico mente sem perceber.
@@ -160,7 +161,7 @@ export const ORDEM_MARCHAS = ['P', 'R', 'N', 'D'] as const
  * Modo de condução.
  *
  * Os seis códigos são os que a barra inferior do app Android usa para ESCREVER o modo
- * (`br/com/opengw/barra/ContasDaBarra.kt`, coluna de modos e menu Condução) — escolher "Sport" na barra grava `"1"` nesta chave. É uso em produção, não
+ * (`br/com/deepgwt/barra/ContasDaBarra.kt`, coluna de modos e menu Condução) — escolher "Sport" na barra grava `"1"` nesta chave. É uso em produção, não
  * é dedução pelo nome; continua sendo `INFERRED` porque ninguém registrou a confirmação do outro
  * lado (ler o painel do carro depois de escrever).
  */
@@ -171,9 +172,10 @@ export const MODO_CONDUCAO: MonitorSignal = {
   table: { '0': 'Normal', '1': 'Sport', '2': 'Eco', '3': 'Neve', '4': 'Areia', '5': 'Lama' },
   confidence: 'FACT',
   source:
-    'app/.../br/com/opengw/barra/ContasDaBarra.kt (modos da barra inferior, em produção). ' +
+    'app/.../br/com/deepgwt/barra/ContasDaBarra.kt (modos da barra inferior, em produção). ' +
     `${TELEMETRIA} = "0".` + CONFIRMADO_PELO_DONO,
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * Ângulo do volante.
@@ -348,6 +350,7 @@ export const ESTADO_MOTOR: MonitorSignal = {
     'enum — motor OFF (modo EV)"; leitura de 30/09 (Alpha 9.3): 11 parado em READY, cinco ' +
     'leituras seguidas. Nenhum outro código foi observado.' + CONFIRMADO_PELO_DONO,
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export const IGNICAO: readonly MonitorSignal[] = [PRONTO_PARA_ANDAR, MODO_ENERGIA, ESTADO_MOTOR]
 
@@ -405,3 +408,4 @@ export const MONITOR_KEYS: readonly string[] = [
   BATERIA_12V, TENSAO_12V,
   ...IGNICAO,
 ].map((s) => s.key).concat(LUZES.map((l) => l.key))
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

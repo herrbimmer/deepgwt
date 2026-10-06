@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Fósforo</name>
     <description>Mostrador fluorescente a vácuo, verde de fósforo sobre preto absoluto: o segmento apagado não some, ele só perde o brilho, e o aceso espalha halo. A barra de giro atravessa a tela inteira em quarenta segmentos inclinados que viram âmbar na zona vermelha, e quatro colunas verticais à direita fazem tanque, bateria, tensão e temperatura -- o arranjo dos cupês americanos de carroceria em fibra do começo dos anos 80.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

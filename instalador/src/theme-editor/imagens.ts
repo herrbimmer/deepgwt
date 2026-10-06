@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Imagens do usuário que viajam DENTRO do tema: logo, selo, fundo de página.
 //
 // Embutidas como `data:` URL no `app.html` em vez de arquivos soltos na pasta do tema. O tema
@@ -85,3 +86,4 @@ export function escolherImagem(): Promise<ImagemLida | null> {
     input.click()
   })
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

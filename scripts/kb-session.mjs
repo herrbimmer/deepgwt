@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Camadas da Knowledge Base que vêm da sessão com o veículo ligado (2026-09-15).
 //
 // Diferença para o que `kb-build.mjs` já fazia: aquelas camadas são CATÁLOGO (que chaves existem,
@@ -222,6 +223,7 @@ function buildNetwork(root) {
     nodes,
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ---------------------------------------------------------------------------
 // 3. VHAL ao vivo — valores frescos da sessão com o carro acordado
@@ -455,3 +457,4 @@ export function buildSessionLayers(root) {
     platform: buildPlatform(root),
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

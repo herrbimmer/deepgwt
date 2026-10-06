@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Radar</name>
     <description>Quatro alvos num plano de radar: o ângulo de cada um é fixo e a distância ao centro é o valor, então dá para ver de relance qual grandeza está no limite -- aí o alvo fica âmbar. A varredura é uma animação do compositor, sem um único quadro de JS, e para com prefers-reduced-motion.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Numeral</name>
     <description>O algarismo é maior que a moldura e as bordas cortam a letra de propósito: o painel vira um fragmento de tipo em vez de um número centrado. O corpo muda sozinho conforme a velocidade ganha um dígito, e as legendas correm na vertical pelas laterais.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

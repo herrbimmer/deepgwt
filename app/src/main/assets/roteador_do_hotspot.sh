@@ -1,5 +1,6 @@
 #!/system/bin/sh
-# Roteador do hotspot do OPEN GW (daemon).
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+# Roteador do hotspot do DeepGWT (daemon).
 #
 # Faz os aparelhos ligados ao hotspot do carro (wlan2) navegarem pelo Wi-Fi externo (wlan0)
 # enquanto ele tiver internet; sem internet, tira a regra de roteamento e o tráfego volta para o
@@ -500,3 +501,4 @@ case "${1:-start}" in
     exit 1
     ;;
 esac
+# Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

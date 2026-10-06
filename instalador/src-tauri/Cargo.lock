@@ -822,6 +822,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "deepgwt-instalador"
+version = "10.7.0"
+dependencies = [
+ "base64 0.21.7",
+ "default-net",
+ "reqwest 0.11.27",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "thiserror 1.0.69",
+ "tiny_http",
+ "tokio",
+]
+
+[[package]]
 name = "default-net"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2767,25 +2786,6 @@ dependencies = [
  "is-wsl",
  "libc",
  "pathdiff",
-]
-
-[[package]]
-name = "opengw-instalador"
-version = "9.7.0"
-dependencies = [
- "base64 0.21.7",
- "default-net",
- "reqwest 0.11.27",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-log",
- "tauri-plugin-opener",
- "thiserror 1.0.69",
- "tiny_http",
- "tokio",
 ]
 
 [[package]]

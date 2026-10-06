@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { ArrowLeftIcon } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from './Button'
@@ -43,3 +44,4 @@ export function BackButton({ to, label = 'Voltar', className = '', onClick }: Ba
     </Button>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

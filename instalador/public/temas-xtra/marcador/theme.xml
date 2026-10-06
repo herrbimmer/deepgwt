@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Marcador</name>
     <description>Seis cartões de indicador com valor grande, barra de proporção e -- o que importa -- a variação contra a média móvel da própria viagem, em verde ou vermelho. É o painel como relatório: não diz só quanto, diz se está acima ou abaixo do normal de hoje.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

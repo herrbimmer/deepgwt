@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { AlertOctagonIcon } from 'lucide-react'
 import { ConfidenceChip, ListPanel, ListRow, ScaffoldScreen } from '../../ui'
 import { UDS_SERVICES, UDS_EVIDENCE, VHAL_DTC_PROPERTIES } from '../../data/diagnosticAccess'
@@ -120,3 +121,4 @@ export const ProDtc = () => (
     </section>
   </ScaffoldScreen>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

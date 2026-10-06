@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O catálogo XTRA: os temas prontos que o instalador leva embutidos (public/temas-xtra, gerado por
 // scripts/importar-temas-xtra.mjs) e o envio deles para o carro.
 //
@@ -176,3 +177,4 @@ export async function emLote(
   aoProgredir(res.feitos.length + res.falhas.length, null)
   return res
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

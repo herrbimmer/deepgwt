@@ -1,4 +1,5 @@
-import { Fragment, useMemo, useState } from 'react'
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { ChevronRightIcon, RotateCcwIcon } from 'lucide-react'
 import { Button, TextInput } from '../ui'
 import { CODING_CATALOG_BY_KEY } from '../data/codingCatalog'
@@ -31,14 +32,18 @@ export function CodingTree({
   fieldStatus,
   onWrite,
   query,
+  pending = {},
 }: {
   keys: string[]
   values: Record<string, string>
   baseline: Record<string, string>
   snapshots: Snapshot[]
   fieldStatus: Record<string, FieldStatus>
+  /** Coloca a mudança na lista de pendentes; quem grava no carro é o botão Flash da tela. */
   onWrite: (key: string, value: string) => void
   query: string
+  /** Valores já escolhidos e ainda não gravados no carro (chave → valor). */
+  pending?: Record<string, string>
 }) {
   const [open, setOpen] = useState<Set<string>>(new Set())
   const [openKey, setOpenKey] = useState<string | null>(null)
@@ -108,6 +113,7 @@ export function CodingTree({
     const changed = key in baseline && (current ?? '') !== baseline[key]
     const isOpen = openKey === key
     const status = fieldStatus[key]
+    const pend = pending[key]
 
     return (
       <Fragment key={key}>
@@ -138,7 +144,13 @@ export function CodingTree({
               changed ? 'text-amber-200' : 'text-text'
             }`}
           >
-            {current || '∅'}
+            {pend !== undefined ? (
+              <>
+                {current || '∅'} → <span className="text-amber-200">{pend || '∅'}</span>
+              </>
+            ) : (
+              current || '∅'
+            )}
           </span>
         </button>
         {isOpen && (
@@ -152,6 +164,7 @@ export function CodingTree({
               baselineValue={baseline[key]}
               snapshots={snapshots}
               status={status}
+              pendingValue={pend}
               onWrite={onWrite}
             />
           </div>
@@ -173,6 +186,7 @@ export function CodingTree({
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * O editor de uma chave. Exportado porque a árvore genealógica (`CodingModuleTree`, usada quando o
@@ -186,6 +200,7 @@ export function KeyEditor({
   baselineValue,
   snapshots,
   status,
+  pendingValue,
   onWrite,
 }: {
   codingKey: string
@@ -193,9 +208,19 @@ export function KeyEditor({
   baselineValue: string | undefined
   snapshots: Snapshot[]
   status: FieldStatus | undefined
+  /** Valor escolhido e ainda não gravado (está na lista de pendentes), se houver. */
+  pendingValue?: string
+  /** Só coloca na lista de pendentes — a gravação acontece no Flash, depois da confirmação. */
   onWrite: (key: string, value: string) => void
 }) {
-  const [draft, setDraft] = useState(current ?? '')
+  const [draft, setDraft] = useState(pendingValue ?? current ?? '')
+  // Tirar o item da lista de pendentes (ou descartar tudo) devolve a caixa ao valor do carro.
+  useEffect(() => {
+    setDraft(pendingValue ?? current ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingValue])
+  // O que a pessoa escolheu por último: é contra isso que o "já selecionado" é comparado.
+  const escolhido = pendingValue ?? current
   const entry = CODING_CATALOG_BY_KEY.get(codingKey)
   const risk = riskOf(codingKey)
   const equipamento = equipmentVerdictOf(codingKey)
@@ -236,6 +261,12 @@ export function KeyEditor({
         <span>
           Valor atual: <span className="font-mono text-text">{current || '∅'}</span>
         </span>
+        {pendingValue !== undefined && (
+          <span>
+            Na lista para gravar:{' '}
+            <span className="font-mono text-amber-200">{pendingValue || '∅'}</span>
+          </span>
+        )}
         <span>
           Ponto de restauração:{' '}
           <span className="font-mono text-text-secondary">{baselineValue ?? '—'}</span>
@@ -254,7 +285,7 @@ export function KeyEditor({
               title={opt.note}
               onClick={() => write(opt.value)}
               className={`px-2.5 py-1 rounded-lg font-mono text-xs border transition-colors ${
-                opt.value === current
+                opt.value === escolhido
                   ? 'border-primary/60 bg-primary/20 text-text'
                   : 'border-white/[0.12] bg-black/25 text-text-secondary hover:bg-white/[0.06]'
               }`}
@@ -264,7 +295,8 @@ export function KeyEditor({
           ))}
         </div>
         <p className="text-[10px] text-text-tertiary mt-1.5 leading-relaxed">
-          Estas são as opções que este carro já mostrou para esta chave (valor atual, 0/1 quando ela
+          Nada é gravado no carro agora: a escolha entra na lista de alterações e só vai para o carro
+          quando você clicar em <strong>Flash</strong> e confirmar. Estas são as opções que este carro já mostrou para esta chave (valor atual, 0/1 quando ela
           se comporta como liga/desliga, e valores guardados nos pontos de restauração). Não existe
           tabela de valores aceitos publicada para estas chaves — qualquer lista maior que esta
           seria invenção. Para qualquer outro valor, use o campo abaixo.
@@ -283,12 +315,12 @@ export function KeyEditor({
           variant={risk === 'alto' ? 'destructive' : 'primary'}
           size="sm"
           fullWidth={false}
-          disabled={draft === (current ?? '')}
+          disabled={draft === (escolhido ?? '')}
           onClick={() => write(draft)}
         >
-          Gravar
+          Adicionar à lista
         </Button>
-        {baselineValue !== undefined && (current ?? '') !== baselineValue && (
+        {baselineValue !== undefined && (escolhido ?? '') !== baselineValue && (
           <Button
             variant="ghost"
             size="sm"
@@ -307,3 +339,4 @@ export function KeyEditor({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

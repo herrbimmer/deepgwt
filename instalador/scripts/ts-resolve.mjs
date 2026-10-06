@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Faz o Node encontrar `./storageKeys` quando o arquivo é `storageKeys.ts`.
 //
 // O código-fonte importa sem extensão, porque é o Vite que resolve isso no app. O Node exige a
@@ -28,3 +29,4 @@ export async function resolve(specifier, context, next) {
   }
   return next(specifier, context)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

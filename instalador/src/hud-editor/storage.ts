@@ -1,6 +1,7 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Onde os temas de HUD ficam neste computador.
 //
-// Chave própria, separada da dos temas do painel (`opengw_themes_v2`): são arquivos de naturezas
+// Chave própria, separada da dos temas do painel (`deepgwt_themes_v2`): são arquivos de naturezas
 // diferentes — um vira pasta com app.html no carro, o outro vira ajuste do HUD — e misturá-los
 // numa lista só obrigaria cada leitor a adivinhar qual é qual.
 //
@@ -9,7 +10,7 @@
 
 import { type HudTema, type HudTemaSalvo, normalizarTemaHud, novoIdHud } from './model'
 
-const CHAVE = 'opengw_hud_themes_v1'
+const CHAVE = 'deepgwt_hud_themes_v1'
 
 function lerTudo(): HudTemaSalvo[] {
   try {
@@ -64,3 +65,4 @@ export function novoTemaHudDe(tema: HudTema, nome = tema.nome, origem?: string):
   const limpo = normalizarTemaHud(structuredClone(tema))
   return { ...limpo, nome, id: novoIdHud(), atualizadoEm: Date.now(), origem }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

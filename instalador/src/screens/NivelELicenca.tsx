@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AwardIcon, CheckIcon, ClipboardPasteIcon, KeyRoundIcon, LockIcon, RefreshCwIcon, TimerIcon } from 'lucide-react'
@@ -8,7 +9,7 @@ import { conferirCodigo } from '../tiers/codigoDeLicenca'
 import { duracao, nivelAlcanca, NIVEIS, tituloDoNivel, type AvaliacaoDoCarro, type LicencaDoCarro, type Nivel, type Tabela } from '../tiers/niveis'
 
 // Nível e licença (Alpha 8.0; licença na 8.1; ativar pelo computador simplificado na 8.2): o nível
-// do OPEN GW neste carro, "Ativar licença", o saldo de horas de cada nível, as licenças aplicadas e
+// do DeepGWT neste carro, "Ativar licença", o saldo de horas de cada nível, as licenças aplicadas e
 // o que cada nível libera.
 //
 // ATIVAR é o caminho mais fácil para quem recebe a licença: cola a MENSAGEM INTEIRA do WhatsApp (o
@@ -17,8 +18,8 @@ import { duracao, nivelAlcanca, NIVEIS, tituloDoNivel, type AvaliacaoDoCarro, ty
 // formato (a linha com erro de digitação); quem decide se vale — assinatura, VIN, série já usada —
 // é o carro.
 //
-// TESTE GRÁTIS (8.4): o Max por 10 min de uso, uma vez por carro — o botão aparece enquanto o carro
-// diz que dá (`avaliacao.situacao = disponivel`); correndo, mostra quanto falta.
+// TESTE GRÁTIS (8.4; 10.1 até desligar o carro, 2 grátis por instalação): o botão aparece enquanto o
+// carro diz que dá (`disponivel`, ou `esgotada` = com aviso de pagamento); correndo, "Voltar ao meu plano".
 //
 // A tabela vem do carro (`GET /licenca`), então uma mudança de nível num recurso chega aqui sem
 // instalador novo. Com o app do carro num build de teste, dá para trocar o nível de teste e ligar a
@@ -82,7 +83,7 @@ function AtivarLicenca({ conectado }: { conectado: boolean }) {
         <span className="text-base font-semibold text-text">Ativar licença</span>
       </div>
       <p className="text-xs text-text-secondary mt-1 leading-relaxed">
-        Cole a mensagem que você recebeu — inteira, do jeito que veio — ou só o código de 3 linhas. O OPEN GW
+        Cole a mensagem que você recebeu — inteira, do jeito que veio — ou só o código de 3 linhas. O DeepGWT
         acha o código, confere e manda ao carro.
         {!conectado && ' Sem o carro conectado agora: o código fica guardado e é ativado sozinho quando o computador se conectar a ele.'}
       </p>
@@ -152,11 +153,11 @@ function TesteGratis({ avaliacao, depois, tabela }: { avaliacao: AvaliacaoDoCarr
   const max = tituloDoNivel(avaliacao.nivel, tabela)
   const volta = tituloDoNivel(depois, tabela)
 
-  const testar = async () => {
+  const executar = async (acao: () => Promise<string>) => {
     setResultado(null)
     setEnviando(true)
     try {
-      setResultado({ ok: true, texto: await n.iniciarAvaliacao() })
+      setResultado({ ok: true, texto: await acao() })
     } catch (e) {
       setResultado({ ok: false, texto: String(e) })
     } finally {
@@ -168,24 +169,49 @@ function TesteGratis({ avaliacao, depois, tabela }: { avaliacao: AvaliacaoDoCarr
     return <p className="text-[11px] text-text-tertiary mb-4">Teste grátis do {max} já usado neste carro.</p>
   }
   if (avaliacao.situacao === 'indisponivel' && !resultado) return null
+  const ativa = avaliacao.situacao === 'ativa'
+  const esgotada = avaliacao.situacao === 'esgotada'
+  const alerta = esgotada || (ativa && avaliacao.comAviso)
+  // Carro 8.4–10.0: teste por tempo, uma vez por carro.
+  const antigo = !avaliacao.ateDesligar
+  let texto: string
+  if (antigo) {
+    texto = ativa
+      ? `O ${max} está liberado neste carro. Depois de ${duracao(avaliacao.totalSeg)} de uso o DeepGWT volta ao ${volta} (na primeira parada).`
+      : `Experimente o ${max}, a versão completa, por ${duracao(avaliacao.totalSeg)} de uso (com o carro ligado). Uma vez por carro.`
+  } else if (ativa && avaliacao.comAviso) {
+    texto = `${avaliacao.textoDoAviso ?? 'Por favor, pague pela versão Max ou retorne ao plano que você possui.'} O aviso fica em todas as telas do carro (central, painel e HUD) até desligar o carro.`
+  } else if (ativa) {
+    texto = `O ${max} está liberado até desligar o carro (ou a central reiniciar). Depois o DeepGWT volta ao ${volta}. As horas das licenças não contam durante o teste.`
+  } else if (esgotada) {
+    texto = `Os ${avaliacao.limite} testes grátis desta instalação já foram usados. Dá para testar de novo, mas com um aviso de pagamento em todas as telas do carro.`
+  } else {
+    texto = `Experimente o ${max}, a versão completa, até desligar o carro. Depois o DeepGWT volta ao ${volta}. ${avaliacao.contagem ?? ''}`
+  }
   return (
-    <div className="rounded-2xl border border-primary/40 bg-primary/[0.06] px-4 py-4 mb-4">
+    <div className={`rounded-2xl border px-4 py-4 mb-4 ${alerta ? 'border-warning/50 bg-warning/[0.06]' : 'border-primary/40 bg-primary/[0.06]'}`}>
       <div className="flex items-center gap-2">
-        <TimerIcon size={16} className="text-primary" />
-        <span className="text-base font-semibold text-text">Teste grátis</span>
-        {avaliacao.situacao === 'ativa' && (
-          <span className="ml-auto text-xs text-primary">faltam {duracao(avaliacao.restanteSeg)}</span>
+        <TimerIcon size={16} className={alerta ? 'text-warning' : 'text-primary'} />
+        <span className="text-base font-semibold text-text">{ativa ? `Testando o ${max}` : 'Teste grátis'}</span>
+        {ativa && antigo && <span className="ml-auto text-xs text-primary">faltam {duracao(avaliacao.restanteSeg)}</span>}
+        {!antigo && (
+          <span className="ml-auto text-xs text-text-tertiary">
+            {avaliacao.usos} de {avaliacao.limite} usados
+          </span>
         )}
       </div>
-      <p className="text-xs text-text-secondary mt-1 leading-relaxed">
-        {avaliacao.situacao === 'ativa'
-          ? `O ${max} está liberado neste carro. Depois de ${duracao(avaliacao.totalSeg)} de uso o OPEN GW volta ao ${volta} (na primeira parada). As horas das licenças não contam durante o teste.`
-          : `Experimente o ${max}, a versão completa, por ${duracao(avaliacao.totalSeg)} de uso (com o carro ligado). Depois o OPEN GW volta ao ${volta}. Uma vez por carro.`}
-      </p>
-      {avaliacao.situacao === 'disponivel' && (
+      <p className="text-xs text-text-secondary mt-1 leading-relaxed">{texto}</p>
+      {(avaliacao.situacao === 'disponivel' || esgotada) && (
         <div className="mt-3">
-          <Button variant="primary" size="sm" fullWidth={false} icon={TimerIcon} disabled={enviando} onClick={() => void testar()}>
-            {enviando ? 'Começando no carro…' : `Testar o ${max} grátis`}
+          <Button variant="primary" size="sm" fullWidth={false} icon={TimerIcon} disabled={enviando} onClick={() => void executar(n.iniciarAvaliacao)}>
+            {enviando ? 'Começando no carro…' : esgotada ? `Testar o ${max} mesmo assim` : `Testar o ${max} grátis`}
+          </Button>
+        </div>
+      )}
+      {ativa && !antigo && (
+        <div className="mt-3">
+          <Button variant="secondary" size="sm" fullWidth={false} disabled={enviando} onClick={() => void executar(n.encerrarAvaliacao)}>
+            {enviando ? 'Voltando…' : 'Voltar ao meu plano'}
           </Button>
         </div>
       )}
@@ -197,6 +223,7 @@ function TesteGratis({ avaliacao, depois, tabela }: { avaliacao: AvaliacaoDoCarr
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * [alterado]: app do carro modificado (8.3) — nenhuma licença está em uso nele. [emAvaliacao]: no
@@ -214,7 +241,7 @@ function Licenca({ licenca, alterado = false, emAvaliacao = false, tabela }: { l
       </div>
       {comLicenca.length === 0 ? (
         <p className="text-xs text-text-secondary">
-          Nenhuma licença neste carro{emAvaliacao ? '.' : `: o OPEN GW está no ${tituloDoNivel('drive', tabela)}, o nível grátis.`}
+          Nenhuma licença neste carro{emAvaliacao ? '.' : `: o DeepGWT está no ${tituloDoNivel('drive', tabela)}, o nível grátis.`}
         </p>
       ) : (
         <div className="space-y-2.5">
@@ -321,7 +348,7 @@ export const NivelELicenca = () => {
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-semibold text-text tracking-tight">Nível e licença</h1>
             <p className="text-text-secondary mt-1 text-sm leading-relaxed">
-              O OPEN GW tem quatro níveis: {NIVEIS.map((x) => tituloDoNivel(x, n.tabela)).join(', ').replace(/, ([^,]*)$/, ' e $1')}.
+              O DeepGWT tem quatro níveis: {NIVEIS.map((x) => tituloDoNivel(x, n.tabela)).join(', ').replace(/, ([^,]*)$/, ' e $1')}.
               Cada um traz tudo o do anterior; desfazer (instalar, reparar, remover, pontos de restauração)
               é sempre livre. A licença é feita para um carro (VIN) e libera um nível pelas horas de uso —
               só contam com o carro ligado.
@@ -350,14 +377,14 @@ export const NivelELicenca = () => {
         ) : n.emAvaliacao && n.caiPara ? (
           <Banner tone="warning" className="mb-4">
             <span className="text-xs leading-relaxed">
-              O teste grátis acabou. Na primeira parada o OPEN GW volta ao {tituloDoNivel(n.caiPara, n.tabela)}.
+              O teste do Max acabou. Na primeira parada o DeepGWT volta ao {tituloDoNivel(n.caiPara, n.tabela)}.
             </span>
           </Banner>
         ) : (
           n.caiPara && (
             <Banner tone="warning" className="mb-4">
               <span className="text-xs leading-relaxed">
-                As horas acabaram com o carro ligado. Ao desligar, o OPEN GW passa para o {tituloDoNivel(n.caiPara, n.tabela)}.
+                As horas acabaram com o carro ligado. Ao desligar, o DeepGWT passa para o {tituloDoNivel(n.caiPara, n.tabela)}.
               </span>
             </Banner>
           )
@@ -470,3 +497,4 @@ export const NivelELicenca = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

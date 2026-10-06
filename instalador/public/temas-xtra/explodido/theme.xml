@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Explodido</name>
     <description>Vista explodida de montagem: quatro anéis afastados ao longo de um eixo tracejado de centro, cada um visto de esgueira em axonometria, com o arco aceso marcando o valor. As chamadas numeradas com balão levam à legenda do rodapé, como numa prancha de conjunto.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

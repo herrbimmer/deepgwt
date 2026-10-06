@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A coluna da esquerda: páginas em cima, camadas embaixo.
 //
 // As camadas vêm da mais alta para a mais baixa, como o painel as empilha. Grupos aparecem na
@@ -324,3 +325,4 @@ export function PainelDeCamadas(p: PainelDeCamadasProps) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

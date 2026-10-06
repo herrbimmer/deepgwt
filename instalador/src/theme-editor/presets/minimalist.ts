@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Minimalist — o terceiro preset da galeria, e o primeiro sem nenhum mostrador redondo.
 //
 // Desenho pedido pelo usuário a partir de uma foto de painel: fundo preto, número de velocidade
@@ -396,3 +397,4 @@ export const MINIMALIST: ThemeSpec = {
     },
   ],
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

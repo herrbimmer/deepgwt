@@ -1,4 +1,5 @@
-// Os quatro níveis do OPEN GW (Alpha 8.0): Essencial · Plus · Pro · Max (nomes da 8.4; os ids
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+// Os quatro níveis do DeepGWT (Alpha 8.0): Essencial · Plus · Pro · Max (nomes da 8.4; os ids
 // continuam drive · sport · premium · signature — o nome exibido vem do carro, `titulo`).
 //
 // Eram dois "modos" (Básico/Avançado) que a pessoa escolhia num seletor — um filtro de menu, não
@@ -83,11 +84,24 @@ export type LicencaDoCarro = {
   comoObter: string
 }
 
-/** O teste grátis do Max (Alpha 8.4): 10 min de uso, uma vez por carro. */
+/**
+ * O teste grátis do Max. 8.4–10.0: 10 min de uso, uma vez por carro (`usada`). 10.1: vale até
+ * desligar o carro; `limite` testes grátis por instalação, depois `esgotada` (ainda dá, com o aviso
+ * de pagamento em todas as telas — `comAviso` enquanto corre).
+ */
 export type AvaliacaoDoCarro = {
-  situacao: 'disponivel' | 'ativa' | 'usada' | 'indisponivel'
+  situacao: 'disponivel' | 'esgotada' | 'ativa' | 'usada' | 'indisponivel'
+  /** 10.1: sem relógio, até desligar o carro. false = carro 8.4–10.0 (por tempo). */
+  ateDesligar: boolean
   totalSeg: number
   restanteSeg: number
+  usos: number
+  limite: number
+  gratisRestantes: number
+  comAviso: boolean
+  textoDoAviso: string | null
+  /** "Restam 2 de 2 testes grátis nesta instalação." */
+  contagem: string | null
   /** O nível que o teste libera (o Max). */
   nivel: Nivel
   /** Por que não dá (indisponível/usada). */
@@ -148,6 +162,7 @@ export function tituloDoNivel(n: Nivel, tabela: Tabela = TABELA_PADRAO): string 
 export function recursoDaTabela(id: string, tabela: Tabela = TABELA_PADRAO): InfoDoRecurso | undefined {
   return tabela.recursos.find((r) => r.id === id) ?? TABELA_PADRAO.recursos.find((r) => r.id === id)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * O nível que um recurso exige. A tabela do carro vale mais que a cópia local (o carro pode ter
@@ -256,7 +271,7 @@ export function lerLicenca(bruto: unknown): LicencaDoCarro | null {
   }
 }
 
-const SITUACOES_DA_AVALIACAO = ['disponivel', 'ativa', 'usada', 'indisponivel'] as const
+const SITUACOES_DA_AVALIACAO = ['disponivel', 'esgotada', 'ativa', 'usada', 'indisponivel'] as const
 
 /** O bloco `avaliacao` da 8.4, tolerante. Situação desconhecida = sem teste (null). */
 export function lerAvaliacao(bruto: unknown): AvaliacaoDoCarro | null {
@@ -266,8 +281,15 @@ export function lerAvaliacao(bruto: unknown): AvaliacaoDoCarro | null {
   if (!situacao) return null
   return {
     situacao,
+    ateDesligar: a.ateDesligar === true,
     totalSeg: numero(a.totalSeg, 600),
     restanteSeg: numero(a.restanteSeg),
+    usos: numero(a.usos),
+    limite: numero(a.limite, 2),
+    gratisRestantes: numero(a.gratisRestantes),
+    comAviso: a.comAviso === true,
+    textoDoAviso: typeof a.textoDoAviso === 'string' ? a.textoDoAviso : null,
+    contagem: typeof a.contagem === 'string' ? a.contagem : null,
     nivel: ehNivel(a.nivel) ? a.nivel : 'signature',
     motivo: typeof a.motivo === 'string' ? a.motivo : null,
   }
@@ -305,3 +327,4 @@ export function estadoSemCarro(origem: 'demo' | 'antigo' | 'sem-carro', ultimo: 
     tabela: TABELA_PADRAO,
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

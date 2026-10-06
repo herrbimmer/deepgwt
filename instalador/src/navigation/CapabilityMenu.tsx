@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronDownIcon, CircleDotIcon } from 'lucide-react'
@@ -70,3 +71,4 @@ function CapabilityRow({ item, muted = false }: { item: RouteNode; muted?: boole
     </Link>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

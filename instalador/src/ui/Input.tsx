@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { InputHTMLAttributes } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { Squircle } from './Squircle'
@@ -25,3 +26,4 @@ export function TextInput({ icon: Icon, mono, className = '', containerClassName
     </Squircle>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

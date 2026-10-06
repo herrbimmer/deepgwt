@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Geometria do tema Stuttgart MBUX Sport (assets/PreinstalledThemes/stuttgart-mbux).
 //
 // O túnel, as meias-luas, os anéis de pontos, as escalas e os dois círculos laterais saem daqui e
@@ -322,6 +323,7 @@ function blocoFundo() {
   add('</g>')
   return L.join('\n')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function blocoVivo() {
   const L = []
@@ -440,3 +442,4 @@ if (process.argv.includes('--verificar')) {
   fs.writeFileSync(arquivo, novo)
   console.log('geometria gravada em ' + path.relative(raiz, arquivo))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

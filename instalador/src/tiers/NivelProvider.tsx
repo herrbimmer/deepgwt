@@ -1,7 +1,9 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { usePrefs } from '../state/PrefsProvider'
 import { useVehicleSession } from '../state/VehicleSession'
+import { ehErroDeRede } from './erroDeRede'
 import {
   estadoSemCarro, lerRespostaDaLicenca, permite as permiteNaTabela, RespostaSemNiveis,
   type EstadoDoNivel, type Nivel,
@@ -28,6 +30,8 @@ type NivelApi = EstadoDoNivel & {
   ativarLicenca: (codigo: string) => Promise<string>
   /** Começa o teste grátis do Max no carro (`POST /licenca/avaliacao`, Alpha 8.4). Devolve a mensagem do carro. */
   iniciarAvaliacao: () => Promise<string>
+  /** Encerra o teste e volta ao plano da pessoa (`POST /licenca/avaliacao/encerrar`, Alpha 10.1). */
+  encerrarAvaliacao: () => Promise<string>
   /**
    * Código colado sem o carro conectado (Alpha 8.2): fica guardado neste computador e vai ao carro
    * sozinho assim que ele responder. `null` = nenhum.
@@ -43,7 +47,7 @@ type NivelApi = EstadoDoNivel & {
 const NivelContext = createContext<NivelApi | null>(null)
 
 const RELER_MS = 60_000
-const CHAVE_PENDENTE = 'opengw_licenca_pendente'
+const CHAVE_PENDENTE = 'deepgwt_licenca_pendente'
 
 function lerPendente(): string | null {
   try {
@@ -52,9 +56,6 @@ function lerPendente(): string | null {
     return null
   }
 }
-
-/** Erro de rede (o carro não respondeu) — a pendente fica para a próxima. Recusa do carro não é. */
-const ehErroDeRede = (e: unknown) => String(e).startsWith('Falha na operação')
 
 export function NivelProvider({ children }: { children: ReactNode }) {
   const { prefs, update } = usePrefs()
@@ -135,6 +136,18 @@ export function NivelProvider({ children }: { children: ReactNode }) {
     }
   }, [carIp])
 
+  const encerrarAvaliacao = useCallback(async () => {
+    if (!carIp) throw new Error('Conecte o carro primeiro.')
+    const bruto = await invoke<string>('remote_licenca_avaliacao_encerrar', { carIp })
+    setEstado({ ...lerRespostaDaLicenca(bruto), origem: 'carro' })
+    try {
+      const j = JSON.parse(bruto) as { mensagem?: unknown }
+      return typeof j.mensagem === 'string' ? j.mensagem : 'Teste encerrado.'
+    } catch {
+      return 'Teste encerrado.'
+    }
+  }, [carIp])
+
   const [licencaPendente, setLicencaPendente] = useState<string | null>(lerPendente)
   const [resultadoDaPendente, setResultadoDaPendente] = useState<{ ok: boolean; texto: string } | null>(null)
   const enviandoPendente = useRef(false)
@@ -180,6 +193,7 @@ export function NivelProvider({ children }: { children: ReactNode }) {
       definirCobrancaDeTeste,
       ativarLicenca,
       iniciarAvaliacao,
+      encerrarAvaliacao,
       licencaPendente,
       guardarLicencaPendente,
       resultadoDaPendente,
@@ -187,7 +201,7 @@ export function NivelProvider({ children }: { children: ReactNode }) {
       confirmarRisco,
     }),
     [
-      estado, ler, definirNivelDeTeste, definirCobrancaDeTeste, ativarLicenca, iniciarAvaliacao, licencaPendente, guardarLicencaPendente,
+      estado, ler, definirNivelDeTeste, definirCobrancaDeTeste, ativarLicenca, iniciarAvaliacao, encerrarAvaliacao, licencaPendente, guardarLicencaPendente,
       resultadoDaPendente, prefs.advancedAcknowledgedAt, confirmarRisco,
     ],
   )
@@ -200,3 +214,4 @@ export function useNivel(): NivelApi {
   if (!ctx) throw new Error('useNivel precisa estar dentro de <NivelProvider>')
   return ctx
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

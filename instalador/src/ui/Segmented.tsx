@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 export type SegmentedOption<T extends string> = { value: T; label: string; title?: string }
 
 export type SegmentedProps<T extends string> = {
@@ -36,3 +37,4 @@ export function Segmented<T extends string>({ value, options, onChange, label, s
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

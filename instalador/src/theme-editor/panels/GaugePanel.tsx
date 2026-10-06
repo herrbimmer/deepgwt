@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O estilo do elemento: o que ele desenha e com que proporções.
 //
 // Nada de largura e altura aqui, de propósito. O tamanho sai da tabela por tipo mais o ajuste
@@ -237,6 +238,7 @@ function Mostrador({ el, palette, onChange }: { el: DialElement; palette: Palett
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /**
  * A escala do mostrador em três formas, ditas do jeito que o motorista pensa.
@@ -424,6 +426,7 @@ function Barra({ el, palette, onChange }: { el: BarElement; palette: Palette; on
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function Leitura({ el, onChange }: { el: ReadoutElement; onChange: (e: Element) => void }) {
   const set = (p: Partial<ReadoutElement>) => onChange({ ...el, ...p } as Element)
@@ -593,6 +596,7 @@ function Imagem({ el, onChange }: { el: ImageElement; onChange: (e: Element) => 
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function Forma({ el, palette, onChange }: { el: ShapeElement; palette: Palette; onChange: (e: Element) => void }) {
   const set = (p: Partial<ShapeElement>) => onChange({ ...el, ...p } as Element)
@@ -696,3 +700,4 @@ function EscolhaDeIcone({ value, onChange }: { value: IconId; onChange: (v: Icon
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

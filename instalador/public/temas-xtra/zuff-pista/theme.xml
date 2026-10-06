@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Zuffenhausen Pista</name>
     <description>Modo de pista: o conta-giros deixa de ser arco e vira uma barra reta de quarenta divisões no alto da tela -- mais fácil de ler de canto de olho numa curva -- com as oito últimas em vermelho. No meio, a marcha em 300 px. Velocidade e rotação ficam nas laterais, e todo o resto saiu.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo, useState } from 'react'
 import { CpuIcon, NetworkIcon } from 'lucide-react'
 import { ConfidenceChip, DataScreen } from '../../ui'
@@ -194,3 +195,4 @@ export const ProEcuInventory = () => {
     </DataScreen>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

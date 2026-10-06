@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import {
   CheckCircleIcon, DownloadIcon, FlaskConicalIcon, KeyRoundIcon, LoaderIcon, SearchXIcon, WifiIcon, ZapIcon,
@@ -94,7 +95,7 @@ function StatusCard() {
         title="Conectado ao carro"
         body={
           <>
-            O app OPEN GW está respondendo em <span className="font-mono">{carIp}</span>. Tudo pronto.
+            O app DeepGWT está respondendo em <span className="font-mono">{carIp}</span>. Tudo pronto.
           </>
         }
         actions={
@@ -111,8 +112,8 @@ function StatusCard() {
       <Status
         tone="info"
         icon={<ZapIcon size={18} />}
-        title="Central encontrada, mas o OPEN GW não respondeu"
-        body="Se ainda não instalou, instale agora. Se já instalou, abra o OPEN GW na central e aguarde alguns segundos."
+        title="Central encontrada, mas o DeepGWT não respondeu"
+        body="Se ainda não instalou, instale agora. Se já instalou, abra o DeepGWT na central e aguarde alguns segundos."
         actions={
           <>
             <Button as={Link} to="/install" variant="primary" size="sm" icon={DownloadIcon} fullWidth={false}>
@@ -153,7 +154,7 @@ function StatusCard() {
       tone="neutral"
       icon={<LoaderIcon size={18} className="animate-spin" />}
       title="Procurando o carro…"
-      body="Verificando a central na rede e o app OPEN GW no IP salvo."
+      body="Verificando a central na rede e o app DeepGWT no IP salvo."
     />
   )
 }
@@ -225,3 +226,4 @@ function Status({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes do motor de temas do cluster.
 //
 // Cada asserção aqui existe por causa de um defeito concreto que já apareceu neste projeto ou nos
@@ -65,10 +66,32 @@ function temaBase(nome) {
 
   const motor = engineFingerprint()
   ok(htmlA.includes(motor.split('\n')[2] ?? ''), 'o HTML contém o motor')
-  ok(htmlA.split('OPENGW.boot(')[0].includes('function makeMapper'), 'o motor vem antes do payload')
+  ok(htmlA.split('DEEPGWT.boot(')[0].includes('function makeMapper'), 'o motor vem antes do payload')
 
   const recorte = (html) => html.slice(html.indexOf('<script>'), html.lastIndexOf('<script>'))
   eq(recorte(htmlA), recorte(htmlB), 'os bytes do motor são idênticos nos dois temas')
+}
+
+// -------------------------------------------------------------- tema de outra pessoa não fecha o <script>
+// Um .deepgwt-tema compartilhado com `</script><script>…` no nome rodava dentro do instalador.
+{
+  const mau = temaBase('</script><script>window.__PWN__=1</script>')
+  mau.pages[0].name = '</SCRIPT><img src=x onerror=alert(1)>'
+  mau.boot = { enabled: true, wordmark: '</script><script>x</script>' }
+  const html = emitAppHtml(mau, { backgroundCss: 'url("x</style><script>window.__PWN__=2</script>")' })
+  const normal = emitAppHtml(temaBase('Normal'), { backgroundCss: '#000' })
+  // O que o navegador enxerga como elemento: <script>…</script> e <style>…</style> de verdade. Texto
+  // dentro de uma string de CSS ou do <title> escapado é inerte, e `</script` dentro do <style> também.
+  const semEstilo = (h) => h.replace(/<style>[\s\S]*?<\/style>/g, '<style></style>')
+  const blocos = (h, tag) => [...semEstilo(h).matchAll(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g'))].map((m) => m[1])
+  eq(blocos(html, 'script').length, blocos(normal, 'script').length, 'o tema não cria <script> novo')
+  eq(blocos(html, 'style').length, blocos(normal, 'style').length, 'o fundo do tema não cria <style> novo')
+  ok(blocos(html, 'script').every((b) => !b.includes('__PWN__')), 'nenhum <script> executa texto do tema')
+  ok(!/<script>\s*window\.__PWN__/.test(html.replace(/<style>[\s\S]*?<\/style>/g, '')), 'nenhum texto do tema vira <script> solto')
+  const boot = html.match(/DEEPGWT\.boot\((.*)\);<\/script>/s)
+  ok(boot !== null, 'o payload continua entrando por DEEPGWT.boot')
+  const lido = JSON.parse(boot[1])
+  ok(JSON.stringify(lido).includes('</script>'), 'o texto original sobrevive ao escape (JSON equivalente)')
 }
 
 // -------------------------------------------------------------- contrato do bridge no HTML
@@ -168,6 +191,7 @@ function temaBase(nome) {
       'passar do teto deixa ilegal')
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // -------------------------------------------------------------- theme.xml
 // O parser do app casa tags pelo nome, globalmente. Geometria de máscara como elemento filho
@@ -256,7 +280,7 @@ function temaBase(nome) {
     let compilou = true
     try { new Function(script) } catch { compilou = false }
     ok(compilou, `${preset.name}: o motor emitido compila`)
-    ok(html.includes('OPENGW.boot({'), `${preset.name}: o payload entra por OPENGW.boot`)
+    ok(html.includes('DEEPGWT.boot({'), `${preset.name}: o payload entra por DEEPGWT.boot`)
   }
 
   const specDe = (id) => PRESETS.find((p) => p.spec.id === id).spec
@@ -451,8 +475,8 @@ function temaBase(nome) {
 
     // O app.html embarcado não é regerado por inteiro (o vão da projeção só existe nele), então o
     // payload e o renderizador de mídia dele são conferidos contra o gerador aqui.
-    const bootEmb = embarcado.match(/^<script>OPENGW\.boot\((.*)\);<\/script>$/m)
-    const bootGer = htmlStu.match(/^<script>OPENGW\.boot\((.*)\);<\/script>$/m)
+    const bootEmb = embarcado.match(/^<script>DEEPGWT\.boot\((.*)\);<\/script>$/m)
+    const bootGer = htmlStu.match(/^<script>DEEPGWT\.boot\((.*)\);<\/script>$/m)
     ok(bootEmb && bootGer && bootEmb[1] === bootGer[1],
       'o payload do Stuttgart embarcado é o mesmo que o preset gera')
     const bloco = (h) => { const a = h.indexOf('var MEDIA = {'); return a < 0 ? null : h.slice(a, h.indexOf('var DECOR = {', a)) }
@@ -569,7 +593,7 @@ function temaBase(nome) {
     // um nome dessa lista seria apagada e recopiada a cada início — foi o que quase aconteceu com
     // 'minimalist', nome de um tema antigo aposentado.
     const tm = readFileSync(join(repo,
-      'app/src/main/java/br/com/opengw/painel/TemasInstalados.kt'), 'utf8')
+      'app/src/main/java/br/com/deepgwt/painel/TemasInstalados.kt'), 'utf8')
     const lista = tm.match(/val APOSENTADAS: List<String> = listOf\(([^)]*)\)/)
     const aposentadas = new Set(lista ? [...lista[1].matchAll(/"([^"]+)"/g)].map((m) => m[1].toLowerCase()) : [])
     ok(aposentadas.size > 0, 'a lista de pastas aposentadas do catálogo de temas foi encontrada')
@@ -578,6 +602,7 @@ function temaBase(nome) {
     }
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ---------------------------------------- escala pela placa e regras de cor
 // As duas funções novas dependem de coisas que o editor não pode inventar: a chave do limite da
@@ -751,9 +776,10 @@ function temaBase(nome) {
   // "um renderizador falhou" em "o tema apareceu pela metade".
   ok(/try \{\s*var inst = buildElement\(el, node\);/.test(ENGINE_JS),
     'cada elemento é montado no seu próprio try')
-  ok(/\[OPENGW\] elemento '/.test(ENGINE_JS),
+  ok(/\[DEEPGWT\] elemento '/.test(ENGINE_JS),
     'quando um elemento falha, o console do painel diz qual')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ------------------------------------------------------ Bavarian ID7 (tema escrito à mão)
 //
@@ -827,3 +853,4 @@ function temaBase(nome) {
 
 console.log(falhas === 0 ? `\nMotor de temas: ${total} verificações, todas passaram.` : `\nMotor de temas: ${falhas} de ${total} falharam.`)
 process.exitCode = falhas === 0 ? 0 : 1
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

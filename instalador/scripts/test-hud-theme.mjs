@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Testes do criador de temas do HUD (Alpha 5.9).
 //
 // O carro e o instalador leem o mesmo arquivo de tema. Este teste lê os MESMOS exemplos que o
@@ -59,7 +60,7 @@ for (const bruto of [null, [], 'texto', { formato: 'outro' }, { nome: 'sem forma
   ok(recusou, `recusa ${JSON.stringify(bruto)}`)
 }
 {
-  const minimo = model.normalizarTemaHud({ formato: 'opengw-hud-tema' })
+  const minimo = model.normalizarTemaHud({ formato: 'deepgwt-hud-tema' })
   eq(minimo, { ...model.temaHudPadrao('Tema sem nome') }, 'só o formato vira o HUD de fábrica')
 }
 
@@ -67,11 +68,11 @@ for (const bruto of [null, [], 'texto', { formato: 'outro' }, { nome: 'sem forma
 {
   eq([150, 200, 249, 250, 651, 950].map(model.arredondarPeso), [200, 200, 200, 300, 700, 900], 'peso em degraus de cem, na faixa')
   const todas = model.HUD_PAGINAS.map((p) => ({ pagina: p.id, ativa: false }))
-  ok(model.normalizarTemaHud({ formato: 'opengw-hud-tema', paginas: todas }).paginas.every((p) => p.ativa),
+  ok(model.normalizarTemaHud({ formato: 'deepgwt-hud-tema', paginas: todas }).paginas.every((p) => p.ativa),
     'nenhuma página ativa vira todas ativas')
-  const semA = model.normalizarTemaHud({ formato: 'opengw-hud-tema', paginas: [{ pagina: 'VEICULO', linhaA: [], linhaB: ['HORA'] }] })
+  const semA = model.normalizarTemaHud({ formato: 'deepgwt-hud-tema', paginas: [{ pagina: 'VEICULO', linhaA: [], linhaB: ['HORA'] }] })
   ok(semA.paginas.find((p) => p.pagina === 'VEICULO').linhaA === undefined, 'página de números sem valor grande volta à de fábrica')
-  const midia = model.normalizarTemaHud({ formato: 'opengw-hud-tema', paginas: [{ pagina: 'MIDIA', linhaA: ['HORA'] }] })
+  const midia = model.normalizarTemaHud({ formato: 'deepgwt-hud-tema', paginas: [{ pagina: 'MIDIA', linhaA: ['HORA'] }] })
   ok(midia.paginas.find((p) => p.pagina === 'MIDIA').linhaA === undefined, 'mídia não aceita campos')
   eq(model.normalizarCor('#abc'), '#AABBCC', 'cor de três dígitos')
   ok(model.normalizarCor('vermelho') === null, 'cor ilegível é recusada')
@@ -86,12 +87,12 @@ for (const p of HUD_PRESETS) {
     if (pg.cor) ok(model.luminancia(pg.cor) >= 0.18, `pronto "${p.nome}" ${pg.pagina}: cor aparece no vidro`)
   }
 }
-eq(model.paraCarro(HUD_PRESETS[0].tema), model.paraCarro(model.temaHudPadrao('Padrão OPEN GW')), '"Padrão OPEN GW" é o HUD de fábrica')
+eq(model.paraCarro(HUD_PRESETS[0].tema), model.paraCarro(model.temaHudPadrao('Padrão DeepGWT')), '"Padrão DeepGWT" é o HUD de fábrica')
 
 // ---------------------------------------------------------------- a prévia usa as frações da view
 {
   const kt = readFileSync(
-    join(raiz, 'app/src/main/java/br/com/opengw/hud/HudOverlayView.kt'),
+    join(raiz, 'app/src/main/java/br/com/deepgwt/hud/HudOverlayView.kt'),
     'utf8',
   )
   for (const [nome, valor] of Object.entries(GRADE)) {
@@ -100,7 +101,7 @@ eq(model.paraCarro(HUD_PRESETS[0].tema), model.paraCarro(model.temaHudPadrao('Pa
   }
   ok(/const val DURACAO_FADE_MS/.test(kt), 'arquivo Kotlin lido de verdade')
   // Os rótulos da prévia são os textos do HudCampos.kt.
-  const campos = readFileSync(join(raiz, 'app/src/main/java/br/com/opengw/hud/HudCampos.kt'), 'utf8')
+  const campos = readFileSync(join(raiz, 'app/src/main/java/br/com/deepgwt/hud/HudCampos.kt'), 'utf8')
   for (const c of model.HUD_CAMPOS) {
     ok(new RegExp(`\\b${c.id}\\(`).test(campos), `campo ${c.id} existe no HudCampo do carro`)
   }
@@ -125,3 +126,4 @@ eq(model.paraCarro(HUD_PRESETS[0].tema), model.paraCarro(model.temaHudPadrao('Pa
 
 console.log(`\nTema do HUD: ${total - falhas}/${total} ok`)
 if (falhas > 0) process.exit(1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

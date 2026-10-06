@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { Transport } from './routeMeta'
 import type { ConnectionState, HeadUnitState } from '../state/VehicleSession'
 
@@ -27,7 +28,7 @@ export function unmetRequirement(
     return {
       short: 'Precisa do app aberto no carro',
       long:
-        'Esta tela lê e escreve pelo app OPEN GW da central, que não está respondendo. Abra o app ' +
+        'Esta tela lê e escreve pelo app DeepGWT da central, que não está respondendo. Abra o app ' +
         'no carro (ou instale-o em "Instalar e manter") e confira o IP em Conexão.',
     }
   }
@@ -42,3 +43,4 @@ export function unmetRequirement(
   }
   return null
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

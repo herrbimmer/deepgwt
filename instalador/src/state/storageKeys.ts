@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Todas as chaves de `localStorage` do instalador, em um lugar só.
 //
 // Antes disto cada módulo declarava a sua própria constante e fazia o seu próprio try/catch — o
@@ -5,16 +6,16 @@
 // O Privacy Center deriva desta tabela, então uma chave nova só existe se aparecer aqui.
 
 export const STORAGE_KEYS = {
-  carIp: 'opengw_dev_car_ip',
-  codingBaseline: 'opengw_coding_baseline',
-  driverProfiles: 'opengw_driver_profiles',
-  dvrStoragePath: 'opengw_dvr_storage_path',
-  themeDrafts: 'opengw_theme_drafts',
-  prefs: 'opengw_prefs_v1',
-  changeLog: 'opengw_change_log_v1',
-  snapshots: 'opengw_snapshots_v1',
-  vehicles: 'opengw_vehicles_v1',
-  wmiOverrides: 'opengw_vin_wmi_overrides_v1',
+  carIp: 'deepgwt_dev_car_ip',
+  codingBaseline: 'deepgwt_coding_baseline',
+  driverProfiles: 'deepgwt_driver_profiles',
+  dvrStoragePath: 'deepgwt_dvr_storage_path',
+  themeDrafts: 'deepgwt_theme_drafts',
+  prefs: 'deepgwt_prefs_v1',
+  changeLog: 'deepgwt_change_log_v1',
+  snapshots: 'deepgwt_snapshots_v1',
+  vehicles: 'deepgwt_vehicles_v1',
+  wmiOverrides: 'deepgwt_vin_wmi_overrides_v1',
 } as const
 
 export type StorageKeyId = keyof typeof STORAGE_KEYS
@@ -121,3 +122,4 @@ export function measureLocalStorage(): Array<{
     return { id, key, bytes: raw ? new Blob([raw]).size : 0, present: raw !== null }
   })
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

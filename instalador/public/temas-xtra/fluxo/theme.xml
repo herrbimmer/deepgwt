@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Fluxo</name>
     <description>Diagrama de blocos da energia até a roda: fonte, motor, transmissão, roda. Cada trecho de seta acende só quando existe fluxo ali, então dá para ver onde a corrente para -- em P ou N a cadeia se rompe na transmissão -- sem precisar ler nenhum número.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

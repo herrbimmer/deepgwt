@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Celeste</name>
     <description>Carta celeste com 170 estrelas fixas -- sempre o mesmo céu, para o painel não cintilar sozinho -- e cinco estrelas nomeadas ligadas por uma linha de constelação. O diâmetro e o brilho de cada uma são a sua grandeza, então a constelação inteira respira com o carro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

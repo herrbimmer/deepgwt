@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Fita Central</name>
     <description>A escala inteira -- de -20 a 260 km/h -- é desenhada uma vez e depois só desliza por baixo de uma retícula vermelha fixa no centro, sem criar um único nó de DOM durante a viagem. As bordas da fita desbotam no fundo, o giro vira uma barra fina embaixo.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

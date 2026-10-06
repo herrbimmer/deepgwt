@@ -1,11 +1,12 @@
 <!doctype html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1920, height=720, initial-scale=1" />
 <title>TEA 3.0</title>
 <!--
-  TEA 3.0 (OPEN GW, Alpha 9.5). Gerado por scripts/gerar-tea-30.mjs — edite lá e rode de novo.
+  TEA 3.0 (DeepGWT, Alpha 9.5). Gerado por scripts/gerar-tea-30.mjs — edite lá e rode de novo.
   Contrato v1.0: só assina chaves de ThemeBridgeImpl.getAvailableKeys(); não desenha luz nenhuma
   (as do carro ficam por cima); declara o vão da projeção (setProjectionBox) e o abre no #bg.
 -->
@@ -27,7 +28,7 @@
     background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 62%, rgba(0,0,0,.7) 100%);
   }
   body.projetando #projscrim { display: block; }
-  body.projetando #cena, body.projetando #midia { display: none; }
+  body.projetando #midia { display: none; }
   /* Enquanto projeta: um anel fumê em volta de cada mostrador (onde ficam os números, por fora do
      aro) e contorno escuro nos números — a imagem passa por baixo e a escala continua legível. */
   #projfumo {
@@ -118,49 +119,7 @@
   <linearGradient id="gPot" gradientUnits="userSpaceOnUse" x1="1234" y1="0" x2="1754" y2="0">
     <stop offset="0" stop-color="#2a6dff"/><stop offset="1" stop-color="#7cc7ff"/>
   </linearGradient>
-  <linearGradient id="gAsfalto" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#2a3a52" stop-opacity="0"/><stop offset="0.55" stop-color="#23324a" stop-opacity="0.35"/><stop offset="1" stop-color="#1b2638" stop-opacity="0.65"/>
-  </linearGradient>
-  <linearGradient id="gFaixa" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#dfe9f5" stop-opacity="0.05"/><stop offset="1" stop-color="#eef4fb" stop-opacity="0.8"/>
-  </linearGradient>
-  <radialGradient id="gHorizonte" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#4f8fe0" stop-opacity="0.32"/><stop offset="1" stop-color="#4f8fe0" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="gCarro" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#e3e8ee"/><stop offset="1" stop-color="#a9b2bc"/>
-  </linearGradient>
-  <linearGradient id="gVidro" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#3a4452"/><stop offset="1" stop-color="#11161d"/>
-  </linearGradient>
-  <radialGradient id="gSombra" cx="0.5" cy="0.5" r="0.5">
-    <stop offset="0" stop-color="#6aa7ff" stop-opacity="0.22"/><stop offset="1" stop-color="#6aa7ff" stop-opacity="0"/>
-  </radialGradient>
-  <linearGradient id="gMascaraX" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#000"/><stop offset="0.13" stop-color="#fff"/><stop offset="0.87" stop-color="#fff"/><stop offset="1" stop-color="#000"/>
-  </linearGradient>
-  <mask id="mCena" maskUnits="userSpaceOnUse" x="600" y="100" width="720" height="560">
-    <rect x="600" y="100" width="720" height="560" fill="url(#gMascaraX)"/>
-  </mask>
 </defs>
-<g id="cena" mask="url(#mCena)">
-  <ellipse cx="960" cy="176" rx="430" ry="70" fill="url(#gHorizonte)"/>
-  <polygon points="954,172 966,172 1330,640 590,640" fill="url(#gAsfalto)"/><line x1="954.3" y1="179.2" x2="965.7" y2="179.2" stroke="rgba(160,190,230,0)" stroke-width="1"/><line x1="938.8" y1="198.9" x2="981.2" y2="198.9" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="914.1" y1="230" x2="1005.9" y2="230" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="880.7" y1="272.3" x2="1039.3" y2="272.3" stroke="rgba(160,190,230,0.01)" stroke-width="1"/><line x1="838.9" y1="325.2" x2="1081.1" y2="325.2" stroke="rgba(160,190,230,0.02)" stroke-width="1"/><line x1="788.8" y1="388.6" x2="1131.2" y2="388.6" stroke="rgba(160,190,230,0.03)" stroke-width="1"/><line x1="730.5" y1="462.3" x2="1189.5" y2="462.3" stroke="rgba(160,190,230,0.03)" stroke-width="1"/><line x1="664.2" y1="546.2" x2="1255.8" y2="546.2" stroke="rgba(160,190,230,0.04)" stroke-width="1"/><line x1="590" y1="640" x2="1330" y2="640" stroke="rgba(160,190,230,0.05)" stroke-width="1"/><polygon points="946.3,190.7 947.3,190.7 635,640 625,640" fill="url(#gFaixa)"/><polygon points="972.7,190.7 973.7,190.7 1295,640 1285,640" fill="url(#gFaixa)"/><polygon points="952.8,200.1 954,200.1 950.1,217.2 948.7,217.2" fill="rgba(235,242,250,0.2)"/><polygon points="944.5,234.3 946.1,234.3 941.8,253.5 939.8,253.5" fill="rgba(235,242,250,0.2)"/><polygon points="935.2,272.7 937.4,272.7 932.5,294.2 930.1,294.2" fill="rgba(235,242,250,0.3)"/><polygon points="924.8,315.7 927.6,315.7 922.1,339.7 919.1,339.7" fill="rgba(235,242,250,0.3)"/><polygon points="913.2,363.8 916.6,363.8 910.5,390.8 906.7,390.8" fill="rgba(235,242,250,0.4)"/><polygon points="900.1,417.7 904.3,417.7 897.5,447.9 892.9,447.9" fill="rgba(235,242,250,0.4)"/><polygon points="885.6,478.1 890.6,478.1 882.8,511.9 877.4,511.9" fill="rgba(235,242,250,0.5)"/><polygon points="869.2,545.7 875.2,545.7 866.5,583.6 860.1,583.6" fill="rgba(235,242,250,0.6)"/><polygon points="850.9,621.4 857.9,621.4 853.6,640 846.4,640" fill="rgba(235,242,250,0.7)"/><polygon points="966,200.1 967.2,200.1 971.3,217.2 969.9,217.2" fill="rgba(235,242,250,0.2)"/><polygon points="973.9,234.3 975.5,234.3 980.2,253.5 978.2,253.5" fill="rgba(235,242,250,0.2)"/><polygon points="982.6,272.7 984.8,272.7 989.9,294.2 987.5,294.2" fill="rgba(235,242,250,0.3)"/><polygon points="992.4,315.7 995.2,315.7 1000.9,339.7 997.9,339.7" fill="rgba(235,242,250,0.3)"/><polygon points="1003.4,363.8 1006.8,363.8 1013.3,390.8 1009.5,390.8" fill="rgba(235,242,250,0.4)"/><polygon points="1015.7,417.7 1019.9,417.7 1027.1,447.9 1022.5,447.9" fill="rgba(235,242,250,0.4)"/><polygon points="1029.4,478.1 1034.4,478.1 1042.6,511.9 1037.2,511.9" fill="rgba(235,242,250,0.5)"/><polygon points="1044.8,545.7 1050.8,545.7 1059.9,583.6 1053.5,583.6" fill="rgba(235,242,250,0.6)"/><polygon points="1062.1,621.4 1069.1,621.4 1073.6,640 1066.4,640" fill="rgba(235,242,250,0.7)"/>
-  <g id="carro">
-  <ellipse cx="960" cy="590" rx="104" ry="15" fill="rgba(0,0,0,0.75)"/>
-  <ellipse cx="960" cy="592" rx="140" ry="24" fill="url(#gSombra)"/>
-  <path d="M884 578 L882 548 Q880 520 896 506 L912 470 Q918 458 934 456 L986 456 Q1002 458 1008 470 L1024 506 Q1040 520 1038 548 L1036 578 Q1036 586 1026 586 L894 586 Q884 586 884 578 Z" fill="url(#gCarro)"/>
-  <path d="M918 474 Q922 466 934 465 L986 465 Q998 466 1002 474 L1012 500 L908 500 Z" fill="url(#gVidro)"/>
-  <path d="M894 520 L1026 520 L1030 532 L890 532 Z" fill="rgba(20,24,30,0.28)"/>
-  <rect x="889" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
-  <rect x="995" y="524" width="36" height="9" rx="3" fill="#ff3b3b"/>
-  <rect x="925" y="527" width="70" height="3" rx="1.5" fill="rgba(255,70,70,0.75)"/>
-  <rect x="944" y="548" width="32" height="12" rx="2" fill="#e6e9ec" stroke="rgba(0,0,0,0.25)"/>
-  <rect x="888" y="572" width="22" height="16" rx="3" fill="#15181c"/>
-  <rect x="1010" y="572" width="22" height="16" rx="3" fill="#15181c"/>
-  <path d="M900 510 L1020 510" stroke="rgba(255,255,255,0.55)" stroke-width="1.5"/>
-</g>
-</g>
 <g id="mE">
     <path d="M321.7 685.8 A267 267 0 1 1 530.3 685.8" fill="none" stroke="rgba(120,165,220,0.10)" stroke-width="8" stroke-linecap="round"/>
     <circle cx="426" cy="440" r="258" fill="url(#gFace)"/>
@@ -468,7 +427,7 @@
 
   // ----- Vão da projeção da central -----
   // De um centro de mostrador ao outro, como no NTG 5.5 (coffe3): as bordas caem embaixo das faces
-  // (opacas), e a imagem ocupa o lugar da estrada, que sai da frente enquanto projeta.
+  // (opacas), e a imagem ocupa o vão.
   const PROJ_BOX = { x: 426, y: 118, w: 1068, h: 522 };
   const PROJ_PENA_X = 96;
   const PROJ_PENA_Y = 56;
@@ -641,3 +600,4 @@
 </script>
 </body>
 </html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Monoespaço</name>
     <description>Espécime de monoespaçada: a grade é o próprio avanço da fonte, então as dez linhas alinham em coluna sem uma única regra de layout -- só preenchimento com espaços. Cada família de dado tem sua cor e a velocidade se repete em corpo 220 à direita.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

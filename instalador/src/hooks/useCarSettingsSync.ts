@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCarSettings } from '../state/VehicleSession'
 export type { SyncStatus, FieldStatus } from '../state/VehicleSession'
 
@@ -10,3 +11,4 @@ export type { SyncStatus, FieldStatus } from '../state/VehicleSession'
  * continua na assinatura para que as telas existentes não precisem mudar.
  */
 export const useCarSettingsSync = (_carIp?: string) => useCarSettings()
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

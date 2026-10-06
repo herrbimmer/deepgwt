@@ -1,8 +1,9 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 package com.autolink.cluster
 
 import android.os.Parcel
 import android.os.Parcelable
-import br.com.opengw.painel.MensagemDoCluster
+import br.com.deepgwt.painel.MensagemDoCluster
 
 /**
  * O parcelable das mensagens do serviço do painel da fabricante (`IClusterService.setMsg`,
@@ -72,3 +73,4 @@ class ClusterMsgData() : Parcelable {
         }
     }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

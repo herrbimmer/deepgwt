@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Os textos do elemento selecionado, mais quais arquivos de fonte o tema empacota.
 //
 // A lista de fontes do tema não é cosmética: ela decide o que vai dentro da pasta enviada ao
@@ -177,3 +178,4 @@ function TextoLigavel({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

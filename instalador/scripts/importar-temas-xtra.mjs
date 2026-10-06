@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Traz o pacote de temas (a pasta "TEMAS OPEN GW") para dentro do instalador, como catálogo XTRA.
 //
 //   node scripts/importar-temas-xtra.mjs ["<pasta TEMAS OPEN GW>"]
@@ -75,3 +76,4 @@ writeFileSync(join(DESTINO, 'catalogo.json'), JSON.stringify(catalogo, null, 1) 
 
 const mb = Object.values(catalogo.temas).reduce((n, t) => n + t.bytes, 0) / 1e6
 console.log(`catálogo XTRA v${versaoDoPacote}: ${pastas.length} temas em ${grupos.length} grupos, ${mb.toFixed(1)} MB -> ${DESTINO}`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

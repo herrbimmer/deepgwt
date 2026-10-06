@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { validationOf } from '../validation/status'
 import type { RouteNode } from './routeMeta'
 
@@ -10,3 +11,4 @@ export function splitByImplementation(items: RouteNode[]): { ready: RouteNode[];
   }
   return { ready, pending }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Torre</name>
     <description>Coluna de três instrumentos auxiliares encostada na borda esquerda -- giro, tanque e temperatura externa, cada um com ponteiro próprio -- e a velocidade ocupando sozinha todo o resto da tela, em corpo 380 alinhado à direita. Tabela de seis campos no rodapé.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

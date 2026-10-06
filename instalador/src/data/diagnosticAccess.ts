@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Como se chega aos dados de diagnóstico deste veículo — e onde cada caminho para.
 //
 // Este arquivo existe porque uma frase do app estava errada. Até a sessão de 2026-09-15, oito
@@ -152,3 +153,4 @@ export const DIAG_PORTS = [
 ]
 
 export const DIAG_PORTS_EVIDENCE = `${S}/DISCOVERY_LOG.md — D-01, D-10, D-11`
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
@@ -252,7 +253,7 @@ export const ScreenMirror = () => {
   const salvarPrint = async () => {
     if (!selected) return
     const localPath = await save({
-      defaultPath: `OPEN GW ${nomeDaTela(selected)} ${carimbo()}.png`,
+      defaultPath: `DeepGWT ${nomeDaTela(selected)} ${carimbo()}.png`,
       filters: [{ name: 'Imagem PNG', extensions: ['png'] }],
     })
     if (!localPath) return
@@ -396,3 +397,4 @@ export const ScreenMirror = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

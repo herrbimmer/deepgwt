@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Fachada da Vehicle Knowledge Base.
 //
 // Os dados vivem em `knowledge/` (fora do controle de versão, por decisão do dono) e são gerados para `src/data/generated/` por `node scripts/kb-build.mjs`. Todo o app
@@ -100,3 +101,4 @@ export const SESSION_SUMMARY = {
   osVariants: PLATFORM.meta.variantCount,
   buildFamilies: PLATFORM.meta.familyCount,
 } as const
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

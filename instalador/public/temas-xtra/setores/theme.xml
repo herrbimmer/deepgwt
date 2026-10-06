@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Setores</name>
     <description>Quatro anéis de proporção lado a lado, cada um fechando em 100% da sua escala, com o valor no miolo e o nome embaixo. O arco é feito com tracejado sobre um círculo único -- nenhum caminho é recalculado a cada quadro, só o comprimento do traço.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,7 +1,7 @@
 {
-  "productName": "OPEN GW",
-  "version": "9.7.0",
-  "identifier": "br.com.opengw.instalador",
+  "productName": "DeepGWT",
+  "version": "10.7.0",
+  "identifier": "br.com.deepgwt.instalador",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5710",
@@ -10,7 +10,7 @@
   },
   "app": {
     "windows": [
-      { "title": "OPEN GW", "width": 1180, "height": 780, "minWidth": 420, "minHeight": 560 }
+      { "title": "DeepGWT", "width": 1180, "height": 780, "minWidth": 420, "minHeight": 560 }
     ],
     "security": { "csp": null }
   },
@@ -22,7 +22,7 @@
       "icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png"
     ],
     "resources": {
-      "resources/opengw.apk": "resources/opengw.apk",
+      "resources/deepgwt.apk": "resources/deepgwt.apk",
       "resources/shizuku.apk": "resources/shizuku.apk",
       "resources/shizuku-starter": "resources/shizuku-starter",
       "../../NOTICE": "legal/NOTICE",

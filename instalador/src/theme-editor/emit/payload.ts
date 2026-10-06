@@ -1,4 +1,5 @@
-// `ThemeSpec` -> o objeto que o motor recebe em `OPENGW.boot(...)`.
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+// `ThemeSpec` -> o objeto que o motor recebe em `DEEPGWT.boot(...)`.
 //
 // Tudo que dá para resolver em tempo de geração é resolvido aqui: geometria, cores, pilhas de
 // fonte, quais partes de cada estilo desenhar, quais chaves assinar. O motor não interpreta
@@ -194,6 +195,7 @@ function dialPayload(el: DialElement) {
     } : null,
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function barPayload(el: BarElement, s: number) {
   return {
@@ -405,6 +407,7 @@ function mockRanges(spec: ThemeSpec): Record<string, unknown> {
   }
   return out
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export type ThemePayload = ReturnType<typeof buildPayload>
 
@@ -500,3 +503,4 @@ export function buildPayload(spec: ThemeSpec, activePageId?: string) {
     mockRanges: mockRanges(spec),
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

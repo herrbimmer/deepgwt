@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Stuttgart Clássico</name>
     <description>Velocímetro analógico clássico à esquerda, gauge de potência (kW) à direita, indicadores de bateria e combustível ampliados na base, mídia/rádio no topo e fundo de rodovia com brilho azul no horizonte. Suporta modo dia (branco) e noturno (vermelho).</description>
@@ -52,3 +53,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

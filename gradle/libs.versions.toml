@@ -1,4 +1,4 @@
-# Catálogo de dependências do OPEN GW.
+# Catálogo de dependências do DeepGWT.
 # Versão que vale para mais de um artefato fica em [versions]; as demais vão na forma curta
 # "grupo:artefato:versão". Os plugins do Gradle ficam no fim.
 
@@ -45,6 +45,10 @@ qr-zxing = "com.google.zxing:core:3.5.3"
 
 # Testes
 teste-junit = "junit:junit:4.13.2"
+# org.json de verdade na JVM (o do android.jar é só stub): testes do payload da mídia (tela3d/midia).
+teste-json = "org.json:json:20180813"
+# SQLite de verdade na JVM: os testes do armazenamento de viagens (tela3d/viagens) rodam o SQL real.
+teste-sqlite = "org.xerial:sqlite-jdbc:3.46.1.3"
 
 [plugins]
 agp-aplicativo = { id = "com.android.application", version = "9.2.1" }

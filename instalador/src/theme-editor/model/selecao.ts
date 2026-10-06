@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Operações sobre VÁRIOS elementos: mover junto, alinhar, distribuir, agrupar, copiar e colar.
 //
 // Tudo aqui é função pura sobre a lista de elementos de uma página, para o teste conseguir
@@ -186,3 +187,4 @@ export function copiasPara(page: ThemePage, origem: Element[], deslocar: number)
       } as Element
     })
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

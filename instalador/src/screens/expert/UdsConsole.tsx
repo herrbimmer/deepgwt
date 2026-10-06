@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { TerminalSquareIcon } from 'lucide-react'
 import { Banner, ConfidenceChip, ListPanel, ListRow, ScaffoldScreen } from '../../ui'
 import { UDS_SERVICES, UDS_EVIDENCE } from '../../data/diagnosticAccess'
@@ -118,9 +119,10 @@ export const ExpertUdsConsole = () => (
 
     <Banner tone="warning" className="mb-2">
       <div className="text-xs leading-relaxed">
-        Nenhuma linha acima é capacidade do OPEN GW. O app não envia nenhum destes serviços, e a
+        Nenhuma linha acima é capacidade do DeepGWT. O app não envia nenhum destes serviços, e a
         tabela está aqui como referência do que falta, não do que existe.
       </div>
     </Banner>
   </ScaffoldScreen>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

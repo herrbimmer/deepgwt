@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { InfoIcon, ScaleIcon } from 'lucide-react'
 import { BackButton, Banner, Card, ConfidenceChip } from '../../ui'
@@ -26,10 +27,10 @@ export const ExpertAbout = () => {
       <Card maxWidth="lg">
         <div className="flex items-start gap-4 mb-5">
           <div className="flex-1">
-            <h1 className="text-xl font-semibold text-text tracking-tight">Sobre o OPEN GW</h1>
+            <h1 className="text-xl font-semibold text-text tracking-tight">Sobre o DeepGWT</h1>
             <p className="text-text-secondary mt-1 text-sm leading-relaxed">
               Ferramenta de desktop para instalar, configurar e ler veículos GWM/Haval. Leva para o
-              carro o OPEN GW <span className="font-mono">{APP_VERSION}</span> (instalador{' '}
+              carro o DeepGWT <span className="font-mono">{APP_VERSION}</span> (instalador{' '}
               <span className="font-mono">{INSTALLER_VERSION}</span>).
             </p>
           </div>
@@ -150,3 +151,4 @@ function Linha({ rotulo, valor }: { rotulo: string; valor: string }) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

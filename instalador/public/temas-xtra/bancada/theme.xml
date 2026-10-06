@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Bancada</name>
     <description>Rack de 19 polegadas com três módulos empilhados: mostrador de fósforo verde, coluna de estado, fileira de cinco lâmpadas que acendem por faixa e um botão giratório cujo traço acompanha o valor. As orelhas de fixação e o brilho da chapa são CSS, não imagem.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

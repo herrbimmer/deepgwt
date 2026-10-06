@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // De onde o elemento tira o valor, e como o texto cru do carro vira número, ângulo ou palavra.
 //
 // O seletor é dividido em quatro seções porque as chaves do contrato NÃO se comportam todas
@@ -299,6 +300,7 @@ export function DataPanel({ binding, map, semLeitura, semEscala, onChange, fixad
     </div>
   )
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 const TIPOS_DE_MAPA = [
   { value: 'linear' as const, label: 'Faixa' },
@@ -464,3 +466,4 @@ function MapEditor({
     </Grupo>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // "Ver no carro": o painel de verdade como segunda tela enquanto se edita.
 //
 // Ligado, cada edição (com um respiro de 1,2 s, para um arraste não virar vinte envios) manda o
@@ -82,3 +83,4 @@ export function useVerNoCarro(spec: ThemeSpec, ligado: boolean, carIp: string, p
 
   return ligado ? estado : { fase: 'desligado' }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

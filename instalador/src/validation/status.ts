@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Estado de validação de cada capacidade do app.
 //
 // Regra do projeto: nada é marcado como validado em veículo sem evidência. Este arquivo é a
@@ -291,3 +292,4 @@ export const VALIDATION_LABEL: Record<ValidationStatus, string> = {
   'not-validated': 'Ainda não validado em veículo',
   'not-implemented': 'Ainda não disponível',
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

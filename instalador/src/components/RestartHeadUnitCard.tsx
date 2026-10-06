@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useState } from 'react'
 import { invoke } from '@tauri-apps/api/core'
 import { RotateCcwIcon } from 'lucide-react'
@@ -50,7 +51,7 @@ export function RestartHeadUnitCard() {
       <p className="text-[11px] text-text-tertiary leading-relaxed mb-3">
         Reinicia a multimídia do carro. A tela fica preta por ~30-40 s e volta como num ligar
         normal. Só com o carro parado: em movimento o carro recusa o pedido. Não afeta freio, direção
-        nem motor. Precisa do app OPEN GW respondendo no carro.
+        nem motor. Precisa do app DeepGWT respondendo no carro.
       </p>
       <Button
         variant={confirming ? 'destructive' : 'warning'}
@@ -65,10 +66,11 @@ export function RestartHeadUnitCard() {
       </Button>
       {appDown && !message && (
         <p className="text-[11px] text-text-tertiary mt-2 leading-relaxed">
-          Indisponível agora: o app OPEN GW não está respondendo no carro.
+          Indisponível agora: o app DeepGWT não está respondendo no carro.
         </p>
       )}
       {message && <p className="text-[11px] text-text-secondary mt-2 leading-relaxed">{message}</p>}
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

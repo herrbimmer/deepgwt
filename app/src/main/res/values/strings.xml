@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <resources>
     <!-- Nome do app e das telas que aparecem na lista de apps, nos recentes e nos atalhos. -->
-    <string name="app_name">OPEN GW</string>
-    <string name="titulo_da_tela_principal">OPEN GW</string>
-    <string name="rotulo_do_atualizador">Atualizar OPEN GW</string>
+    <string name="app_name">DeepGWT</string>
+    <string name="titulo_da_tela_principal">DeepGWT</string>
+    <string name="rotulo_do_atualizador">Atualizar DeepGWT</string>
     <string name="rotulo_do_atalho_do_android">Config. Android</string>
 
     <!-- Aparecem em Configurações do Android → Acessibilidade e Acesso a notificações. O app tem
          dois serviços de cada tipo; cada um precisa de nome próprio para não virarem duas linhas
          iguais. -->
-    <string name="descricao_da_acessibilidade">OPEN GW — Serviço de acessibilidade</string>
-    <string name="rotulo_do_seletor_de_desktops">OPEN GW — Seletor de desktops</string>
+    <string name="descricao_da_acessibilidade">DeepGWT — Serviço de acessibilidade</string>
+    <string name="rotulo_do_seletor_de_desktops">DeepGWT — Seletor de desktops</string>
     <string name="descricao_do_seletor_de_desktops">Encaminha toques no seletor de desktops da barra de status do Android para a tela inicial 3D.</string>
-    <string name="rotulo_do_ouvinte_de_midia">OPEN GW — Tela inicial (mídia)</string>
+    <string name="rotulo_do_ouvinte_de_midia">DeepGWT — Tela inicial (mídia)</string>
 </resources>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Diagonal</name>
     <description>Quatro faixas a 45 graus atravessando a moldura inteira, cada uma com a largura da sua grandeza. Elas nunca se cruzam porque correm em paralelo, e o rótulo de cada uma acompanha a inclinação da faixa em que está escrito.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

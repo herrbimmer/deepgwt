@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Linha</name>
     <description>Uma linha reta de 1600px é o velocímetro inteiro: preenche da esquerda para a direita e o número de 124px cavalga a ponta, preso às bordas para nunca sair da tela. Abaixo, quatro marcas de escala; mais abaixo, duas linhas finas de combustível e bateria; no topo, marcha, modo e hora; no rodapé, autonomia, giro, temperatura e hodômetro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Aviador Noite</name>
     <description>Painel noturno da escola sueca que veio da aviação: à noite o motorista só precisa da velocidade, e todo o resto apaga para 5% de opacidade. Giro, tanque, temperatura externa e autonomia voltam sozinhos, um a um, quando o próprio valor cruza o limiar -- acima de 4200 rpm, abaixo de 20% de tanque, 3 graus lá fora, 90 km de autonomia. Um mostrador sozinho no escuro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { SlidersIcon } from 'lucide-react'
 import { Banner, ScaffoldScreen } from '../../ui'
 
@@ -44,3 +45,4 @@ export const ExpertCalibrationExplorer = () => (
     </Banner>
   </ScaffoldScreen>
 )
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

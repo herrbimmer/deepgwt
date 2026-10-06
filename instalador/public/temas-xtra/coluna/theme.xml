@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Coluna</name>
     <description>Oito grandezas viram oito colunas de altura proporcional sobre uma linha de base, com o valor flutuando no topo de cada barra e três linhas de referência tracejadas atrás. É um gráfico de barras honesto: nada de mostrador, nada de ponteiro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Leitura do relatório /diag da porta 8766 — a segunda fonte de telemetria do veículo.
 //
 // O relatório foi escrito para descrever a ponte (Shizuku vivo? quando reiniciou? por quê?), e é
@@ -45,7 +46,7 @@ export type BridgeHealth = {
  * A linha do tempo da partida, toda em milissegundos DESDE O BOOT (o mesmo relógio do `uptimeMs`),
  * que é o formato em que "o Shizuku demorou para subir?" tem resposta por subtração.
  *
- * Só existe em relatórios do OPEN GW a partir da build que passou a emiti-la; nas anteriores todos
+ * Só existe em relatórios do DeepGWT a partir da build que passou a emiti-la; nas anteriores todos
  * os campos vêm nulos e a tela some com o bloco em vez de mentir um zero.
  */
 export type BootTimeline = {
@@ -245,3 +246,4 @@ export function bridgeDiagnosis(bridge: BridgeHealth): string | null {
     vezes
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -19,3 +19,7 @@ keystore.properties
 # controle de versão. Os arquivos gerados a partir dela também ficam de fora.
 knowledge/
 instalador/src/data/generated/
+
+# three.min.js vendorizado precisa ir ao repositório (a regra **/build/ o pegaria)
+!app/src/main/assets/www/vendor/three/build/
+scratch-teste-nome/

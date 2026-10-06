@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 mod telnet;
 
 use std::time::Duration;
@@ -37,8 +38,12 @@ const STAGED_SHIZUKU_STARTER_NAME: &str = "shizuku_starter";
 // pacote do manager recompilado) usa este applicationId em vez do
 // "moe.shizuku.privileged.api" original, para escapar do bloqueio por nome de
 // pacote do PackageManager deste OEM (ver comentário em install_and_start_shizuku).
-const OPENGW_PACKAGE: &str = "br.com.opengw";
-// Permissão "dangerous" (não "normal") que o OPEN GW declara via <uses-permission>
+// applicationId != namespace de propósito (ver nota em app/build.gradle.kts): a central
+// (beantechs) recusa `pm install` de qualquer applicationId que ela nunca viu
+// ("beantechs disallow apk <pkg> to be installed!") — confirmado 04/10/2026 via telnet root
+// no carro: só br.com.redesurftank.havalshisuku é uma identidade já conhecida por ela.
+const DEEPGWT_PACKAGE: &str = "br.com.redesurftank.havalshisuku";
+// Permissão "dangerous" (não "normal") que o DeepGWT declara via <uses-permission>
 // para o Shizuku liberar sua API — ver comentário em install_and_start_shizuku.
 const SHIZUKU_API_PERMISSION: &str = "moe.shizuku.manager.permission.API_V23";
 // Package do fork renomeado do Shizuku (ver comentário em install_and_start_shizuku)
@@ -47,7 +52,7 @@ const SHIZUKU_API_PERMISSION: &str = "moe.shizuku.manager.permission.API_V23";
 // de libs nativas (.so) como dirname(--apk=)/lib/<abi>, e só o caminho instalado em
 // /data/app/... tem essa pasta populada pelo pm install; o arquivo avulso que
 // empurramos para /data/local/tmp não tem.
-const SHIZUKU_PACKAGE: &str = "br.com.opengw.shizuku";
+const SHIZUKU_PACKAGE: &str = "br.com.deepgwt.shizuku";
 
 #[derive(thiserror::Error, Debug)]
 enum ErroDoInstalador {
@@ -74,7 +79,7 @@ enum ErroDoInstalador {
     HttpServerFailed,
     #[error("Falha ao preparar o APK para envio: {0}")]
     CopyFailed(String),
-    #[error("Não foi possível falar com o OPEN GW no carro (porta {port}): {reason}. Confirme que o OPEN GW já está instalado e aberto no carro.")]
+    #[error("Não foi possível falar com o DeepGWT no carro (porta {port}): {reason}. Confirme que o DeepGWT já está instalado e aberto no carro.")]
     GwLinkUnreachable { port: u16, reason: String },
     #[error("Instalação falhou no dispositivo (pm install saiu com código {0})")]
     InstallFailed(String),
@@ -164,6 +169,7 @@ fn last_car_ip_cell() -> &'static std::sync::Mutex<Option<String>> {
     static CELL: std::sync::OnceLock<std::sync::Mutex<Option<String>>> = std::sync::OnceLock::new();
     CELL.get_or_init(|| std::sync::Mutex::new(None))
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 fn remember_car_ip(ip: &str) -> String {
     if let Ok(mut guard) = last_car_ip_cell().lock() {
@@ -340,6 +346,7 @@ fn start_http_server(dir: PathBuf, port: u16) -> Result<Arc<AtomicBool>, ErroDoI
 
     Ok(running)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Encerra o servidor HTTP local iniciado para servir o APK, se houver um rodando.
 async fn stop_http_server(state: &tauri::State<'_, EstadoDaConexao>) {
@@ -580,6 +587,7 @@ echo "{marker}PM:$PM_CODE:$PM_MSG"
     let _ = app.emit("telnet-output", "✅ Instalação concluída com sucesso!");
     Ok(())
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Equivalente a: api.installLocalApk
 // Permite escolher um APK qualquer no disco (ex.: um build próprio) e instalá-lo no
@@ -600,27 +608,27 @@ async fn install_local_apk(
     install_apk_from_path(app, state, source_path, display_name).await
 }
 
-// Instala o OPEN GW (nosso app) embarcado dentro do próprio instalador — não depende
+// Instala o DeepGWT (nosso app) embarcado dentro do próprio instalador — não depende
 // de escolher um arquivo (o que no Android exigiria lidar com URIs `content://` do
 // Storage Access Framework em vez de um caminho de arquivo comum). É o fluxo pensado
 // para uso no celular: baixar o instalador, conectar no Wi-Fi do carro e instalar
 // com um único toque.
 #[tauri::command]
-async fn install_bundled_opengw(
+async fn install_bundled_deepgwt(
     app: AppHandle,
     state: tauri::State<'_, EstadoDaConexao>,
 ) -> Result<(), ErroDoInstalador> {
     let resource_path = app
         .path()
-        .resolve("resources/opengw.apk", BaseDirectory::Resource)
-        .map_err(|_| ErroDoInstalador::ApkNotFound("resources/opengw.apk".to_string()))?;
+        .resolve("resources/deepgwt.apk", BaseDirectory::Resource)
+        .map_err(|_| ErroDoInstalador::ApkNotFound("resources/deepgwt.apk".to_string()))?;
 
-    install_apk_from_path(app.clone(), state.clone(), resource_path, "OPEN GW".to_string()).await?;
+    install_apk_from_path(app.clone(), state.clone(), resource_path, "DeepGWT".to_string()).await?;
 
     Ok(())
 }
 
-// Inicia o serviço do Shizuku no carro — sem isso, o OPEN GW fica visivelmente
+// Inicia o serviço do Shizuku no carro — sem isso, o DeepGWT fica visivelmente
 // "inativo" (HVAC, modo de condução, equalizador e gerenciador de arquivos não
 // funcionam, pois todos dependem do binder do Shizuku para chamar APIs
 // privilegiadas).
@@ -638,15 +646,15 @@ async fn install_bundled_opengw(
 // do processo morrer sozinho ~instantes depois).
 //
 // Fix: usamos um fork deste shizuku.apk com o applicationId recompilado para
-// "br.com.opengw.shizuku" (nada mais mudou — mesmo código, mesmo
+// "br.com.deepgwt.shizuku" (nada mais mudou — mesmo código, mesmo
 // `shizuku_starter` nativo, que não faz verificação de assinatura do --apk=).
 // Como o bloqueio do carro é por nome de pacote, o `pm install` deste apk
 // renomeado funciona normalmente, e o próprio ShizukuService passa a encontrar
 // seu "manager" via PackageManager.
 //
-// Histórico 2 (v0.1.5): tentamos pré-preencher a permissão do OPEN GW
+// Histórico 2 (v0.1.5): tentamos pré-preencher a permissão do DeepGWT
 // escrevendo diretamente em /data/user_de/0/com.android.shell/shizuku.json
-// (flags=2 = FLAG_ALLOWED), já que o OPEN GW nunca chama
+// (flags=2 = FLAG_ALLOWED), já que o DeepGWT nunca chama
 // Shizuku.requestPermission(). Isso não funciona: o construtor de
 // ShizukuConfigManager (server/.../ShizukuConfigManager.java) roda TODA vez
 // que o servidor sobe e recalcula os flags de QUALQUER app que declare
@@ -656,10 +664,10 @@ async fn install_bundled_opengw(
 //
 // Fix real: essa permissão é "dangerous" (não "normal" — ver
 // manager/src/main/AndroidManifest.xml no fork), então o Android só concede
-// automaticamente via um diálogo de runtime permission, que o OPEN GW nunca
+// automaticamente via um diálogo de runtime permission, que o DeepGWT nunca
 // dispara. A gente contorna isso concedendo a permissão manualmente via
 // `pm grant`, o mesmo mecanismo que o shell/root usa — precisa rodar depois
-// que os dois apks (Shizuku, que declara a permissão, e OPEN GW, que a
+// que os dois apks (Shizuku, que declara a permissão, e DeepGWT, que a
 // solicita) já estão instalados, mas antes de subir o shizuku_server, para
 // que o scan de permissões dele já capture a concessão nesta mesma execução.
 //
@@ -751,7 +759,7 @@ fi
         apk_url = apk_url,
         starter_path = remote_starter_path,
         starter_url = starter_url,
-        app_pkg = OPENGW_PACKAGE,
+        app_pkg = DEEPGWT_PACKAGE,
         permission = SHIZUKU_API_PERMISSION,
         shizuku_pkg = SHIZUKU_PACKAGE,
         marker = LOCAL_INSTALL_MARKER,
@@ -795,6 +803,7 @@ fi
     let _ = app.emit("telnet-output", "✅ Shizuku instalado e rodando (verificado)!");
     Ok(())
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Reinicia o Shizuku sem reinstalar nada — necessário porque o servidor do Shizuku (subido via
 // `shizuku_starter` como um processo shell comum, não um daemon do sistema) NÃO sobrevive a um
@@ -838,7 +847,7 @@ fi
 "#,
         starter_path = remote_starter_path,
         shizuku_pkg = SHIZUKU_PACKAGE,
-        app_pkg = OPENGW_PACKAGE,
+        app_pkg = DEEPGWT_PACKAGE,
         permission = SHIZUKU_API_PERMISSION,
         marker = LOCAL_INSTALL_MARKER,
     );
@@ -888,7 +897,7 @@ fi
     Ok(())
 }
 
-// Remove completamente o OPEN GW, o nosso fork do Shizuku e qualquer app de microG instalado no carro. O microG nunca é instalado por este instalador, então
+// Remove completamente o DeepGWT, o nosso fork do Shizuku e qualquer app de microG instalado no carro. O microG nunca é instalado por este instalador, então
 // procuramos o pacote dinamicamente por nome em vez de assumir um applicationId fixo — pode ter
 // sido colocado lá por fora deste fluxo.
 //
@@ -896,14 +905,14 @@ fi
 // esperada e inofensiva (ex.: rodar "Remover" duas vezes), então não tratamos código de saída
 // != 0 de cada `pm uninstall` individual como erro — só reportamos no terminal para transparência.
 /// Onde o app guarda a função de fábrica dos coringas do volante enquanto os reprograma
-/// (`CoringasDoVolante.ARQUIVO_DO_INSTALADOR` no app). Lido e apagado por `uninstall_opengw`.
-const CORINGAS_FILE: &str = "/data/local/tmp/.opengw_coringas";
+/// (`CoringasDoVolante.ARQUIVO_DO_INSTALADOR` no app). Lido e apagado por `uninstall_deepgwt`.
+const CORINGAS_FILE: &str = "/data/local/tmp/.deepgwt_coringas";
 
 #[tauri::command]
-async fn uninstall_opengw(
+async fn uninstall_deepgwt(
     app: AppHandle,
     state: tauri::State<'_, EstadoDaConexao>,
-) -> Result<(), ErroDoInstalador> {
+) -> Result<String, ErroDoInstalador> {
     conferir_wifi_do_carro().await?;
 
     if !sessao_aberta(state.clone()).await? {
@@ -941,7 +950,7 @@ if [ -n "$MICROG_PKG" ]; then
 fi
 echo "{marker}GT=$GT_CODE SHIZUKU=$SHIZUKU_CODE MICROG=${{MICROG_PKG:-nenhum}}:$MICROG_CODE"
 "#,
-        app_pkg = OPENGW_PACKAGE,
+        app_pkg = DEEPGWT_PACKAGE,
         shizuku_pkg = SHIZUKU_PACKAGE,
         marker = LOCAL_INSTALL_MARKER,
         coringas_file = CORINGAS_FILE,
@@ -949,19 +958,19 @@ echo "{marker}GT=$GT_CODE SHIZUKU=$SHIZUKU_CODE MICROG=${{MICROG_PKG:-nenhum}}:$
 
     let script_escaped = script.split('\n').collect::<Vec<_>>().join("\\n");
     let gravar_script = format!(
-        r#"echo -e '{}' > /data/local/tmp/uninstall_opengw.sh"#,
+        r#"echo -e '{}' > /data/local/tmp/uninstall_deepgwt.sh"#,
         script_escaped
     );
 
     let _ = app.emit(
         "telnet-output",
-        "🗑️ Enviando script de remoção (OPEN GW + Shizuku + microG)...",
+        "🗑️ Enviando script de remoção (DeepGWT + Shizuku + microG)...",
     );
     enviar_comando_com_eventos(gravar_script, state.clone(), &app).await?;
     tokio::time::sleep(Duration::from_millis(1000)).await;
 
     enviar_comando_com_eventos(
-        "chmod +x /data/local/tmp/uninstall_opengw.sh".to_string(),
+        "chmod +x /data/local/tmp/uninstall_deepgwt.sh".to_string(),
         state.clone(),
         &app,
     )
@@ -970,7 +979,7 @@ echo "{marker}GT=$GT_CODE SHIZUKU=$SHIZUKU_CODE MICROG=${{MICROG_PKG:-nenhum}}:$
 
     let _ = app.emit("telnet-output", "🚀 Removendo aplicações do carro...");
     enviar_comando_com_eventos(
-        "cd /data/local/tmp && ./uninstall_opengw.sh".to_string(),
+        "cd /data/local/tmp && ./uninstall_deepgwt.sh".to_string(),
         state.clone(),
         &app,
     )
@@ -978,12 +987,15 @@ echo "{marker}GT=$GT_CODE SHIZUKU=$SHIZUKU_CODE MICROG=${{MICROG_PKG:-nenhum}}:$
 
     let result = wait_for_prefix(LOCAL_INSTALL_MARKER, 30, &state, &app).await?;
     let _ = app.emit("telnet-output", format!("📋 Resultado: {}", result));
+    // Devolve à tela o que o carro recusou ("" = tudo removido): sem isso ela anunciava "o carro voltou
+    // ao estado de fábrica" mesmo quando o `pm uninstall` tinha saído com erro.
     match resumo_da_remocao(&result) {
         ResumoDaRemocao::Completa => {
             let _ = app.emit(
                 "telnet-output",
-                "✅ Remoção concluída. O carro volta a ficar como de fábrica (sem OPEN GW, Shizuku ou microG).",
+                "✅ Remoção concluída. O carro volta a ficar como de fábrica (sem DeepGWT, Shizuku ou microG).",
             );
+            Ok(String::new())
         }
         ResumoDaRemocao::Parcial(quais) => {
             let _ = app.emit(
@@ -993,10 +1005,11 @@ echo "{marker}GT=$GT_CODE SHIZUKU=$SHIZUKU_CODE MICROG=${{MICROG_PKG:-nenhum}}:$
                     quais
                 ),
             );
+            Ok(quais)
         }
     }
-    Ok(())
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 #[derive(Debug, PartialEq)]
 enum ResumoDaRemocao {
@@ -1009,7 +1022,7 @@ enum ResumoDaRemocao {
 fn resumo_da_remocao(linha: &str) -> ResumoDaRemocao {
     let mut recusados: Vec<&str> = Vec::new();
     if !linha.contains("GT=0") {
-        recusados.push("OPEN GW");
+        recusados.push("DeepGWT");
     }
     if !linha.contains("SHIZUKU=0") {
         recusados.push("Shizuku");
@@ -1027,24 +1040,24 @@ fn resumo_da_remocao(linha: &str) -> ResumoDaRemocao {
 }
 
 // Fluxo completo pensado para o botão único "Instalar no Carro": garante que o
-// Shizuku esteja instalado e rodando antes do OPEN GW, já que sem ele o app fica
+// Shizuku esteja instalado e rodando antes do DeepGWT, já que sem ele o app fica
 // com a maior parte das telas "inativas" (o motivo original deste comando existir).
 //
-// Importante: o OPEN GW precisa ser instalado ANTES do Shizuku, e não depois
+// Importante: o DeepGWT precisa ser instalado ANTES do Shizuku, e não depois
 // como na v0.1.4 — install_and_start_shizuku agora roda `pm grant` para o
-// pacote do OPEN GW antes de subir o servidor (ver comentário lá), o que só
+// pacote do DeepGWT antes de subir o servidor (ver comentário lá), o que só
 // funciona se o pacote já estiver instalado no aparelho.
 #[tauri::command]
-async fn install_opengw_with_shizuku(
+async fn install_deepgwt_with_shizuku(
     app: AppHandle,
     state: tauri::State<'_, EstadoDaConexao>,
 ) -> Result<(), ErroDoInstalador> {
     let resource_path = app
         .path()
-        .resolve("resources/opengw.apk", BaseDirectory::Resource)
-        .map_err(|_| ErroDoInstalador::ApkNotFound("resources/opengw.apk".to_string()))?;
+        .resolve("resources/deepgwt.apk", BaseDirectory::Resource)
+        .map_err(|_| ErroDoInstalador::ApkNotFound("resources/deepgwt.apk".to_string()))?;
 
-    install_apk_from_path(app.clone(), state.clone(), resource_path, "OPEN GW".to_string()).await?;
+    install_apk_from_path(app.clone(), state.clone(), resource_path, "DeepGWT".to_string()).await?;
 
     install_and_start_shizuku(app.clone(), state.clone()).await?;
 
@@ -1064,9 +1077,9 @@ async fn install_opengw_with_shizuku(
     // Alpha 7.9: abre o app no carro ao terminar. Numa instalação nova ele mostra o assistente de
     // configuração; numa atualização, as novidades — sem a pessoa ter de procurar o ícone. Falhar
     // aqui não desfaz nada do que foi instalado, então o erro só vai para o terminal.
-    let _ = app.emit("telnet-output", "📱 Abrindo o OPEN GW no carro...");
+    let _ = app.emit("telnet-output", "📱 Abrindo o DeepGWT no carro...");
     if let Err(e) = enviar_comando_com_eventos(
-        format!("am start -n {} >/dev/null 2>&1", OPENGW_SPLASH_ACTIVITY),
+        format!("am start -n {} >/dev/null 2>&1", DEEPGWT_SPLASH_ACTIVITY),
         state,
         &app,
     )
@@ -1077,9 +1090,9 @@ async fn install_opengw_with_shizuku(
     Ok(())
 }
 
-// "Modo sorrateiro" do OPEN GW oculta a barra, efeitos, painel virtual e o
+// "Modo sorrateiro" do DeepGWT oculta a barra, efeitos, painel virtual e o
 // ícone do launcher, deixando a multimídia como se nunca tivesse sido
-// modificada. A ÚNICA saída documentada na UI do OPEN GW é uma sequência
+// modificada. A ÚNICA saída documentada na UI do DeepGWT é uma sequência
 // física no volante (pisca-alta 2x + seta D-E-D-E em menos de 8s — ver
 // StealthModeController.kt no fork do app): não existe switch de "desativar"
 // na tela de Configurações. Se a sequência falhar por qualquer motivo (ex.:
@@ -1089,7 +1102,7 @@ async fn install_opengw_with_shizuku(
 //
 // Saída de emergência: o estado ("stealthModeActive") mora numa
 // SharedPreferences "device protected" (sobrevive a reboot) em
-// /data/user_de/0/<pkg>/shared_prefs/opengw_prefs.xml. A gente:
+// /data/user_de/0/<pkg>/shared_prefs/deepgwt_prefs.xml. A gente:
 // 1. mata todos os processos do app com `am force-stop` — a instância em
 //    memória cacheia o valor antigo e não relê o arquivo sozinha;
 // 2. reescreve o valor pra "false" direto no XML;
@@ -1097,13 +1110,22 @@ async fn install_opengw_with_shizuku(
 //    enquanto o modo está ativo — ver setLauncherIconVisible no fork);
 // 4. reabre o app direto pela AberturaActivity, que continua respondendo a
 //    `am start` mesmo com o alias desabilitado (a mesma "saída de
-//    emergência" comentada no próprio código do OPEN GW).
-const OPENGW_STEALTH_PREFS_PATH: &str =
-    "/data/user_de/0/br.com.opengw/shared_prefs/opengw_prefs.xml";
-const OPENGW_LAUNCHER_ALIAS: &str =
-    "br.com.opengw/br.com.opengw.LauncherAlias";
-const OPENGW_SPLASH_ACTIVITY: &str =
-    "br.com.opengw/br.com.opengw.AberturaActivity";
+//    emergência" comentada no próprio código do DeepGWT).
+// O diretório é o applicationId real (br.com.redesurftank.havalshisuku — ver nota em
+// DEEPGWT_PACKAGE); o nome do arquivo de SharedPreferences (deepgwt_prefs.xml) é arbitrário
+// e não mudou (definido em StealthModeController.kt, independente do applicationId).
+const DEEPGWT_STEALTH_PREFS_PATH: &str =
+    "/data/user_de/0/br.com.redesurftank.havalshisuku/shared_prefs/deepgwt_prefs.xml";
+// Pacote à esquerda da barra é o applicationId real; a classe à direita continua com o
+// nome de pacote compilado (namespace br.com.deepgwt), que não mudou.
+const DEEPGWT_LAUNCHER_ALIAS: &str =
+    "br.com.redesurftank.havalshisuku/br.com.deepgwt.LauncherAlias";
+/// O segundo ícone ("Atualizar DeepGWT"): o app o esconde junto com o primeiro (ver
+/// `StealthModeController`), então a saída precisa reabilitar os dois.
+const DEEPGWT_UPDATER_ALIAS: &str =
+    "br.com.redesurftank.havalshisuku/br.com.deepgwt.UpdaterAlias";
+const DEEPGWT_SPLASH_ACTIVITY: &str =
+    "br.com.redesurftank.havalshisuku/br.com.deepgwt.AberturaActivity";
 
 /// O script que desliga o modo sorrateiro. Vai para o carro dentro de `echo -e '<script>' > arquivo`,
 /// então NÃO pode ter aspas simples: uma só fecha o `echo` e o shell do carro monta outro roteiro
@@ -1123,13 +1145,15 @@ else
   PATCH_STATUS=NO_PREFS_FILE
 fi
 pm enable {alias}
+pm enable {updater_alias}
 am start -n {splash} >/dev/null 2>&1
 echo "{marker}$PATCH_STATUS"
 "#,
-        app_pkg = OPENGW_PACKAGE,
-        prefs_path = OPENGW_STEALTH_PREFS_PATH,
-        alias = OPENGW_LAUNCHER_ALIAS,
-        splash = OPENGW_SPLASH_ACTIVITY,
+        app_pkg = DEEPGWT_PACKAGE,
+        prefs_path = DEEPGWT_STEALTH_PREFS_PATH,
+        alias = DEEPGWT_LAUNCHER_ALIAS,
+        updater_alias = DEEPGWT_UPDATER_ALIAS,
+        splash = DEEPGWT_SPLASH_ACTIVITY,
         marker = LOCAL_INSTALL_MARKER,
     )
 }
@@ -1184,7 +1208,7 @@ async fn reset_stealth_mode(
     let code = marker_line.trim_start_matches(LOCAL_INSTALL_MARKER).trim();
     if code == "NO_PREFS_FILE" {
         return Err(ErroDoInstalador::InstallFailed(
-            "Arquivo de preferências do OPEN GW não encontrado — o Modo Sorrateiro já deve estar desativado.".to_string(),
+            "Arquivo de preferências do DeepGWT não encontrado — o Modo Sorrateiro já deve estar desativado.".to_string(),
         ));
     }
     if code == "NOT_PATCHED" {
@@ -1199,6 +1223,7 @@ async fn reset_stealth_mode(
     );
     Ok(())
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Executa um comando no shell do carro e DEVOLVE a saída.
 //
@@ -1224,6 +1249,13 @@ async fn telnet_exec(
     timeout_secs: Option<u64>,
     state: tauri::State<'_, EstadoDaConexao>,
 ) -> Result<String, ErroDoInstalador> {
+    // Nenhuma tela abre a sessão antes de chamar isto (só os fluxos de instalação abrem a deles):
+    // sem esta abertura, "Reler do carro" da configuração de fábrica falhava com "sem sessão".
+    if !sessao_aberta(state.clone()).await? {
+        conferir_wifi_do_carro().await?;
+        abrir_sessao_telnet(state.clone()).await?;
+    }
+
     // Marca única por chamada: duas leituras seguidas não podem confundir a sentinela uma da outra
     // se restar saída atrasada da anterior no buffer.
     let tag = format!(
@@ -1284,24 +1316,24 @@ async fn telnet_exec(
         .unwrap_or(Err(ErroDoInstalador::SemResposta))
 }
 
-// Porta fixa do GwLinkServer embarcado no OPEN GW (ver GwLinkServer.kt) — só é alcançável
-// quando o OPEN GW já está instalado e rodando no carro, já que a leitura de telemetria de
+// Porta fixa do GwLinkServer embarcado no DeepGWT (ver GwLinkServer.kt) — só é alcançável
+// quando o DeepGWT já está instalado e rodando no carro, já que a leitura de telemetria de
 // verdade (via AIDL/binder pro serviço `intelligentvehiclecontrol`) só existe em código
 // rodando dentro do carro, não em um shell puro via telnet.
 const GWLINK_SERVER_PORT: u16 = 8766;
 
-// Equivalente a: a função "GWLink" do hub — busca o snapshot atual de telemetria do OPEN GW
+// Equivalente a: a função "GWLink" do hub — busca o snapshot atual de telemetria do DeepGWT
 // já instalado no carro. Devolve o JSON cru (o frontend decide o que mostrar/traduzir).
 //
 // Erros aqui são reportados com a causa real (timeout / conexão recusada / etc.): o motivo mais
-// comum é o OPEN GW não estar rodando no carro, ou a porta 8766 não estar alcançável.
+// comum é o DeepGWT não estar rodando no carro, ou a porta 8766 não estar alcançável.
 #[tauri::command]
 async fn gwlink_fetch_telemetry() -> Result<String, ErroDoInstalador> {
     gwlink_fetch("/").await
 }
 
 // Snapshot de diagnóstico do bootstrap automático do Shizuku (ver BootDiagnostics.kt e
-// GwLinkServer.kt no OPEN GW) — usado pra investigar por que o restart automático do Shizuku
+// GwLinkServer.kt no DeepGWT) — usado pra investigar por que o restart automático do Shizuku
 // não aconteceu depois de um reboot da MMI, sem precisar de acesso físico ao carro.
 #[tauri::command]
 async fn gwlink_fetch_diagnostics() -> Result<String, ErroDoInstalador> {
@@ -1404,6 +1436,7 @@ echo "{marker}0"
     packages.sort_by(|a, b| a.package_name.cmp(&b.package_name));
     Ok(packages)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Remoção "para o usuário atual" (`pm uninstall --user 0`) em vez de apagar o APK do
 // /system: pra apps de sistema isso desativa/desinstala só pra esse usuário — geralmente
@@ -1525,7 +1558,7 @@ async fn remote_gwlink_telemetry(car_ip: String) -> Result<String, ErroDoInstala
 
 // ── Nível e licença (Alpha 8.0) ──────────────────────────────────────────────────────────────
 //
-// O nível do OPEN GW mora no carro: `GET /licenca` devolve o nível e a tabela recurso -> nível, e o
+// O nível do DeepGWT mora no carro: `GET /licenca` devolve o nível e a tabela recurso -> nível, e o
 // instalador só desenha os cadeados. Um carro anterior à 8.0 cai no ramo padrão do servidor e
 // devolve telemetria sem `ok` — quem interpreta é `tiers/niveis.ts` ("nada trancado").
 #[tauri::command]
@@ -1567,6 +1600,13 @@ async fn remote_licenca_ativar(car_ip: String, codigo: String) -> Result<String,
 #[tauri::command]
 async fn remote_licenca_avaliacao(car_ip: String) -> Result<String, ErroDoInstalador> {
     licenca_post(&car_ip, "/licenca/avaliacao", serde_json::json!({})).await
+}
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
+
+/// "Voltar ao meu plano" (Alpha 10.1): encerra o teste do Max no carro.
+#[tauri::command]
+async fn remote_licenca_avaliacao_encerrar(car_ip: String) -> Result<String, ErroDoInstalador> {
+    licenca_post(&car_ip, "/licenca/avaliacao/encerrar", serde_json::json!({})).await
 }
 
 async fn licenca_post(car_ip: &str, caminho: &str, corpo: serde_json::Value) -> Result<String, ErroDoInstalador> {
@@ -1656,6 +1696,43 @@ async fn remote_profile_delete(car_ip: String, name: String) -> Result<String, E
     resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
 }
 
+// Histórico de serviço (GwLinkServer `/servico`): o caderno de revisões mora no carro. O instalador
+// lista, registra e apaga por lá; o corpo do registro é montado na tela e o app valida de novo.
+#[tauri::command]
+async fn remote_servico_list(car_ip: String) -> Result<String, ErroDoInstalador> {
+    let client = remote_control_client(false)?;
+    let resp = client
+        .get(remote_url(&car_ip, "/servico")?)
+        .send()
+        .await
+        .map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))?;
+    resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
+}
+
+#[tauri::command]
+async fn remote_servico_add(car_ip: String, registro: serde_json::Value) -> Result<String, ErroDoInstalador> {
+    let client = remote_control_client(false)?;
+    let resp = client
+        .post(remote_url(&car_ip, "/servico/adicionar")?)
+        .json(&registro)
+        .send()
+        .await
+        .map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))?;
+    resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
+}
+
+#[tauri::command]
+async fn remote_servico_delete(car_ip: String, id: i64) -> Result<String, ErroDoInstalador> {
+    let client = remote_control_client(false)?;
+    let resp = client
+        .post(remote_url(&car_ip, "/servico/apagar")?)
+        .json(&serde_json::json!({ "id": id }))
+        .send()
+        .await
+        .map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))?;
+    resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
+}
+
 // Tema do HUD (GwLinkServer `/hud/tema`, Alpha 5.9). O corpo é o arquivo do tema como o editor do
 // instalador monta — o carro valida e corrige (HudTema.deJson), então aqui ele só viaja. Um carro
 // mais antigo responde telemetria sem `ok`; quem interpreta isso é a tela (hud-editor/carro.ts).
@@ -1683,12 +1760,12 @@ async fn remote_hud_theme_apply(car_ip: String, tema_json: String) -> Result<Str
     resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
 }
 
-// ── Ajustes do OPEN GW (GwLinkServer `/ajustes`, Alpha 6.4) ─────────────────────────────────
+// ── Ajustes do DeepGWT (GwLinkServer `/ajustes`, Alpha 6.4) ─────────────────────────────────
 //
 // O catálogo mora no carro: a primeira leitura traz a descrição de cada ajuste (rótulo, tipo,
 // faixa, dependência) junto com os valores, e as seguintes (`catalogo=0`) só os valores. Um carro
 // anterior à 6.4 cai no ramo padrão do servidor e devolve telemetria sem `ok`; quem interpreta
-// isso é a tela (ajustes-open-gw/carro.ts), igual ao tema do HUD.
+// isso é a tela (ajustes-deepgwt/carro.ts), igual ao tema do HUD.
 #[tauri::command]
 async fn remote_ajustes_ler(car_ip: String, catalogo: bool) -> Result<String, ErroDoInstalador> {
     let client = remote_control_client(false)?;
@@ -1700,6 +1777,7 @@ async fn remote_ajustes_ler(car_ip: String, catalogo: bool) -> Result<String, Er
         .map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))?;
     resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // `valores_json` é o objeto `{id: valor}` já serializado pela tela — os valores têm tipos
 // diferentes (booleano, número, texto) e o carro valida cada um contra o próprio catálogo, então
@@ -1778,7 +1856,7 @@ async fn remote_temas_rascunho(car_ip: String, ativar: bool) -> Result<String, E
 }
 
 // Lê um arquivo do carro inteiro para a memória, em base64. Só para arquivos pequenos — hoje, o
-// `theme.opengw.json` de um tema, para "baixar para editar". Arquivo grande vai por
+// `theme.deepgwt.json` de um tema, para "baixar para editar". Arquivo grande vai por
 // `remote_download_file`, que grava em disco conforme chega.
 #[tauri::command]
 async fn remote_read_file_b64(car_ip: String, remote_path: String) -> Result<String, ErroDoInstalador> {
@@ -1796,7 +1874,7 @@ async fn remote_read_file_b64(car_ip: String, remote_path: String) -> Result<Str
     Ok(BASE64_STANDARD.encode(&bytes))
 }
 
-// Escrita genérica no carro (POST /set no GwLinkServer do OPEN GW) — endpoint único
+// Escrita genérica no carro (POST /set no GwLinkServer do DeepGWT) — endpoint único
 // reaproveitado por todas as telas novas do instalador (ADAS, perfis, DVR, ajustes) em vez de
 // um comando por feature, espelhando o mesmo endpoint genérico usado no lado Android.
 #[tauri::command]
@@ -1864,6 +1942,7 @@ async fn remote_dvr_find(car_ip: String) -> Result<String, ErroDoInstalador> {
     }
     Ok(body)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // As três funções abaixo devolvem o JSON cru do GwLinkServer (`{ok, exitCode, output}`) em vez
 // de só `Result<()>` — os primeiros testes reais mostraram toque/swipe falhando sem nenhum erro
@@ -1916,7 +1995,7 @@ async fn remote_input_key(car_ip: String, display: i32, keycode: i32) -> Result<
     resp.text().await.map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))
 }
 
-// Reinicia a central (reboot do head unit) pelo GwLinkServer do OPEN GW. O carro agenda o reboot
+// Reinicia a central (reboot do head unit) pelo GwLinkServer do DeepGWT. O carro agenda o reboot
 // com atraso e responde ok ANTES de cair, então esta chamada retorna normalmente; a conexão só
 // morre uns instantes depois, quando o Android reinicia de fato. Sem parâmetros além do IP.
 #[tauri::command]
@@ -1982,12 +2061,21 @@ async fn run_mirror_loop(
         .await
         .map_err(ErroDoInstalador::Io)?;
 
-    // Descarta os headers da resposta HTTP até a linha em branco.
+    // Descarta os headers da resposta HTTP até a linha em branco, conferindo o status: um erro do
+    // carro (4xx/5xx com JSON no corpo) não é um fluxo de quadros, e seus primeiros 4 bytes lidos
+    // como tamanho viravam uma alocação de gigabytes.
+    let mut primeira_linha = true;
     loop {
         let mut line = String::new();
         let n = leitor.read_line(&mut line).await.map_err(ErroDoInstalador::Io)?;
         if n == 0 || line.trim().is_empty() {
             break;
+        }
+        if primeira_linha {
+            primeira_linha = false;
+            if !status_http_ok(&line) {
+                return Ok(());
+            }
         }
     }
 
@@ -1997,6 +2085,9 @@ async fn run_mirror_loop(
             break; // carro fechou a conexão (display não suportado ou stream cancelado)
         }
         let len = u32::from_be_bytes(len_buf) as usize;
+        if len == 0 || len > TAMANHO_MAXIMO_DO_QUADRO {
+            break; // fluxo fora do formato: melhor parar do que alocar o que vier
+        }
         let mut frame = vec![0u8; len];
         if leitor.read_exact(&mut frame).await.is_err() {
             break;
@@ -2010,6 +2101,16 @@ async fn run_mirror_loop(
 
     Ok(())
 }
+
+/// Um quadro JPEG de 1920x720 passa de poucas centenas de KB; 16 MiB é folga de sobra.
+const TAMANHO_MAXIMO_DO_QUADRO: usize = 16 * 1024 * 1024;
+
+/// A linha de status de uma resposta HTTP/1.x diz 200?
+fn status_http_ok(linha: &str) -> bool {
+    let mut partes = linha.split_whitespace();
+    matches!((partes.next(), partes.next()), (Some(v), Some("200")) if v.starts_with("HTTP/1."))
+}
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 #[tauri::command]
 async fn start_mirror(
@@ -2192,6 +2293,7 @@ async fn remote_upload_file(
     }
     Ok(())
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Lê um arquivo local qualquer (ex: imagem escolhida no editor de temas) e devolve em base64.
 // Existe pra evitar precisar configurar o escopo do protocolo asset:// do Tauri só pra exibir
@@ -2362,6 +2464,7 @@ async fn remote_backup_app(
         .map_err(|e| ErroDoInstalador::RemoteControlError(e.to_string()))?;
     stream_backup_to_file(resp, &local_path, &app).await
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 /// Tudo o que o frontend pode invocar com `invoke(...)` precisa estar nesta lista.
 fn comandos_do_frontend() -> impl Fn(tauri::ipc::Invoke<tauri::Wry>) -> bool + Send + Sync + 'static {
@@ -2373,12 +2476,12 @@ fn comandos_do_frontend() -> impl Fn(tauri::ipc::Invoke<tauri::Wry>) -> bool + S
             telnet::send_command,
             telnet::sessao_aberta,
             install_local_apk,
-            install_bundled_opengw,
+            install_bundled_deepgwt,
             install_and_start_shizuku,
-            install_opengw_with_shizuku,
+            install_deepgwt_with_shizuku,
             reset_stealth_mode,
             restart_shizuku,
-            uninstall_opengw,
+            uninstall_deepgwt,
             list_installed_packages,
             uninstall_package,
             gwlink_fetch_telemetry,
@@ -2396,6 +2499,7 @@ fn comandos_do_frontend() -> impl Fn(tauri::ipc::Invoke<tauri::Wry>) -> bool + S
             remote_licenca_nivel_de_teste,
             remote_licenca_ativar,
             remote_licenca_avaliacao,
+            remote_licenca_avaliacao_encerrar,
             remote_ajustes_aplicar,
             remote_ajustes_esperar,
             remote_temas_listar,
@@ -2404,6 +2508,9 @@ fn comandos_do_frontend() -> impl Fn(tauri::ipc::Invoke<tauri::Wry>) -> bool + S
             remote_read_file_b64,
             remote_hud_theme_apply,
             remote_profile_delete,
+            remote_servico_list,
+            remote_servico_add,
+            remote_servico_delete,
             remote_dvr_find,
             remote_storage_info,
             remote_backup_size,
@@ -2447,7 +2554,7 @@ pub fn iniciar() {
         .manage(estado)
         .invoke_handler(comandos_do_frontend())
         .run(contexto)
-        .expect("o OPEN GW não conseguiu abrir a janela do instalador");
+        .expect("o DeepGWT não conseguiu abrir a janela do instalador");
 }
 
 #[cfg(test)]
@@ -2463,6 +2570,24 @@ mod testes {
         assert!(roteiro.contains("sed -i /stealthModeActive/s/true/false/"));
     }
 
+    // O app esconde os dois ícones no modo sorrateiro; a saída tem de devolver os dois.
+    #[test]
+    fn a_saida_do_modo_sorrateiro_reabilita_os_dois_icones() {
+        let roteiro = script_do_modo_sorrateiro();
+        assert!(roteiro.contains("pm enable br.com.redesurftank.havalshisuku/br.com.deepgwt.LauncherAlias"));
+        assert!(roteiro.contains("pm enable br.com.redesurftank.havalshisuku/br.com.deepgwt.UpdaterAlias"));
+    }
+
+    #[test]
+    fn so_status_200_vira_fluxo_de_quadros() {
+        assert!(status_http_ok("HTTP/1.1 200 OK\r\n"));
+        assert!(status_http_ok("HTTP/1.0 200 OK"));
+        assert!(!status_http_ok("HTTP/1.1 500 Internal Server Error\r\n"));
+        assert!(!status_http_ok("HTTP/1.1 404 Not Found"));
+        assert!(!status_http_ok("{\"ok\":false}"));
+        assert!(!status_http_ok(""));
+    }
+
     #[test]
     fn a_remocao_so_e_completa_quando_o_pm_saiu_com_zero() {
         assert_eq!(
@@ -2475,7 +2600,7 @@ mod testes {
         );
         assert_eq!(
             resumo_da_remocao("GT=1 SHIZUKU=0 MICROG=nenhum:0"),
-            ResumoDaRemocao::Parcial("OPEN GW".to_string())
+            ResumoDaRemocao::Parcial("DeepGWT".to_string())
         );
         assert_eq!(
             resumo_da_remocao("GT=0 SHIZUKU=1 MICROG=org.microg.gms:1"),
@@ -2499,7 +2624,7 @@ mod testes {
 
     #[test]
     fn tar_truncado_nao_e_backup() {
-        let pasta = std::env::temp_dir().join(format!("opengw-tar-{}", std::process::id()));
+        let pasta = std::env::temp_dir().join(format!("deepgwt-tar-{}", std::process::id()));
         std::fs::create_dir_all(&pasta).unwrap();
         let inteiro = pasta.join("inteiro.tar");
         let mut bytes = vec![7u8; 2048];
@@ -2575,3 +2700,4 @@ mod testes {
         assert!(dica_do_pm("Success").is_none());
     }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

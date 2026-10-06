@@ -1,4 +1,5 @@
-// Compartilhar, lembrar e mostrar temas: o pacote `.opengw-tema`, o histórico de gravações e as
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+// Compartilhar, lembrar e mostrar temas: o pacote `.deepgwt-tema`, o histórico de gravações e as
 // miniaturas da lista.
 //
 // O PACOTE é um JSON com o `ThemeSpec` inteiro e uma miniatura. As imagens já viajam dentro do
@@ -16,8 +17,8 @@ import { INSTALLER_VERSION } from '../lib/version'
 
 // --- pacote ---------------------------------------------------------------------------------
 
-export const EXTENSAO_DO_PACOTE = 'opengw-tema'
-const FORMATO = 'opengw-tema'
+export const EXTENSAO_DO_PACOTE = 'deepgwt-tema'
+const FORMATO = 'deepgwt-tema'
 
 export type PacoteDeTema = {
   formato: typeof FORMATO
@@ -61,7 +62,7 @@ export async function gerarMiniatura(spec: ThemeSpec): Promise<string> {
   return `data:image/png;base64,${bytesToBase64(await buildThumbnail(spec))}`
 }
 
-const CHAVE_MINIATURAS = 'opengw_theme_thumbs_v1'
+const CHAVE_MINIATURAS = 'deepgwt_theme_thumbs_v1'
 
 function lerMiniaturas(): Record<string, { src: string; em: number }> {
   try {
@@ -105,7 +106,7 @@ export const VERSOES_POR_TEMA = 20
 
 export type Versao = { chave: string; temaId: string; em: number; nome: string; elementos: number; paginas: number; spec: ThemeSpec }
 
-const BANCO = 'opengw-editor-de-temas'
+const BANCO = 'deepgwt-editor-de-temas'
 const LOJA = 'versoes'
 
 function abrirBanco(): Promise<IDBDatabase> {
@@ -176,3 +177,4 @@ export async function apagarHistorico(temaId: string): Promise<void> {
     /* nada */
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

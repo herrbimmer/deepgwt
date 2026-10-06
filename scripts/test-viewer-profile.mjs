@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 /**
  * Trava o perfil de motorista no launcher 3D.
  *
  * Por que é teste de FONTE: o launcher é um APK de terceiro de 1,9 MB de HTML que só roda dentro
- * da WebView da central, com as pontes nativas presentes e com o OPEN GW no ar em 127.0.0.1:8766.
+ * da WebView da central, com as pontes nativas presentes e com o DeepGWT no ar em 127.0.0.1:8766.
  * Não existe aqui um jeito honesto de executá-lo. O que este arquivo garante é que as mudanças
  * continuem no lugar depois de um reempacotamento ou de uma atualização do launcher — que é
  * justamente quando elas somem sem ninguém ver.
@@ -41,79 +42,79 @@ if (!existsSync(WWW)) {
 }
 
 const index = readFileSync(join(WWW, 'index.html'), 'utf8')
-const perfilPath = join(WWW, 'openGwProfile.js')
+const perfilPath = join(WWW, 'deepGwtProfile.js')
 const perfil = existsSync(perfilPath) ? readFileSync(perfilPath, 'utf8') : ''
-const cliente = readFileSync(join(WWW, 'openGwClient.js'), 'utf8')
-const painel = readFileSync(join(WWW, 'openGwPanel.js'), 'utf8')
+const cliente = readFileSync(join(WWW, 'deepGwtClient.js'), 'utf8')
+const painel = readFileSync(join(WWW, 'deepGwtPanel.js'), 'utf8')
 // O CSS do launcher é escrito como concatenação de literais ('a' + 'b'), então uma regra
 // atravessa aspas e `+`. Colar os pedaços de volta deixa as regras legíveis por regex.
 const cssColado = cliente.replace(/'\s*\+\s*\n?\s*'/g, '')
 
 console.log('\nPerfil de motorista no launcher\n')
 
-ok('openGwProfile.js existe', perfil.length > 0)
+ok('deepGwtProfile.js existe', perfil.length > 0)
 ok(
-  'o index.html carrega o perfil DEPOIS do openGwClient.js',
-  /<script src="\.\/openGwClient\.js"><\/script>\s*\n\s*<script src="\.\/openGwProfile\.js"><\/script>/.test(index),
-  'antes dele, window.OpenGW ainda não existe quando este arquivo é avaliado'
+  'o index.html carrega o perfil DEPOIS do deepGwtClient.js',
+  /<script src="\.\/deepGwtClient\.js"><\/script>\s*\n\s*<script src="\.\/deepGwtProfile\.js"><\/script>/.test(index),
+  'antes dele, window.DeepGWT ainda não existe quando este arquivo é avaliado'
 )
 
 ok(
   'a pílula do perfil guarda a posição do alto à direita como regra base',
-  /#opengw-profile\{[^}]*right:calc\(var\(--hv-safe-right, 0px\) \+ \d+px\);top:\d+px/.test(perfil),
-  'é o retorno seguro: sem o trilho do openGwClient.js, a pílula ainda precisa nascer no canto ' +
+  /#deepgwt-profile\{[^}]*right:calc\(var\(--hv-safe-right, 0px\) \+ \d+px\);top:\d+px/.test(perfil),
+  'é o retorno seguro: sem o trilho do deepGwtClient.js, a pílula ainda precisa nascer no canto ' +
     'onde sempre esteve, e não empilhada em 0,0 dentro do #hv-root'
 )
 ok(
   'a pílula do perfil entra no trilho de atalhos, não no host',
   /trilhoDeAtalhos\(host\)\) \|\| host\)\.appendChild\(b\)/.test(perfil),
-  'as três pílulas do OPEN GW ficam numa linha só; o `|| host` é o retorno seguro'
+  'as três pílulas do DeepGWT ficam numa linha só; o `|| host` é o retorno seguro'
 )
 ok(
   'as três pílulas não podem se sobrepor: o trilho é uma linha, não três absolutos',
-  /#opengw-atalhos\{[^}]*display:flex/.test(cssColado) &&
-    /#opengw-atalhos\{[^}]*right:calc\(var\(--hv-safe-right, 0px\) \+ \d+px\)/.test(cssColado),
+  /#deepgwt-atalhos\{[^}]*display:flex/.test(cssColado) &&
+    /#deepgwt-atalhos\{[^}]*right:calc\(var\(--hv-safe-right, 0px\) \+ \d+px\)/.test(cssColado),
   'antes as três eram absolutas dentro do mesmo #hv-root e só um `top:` diferente as separava'
 )
 ok(
   'o trilho é ancorado pela DIREITA',
-  /#opengw-atalhos\{[^}]*justify-content:flex-end/.test(cssColado),
+  /#deepgwt-atalhos\{[^}]*justify-content:flex-end/.test(cssColado),
   'o painel esportivo entra e sai com o SPORT+; ancorado à direita ele cresce para o lado vazio ' +
     'e não empurra projeção nem perfil debaixo do dedo de quem ia tocá-los'
 )
 ok(
   'o painel esportivo é o item mais à esquerda',
-  /#opengw-atalhos > #opengw-sportsdisplay\{order:1\}/.test(cliente) &&
-    /#opengw-atalhos > #opengw-projection\{order:2\}/.test(cliente) &&
-    /#opengw-atalhos > #opengw-profile\{order:3\}/.test(cliente),
+  /#deepgwt-atalhos > #deepgwt-sportsdisplay\{order:1\}/.test(cliente) &&
+    /#deepgwt-atalhos > #deepgwt-projection\{order:2\}/.test(cliente) &&
+    /#deepgwt-atalhos > #deepgwt-profile\{order:3\}/.test(cliente),
   'é o único que muda de tamanho em uso; ordem declarada porque duas pílulas são instaladas por ' +
     'um arquivo e a terceira por outro, e quem chega primeiro depende do whenMounted de cada um'
 )
 ok(
   'a posição dentro do trilho vence por especificidade, não por ordem de injeção',
-  /#opengw-atalhos > #opengw-profile,#opengw-atalhos > #opengw-projection,/.test(cliente),
+  /#deepgwt-atalhos > #deepgwt-profile,#deepgwt-atalhos > #deepgwt-projection,/.test(cliente),
   'com um id só de cada lado, qual regra vence dependeria de qual <style> entrou primeiro — e ' +
     'isso é uma corrida entre dois whenMounted'
 )
 ok(
   'o teto do trilho é a largura útil da tela, não uma fração dela',
-  /#opengw-atalhos\{[^}]*max-width:calc\(100% - var\(--hv-safe-left, 0px\) - var\(--hv-safe-right, 0px\) - \d+px\)/.test(cssColado),
+  /#deepgwt-atalhos\{[^}]*max-width:calc\(100% - var\(--hv-safe-left, 0px\) - var\(--hv-safe-right, 0px\) - \d+px\)/.test(cssColado),
   'no navegador --hv-safe-right é vazio e um teto de 50% parecia folgado; no carro o launcher ' +
     'define a área segura em tempo de execução e o teto apertava. Como a pílula do perfil é a ' +
     'única que encolhe, ela comia a folga inteira e o nome de quem dirige sumia'
 )
 ok(
   'só o nome do perfil encolhe, e ele encolhe com reticências',
-  /#opengw-atalhos > #opengw-profile\{flex:0 1 auto;min-width:0;\}/.test(cssColado) &&
-    /#opengw-atalhos > \*\{pointer-events:auto;flex:0 0 auto;\}/.test(cssColado) &&
-    /#opengw-profile \.nome\{overflow:hidden;text-overflow:ellipsis/.test(perfil),
+  /#deepgwt-atalhos > #deepgwt-profile\{flex:0 1 auto;min-width:0;\}/.test(cssColado) &&
+    /#deepgwt-atalhos > \*\{pointer-events:auto;flex:0 0 auto;\}/.test(cssColado) &&
+    /#deepgwt-profile \.nome\{overflow:hidden;text-overflow:ellipsis/.test(perfil),
   'um nome de perfil muito longo tem de virar reticências, nunca empurrar as outras duas ' +
     'pílulas para fora da tela'
 )
 ok(
   'o trilho não rouba o toque do cenário 3D',
-  /#opengw-atalhos\{[^}]*pointer-events:none/.test(cssColado) &&
-    /#opengw-atalhos > \*\{pointer-events:auto/.test(cssColado),
+  /#deepgwt-atalhos\{[^}]*pointer-events:none/.test(cssColado) &&
+    /#deepgwt-atalhos > \*\{pointer-events:auto/.test(cssColado),
   'a faixa ocupa metade da largura da tela; sem isso, os vãos entre as pílulas comeriam o ' +
     'arrasto que gira o carro'
 )
@@ -123,8 +124,8 @@ ok(
 )
 
 ok(
-  'a janela de escolha reaproveita a modal do painel OPEN GW',
-  /opengw-modal-card/.test(perfil) && /opengw-choice/.test(perfil) && /opengw-grid/.test(perfil),
+  'a janela de escolha reaproveita a modal do painel DeepGWT',
+  /deepgwt-modal-card/.test(perfil) && /deepgwt-choice/.test(perfil) && /deepgwt-grid/.test(perfil),
   'sem isso a lista de perfis seria a única janela do launcher com aparência própria'
 )
 ok(
@@ -133,7 +134,7 @@ ok(
 )
 
 ok(
-  'trocar de perfil passa pelo OPEN GW, não pelo launcher',
+  'trocar de perfil passa pelo DeepGWT, não pelo launcher',
   /post\('\/profiles\/select'/.test(perfil),
   'as pontes nativas deste APK não leem nem escrevem preferência nenhuma'
 )
@@ -161,7 +162,7 @@ ok(
 )
 ok(
   'sucesso e pendência são visualmente diferentes',
-  /opengw-perfil-ok/.test(perfil) && /opengw-perfil-erro/.test(perfil)
+  /deepgwt-perfil-ok/.test(perfil) && /deepgwt-perfil-erro/.test(perfil)
 )
 ok(
   'uma troca que falhou no meio do caminho relê o estado real',
@@ -189,8 +190,8 @@ ok(
 )
 
 ok(
-  'o painel OPEN GW tem a entrada de perfil',
-  /PERFIL DE MOTORISTA/.test(painel) && /window\.OpenGwProfile/.test(painel)
+  'o painel DeepGWT tem a entrada de perfil',
+  /PERFIL DE MOTORISTA/.test(painel) && /window\.DeepGwtProfile/.test(painel)
 )
 ok(
   'o painel mostra quem está dirigindo sem precisar abrir a lista',
@@ -203,3 +204,4 @@ if (falhas > 0) {
   process.exit(1)
 }
 console.log(`${total} verificações, todas passaram.`)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

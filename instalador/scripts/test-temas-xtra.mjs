@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Catálogo XTRA: o que está em public/temas-xtra bate com o catalogo.json, cada tema passa nas
 // regras do carro (Chrome 84, contrato v1.0) e a lógica da tela (situação no carro, busca, lote).
 
@@ -151,7 +152,7 @@ try {
 check(recusou, 'enviarTemaXtra recusa pasta fora do catálogo')
 
 // O carro sabe separar as castas (app 7.0).
-const kt = (f) => readFileSync(join(AQUI, '..', '..', 'app', 'src', 'main', 'java', 'br', 'com', 'opengw', f), 'utf8')
+const kt = (f) => readFileSync(join(AQUI, '..', '..', 'app', 'src', 'main', 'java', 'br', 'com', 'deepgwt', f), 'utf8')
 check(/put\("casta", t\.casta\.id\)/.test(kt('managers/GwLinkServer.kt')), 'GET /temas manda a casta')
 check(/CastaDoTema\.values\(\)\.forEach/.test(kt('ui/telas/TelasScreen.kt')), 'Telas desenha uma fileira por casta')
 check(/LazyRow\(/.test(kt('ui/telas/TelasScreen.kt')), 'fileira de temas é preguiçosa')
@@ -161,3 +162,4 @@ if (falhas.length) {
   falhas.slice(0, 30).forEach((f) => console.log('  FALHOU:', f))
   process.exit(1)
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

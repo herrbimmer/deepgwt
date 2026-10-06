@@ -1,4 +1,5 @@
-// Guardas da tela "Ajustes do OPEN GW" (6.4): leitura das respostas do carro, dependências,
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
+// Guardas da tela "Ajustes do DeepGWT" (6.4): leitura das respostas do carro, dependências,
 // "alterado", busca e a mescla que protege o que o usuário está mexendo.
 //
 // O catálogo usado é o retrato real do app (src/mock/ajustesFixture.json, tirado do emulador),
@@ -26,7 +27,7 @@ const lanca = (fn, tipo, nome) => {
   }
 }
 
-const m = await import('../src/ajustes-open-gw/modelo.ts')
+const m = await import('../src/ajustes-deepgwt/modelo.ts')
 const fixture = JSON.parse(readFileSync(fileURLToPath(new URL('../src/mock/ajustesFixture.json', import.meta.url)), 'utf8'))
 
 // ── 1. Respostas ─────────────────────────────────────────────────────────────────────────────
@@ -113,3 +114,4 @@ eq(m.mesclar({}, { a: 1 }, new Set()).mudaram, [], 'primeira leitura não destac
 
 console.log(`ajustes: ${total - falhas}/${total} verificações`)
 if (falhas) process.exit(1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Rota</name>
     <description>Uma estrada desenhada em curva de Bézier atravessa a tela e o trecho já percorrido é o combustível gasto: tanque cheio é o começo da rota, tanque vazio é o fim. O marcador do carro segue o traçado usando o comprimento real do caminho e gira para a tangente.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

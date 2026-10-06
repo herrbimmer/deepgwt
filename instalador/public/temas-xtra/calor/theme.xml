@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Calor</name>
     <description>Mapa de calor de 16 por 8 células contando quanto tempo o carro passou em cada par de giro e velocidade. A rampa de cor vai do azul-noite ao vermelho, a célula de agora ganha moldura branca, e a mancha que se forma é a assinatura da transmissão.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

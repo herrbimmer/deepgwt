@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Tambor</name>
     <description>Velocímetro de rolo: um cilindro impresso gira atrás de uma janela e o número sobe em vez de saltar, como nos utilitários franceses de suspensão hidráulica. A curvatura do tambor é feita com sombra nas bordas da janela e um brilho na linha do índice. A fita inteira, de 0 a 240, é montada uma vez no carregamento -- pintar um quadro custa apenas uma translação.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

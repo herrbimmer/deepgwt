@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Varredura do veículo — a parte que o app REALMENTE consegue fazer hoje.
 //
 // O QUE ESTA VARREDURA É: um inventário do dicionário do ControlService. O app pede o snapshot
@@ -134,3 +135,4 @@ export function runScan({ values, source, carIp, vin, now }: ScanInput): ScanRes
 /** Percentual de cobertura, arredondado. `0` quando não há dicionário (impossível, mas barato). */
 export const coveragePct = (r: ScanResult): number =>
   r.knownTotal === 0 ? 0 : Math.round((r.knownAnswered / r.knownTotal) * 100)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

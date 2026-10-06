@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // "Mudar a cor de X para Y enquanto Z estiver valendo."
 //
 // Fica acima dos três estados de cor (dia, noite, farol) em vez de ser um quarto estado: uma regra
@@ -137,3 +138,4 @@ export function ColorRulesPanel({ spec, onChange }: ColorRulesPanelProps) {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

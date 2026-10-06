@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A aba "Heads-Up Display" da tela de Criação de temas: prontos, meus temas, importar e ler do
 // carro. O editor em si é a rota `/temas/hud/:id`.
 
@@ -257,3 +258,4 @@ export function HudThemeList() {
     </>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // A conversa com o carro sobre o tema do painel: `GET /temas`, `POST /temas/ativar` e
 // `POST /temas/rascunho` no GwLinkServer (Alpha 6.5), mais o envio de arquivos que já existia.
 //
@@ -9,7 +10,7 @@ import type { ThemeSpec } from '../model/spec'
 import { ARQUIVO_DO_EDITOR, CAR_THEME_ROOT, PASTA_DO_RASCUNHO, buildThemeBundle, bytesToBase64 } from '../exportTheme'
 
 export const CARRO_ANTIGO =
-  'O OPEN GW deste carro é anterior à Alpha 6.5 e ainda não troca o tema pelo computador. Atualize ' +
+  'O DeepGWT deste carro é anterior à Alpha 6.5 e ainda não troca o tema pelo computador. Atualize ' +
   'o app no carro (Instalar e manter → Atualizar) e tente de novo.'
 
 /**
@@ -77,7 +78,7 @@ export async function rascunhoNoCarro(carIp: string, ativar: boolean): Promise<E
 }
 
 /**
- * O tema que o criador de temas deixou junto da pasta (`theme.opengw.json`). `null` para tema
+ * O tema que o criador de temas deixou junto da pasta (`theme.deepgwt.json`). `null` para tema
  * escrito à mão ou enviado por uma versão anterior do instalador — daí não há como voltar ao
  * tema editável.
  */
@@ -131,3 +132,4 @@ export async function enviarPacote(
 }
 
 export { PASTA_DO_RASCUNHO }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

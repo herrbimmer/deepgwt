@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Osciloscópio</name>
     <description>Dois canais sobre reticulado de 10 por 8 divisões, com as subdivisões marcadas nos eixos centrais e uma linha de disparo tracejada em 50%. Canal 1 em verde é a velocidade, canal 2 em âmbar é o giro, e o painel lateral repete os valores como as leituras automáticas de um osciloscópio de bancada.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

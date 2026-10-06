@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8" />
@@ -94,7 +95,7 @@
 
 <script>
 /* ============================================================================
-   Núcleo comum dos temas OPEN GW — contrato v1.0 (núcleo v1.2)
+   Núcleo comum dos temas DeepGWT — contrato v1.0 (núcleo v1.2)
    ----------------------------------------------------------------------------
    Faz o que TODO tema é obrigado a fazer, e nada além:
 
@@ -341,7 +342,7 @@
     clearTimeout(fbTimer);
     if (yielding) return;                // escondido não pinta: nada a mostrar, nada a gastar
     animating = false;
-    try { cfg.paint(); } catch (e) { console.error('[OPENGW] paint falhou:', e); }
+    try { cfg.paint(); } catch (e) { console.error('[DEEPGWT] paint falhou:', e); }
     paintWarnPill();
     if (animating) schedule();           // ainda assentando: pede o próximo quadro
   }
@@ -394,7 +395,7 @@
 
   /* ---- simulação para preview no Mac --------------------------------------- */
   function installMock() {
-    console.warn('[OPENGW] window.Android ausente — simulação local.');
+    console.warn('[DEEPGWT] window.Android ausente — simulação local.');
     window.Android = {
       getAvailableKeys: function () { return JSON.stringify(cfg.keys); },
       subscribe: function () {}, unsubscribe: function () {},
@@ -528,7 +529,7 @@
       schedule();
     };
 
-    try { if (cfg.setup) cfg.setup(); } catch (e) { console.error('[OPENGW] setup falhou:', e); }
+    try { if (cfg.setup) cfg.setup(); } catch (e) { console.error('[DEEPGWT] setup falhou:', e); }
 
     // Só pede o que este host aceita: uma chave fora da lista viraria campo morto.
     var want = cfg.keys.concat(['warningActive', 'warningDismissed']);
@@ -537,7 +538,7 @@
       if (host && host.length) {
         var allowed = want.filter(function (k) { return host.indexOf(k) >= 0; });
         var dropped = want.filter(function (k) { return host.indexOf(k) < 0; });
-        if (dropped.length) console.warn('[OPENGW] fora do contrato deste host:', dropped.join(', '));
+        if (dropped.length) console.warn('[DEEPGWT] fora do contrato deste host:', dropped.join(', '));
         if (allowed.length) want = allowed;
       }
     } catch (e) { /* host antigo sem getAvailableKeys: manda a lista original */ }
@@ -545,7 +546,7 @@
     try {
       window.Android.subscribe(JSON.stringify(want));
       window.Android.setAppDefaultDimensions(0, 0, 1920, 720);
-    } catch (e) { console.error('[OPENGW] bridge init falhou:', e); }
+    } catch (e) { console.error('[DEEPGWT] bridge init falhou:', e); }
 
     previewFlags();
 
@@ -569,6 +570,7 @@
 })();
 
 </script>
+<!-- © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited. -->
 <script>
 (function () {
   var E = function (id) { return document.getElementById(id); };
@@ -640,3 +642,4 @@
 </script>
 </body>
 </html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

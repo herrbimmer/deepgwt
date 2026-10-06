@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Física do gesto de página do launcher 3D (skill apple-design).
 //
 // Roda com `node scripts/test-viewer-gesto-pagina.mjs`. A pasta do launcher é a mesma que
@@ -19,7 +20,7 @@ import { fileURLToPath } from 'node:url'
 // estas verificações deixaram de ser opcionais. VIEWER_SRC continua valendo para apontar para
 // uma pasta descompactada de fora, e o "PULADO" segue existindo para esse caso.
 const viewerSrc = process.env.VIEWER_SRC || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app', 'src', 'main')
-const clientPath = path.join(viewerSrc, 'assets', 'www', 'openGwClient.js')
+const clientPath = path.join(viewerSrc, 'assets', 'www', 'deepGwtClient.js')
 if (!fs.existsSync(clientPath)) {
   console.log(`PULADO: launcher 3D não encontrado em ${viewerSrc}`)
   process.exit(0)
@@ -30,7 +31,7 @@ const src = fs.readFileSync(clientPath, 'utf8')
 const start = src.indexOf('  /** Distância horizontal PROJETADA')
 const end = src.indexOf('  // ── Fim do bloco puro')
 if (start < 0 || end < 0) {
-  console.log('FALHOU: marcadores do bloco puro não encontrados em openGwClient.js')
+  console.log('FALHOU: marcadores do bloco puro não encontrados em deepGwtClient.js')
   process.exit(1)
 }
 const bloco = src.slice(start, end) +
@@ -120,3 +121,4 @@ eq('dt zero não vira infinito', M.velocidadeDasAmostras([{ t: 5, x: 0 }, { t: 5
 
 if (falhas === 0) console.log('Todas passaram')
 process.exit(falhas === 0 ? 0 : 1)
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

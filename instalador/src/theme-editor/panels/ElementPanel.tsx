@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O painel do elemento selecionado. Abas porque um mostrador tem gente demais para uma coluna só.
 
 import { useState } from 'react'
@@ -185,3 +186,4 @@ export function ElementPanel({ spec, element, onChange, onChangeSpec, onDelete, 
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

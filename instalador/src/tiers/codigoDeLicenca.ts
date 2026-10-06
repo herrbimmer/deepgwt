@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Conferência do código de licença no instalador (Alpha 8.1; código curto na 8.2) — só LER, nunca
 // emitir.
 //
@@ -126,3 +127,4 @@ export function conferirCodigo(texto: string): ConferenciaDoCodigo {
   }
   return direto
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

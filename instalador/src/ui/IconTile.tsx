@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import type { LucideIcon } from 'lucide-react'
 import { Squircle } from './Squircle'
 
@@ -29,3 +30,4 @@ export function IconTile({ icon: Icon, tone = 'primary', size = 48, className = 
     </Squircle>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

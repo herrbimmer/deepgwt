@@ -1,11 +1,12 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { lazy, type ComponentType, type ReactNode } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import {
-  ConnectToVehicle, GWLink, Hub, Inicio, Instalacao, InstalarOpenGw, InstallLocalApk, ResetStealthMode,
-  RestartShizuku, Concluido, Falha, UninstallApps, DesinstalarOpenGw, ToolsHub,
+  ConnectToVehicle, GWLink, Hub, Inicio, Instalacao, InstalarDeepGwt, InstallLocalApk, ResetStealthMode,
+  RestartShizuku, Concluido, Falha, UninstallApps, DesinstalarDeepGwt, ToolsHub,
   ScreenMirror, FileTransfer, BackupTools, ThemeCreation, ThemeEditor, HudThemeEditor, ImportHtmlTheme, CarThemes, CatalogoXtra,
-  AdvancedSettingsHub, AjustesAvancados, AdasSettings, Coding, DriverProfiles, Dvr,
-  VehicleIdentity, VehicleMonitor, VehicleChanges, PrivacyCenter, GuidedSettings, AjustesDoOpenGw,
+  AdvancedSettingsHub, AjustesAvancados, AdasSettings, Coding, DriverProfiles, Dvr, ServiceHistory,
+  VehicleIdentity, VehicleMonitor, VehicleChanges, PrivacyCenter, GuidedSettings, AjustesDoDeepGwt,
   NivelELicenca, AvisosLegais,
 } from '../screens'
 import { ALL_ROUTES, ROUTE_REDIRECTS } from './routeMeta'
@@ -28,21 +29,21 @@ const ELEMENTS: Record<string, ReactNode> = {
   '/monitor': <VehicleMonitor />,
   '/veiculo': <VehicleIdentity />,
   '/ajustes-guiados': <GuidedSettings />,
-  '/ajustes-open-gw': <AjustesDoOpenGw />,
+  '/ajustes-deepgwt': <AjustesDoDeepGwt />,
   '/alteracoes': <VehicleChanges />,
   '/privacidade': <PrivacyCenter />,
   '/licenca': <NivelELicenca />,
   '/avisos-legais': <AvisosLegais />,
-  '/opengw': <Inicio />,
+  '/deepgwt': <Inicio />,
   '/install': <Instalacao />,
-  '/install/opengw': <InstalarOpenGw />,
+  '/install/deepgwt': <InstalarDeepGwt />,
   '/install/local': <InstallLocalApk />,
   '/install/success': <Concluido />,
   '/install/failure': <Falha />,
-  '/update/opengw': <InstalarOpenGw mode="update" />,
+  '/update/deepgwt': <InstalarDeepGwt mode="update" />,
   '/restart-shizuku': <RestartShizuku />,
   '/reset-stealth-mode': <ResetStealthMode />,
-  '/uninstall': <DesinstalarOpenGw />,
+  '/uninstall': <DesinstalarDeepGwt />,
   '/gwlink': <GWLink />,
   '/uninstall-apps': <UninstallApps />,
   '/temas': <ThemeCreation />,
@@ -56,6 +57,7 @@ const ELEMENTS: Record<string, ReactNode> = {
   '/config-avancadas/adas': <AdasSettings />,
   '/config-avancadas/coding': <Coding />,
   '/config-avancadas/perfis': <DriverProfiles />,
+  '/config-avancadas/servico': <ServiceHistory />,
   '/config-avancadas/dvr': <Dvr />,
   '/ferramentas': <ToolsHub />,
   '/espelhar': <ScreenMirror />,
@@ -134,3 +136,4 @@ export function AppRoutes() {
     </Routes>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

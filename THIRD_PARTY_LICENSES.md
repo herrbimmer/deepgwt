@@ -1,9 +1,9 @@
 # THIRD_PARTY_LICENSES.md
 
-Inventário dos componentes de terceiros distribuídos com **OPEN GW**, com licença, titular,
+Inventário dos componentes de terceiros distribuídos com **DeepGWT**, com licença, titular,
 obrigações, aviso exigido e localização dentro do produto.
 
-Revisado em **2026-10-02** (Alpha 9.7). O produto em si é proprietário — veja [`LICENSE`](LICENSE).
+Revisado em **2026-10-02** (Alpha 9.7). O produto em si usa a VASL 1.0 — veja [`LICENSE`](LICENSE).
 Nada neste arquivo é reivindicado como nosso; cada componente permanece sob a licença do seu próprio
 titular.
 
@@ -129,9 +129,9 @@ forem modificados, os arquivos alterados precisam ser publicados sob MPL-2.0.
 
 | Arquivo | O que é | Licença | Titular | Observação |
 |---|---|---|---|---|
-| `opengw.apk` | O próprio APK do OPEN GW (build debug) | Proprietária + componentes de §1 e §2 | Miguel Araujo e terceiros | Leva `assets/legal/` com `NOTICE`, `LICENSE` e este arquivo |
-| `shizuku.apk` | Aplicativo gerenciador do **Shizuku** (versão 13.6.0, commit b844bc4), recompilado por nós com outro `applicationId` (`br.com.opengw.shizuku`) e com nome e ícones próprios ("OPEN GW Acesso") | **Apache-2.0** (+ API MIT) | RikkaApps | **Obra modificada**. Aviso em `NOTICE` §2; texto integral em §5.3; patch, instruções de build e textos de licença em `third_party/open-gw-acesso/`. Fonte do original: https://github.com/RikkaApps/Shizuku. **A confirmar (revisão jurídica):** o README do projeto pede a quem faz fork que não declare permissões `moe.shizuku.manager.permission.*`; o build ainda declara `API_V23` (contrato com a biblioteca cliente). Alternativa descrita no `AVISO-OPEN-GW-ACESSO.md` |
-| `shizuku-starter` | Binário nativo `shizuku_starter`, compilado do mesmo código (é o `libshizuku.so` do APK, ABI arm64) | Apache-2.0 (repositório RikkaApps/Shizuku) | RikkaApps | Obra modificada junto com o APK (constantes do id). Hash em `third_party/open-gw-acesso/COMO-COMPILEI.md` |
+| `deepgwt.apk` | O próprio APK do DeepGWT (build debug) | VASL 1.0 + componentes de §1 e §2 | Miguel Vespermann Araújo e terceiros | Leva `assets/legal/` com `NOTICE`, `LICENSE` e este arquivo |
+| `shizuku.apk` | Aplicativo gerenciador do **Shizuku** (versão 13.6.0, commit b844bc4), recompilado por nós com outro `applicationId` (`br.com.deepgwt.shizuku`) e com nome e ícones próprios ("DeepGWT Acesso") | **Apache-2.0** (+ API MIT) | RikkaApps | **Obra modificada**. Aviso em `NOTICE` §2; texto integral em §5.3; patch, instruções de build e textos de licença em `third_party/deepgwt-acesso/`. Fonte do original: https://github.com/RikkaApps/Shizuku. **A confirmar (revisão jurídica):** o README do projeto pede a quem faz fork que não declare permissões `moe.shizuku.manager.permission.*`; o build ainda declara `API_V23` (contrato com a biblioteca cliente). Alternativa descrita no `AVISO-DEEPGWT-ACESSO.md` |
+| `shizuku-starter` | Binário nativo `shizuku_starter`, compilado do mesmo código (é o `libshizuku.so` do APK, ABI arm64) | Apache-2.0 (repositório RikkaApps/Shizuku) | RikkaApps | Obra modificada junto com o APK (constantes do id). Hash em `third_party/deepgwt-acesso/COMO-COMPILEI.md` |
 
 Os avisos acompanham o pacote do instalador na pasta `legal/` (`tauri.conf.json` → `bundle.resources`)
 e abrem dentro do app em **Sobre → Avisos legais**.
@@ -142,14 +142,15 @@ e abrem dentro do app em **Sobre → Avisos legais**.
 
 | Item | Origem | Situação |
 |---|---|---|
-| `assets/backgrounds/opengw-01…20.jpg` e `assets/www/assets/backgrounds/` (presets de fundo do cluster e do launcher) | **Originais**, geradas por `scripts/gerar-arte-original.py` | Obra própria; nenhum material de terceiros |
+| `assets/backgrounds/deepgwt-01…20.jpg` e `assets/www/assets/backgrounds/` (presets de fundo do cluster e do launcher) | **Originais**, geradas por `scripts/gerar-arte-original.py` | Obra própria; nenhum material de terceiros |
 | `instalador/public/header-art.jpg` (cabeçalho do instalador) | **Original**, mesmo script | Obra própria |
+| Marca "DG" (`res/drawable/ic_deepgwt_marca.xml`, `res/drawable/ic_launcher_foreground.xml`) e os ícones do instalador em `instalador/src-tauri/icons/` | **Originais**: vetor desenhado para o produto; os PNG/ICO/ICNS saem dele pelo `tauri icon` | Obra própria; nenhum material de terceiros |
 | `PreinstalledThemes/coffe3/car-bg.jpg`, `instalador/public/themes/stuttgart-ntg55/car-bg.jpg` e a cópia de referência em `scripts/referencia/stuttgart-ntg55/` | Fundos de temas de cluster | **A confirmar** — origem e titular não documentados |
 | Modelo 3D, texturas e ícones do launcher (`assets/www/assets/`) | Obra declarada pelo dono do produto | Obra do titular; ver `COPYRIGHT.md` |
 | Imagens do Bing e do Wallhaven mostradas pela busca de fundos | Baixadas pelo usuário, em tempo de execução | Não distribuídas por nós; os direitos permanecem com os autores |
 
 
-Os ícones de reserva dos atalhos (Android Auto, CarPlay, vídeo e música) e os da direção do ar são vetores desenhados para este produto (`app/src/main/res/drawable/`). Quando o app correspondente está instalado, o OPEN GW mostra o ícone que ele mesmo entrega.
+Os ícones de reserva dos atalhos (Android Auto, CarPlay, vídeo e música) e os da direção do ar são vetores desenhados para este produto (`app/src/main/res/drawable/`). Quando o app correspondente está instalado, o DeepGWT mostra o ícone que ele mesmo entrega.
 
 Software do fornecedor da central (`com.ts.androidauto.*`, `com.ts.carplay*`): este produto não contém, não modifica e não redistribui nenhum pacote dele; só inicia e conversa com os aplicativos já instalados no veículo.
 
@@ -183,7 +184,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-(Texto de `third_party/open-gw-acesso/LICENSE-Shizuku-API-MIT`. As bibliotecas do mesmo titular
+(Texto de `third_party/deepgwt-acesso/LICENSE-Shizuku-API-MIT`. As bibliotecas do mesmo titular
 usam o mesmo texto.)
 
 ### 5.2 SIL Open Font License 1.1 — IBM Plex Sans, Michroma, Exo

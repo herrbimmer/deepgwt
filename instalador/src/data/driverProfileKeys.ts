@@ -1,8 +1,9 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // As 16 chaves do veículo que o instalador conhece pelo nome: a fixture do modo demonstração, o
 // Explorador de Parâmetros e a Varredura do Veículo usam esta lista.
 //
 // ESTA LISTA NÃO É MAIS O PERFIL DE MOTORISTA. O perfil do carro deixou de ser uma lista fixa: o
-// OPEN GW varre TODAS as configurações do barramento por regra de nome (ver EscopoDoPerfil.kt,
+// DeepGWT varre TODAS as configurações do barramento por regra de nome (ver EscopoDoPerfil.kt,
 // ~257 chaves neste catálogo) e todas as preferências do app, e o instalador virou cliente desse
 // perfil em vez de manter uma cópia — ver `screens/DriverProfiles.tsx`. O que sobrou aqui é o
 // conjunto reduzido que as telas de demonstração e diagnóstico precisam ter escrito à mão.
@@ -37,3 +38,4 @@ export const DRIVER_PROFILE_KEYS: readonly string[] = [
   'car.intelligent_driving_setting.over_speed_warning_state',
   'car.parking_setting.auto_park_enable',
 ]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { CheckCircle2Icon, EyeIcon, HelpCircleIcon, LightbulbIcon, FlaskConicalIcon } from 'lucide-react'
 import type { Confidence } from '../data/knowledgeTypes'
 
@@ -51,3 +52,4 @@ export function ConfidenceChip({ level, className = '' }: { level: Confidence; c
     </span>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

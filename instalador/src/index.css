@@ -1,3 +1,4 @@
+/* Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. */
 @import 'tailwindcss';
 
 @theme {
@@ -71,9 +72,52 @@ select {
   font-family: inherit;
 }
 
-input[type='checkbox'],
-input[type='range'] {
+input[type='checkbox'] {
   accent-color: var(--color-primary);
+}
+
+/* Sliders em Liquid Glass (Alpha 10.6): calha de vidro, parte cheia translúcida e botão em pílula
+   de vidro com brilho especular. A parte cheia vem de --fill (0-100), escrita por um ouvinte global
+   em entrada.tsx; sem ele a calha só não mostra o preenchimento. */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 28px;
+  --fill: 0%;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background:
+    linear-gradient(90deg, rgba(10, 132, 255, 0.78) 0, rgba(10, 132, 255, 0.62) var(--fill), rgba(255, 255, 255, 0) var(--fill)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.38), inset 0 -1px 0 rgba(255, 255, 255, 0.14);
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 38px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background:
+    radial-gradient(90% 70% at 30% 8%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(226, 234, 246, 0.68));
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.34), 0 0 0 0.5px rgba(0, 0, 0, 0.12), inset 0 1.5px 0 rgba(255, 255, 255, 0.95), inset 0 -2px 4px rgba(110, 130, 170, 0.3);
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+input[type='range']:active::-webkit-slider-thumb {
+  transform: scale(1.14);
+  background:
+    radial-gradient(90% 70% at 30% 8%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 62%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(226, 234, 246, 0.34));
+}
+input[type='range']:disabled {
+  opacity: 0.4;
 }
 
 ::-webkit-scrollbar {
@@ -116,6 +160,7 @@ html[data-mode='desktop'] .app-shell {
   margin-inline: auto;
   border-inline: 1px solid var(--color-border);
 }
+/* © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited. */
 
 /* Fundo com leve profundidade atrás da janela, para as bordas laterais lerem
    como uma janela de app pousada sobre a mesa, não como conteúdo cortado. */
@@ -174,3 +219,4 @@ html[data-mode='desktop'] .app-chrome {
 html[data-mode='desktop'] .tile-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+/* Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. */

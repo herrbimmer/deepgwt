@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Eixo Longo</name>
     <description>Volta inteira: a escala dá 360 graus, zero em cima e fundo de escala de volta em cima, com o ponteiro atravessando o centro e mostrando contrapeso do outro lado. O giro vira um anel tracejado por fora do mostrador. Quatro cantos de dado e nada mais.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

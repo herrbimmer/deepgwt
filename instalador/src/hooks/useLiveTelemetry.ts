@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Leitura contínua do carro, num ritmo escolhido pela tela.
 //
 // ── POR QUE NÃO USAR `useCarSettings()` ──────────────────────────────────────────────────────
@@ -110,3 +111,4 @@ export function useLiveTelemetry(intervalMs: number, paused = false): LiveTeleme
 
   return { values, lastOkAt, rttMs, error, failures, demo, refreshNow }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

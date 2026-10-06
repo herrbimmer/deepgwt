@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Geometria do tema Bávaro ID8 (assets/PreinstalledThemes/bavaroid8).
 //
 // Os dois chevrons (face, aro, parede lateral, traços, rótulos das escalas, zona de recarga), a
@@ -189,6 +190,7 @@ function blocoFundo() {
   add('<rect x="480" y="40" width="960" height="600" fill="url(#pGrade)" mask="url(#mGrade)"/>')
   return L.join('\n')
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 function blocoArte() {
   const L = []
@@ -379,6 +381,7 @@ function defsDoEnchimento() {
   L.push('  <clipPath id="cEnchD"><path d="' + polTexto(polEnchD.map(espelho)) + '"/></clipPath>')
   return L
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // Faixas de um lado, de cima para baixo, todas escondidas (enchimento vazio).
 function faixas(lado) {
@@ -480,3 +483,4 @@ if (process.argv.includes('--verificar')) {
   fs.writeFileSync(arquivo, novo)
   console.log('geometria gravada em ' + path.relative(raiz, arquivo))
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Junta motor, CSS do tema e payload num `app.html` autocontido.
 //
 // A MESMA função gera o preview ao vivo do editor (dentro de um `<iframe srcDoc>`) e o arquivo
@@ -23,9 +24,20 @@ export type EmitOptions = {
   activePageId?: string
 }
 
+/**
+ * Um valor do tema (nome, rótulo, URL de fundo) nunca pode fechar o `<script>` ou o `<style>` onde
+ * cai: um `.deepgwt-tema` recebido de outra pessoa com `</script><script>…` no rótulo rodaria dentro
+ * do instalador, que tem comandos de arquivo e de telnet. No JSON `<` vira `\u003c` (o mesmo texto
+ * para o JavaScript) e no CSS `</style` ganha a barra escapada, que dentro de uma string de CSS é
+ * a mesma `/`.
+ */
+const jsonParaScript = (valor: unknown) =>
+  JSON.stringify(valor).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029')
+const cssParaStyle = (css: string) => css.replace(/<\/(style)/gi, '<\\/$1')
+
 export function emitAppHtml(spec: ThemeSpec, opts: EmitOptions): string {
   const payload = buildPayload(spec, opts.activePageId)
-  const themeCss = buildThemeCss(spec, { fontBase: opts.fontBase ?? '', backgroundCss: opts.backgroundCss })
+  const themeCss = cssParaStyle(buildThemeCss(spec, { fontBase: opts.fontBase ?? '', backgroundCss: opts.backgroundCss }))
   const boot = spec.boot && spec.boot.enabled
     ? `<div id="boot" class="boot"><div class="boot-ring"></div><div class="boot-word">${escapeHtml(spec.boot.wordmark)}</div></div>`
     : ''
@@ -42,7 +54,7 @@ export function emitAppHtml(spec: ThemeSpec, opts: EmitOptions): string {
 <div id="app"></div>
 ${boot}
 <script>${ENGINE_JS}</script>
-<script>OPENGW.boot(${JSON.stringify(payload)});</script>
+<script>DEEPGWT.boot(${jsonParaScript(payload)});</script>
 </body>
 </html>
 `
@@ -50,3 +62,4 @@ ${boot}
 
 /** Só o motor, para o teste comparar bytes entre dois temas diferentes. */
 export const engineFingerprint = () => `${ENGINE_CSS}\n${ENGINE_JS}`
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

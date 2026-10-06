@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Chaves do carro que descrevem o próprio carro.
 //
 // PROCEDÊNCIA: todos os nomes abaixo vêm do dump de ControlService de 2026-09-14 (as 818 chaves
@@ -135,3 +136,4 @@ export const ALL_IDENTITY_KEYS: string[] = [
     ...IDENTITY_SUMMARY_KEYS.map((k) => k.key),
   ]),
 ]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

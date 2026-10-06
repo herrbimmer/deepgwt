@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Os cenários da pré-visualização: sequências de valores, não sorteio.
 //
 // A prévia antiga sorteava um dente de serra a cada 320 ms para cada chave do tema. Servia para
@@ -245,3 +246,4 @@ export function faixaDeVelocidade(c: CenarioDePrevia): [number, number] | null {
   const vs = f.pontos.map((p) => p[1])
   return [Math.min(...vs), Math.max(...vs)]
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

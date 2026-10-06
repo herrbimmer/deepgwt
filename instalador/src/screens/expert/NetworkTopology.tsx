@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link } from 'react-router-dom'
 import { NetworkIcon } from 'lucide-react'
 import { Banner, ConfidenceChip, DataScreen, ListPanel, ListRow } from '../../ui'
@@ -19,7 +20,7 @@ import { DIAG_PORTS, DIAG_PORTS_EVIDENCE, SOMEIP_SERVICES } from '../../data/dia
 
 const CAMINHOS_DO_APP: Array<{ caminho: string; oQue: string }> = [
   { caminho: 'telnet 192.168.33.x:23', oQue: 'Shell na multimídia, texto puro, sem autenticação. Exige o computador no Wi-Fi do carro.' },
-  { caminho: 'http://{IP do carro}:8766', oQue: 'API do app OPEN GW no carro: lê e escreve as chaves do ControlService. Funciona em qualquer rede que alcance o carro.' },
+  { caminho: 'http://{IP do carro}:8766', oQue: 'API do app DeepGWT no carro: lê e escreve as chaves do ControlService. Funciona em qualquer rede que alcance o carro.' },
   { caminho: 'http://{gateway}:8766', oQue: 'A mesma API, alcançada pelo gateway do hotspot. É o caminho que a tela GWLink usa.' },
   { caminho: 'servidor local deste app', oQue: 'Durante a instalação, o app abre um servidor no IP da LAN para o carro baixar APKs. Única porta de entrada.' },
 ]
@@ -176,3 +177,4 @@ export const ExpertNetworkTopology = () => {
     </DataScreen>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Agulha</name>
     <description>Minimalismo de ponteiro: um arco de 1,4px, uma agulha de 2,4px e mais nada. A velocidade aparece em peso 200 no eixo, quatro números marcam a escala e os quatro cantos guardam marcha, hora, combustível e autonomia em letras pequenas. Sem caixa, sem sombra, sem brilho.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

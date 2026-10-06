@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Voronoi</name>
     <description>Diagrama de Voronoi calculado de verdade no carregamento: cada célula é o retângulo recortado pelas mediatrizes em relação a todos os outros sítios, por Sutherland-Hodgman. As 44 células acendem em sequência com a velocidade e mudam de temperatura com o giro.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

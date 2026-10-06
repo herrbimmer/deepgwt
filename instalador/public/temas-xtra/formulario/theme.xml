@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Formulário</name>
     <description>Um formulário preenchido: rótulo impresso à esquerda, valor datilografado sobre a linha pontilhada, cinco caixas de marcação que se marcam sozinhas e um carimbo vermelho girado que alterna entre EM CURSO e PARADO. Linha de assinatura no pé.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

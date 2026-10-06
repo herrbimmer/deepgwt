@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { matchPath, useLocation } from 'react-router-dom'
 import type { LucideIcon } from 'lucide-react'
 import {
@@ -21,7 +22,7 @@ export type Transport =
   | 'offline'
   /** Exige a central multimídia alcançável na rede (telnet) — instalar, reparar, remover. */
   | 'hotspot'
-  /** Exige o app OPEN GW aberto no carro e alcançável por IP (HTTP 8766) — só pelo Wi-Fi do carro (Alpha 9.4). */
+  /** Exige o app DeepGWT aberto no carro e alcançável por IP (HTTP 8766) — só pelo Wi-Fi do carro (Alpha 9.4). */
   | 'ip'
 
 /**
@@ -33,7 +34,7 @@ export type SectionId = 'carro' | 'personalizar' | 'app' | 'avancado' | 'rodape'
 export const HUB_SECTIONS: ReadonlyArray<{ id: Exclude<SectionId, 'rodape'>; title: string }> = [
   { id: 'carro', title: 'Meu carro' },
   { id: 'personalizar', title: 'Personalizar' },
-  { id: 'app', title: 'OPEN GW no carro' },
+  { id: 'app', title: 'DeepGWT no carro' },
   { id: 'avancado', title: 'Avançado' },
 ]
 
@@ -77,7 +78,7 @@ export type RouteNode = {
 // os mesmos ajustes do carro apareciam em três lugares (Ajustes Guiados, Configurações Avançadas,
 // Coding); e o Coding cru ficava no nível mais básico. Agora:
 //   - o Início é a raiz e abre sempre, com carro ou sem;
-//   - os destinos são agrupados por intenção (Meu carro, Personalizar, OPEN GW no carro);
+//   - os destinos são agrupados por intenção (Meu carro, Personalizar, DeepGWT no carro);
 //   - "Ajustes do carro" junta tudo que liga/desliga função, do mais simples ao de fábrica;
 //   - o que escreve cru no carro ou exige jargão mora em Ferramentas, Oficina e Engenharia, que
 //     pedem a confirmação de risco na primeira entrada (`risco`). Desde a 8.0 o que aparece não
@@ -127,11 +128,11 @@ export const ROUTE_TREE: RouteNode[] = [
       },
 
       // ── Personalizar ─────────────────────────────────────────────────────────────────────
-      // Ajustes do OPEN GW (6.4): o catálogo vem do app do carro, então esta entrada cobre tudo o
+      // Ajustes do DeepGWT (6.4): o catálogo vem do app do carro, então esta entrada cobre tudo o
       // que as telas de lá configuram — e o que ficou sem tela lá (automações, brilho).
       {
-        path: '/ajustes-open-gw',
-        title: 'Ajustes do OPEN GW',
+        path: '/ajustes-deepgwt',
+        title: 'Ajustes do DeepGWT',
         subtitle: 'Barra, som do motor, áudio, painel, HUD e tudo o que o app do carro configura — ao vivo, nos dois sentidos.',
         icon: Settings2Icon,
         tone: 'primary',
@@ -142,7 +143,7 @@ export const ROUTE_TREE: RouteNode[] = [
       {
         path: '/config-avancadas',
         title: 'Ajustes do carro',
-        subtitle: 'Assistentes de direção, conforto, funções de fábrica, gravação e perfis.',
+        subtitle: 'Assistentes de direção, conforto, funções de fábrica, gravação, perfis e histórico de serviço.',
         icon: SlidersHorizontalIcon,
         tone: 'primary',
         recurso: 'essencial',
@@ -153,6 +154,7 @@ export const ROUTE_TREE: RouteNode[] = [
           { path: '/config-avancadas/adas', title: 'Assistentes de direção (ADAS)', subtitle: 'Faixa, colisão, cruzeiro e estacionamento assistido. Pede confirmação antes.', icon: ShieldIcon, tone: 'warning', recurso: 'adas', transport: 'ip', capability: 'adas.toggles' },
           { path: '/ajustes-guiados', title: 'Funções de fábrica', subtitle: 'Ativar ou desativar recursos da configuração do carro, explicados em português.', icon: SlidersHorizontalIcon, tone: 'primary', recurso: 'coding.guiado', transport: 'ip', capability: 'coding.guided' },
           { path: '/config-avancadas/perfis', title: 'Perfis de motorista', subtitle: 'Salve e aplique um conjunto completo de configurações do carro.', icon: UserCogIcon, tone: 'neutral', recurso: 'perfis', transport: 'ip' },
+          { path: '/config-avancadas/servico', title: 'Histórico de serviço', subtitle: 'Registre revisões e serviços (data, quilometragem, o que foi feito, custo) e veja a próxima revisão.', icon: WrenchIcon, tone: 'neutral', recurso: 'essencial', transport: 'ip' },
           { path: '/config-avancadas/dvr', title: 'Gravação (DVR)', subtitle: 'Liga ou desliga a gravação nativa do carro e lista as gravações.', icon: VideoIcon, tone: 'neutral', recurso: 'dvr', transport: 'ip' },
         ],
       },
@@ -185,11 +187,11 @@ export const ROUTE_TREE: RouteNode[] = [
         section: 'personalizar',
       },
 
-      // ── OPEN GW no carro ─────────────────────────────────────────────────────────────────
+      // ── DeepGWT no carro ─────────────────────────────────────────────────────────────────
       {
-        path: '/opengw',
+        path: '/deepgwt',
         title: 'Instalar e manter',
-        subtitle: 'Instalar, atualizar, reparar ou remover o OPEN GW da central.',
+        subtitle: 'Instalar, atualizar, reparar ou remover o DeepGWT da central.',
         icon: DownloadIcon,
         tone: 'primary',
         recurso: 'essencial',
@@ -199,22 +201,22 @@ export const ROUTE_TREE: RouteNode[] = [
           {
             path: '/install',
             title: 'Instalar no carro',
-            subtitle: 'Instala o OPEN GW e o Shizuku na central. Precisa do Wi-Fi do carro.',
+            subtitle: 'Instala o DeepGWT e o Shizuku na central. Precisa do Wi-Fi do carro.',
             icon: DownloadIcon,
             tone: 'primary',
             recurso: 'essencial',
             transport: 'offline',
             children: [
-              { path: '/install/opengw', title: 'Instalação', icon: DownloadIcon, recurso: 'essencial', transport: 'hotspot', hidden: true },
+              { path: '/install/deepgwt', title: 'Instalação', icon: DownloadIcon, recurso: 'essencial', transport: 'hotspot', hidden: true },
               { path: '/install/local', title: 'Instalar APK local', icon: FileCodeIcon, recurso: 'essencial', transport: 'hotspot', hidden: true },
               { path: '/install/success', title: 'Concluído', icon: CheckCircleIcon, recurso: 'essencial', transport: 'offline', hidden: true },
               { path: '/install/failure', title: 'Falhou', icon: XCircleIcon, recurso: 'essencial', transport: 'offline', hidden: true },
             ],
           },
-          { path: '/update/opengw', title: 'Atualizar', subtitle: 'Envia para o carro a versão do OPEN GW que vem neste instalador.', icon: HardDriveDownloadIcon, tone: 'success', recurso: 'essencial', transport: 'hotspot' },
-          { path: '/restart-shizuku', title: 'Reparar permissões (Shizuku)', subtitle: 'Use quando o OPEN GW abre no carro mas não consegue mudar nada.', icon: RefreshCwIcon, tone: 'neutral', recurso: 'essencial', transport: 'hotspot' },
+          { path: '/update/deepgwt', title: 'Atualizar', subtitle: 'Envia para o carro a versão do DeepGWT que vem neste instalador.', icon: HardDriveDownloadIcon, tone: 'success', recurso: 'essencial', transport: 'hotspot' },
+          { path: '/restart-shizuku', title: 'Reparar permissões (Shizuku)', subtitle: 'Use quando o DeepGWT abre no carro mas não consegue mudar nada.', icon: RefreshCwIcon, tone: 'neutral', recurso: 'essencial', transport: 'hotspot' },
           { path: '/reset-stealth-mode', title: 'Sair do Modo Sorrateiro', subtitle: 'Traz o app de volta se ele sumiu da central e a sequência no volante não funcionou.', icon: EyeOffIcon, tone: 'warning', recurso: 'essencial', transport: 'hotspot' },
-          { path: '/uninstall', title: 'Remover do carro', subtitle: 'Desinstala o OPEN GW da central.', icon: PackageXIcon, tone: 'danger', recurso: 'essencial', transport: 'hotspot' },
+          { path: '/uninstall', title: 'Remover do carro', subtitle: 'Desinstala o DeepGWT da central.', icon: PackageXIcon, tone: 'danger', recurso: 'essencial', transport: 'hotspot' },
         ],
       },
 
@@ -486,7 +488,7 @@ export const ROUTE_TREE: RouteNode[] = [
       {
         path: '/licenca',
         title: 'Nível e licença',
-        subtitle: 'O nível do OPEN GW neste carro e o que cada nível libera.',
+        subtitle: 'O nível do DeepGWT neste carro e o que cada nível libera.',
         icon: AwardIcon,
         tone: 'primary',
         recurso: 'essencial',
@@ -541,6 +543,7 @@ export const ROUTE_REDIRECTS: Readonly<Record<string, string>> = {
   '/dev-options/mirror': '/espelhar',
   '/expert/sobre': '/sobre',
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 export type RouteIndexEntry = {
   node: RouteNode
@@ -603,3 +606,4 @@ export function useRouteNode(): RouteIndexEntry | null {
   }
   return best
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

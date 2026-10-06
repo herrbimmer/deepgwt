@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Suábio Dezesseis</name>
     <description>A versão de dezesseis válvulas daquele sedã compacto trazia três mostradores extras empilhados no console. Pressão e temperatura de óleo não existem neste barramento, então os dois que existem de verdade -- tensão e corrente do pacote -- ficam com dois deles, e o terceiro assume o consumo. A legenda embaixo explica a troca em vez de deixar um mostrador fingindo medir.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

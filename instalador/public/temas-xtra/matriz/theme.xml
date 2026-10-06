@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Matriz</name>
     <description>Matriz de pontos de verdade: uma fonte 5 por 7 desenhada célula a célula e emitida como um único path por grupo, do jeito que um letreiro de ônibus faz. Os pontos apagados ficam no lugar, fracos, porque é isso que dá a textura de matriz -- sem eles o número flutua no vazio. Velocidade em três dígitos grandes, marcha num glifo próprio e três réguas de quarenta pontos para giro, tanque e bateria.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

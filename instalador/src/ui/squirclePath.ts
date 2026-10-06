@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Builds an SVG path (in raw pixel units) for a rounded rect whose corners follow a
 // superellipse ("squircle") instead of a circular arc, so it looks right at any
 // width/height the box happens to render at — needed since cards/buttons here get
@@ -38,3 +39,4 @@ export function squirclePathD(
 
   return 'M' + pts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L') + ' Z'
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

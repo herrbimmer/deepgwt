@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { Link, useLocation } from 'react-router-dom'
 import { ArrowLeftIcon, CheckCircleIcon, InfoIcon } from 'lucide-react'
 import { Banner, Button, Card, IconTile } from '../ui'
@@ -24,8 +25,8 @@ export const Concluido = () => {
             <h3 className="mb-1.5 font-semibold">Próximos Passos</h3>
             <p className="leading-relaxed">
               {foiAtualizacao
-                ? <>O <strong>OPEN GW</strong> do carro já está na versão deste instalador, com as suas configurações. Ele reabre sozinho em alguns segundos.</>
-                : <>Agora é só aguardar o <strong>OPEN GW</strong> abrir automaticamente no carro. Em seguida, basta dar as permissões que ele solicitar para garantir o funcionamento completo.</>}
+                ? <>O <strong>DeepGWT</strong> do carro já está na versão deste instalador, com as suas configurações. Ele reabre sozinho em alguns segundos.</>
+                : <>Agora é só aguardar o <strong>DeepGWT</strong> abrir automaticamente no carro. Em seguida, basta dar as permissões que ele solicitar para garantir o funcionamento completo.</>}
             </p>
           </Banner>
 
@@ -42,3 +43,4 @@ export const Concluido = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

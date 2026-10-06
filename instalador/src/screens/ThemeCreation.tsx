@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { invoke } from '@tauri-apps/api/core'
@@ -97,7 +98,7 @@ export const ThemeCreation = () => {
     setTemas(listThemes())
   }
 
-  // O pacote `.opengw-tema` e o `.json` antigo abrem pelo mesmo caminho. A cópia ganha id e pasta
+  // O pacote `.deepgwt-tema` e o `.json` antigo abrem pelo mesmo caminho. A cópia ganha id e pasta
   // novos: importar o tema de outra pessoa nunca sobrescreve um tema seu com o mesmo nome.
   const importarTexto = (texto: string) => {
     try {
@@ -122,7 +123,7 @@ export const ThemeCreation = () => {
       return
     }
     try {
-      const caminho = await open({ multiple: false, filters: [{ name: 'Tema do OPEN GW', extensions: [EXTENSAO_DO_PACOTE, 'json'] }] })
+      const caminho = await open({ multiple: false, filters: [{ name: 'Tema do DeepGWT', extensions: [EXTENSAO_DO_PACOTE, 'json'] }] })
       if (typeof caminho === 'string') await lerCaminho(caminho)
     } catch (e) {
       setErro(e instanceof Error ? e.message : String(e))
@@ -421,3 +422,4 @@ export const ThemeCreation = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

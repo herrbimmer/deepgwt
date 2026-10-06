@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O rodapé do inspetor: quanto o tema pesa para o painel do carro, e o que o carro não manda.
 
 import { useState } from 'react'
@@ -48,3 +49,4 @@ export function MedidorDeCusto({ custo, semDado }: { custo: Custo; semDado: stri
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

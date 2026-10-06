@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 (function() {
   'use strict';
   // Native Android launcher UI lives in MainActivity.java
@@ -39,8 +40,8 @@
   /**
    * Quem pede a faixa nativa de ícones fora do caminho — e o que acontece quando dois pedem.
    *
-   * Duas telas precisam da central limpa: CONFIGURAÇÕES OPEN GW (openGwPanel.js) e o Modo
-   * Descanso (openGwRest.js). Elas se sobrepõem — dá para entrar no descanso estando na página
+   * Duas telas precisam da central limpa: CONFIGURAÇÕES DeepGWT (deepGwtPanel.js) e o Modo
+   * Descanso (deepGwtRest.js). Elas se sobrepõem — dá para entrar no descanso estando na página
    * de configurações. Se cada uma chamasse `setLauncherHidden(false)` ao sair, a primeira a sair
    * devolveria os ícones por cima da outra, que ainda quer a tela limpa.
    *
@@ -145,3 +146,4 @@
     }
   };
 })();
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

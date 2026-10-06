@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo, useState } from 'react'
 import { ChevronRightIcon, CpuIcon, CarFrontIcon, XIcon } from 'lucide-react'
 import { CODING_CATALOG_BY_KEY } from '../data/codingCatalog'
@@ -61,6 +62,7 @@ export function CodingModuleTree({
   onWrite,
   query,
   vin,
+  pending = {},
 }: {
   keys: string[]
   values: Record<string, string>
@@ -70,6 +72,8 @@ export function CodingModuleTree({
   onWrite: (key: string, value: string) => void
   query: string
   vin?: string | null
+  /** Valores já escolhidos e ainda não gravados no carro (chave → valor). */
+  pending?: Record<string, string>
 }) {
   // Duas seleções independentes: o módulo aberto (que o diagrama destaca) e a variável escolhida
   // dentro dele. Elas ficam aqui, e não dentro das caixas, porque o conteúdo do módulo é mostrado
@@ -251,6 +255,7 @@ export function CodingModuleTree({
                 baselineValue={baseline[selecionada]}
                 snapshots={snapshots}
                 status={fieldStatus[selecionada]}
+                pendingValue={pending[selecionada]}
                 onWrite={onWrite}
               />
             </div>
@@ -258,6 +263,7 @@ export function CodingModuleTree({
             <div className="flex-1 min-h-0 overflow-auto p-2">
               {moduloEmFoco.chaves.map((chave) => {
                 const atual = values[chave]
+                const pend = pending[chave]
                 const mudou = chave in baseline && (atual ?? '') !== baseline[chave]
                 const entrada = CODING_CATALOG_BY_KEY.get(chave)
                 return (
@@ -284,11 +290,17 @@ export function CodingModuleTree({
                       {riskOf(chave)}
                     </span>
                     <span
-                      className={`font-mono text-[11px] w-14 text-right truncate flex-shrink-0 ${
+                      className={`font-mono text-[11px] w-24 text-right truncate flex-shrink-0 ${
                         mudou ? 'text-amber-200' : 'text-text-secondary'
                       }`}
                     >
-                      {atual || '∅'}
+                      {pend !== undefined ? (
+                        <>
+                          {atual || '∅'} → <span className="text-amber-200">{pend || '∅'}</span>
+                        </>
+                      ) : (
+                        atual || '∅'
+                      )}
                     </span>
                   </button>
                 )
@@ -300,3 +312,4 @@ export function CodingModuleTree({
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Gera a Vehicle Knowledge Base a partir de `knowledge/raw/` (evidência imutável) e das fontes
 // já versionadas no repo. Reprodutível e auditável: nenhum dado é digitado à mão aqui, tudo sai
 // de um arquivo de origem citado em `sourceFile`.
@@ -34,7 +35,7 @@ const VEHICLE = 'Haval H6 GT (veículo do proprietário)'
 // do carro. Existência das chaves = FACT. O que cada uma FAZ não está aqui.
 // ---------------------------------------------------------------------------
 function buildControlService() {
-  const file = 'app/src/main/java/br/com/opengw/models/CarConstants.java'
+  const file = 'app/src/main/java/br/com/deepgwt/models/CarConstants.java'
   const src = read(join(ROOT, file))
   const keys = []
   const re = /^\s*([A-Z0-9_]+)\("([^"]+)"\)/gm
@@ -45,7 +46,7 @@ function buildControlService() {
   }
 
   // Estado no app (usada/oculta) e metadados de coding vêm do levantamento de 2026-09-14.
-  const coding = read(join(RAW, 'OPENGW_coding_possibilidades.md'))
+  const coding = read(join(RAW, 'DEEPGWT_coding_possibilidades.md'))
   const state = new Map()
   // tabelas do catálogo completo: | `chave` | usada|oculta |
   for (const line of coding.split('\n')) {
@@ -71,7 +72,7 @@ function buildControlService() {
       vehicle: VEHICLE,
       method: 'Enumeração do dicionário do ControlService do veículo (AIDL IIntelligentVehicleControlService)',
       sourceFile: file,
-      stateSourceFile: 'knowledge/raw/OPENGW_coding_possibilidades.md',
+      stateSourceFile: 'knowledge/raw/DEEPGWT_coding_possibilidades.md',
       confidence: {
         existence: 'FACT — cada chave existe no dicionário do carro',
         semantics: 'INFERRED — o efeito de cada chave foi deduzido, não confirmado no veículo',
@@ -89,7 +90,7 @@ function buildControlService() {
 // Descrições: o relatório de diagnóstico da mesma sessão.
 // ---------------------------------------------------------------------------
 function buildVhal() {
-  const tsvFile = 'knowledge/raw/OPENGW_vhal_catalogo_completo.txt'
+  const tsvFile = 'knowledge/raw/DEEPGWT_vhal_catalogo_completo.txt'
   const lines = read(join(ROOT, tsvFile)).split('\n').filter(Boolean)
   const header = lines.shift()
   if (!header.startsWith('name\tproperty_id')) throw new Error(`cabeçalho inesperado: ${header}`)
@@ -109,7 +110,7 @@ function buildVhal() {
   //   5 colunas -> | `NOME` | 0xid | INT32 | R | valor |          (catálogo cru, sem descrição)
   // Ancorar o fim da linha é o que separa as duas; sem isso a coluna `access` ("R") entrava
   // como se fosse descrição.
-  const diagFile = 'knowledge/raw/OPENGW_diagnostico_dados.md'
+  const diagFile = 'knowledge/raw/DEEPGWT_diagnostico_dados.md'
   const descById = new Map()
   const DESC_ROW = /^\|\s*`([A-Za-z][A-Za-z0-9_]*)`\s*\|\s*(0x[0-9a-fA-F]+)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*$/
   for (const l of read(join(ROOT, diagFile)).split('\n')) {
@@ -166,12 +167,13 @@ function buildVhal() {
     properties,
   }
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 // ---------------------------------------------------------------------------
 // 3. Coding — catálogo curado (as 8 tabelas temáticas do levantamento)
 // ---------------------------------------------------------------------------
 function buildCoding() {
-  const file = 'knowledge/raw/OPENGW_coding_possibilidades.md'
+  const file = 'knowledge/raw/DEEPGWT_coding_possibilidades.md'
   const md = read(join(ROOT, file))
   const entries = []
   let category = null
@@ -227,7 +229,7 @@ function buildCoding() {
 // A existência da lista é FACT: é literalmente a lista que o host consulta para aceitar ou
 // recusar a assinatura. O formato de cada valor não está neste arquivo.
 // ---------------------------------------------------------------------------
-const THEME_BRIDGE_FILE = 'app/src/main/java/br/com/opengw/bridge/ThemeBridgeImpl.kt'
+const THEME_BRIDGE_FILE = 'app/src/main/java/br/com/deepgwt/bridge/ThemeBridgeImpl.kt'
 
 // Só chegam por `window.control(chave, valor)`. `subscribe` as aceita (estão na allowlist) e
 // depois as entrega a `ServiceManager.ensureKeysMonitored`, que não conhece nenhuma delas —
@@ -352,6 +354,7 @@ for (const [fileName, constName, typeName, data] of SESSION_TS) {
     banner + `import type { ${typeName} } from '../knowledgeTypes'\n\n` +
     `export const ${constName}: ${typeName} = ${JSON.stringify(data)}\n`)
 }
+// © 2026 Miguel Vespermann Araújo — VASL 1.0 — unauthorized forks/redistribution prohibited.
 
 console.log(`\nSessão ${SESSION_AT} — VIN ${VIN} (fonte: ${SESSION_DIR}/)`)
 console.log(`Coding fábrica : ${session.factoryCoding.meta.count} flags | ${session.factoryCoding.meta.equippedCount} equipadas`)
@@ -512,3 +515,4 @@ for (const { arquivo, rotulo } of ARQUIVOS_DE_TEMA) {
     console.log(`${rotulo.padEnd(15)}: ${citadas.length} chaves, todas dentro do contrato do tema`)
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

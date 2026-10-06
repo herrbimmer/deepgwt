@@ -1,14 +1,16 @@
 <!doctype html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OPEN GW · Licença</title>
+<title>DeepGWT · Licença</title>
 <!--
   A página que o celular abre pelo QR de Informações → Licença → Pelo celular (Alpha 8.1; código
   curto e mensagem inteira na 8.2 — o carro acha o código no meio do texto).
   Servida pelo próprio carro (GwLink, porta 8766) na rede Wi-Fi dele; fala só com a mesma origem:
-  GET /licenca, POST /licenca/ativar e (8.4) POST /licenca/avaliacao, o teste grátis do Max.
+  GET /licenca, POST /licenca/ativar e (8.4) POST /licenca/avaliacao, o teste grátis do Max;
+  (10.1) o teste vale até desligar o carro e POST /licenca/avaliacao/encerrar volta ao plano.
   Sem nada de fora — o celular pode estar sem internet.
 -->
 <style>
@@ -45,12 +47,12 @@
 </head>
 <body>
 <main>
-  <h1>OPEN GW <span>· Licença</span></h1>
+  <h1>DeepGWT <span>· Licença</span></h1>
 
   <div class="cartao">
     <div class="nivel">
       <div>
-        <div style="font-weight:600">Nível do OPEN GW</div>
+        <div style="font-weight:600">Nível do DeepGWT</div>
         <div class="suave" id="origem">Lendo o carro…</div>
       </div>
       <div class="selo" id="selo">…</div>
@@ -65,6 +67,7 @@
     <div style="font-weight:600">Teste grátis</div>
     <div class="suave" id="teste"></div>
     <button class="secundario" id="testar" type="button" hidden>Testar grátis</button>
+    <button class="secundario" id="voltar" type="button" hidden>Voltar ao meu plano</button>
     <div class="msg" id="msgTeste" role="status"></div>
   </div>
 
@@ -106,14 +109,17 @@
     $('comoObter').textContent = l.comoObter || '';
     const a = d.avaliacao;
     const maxTitulo = ((d.niveis || []).find((n) => a && n.id === a.nivel) || {}).titulo || 'Max';
-    const mostra = a && (a.situacao === 'disponivel' || a.situacao === 'ativa');
+    const mostra = a && (a.situacao === 'disponivel' || a.situacao === 'esgotada' || a.situacao === 'ativa');
     $('caixaTeste').hidden = !mostra;
     if (mostra) {
       $('teste').textContent = a.situacao === 'ativa'
-        ? 'O ' + maxTitulo + ' está liberado: faltam ' + horas(a.restanteSeg) + ' de uso. Depois o OPEN GW volta ao nível de antes.'
-        : 'Experimente o ' + maxTitulo + ', a versão completa, por ' + horas(a.totalSeg) + ' de uso (com o carro ligado). Uma vez por carro.';
-      $('testar').hidden = a.situacao !== 'disponivel';
-      $('testar').textContent = 'Testar o ' + maxTitulo + ' grátis';
+        ? (a.comAviso ? a.textoDoAviso : 'O ' + maxTitulo + ' está liberado até desligar o carro. Depois o DeepGWT volta ao seu plano.')
+        : a.situacao === 'esgotada'
+          ? 'Os testes grátis desta instalação acabaram. Dá para testar de novo, com um aviso de pagamento em todas as telas.'
+          : 'Experimente o ' + maxTitulo + ', a versão completa, até desligar o carro. ' + (a.contagem || '');
+      $('testar').hidden = a.situacao === 'ativa';
+      $('voltar').hidden = a.situacao !== 'ativa';
+      $('testar').textContent = a.situacao === 'esgotada' ? 'Testar o ' + maxTitulo + ' mesmo assim' : 'Testar o ' + maxTitulo + ' grátis';
     }
   }
   async function ler() {
@@ -169,7 +175,26 @@
       $('testar').disabled = false;
     }
   });
+  $('voltar').addEventListener('click', async () => {
+    const msg = $('msgTeste');
+    msg.className = 'msg';
+    msg.textContent = 'Voltando…';
+    $('voltar').disabled = true;
+    try {
+      const r = await fetch('/licenca/avaliacao/encerrar', { method: 'POST' });
+      const d = await r.json();
+      msg.className = d.ok ? 'msg certo' : 'msg erro';
+      msg.textContent = d.ok ? (d.mensagem || 'Teste encerrado.') : (d.error || 'Não deu para encerrar o teste.');
+      if (d.ok) mostrar(d);
+    } catch (e) {
+      msg.className = 'msg erro';
+      msg.textContent = 'Não deu para falar com o carro. Confira se o celular está no Wi-Fi dele.';
+    } finally {
+      $('voltar').disabled = false;
+    }
+  });
   ler();
 </script>
 </body>
 </html>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

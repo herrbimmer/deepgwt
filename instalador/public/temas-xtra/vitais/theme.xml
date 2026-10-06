@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Vitais</name>
     <description>Monitor de sinais vitais com três derivações: cada traçado é uma sequência de pulsos gerada por código, não uma curva gravada, com a amplitude proporcional à grandeza e a frequência própria de cada canal. Os números grandes ficam na coluna da direita, na cor do seu traçado.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

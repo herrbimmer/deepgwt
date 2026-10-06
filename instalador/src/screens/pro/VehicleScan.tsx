@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { useMemo, useState } from 'react'
 import {
   AlertTriangleIcon, EyeOffIcon, RadarIcon, RefreshCwIcon, SearchXIcon,
@@ -64,7 +65,7 @@ export const ProVehicleScan = () => {
 
         {!podeLer && (
           <Banner tone="warning" className="mb-4">
-            Sem leitura disponível. Abra o OPEN GW no carro e confira o IP em Conexão, ou entre no modo
+            Sem leitura disponível. Abra o DeepGWT no carro e confira o IP em Conexão, ou entre no modo
             demonstração para percorrer a tela com dados sintéticos.
           </Banner>
         )}
@@ -228,3 +229,4 @@ export const ProVehicleScan = () => {
     </div>
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Haste</name>
     <description>Um fio de 3px sobe do rodapé e o número cavalga a ponta: quanto mais alto, mais rápido, e o vazio que sobra acima é exatamente a folga que ainda há até o fundo de escala. Uma calha cinza de 1px atrás mostra onde a haste pode chegar.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

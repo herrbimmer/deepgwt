@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Identidade do veículo: junta o que o carro respondeu com o que o usuário digitou, e mantém
 // as duas coisas distinguíveis o tempo todo.
 //
@@ -84,3 +85,4 @@ export function useVehicleIdentity(): VehicleIdentityApi {
     refreshOverrides: useCallback(() => setOverrides(loadWmiOverrides()), []),
   }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

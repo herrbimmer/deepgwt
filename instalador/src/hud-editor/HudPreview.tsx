@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Um canvas com uma página do HUD desenhada. É a mesma função para a prévia grande do editor e
 // para as miniaturas das listas — um desenho só, em qualquer tamanho, como no carro.
 
@@ -111,3 +112,4 @@ export function HudPreview({ tema, alvo, cenario, fundo = 'hud', className = '',
     />
   )
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

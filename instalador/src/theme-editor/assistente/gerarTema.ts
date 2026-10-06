@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // O assistente do modo Básico: estilo, cores e o que mostrar viram um `ThemeSpec` comum.
 //
 // Nenhum layout é inventado do zero. Cada estilo parte de um dos temas de fábrica, que já rodam no
@@ -143,7 +144,7 @@ export function gerarTema(o: OpcoesDoAssistente): TemaGerado {
   const partida = o.estilo === 'classico' ? CUPERTINO_ULTRA : o.estilo === 'esportivo' ? STUTTGART_NTG55 : MINIMALIST
   const spec = cloneSpec(partida, o.nome.trim() || 'Meu tema')
   spec.origin = null
-  spec.description = `Tema ${ESTILOS.find((e) => e.id === o.estilo)?.nome.toLowerCase()} criado pelo assistente do OPEN GW.`
+  spec.description = `Tema ${ESTILOS.find((e) => e.id === o.estilo)?.nome.toLowerCase()} criado pelo assistente do DeepGWT.`
 
   // O mostrador da direita existe se rotação OU potência foi marcada. Com as duas, cada estilo
   // mostra a que é dele (conta-giros no clássico, potência no esportivo) e a outra vira leitura.
@@ -229,3 +230,4 @@ export function gerarTema(o: OpcoesDoAssistente): TemaGerado {
   spec.welcomeSweep = o.estilo === 'esportivo' || o.estilo === 'classico'
   return { spec, avisos }
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

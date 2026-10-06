@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Relatório de oficina.
 //
 // REGRA CENTRAL: campo sem dado sai como "não coletado", com a razão. Em branco é pior do que
@@ -252,7 +253,7 @@ ${o.spread !== null ? `<div class="kv"><b>Maior diferença</b><span>${o.spread}<
 <style>${STYLE}</style></head><body><main>
 
 <h1>Relatório do veículo</h1>
-<p class="sub">Gerado em ${esc(dt(m.generatedAt))} · OPEN GW ${esc(m.appVersion)} · ${
+<p class="sub">Gerado em ${esc(dt(m.generatedAt))} · DeepGWT ${esc(m.appVersion)} · ${
     m.source === 'demo' ? 'modo demonstração' : `leitura ao vivo${m.carIp ? ` em ${esc(m.carIp)}` : ''}`
   }</p>
 ${demoBanner}
@@ -301,6 +302,7 @@ ${table(['Item', 'Por quê'], m.notCollected.map((n) => [esc(n.what), esc(n.why)
 <div class="kv"><b>Veículo de referência</b><span>${esc(m.knowledge.vehicle)}</span></div>
 <div class="note">A base de referência descreve o veículo em que o levantamento foi feito. Que outro carro tenha exatamente o mesmo dicionário é expectativa, não fato — e é por isso que a varredura acima lista separadamente o que este carro respondeu fora do levantamento.</div>
 
-<footer>Documento gerado localmente pelo OPEN GW. Nenhum dado deste relatório foi enviado a nenhum servidor durante a geração.</footer>
+<footer>Documento gerado localmente pelo DeepGWT. Nenhum dado deste relatório foi enviado a nenhum servidor durante a geração.</footer>
 </main></body></html>`
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

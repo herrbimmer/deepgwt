@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
 import { loadPrefs, savePrefs, type Prefs } from './prefs'
 
@@ -26,3 +27,4 @@ export function usePrefs(): PrefsApi {
   if (!ctx) throw new Error('usePrefs precisa estar dentro de <PrefsProvider>')
   return ctx
 }
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

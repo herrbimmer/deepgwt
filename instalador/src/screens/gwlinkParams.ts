@@ -1,7 +1,8 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // Lista curada de parâmetros "básicos" (modo não-expert) do GWLink — um subconjunto das
-// ~800 chaves CarConstants que o OPEN GW sabe ler, com nomes amigáveis em vez do nome cru do
+// ~800 chaves CarConstants que o DeepGWT sabe ler, com nomes amigáveis em vez do nome cru do
 // barramento. Em "modo expert" a tela ignora esta lista e mostra todas as chaves recebidas do
-// OPEN GW, com o nome real.
+// DeepGWT, com o nome real.
 export const GWLINK_BASIC_PARAMS: { key: string; label: string }[] = [
   { key: 'car.basic.engine_speed', label: 'RPM I.C.E' },
   { key: 'car.basic.gear_status', label: 'Marcha' },
@@ -65,3 +66,4 @@ export const GWLINK_BASIC_PARAMS: { key: string; label: string }[] = [
   { key: 'car.basic.vin_code', label: 'Chassi (VIN)' },
   { key: 'car.basic.vehicle_version', label: 'Versão do Veículo' },
 ]
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

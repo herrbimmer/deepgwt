@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Cupertino Extended</name>
     <description>Painel sóbrio, de mostradores finos e muito legíveis: fundo preto, faces em grafite com o friso de vidro líquido, escala fina com números por fora e o ponteiro curto em laranja, com uma varredura branca. Velocímetro com a marcha P R N D numa cápsula de vidro; potência como a de fábrica (recarga em verde à esquerda), com as autonomias elétrica e a combustível. Em cima, temperatura, hora e modo de condução; no centro, tocando agora, com capa, faixa, artista e barra de progresso, e as cápsulas de bateria e combustível; hodômetro no pé. Os mostradores ficam no lugar dos de fábrica, com as luzes do carro em volta. A projeção da central ocupa o centro. Modo dia e noite.</description>
@@ -33,3 +34,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

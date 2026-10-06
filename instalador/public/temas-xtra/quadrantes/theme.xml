@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Quadrantes</name>
     <description>Quatro eixos, um em cada canto da moldura: cada quarto de mostrador cresce para dentro e leva uma grandeza, com cor própria. O centro fica vazio de propósito, só com a marcha em corpo 190, o modo e a hora. Fundo de papel cru que vira tinta no modo noturno.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

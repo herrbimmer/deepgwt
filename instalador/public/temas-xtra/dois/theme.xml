@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Dois</name>
     <description>Exatamente dois elementos na tela: o algarismo e uma linha que cresce. A linha não tem escala, marca nem rótulo -- compará-la consigo mesma, um instante antes, já basta para saber se o carro acelera ou desacelera. Papel claro de dia, tinta de noite.</description>
@@ -29,3 +30,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

@@ -1,3 +1,4 @@
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.
 // De onde vem o tamanho de um elemento, agora que o editor não tem mais largura e altura.
 //
 // A troca não é perda de poder. O gerador antigo calculava `fontSize = height * 0.34` e
@@ -112,3 +113,4 @@ export function radiusOf(el: Element): number {
 
 export const rectsOverlap = (a: Rect, b: Rect) =>
   a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height
+// Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE.

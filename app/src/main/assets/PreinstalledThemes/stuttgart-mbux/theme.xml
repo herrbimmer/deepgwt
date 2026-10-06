@@ -1,3 +1,4 @@
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->
 <theme>
     <name>Stuttgart Sport</name>
     <description>Painel esportivo: túnel vermelho no centro com a velocidade no topo e a rotação embaixo, meias-luas que enchem com o giro, escalas de bateria e potência, círculo de força G (estimada pela variação da velocidade) e círculo de consumo e temperatura da cabine. No rodapé, combustível com autonomia, hora, READY, EV, temperatura externa, barra de potência e recarga e câmbio PRND. Cor do túnel escolhível (ou seguindo o modo de condução) e modo dia/noite.</description>
@@ -49,3 +50,4 @@
         </configuration>
     </configurations>
 </theme>
+<!-- Copyright © 2026 Miguel Vespermann Araújo. All rights reserved. Vespermann Accessible Software License (VASL) 1.0 — forks/redistribution not permitted without written authorization; see LICENSE. -->

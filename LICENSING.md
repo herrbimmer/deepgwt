@@ -1,6 +1,6 @@
 # LICENSING.md
 
-Como o licenciamento de **OPEN GW** está organizado, e o que você pode ou não fazer com cada parte.
+Como o licenciamento de **DeepGWT** está organizado, e o que você pode ou não fazer com cada parte.
 Documento explicativo — **não é parecer jurídico**. Atualizado em **2026-10-02**.
 
 ---
@@ -9,7 +9,7 @@ Documento explicativo — **não é parecer jurídico**. Atualizado em **2026-10
 
 | Arquivo | O que é | Para quem |
 |---|---|---|
-| [`LICENSE`](LICENSE) | Licença proprietária do produto e do nosso código | Usuário final |
+| [`LICENSE`](LICENSE) | VASL 1.0 — licença do produto e do nosso código (uso pessoal gratuito) | Usuário final |
 | [`NOTICE`](NOTICE) | Avisos de terceiros que **precisam ser entregues com cada cópia** | Usuário final (empacotar no produto) |
 | [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md) | Inventário completo de terceiros + textos integrais das licenças | Usuário final e jurídico |
 | [`COPYRIGHT.md`](COPYRIGHT.md) | Quem detém o quê | Jurídico e time |
@@ -20,7 +20,7 @@ Documento explicativo — **não é parecer jurídico**. Atualizado em **2026-10
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│ 1. NOSSO CÓDIGO  →  licença proprietária (LICENSE)                  │
+│ 1. NOSSO CÓDIGO  →  VASL 1.0 (LICENSE)                              │
 │    O app Android, o instalador desktop, os temas pré-instalados e    │
 │    a arte do produto.                                               │
 │    + Conhecimento do veículo (VHAL, DIDs, coding) = segredo nosso.   │
@@ -72,5 +72,5 @@ Regras práticas:
 
 O produto **não contém, não modifica e não redistribui** nenhum pacote do fornecedor de software da
 central (`com.ts.androidauto.*`, `com.ts.carplay*`). O Android Auto e o CarPlay **de fábrica** da
-central são suportados como aplicativos já presentes no veículo: o OPEN GW os lança, os move entre
+central são suportados como aplicativos já presentes no veículo: o DeepGWT os lança, os move entre
 telas e lê o que está tocando, sem distribuir binário de terceiro.
